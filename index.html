@@ -6,15 +6,22 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-<title>Routine 721</title>
+<meta
+    name="theme-color"
+    content="#030305"
+>
 
+<title>Routine 721 — War Room</title>
 
 <style>
 
 /* =========================================================
-   BASE
+   RESET
    ========================================================= */
 
 * {
@@ -24,7 +31,7 @@
 html,
 body {
     width: 100%;
-    min-height: 100%;
+    height: 100%;
     margin: 0;
     padding: 0;
 }
@@ -33,35 +40,22 @@ body {
 
     overflow: hidden;
 
+    background: #020204;
+
+    color: white;
+
     font-family:
         Arial,
         Helvetica,
         sans-serif;
-
-    color: white;
-
-    background:
-        radial-gradient(
-            circle at 20% 50%,
-            rgba(35, 70, 180, 0.18),
-            transparent 45%
-        ),
-
-        radial-gradient(
-            circle at 80% 50%,
-            rgba(150, 20, 30, 0.18),
-            transparent 45%
-        ),
-
-        #050507;
 }
 
 
 /* =========================================================
-   WARP EFFECT LAYER
+   WARP CANVAS
    ========================================================= */
 
-#warp {
+#warpCanvas {
 
     position: fixed;
 
@@ -71,27 +65,263 @@ body {
 
     height: 100vh;
 
-    overflow: hidden;
+    display: block;
+
+    z-index: 0;
 
     pointer-events: none;
 
-    z-index: 1;
+    background:
+        radial-gradient(
+            ellipse at center,
+            #130b20 0%,
+            #07060c 38%,
+            #020204 78%
+        );
 }
 
 
 /* =========================================================
-   CENTRAL WARP GLOW
+   SMOKE / VOID
    ========================================================= */
 
-.warp-core {
+#void {
 
-    position: absolute;
+    position: fixed;
+
+    inset: -20%;
+
+    z-index: 1;
+
+    pointer-events: none;
+
+    opacity: 0.9;
+
+    background:
+
+        radial-gradient(
+            ellipse at 15% 45%,
+            rgba(105, 20, 150, 0.20),
+            transparent 34%
+        ),
+
+        radial-gradient(
+            ellipse at 85% 40%,
+            rgba(180, 20, 25, 0.18),
+            transparent 34%
+        ),
+
+        radial-gradient(
+            ellipse at 30% 85%,
+            rgba(15, 90, 210, 0.14),
+            transparent 30%
+        ),
+
+        radial-gradient(
+            ellipse at 75% 80%,
+            rgba(20, 170, 80, 0.10),
+            transparent 30%
+        );
+
+    filter: blur(25px);
+
+    animation:
+        voidMove 12s ease-in-out infinite alternate;
+}
+
+
+@keyframes voidMove {
+
+    0% {
+
+        transform:
+            scale(1)
+            rotate(0deg);
+
+        filter:
+            blur(25px)
+            hue-rotate(0deg);
+    }
+
+    50% {
+
+        transform:
+            scale(1.08)
+            rotate(2deg);
+
+        filter:
+            blur(35px)
+            hue-rotate(12deg);
+    }
+
+    100% {
+
+        transform:
+            scale(1.02)
+            rotate(-2deg);
+
+        filter:
+            blur(28px)
+            hue-rotate(-10deg);
+    }
+}
+
+
+/* =========================================================
+   WARP VORTEX VISUAL RINGS
+   ========================================================= */
+
+.vortex {
+
+    position: fixed;
 
     left: 50%;
     top: 50%;
 
-    width: 500px;
-    height: 500px;
+    width: min(850px, 130vw);
+    height: min(520px, 85vw);
+
+    z-index: 2;
+
+    pointer-events: none;
+
+    transform:
+        translate(-50%, -50%)
+        rotate(-8deg);
+
+    border-radius: 50%;
+
+    border:
+        1px solid
+        rgba(170, 40, 255, 0.22);
+
+    box-shadow:
+
+        0 0 35px
+        rgba(150, 30, 255, 0.16),
+
+        inset 0 0 50px
+        rgba(150, 30, 255, 0.08);
+
+    animation:
+        vortexSpin 9s linear infinite;
+}
+
+
+.vortex::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 6%;
+
+    border-radius: 50%;
+
+    border:
+        2px solid
+        rgba(255, 35, 35, 0.18);
+
+    box-shadow:
+
+        0 0 30px
+        rgba(255, 25, 25, 0.12),
+
+        inset 0 0 35px
+        rgba(255, 25, 25, 0.08);
+
+    animation:
+        vortexCounter 6s linear infinite;
+}
+
+
+.vortex::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 15%;
+
+    border-radius: 50%;
+
+    border:
+        1px solid
+        rgba(30, 130, 255, 0.22);
+
+    box-shadow:
+
+        0 0 30px
+        rgba(20, 120, 255, 0.16),
+
+        inset 0 0 40px
+        rgba(20, 120, 255, 0.08);
+
+    animation:
+        vortexSpin 5s linear infinite reverse;
+}
+
+
+@keyframes vortexSpin {
+
+    from {
+
+        transform:
+            translate(-50%, -50%)
+            rotate(-8deg);
+    }
+
+    to {
+
+        transform:
+            translate(-50%, -50%)
+            rotate(352deg);
+    }
+}
+
+
+@keyframes vortexCounter {
+
+    from {
+
+        transform:
+            rotate(0deg)
+            scale(1);
+    }
+
+    50% {
+
+        transform:
+            rotate(-180deg)
+            scale(0.94);
+    }
+
+    to {
+
+        transform:
+            rotate(-360deg)
+            scale(1);
+    }
+}
+
+
+/* =========================================================
+   CENTRAL WARP RIFT
+   ========================================================= */
+
+#rift {
+
+    position: fixed;
+
+    left: 50%;
+    top: 50%;
+
+    width: min(460px, 75vw);
+    height: min(460px, 75vw);
+
+    z-index: 3;
+
+    pointer-events: none;
 
     transform:
         translate(-50%, -50%);
@@ -99,586 +329,66 @@ body {
     border-radius: 50%;
 
     background:
+
         radial-gradient(
             circle,
-            rgba(150, 40, 255, 0.13) 0%,
-            rgba(70, 40, 180, 0.08) 30%,
-            rgba(20, 80, 180, 0.04) 50%,
-            transparent 72%
+            rgba(2, 1, 5, 0.98) 0%,
+            rgba(8, 2, 15, 0.92) 34%,
+            rgba(100, 20, 160, 0.16) 53%,
+            rgba(210, 20, 40, 0.08) 67%,
+            transparent 76%
         );
 
-    filter: blur(2px);
+    box-shadow:
+
+        0 0 40px
+        rgba(150, 20, 255, 0.20),
+
+        0 0 90px
+        rgba(90, 20, 255, 0.13);
 
     animation:
-        corePulse 5s ease-in-out infinite;
+        riftPulse 3.5s ease-in-out infinite;
 }
 
 
-@keyframes corePulse {
+@keyframes riftPulse {
 
     0%,
     100% {
 
         transform:
             translate(-50%, -50%)
-            scale(0.90);
+            scale(0.94);
 
-        opacity: 0.55;
+        filter:
+            brightness(0.9);
     }
 
     50% {
 
         transform:
             translate(-50%, -50%)
-            scale(1.10);
+            scale(1.06);
 
-        opacity: 1;
+        filter:
+            brightness(1.25);
     }
 }
 
 
 /* =========================================================
-   WARP RINGS
+   LOGIN CONTAINER
    ========================================================= */
 
-.warp-ring {
-
-    position: absolute;
-
-    left: 50%;
-    top: 50%;
-
-    border-radius: 50%;
-
-    transform:
-        translate(-50%, -50%);
-
-    opacity: 0.7;
-}
-
-
-.ring-purple {
-
-    width: 520px;
-    height: 300px;
-
-    border:
-        2px solid
-        rgba(180, 60, 255, 0.30);
-
-    box-shadow:
-        0 0 20px rgba(170, 40, 255, 0.25),
-        inset 0 0 20px rgba(170, 40, 255, 0.12);
-
-    animation:
-        spin1 13s linear infinite;
-}
-
-
-.ring-blue {
-
-    width: 440px;
-    height: 260px;
-
-    border:
-        2px solid
-        rgba(40, 120, 255, 0.28);
-
-    box-shadow:
-        0 0 20px rgba(40, 120, 255, 0.25),
-        inset 0 0 20px rgba(40, 120, 255, 0.12);
-
-    animation:
-        spin2 17s linear infinite;
-}
-
-
-.ring-red {
-
-    width: 600px;
-    height: 350px;
-
-    border:
-        2px solid
-        rgba(255, 40, 40, 0.22);
-
-    box-shadow:
-        0 0 25px rgba(255, 30, 30, 0.20),
-        inset 0 0 25px rgba(255, 30, 30, 0.10);
-
-    animation:
-        spin1 21s linear infinite;
-}
-
-
-.ring-green {
-
-    width: 680px;
-    height: 390px;
-
-    border:
-        1px solid
-        rgba(30, 255, 120, 0.18);
-
-    box-shadow:
-        0 0 25px rgba(30, 255, 120, 0.12);
-
-    animation:
-        spin2 25s linear infinite;
-}
-
-
-@keyframes spin1 {
-
-    from {
-
-        transform:
-            translate(-50%, -50%)
-            rotate(0deg);
-    }
-
-    to {
-
-        transform:
-            translate(-50%, -50%)
-            rotate(360deg);
-    }
-}
-
-
-@keyframes spin2 {
-
-    from {
-
-        transform:
-            translate(-50%, -50%)
-            rotate(360deg);
-    }
-
-    to {
-
-        transform:
-            translate(-50%, -50%)
-            rotate(0deg);
-    }
-}
-
-
-/* =========================================================
-   PARTICLES
-   ========================================================= */
-
-.particle {
-
-    position: absolute;
-
-    left: 50%;
-    top: 50%;
-
-    width: 5px;
-    height: 5px;
-
-    border-radius: 50%;
-
-    opacity: 0;
-
-    box-shadow:
-        0 0 5px currentColor,
-        0 0 12px currentColor,
-        0 0 25px currentColor;
-
-    animation:
-        warpFly var(--duration) linear infinite;
-
-    animation-delay:
-        var(--delay);
-}
-
-
-/*
-   The bright centre of each ember
-*/
-
-.particle::after {
-
-    content: "";
-
-    position: absolute;
-
-    width: 18px;
-    height: 18px;
-
-    left: 50%;
-    top: 50%;
-
-    transform:
-        translate(-50%, -50%);
-
-    border-radius: 50%;
-
-    background:
-        currentColor;
-
-    opacity: 0.25;
-
-    filter: blur(6px);
-}
-
-
-/* =========================================================
-   WARP MOTION
-   ========================================================= */
-
-@keyframes warpFly {
-
-    0% {
-
-        transform:
-            translate(
-                var(--start-x),
-                var(--start-y)
-            )
-            scale(0.1)
-            rotate(0deg);
-
-        opacity: 0;
-    }
-
-
-    8% {
-
-        opacity: 0.9;
-    }
-
-
-    25% {
-
-        transform:
-            translate(
-                var(--mid-x),
-                var(--mid-y)
-            )
-            scale(0.8)
-            rotate(90deg);
-
-        opacity: 1;
-    }
-
-
-    45% {
-
-        transform:
-            translate(
-                var(--curve-x),
-                var(--curve-y)
-            )
-            scale(1.2)
-            rotate(180deg);
-
-        opacity: 0.95;
-    }
-
-
-    65% {
-
-        transform:
-            translate(
-                var(--outer-x),
-                var(--outer-y)
-            )
-            scale(0.9)
-            rotate(280deg);
-
-        opacity: 0.7;
-    }
-
-
-    82% {
-
-        opacity: 0.35;
-    }
-
-
-    100% {
-
-        transform:
-            translate(
-                var(--end-x),
-                var(--end-y)
-            )
-            scale(0.1)
-            rotate(420deg);
-
-        opacity: 0;
-    }
-}
-
-
-/* =========================================================
-   PURPLE EMBERS
-   ========================================================= */
-
-.purple1 {
-
-    color: #c45cff;
-
-    --duration: 12s;
-    --delay: -2s;
-
-    --start-x: -20px;
-    --start-y: 20px;
-
-    --mid-x: -120px;
-    --mid-y: -100px;
-
-    --curve-x: -280px;
-    --curve-y: -190px;
-
-    --outer-x: -420px;
-    --outer-y: -350px;
-
-    --end-x: -650px;
-    --end-y: -600px;
-}
-
-
-.purple2 {
-
-    color: #9b5cff;
-
-    --duration: 16s;
-    --delay: -7s;
-
-    --start-x: 20px;
-    --start-y: 30px;
-
-    --mid-x: 130px;
-    --mid-y: -90px;
-
-    --curve-x: 270px;
-    --curve-y: -220px;
-
-    --outer-x: 430px;
-    --outer-y: -380px;
-
-    --end-x: 680px;
-    --end-y: -650px;
-}
-
-
-.purple3 {
-
-    color: #e879f9;
-
-    --duration: 14s;
-    --delay: -11s;
-
-    --start-x: -30px;
-    --start-y: 40px;
-
-    --mid-x: -150px;
-    --mid-y: -130px;
-
-    --curve-x: -330px;
-    --curve-y: -260px;
-
-    --outer-x: -500px;
-    --outer-y: -430px;
-
-    --end-x: -760px;
-    --end-y: -700px;
-}
-
-
-/* =========================================================
-   RED CHAOS EMBERS
-   ========================================================= */
-
-.red1 {
-
-    color: #ff3030;
-
-    --duration: 13s;
-    --delay: -3s;
-
-    --start-x: 30px;
-    --start-y: 20px;
-
-    --mid-x: 130px;
-    --mid-y: -110px;
-
-    --curve-x: 300px;
-    --curve-y: -200px;
-
-    --outer-x: 470px;
-    --outer-y: -380px;
-
-    --end-x: 720px;
-    --end-y: -650px;
-}
-
-
-.red2 {
-
-    color: #ff5545;
-
-    --duration: 18s;
-    --delay: -9s;
-
-    --start-x: -20px;
-    --start-y: 40px;
-
-    --mid-x: -140px;
-    --mid-y: -140px;
-
-    --curve-x: -300px;
-    --curve-y: -280px;
-
-    --outer-x: -480px;
-    --outer-y: -450px;
-
-    --end-x: -780px;
-    --end-y: -720px;
-}
-
-
-.red3 {
-
-    color: #dc2626;
-
-    --duration: 15s;
-    --delay: -14s;
-
-    --start-x: 40px;
-    --start-y: 50px;
-
-    --mid-x: 180px;
-    --mid-y: -150px;
-
-    --curve-x: 360px;
-    --curve-y: -300px;
-
-    --outer-x: 550px;
-    --outer-y: -500px;
-
-    --end-x: 850px;
-    --end-y: -800px;
-}
-
-
-/* =========================================================
-   BLUE ULTRAMARINE ENERGY
-   ========================================================= */
-
-.blue1 {
-
-    color: #2583ff;
-
-    --duration: 15s;
-    --delay: -5s;
-
-    --start-x: -40px;
-    --start-y: 30px;
-
-    --mid-x: -150px;
-    --mid-y: -100px;
-
-    --curve-x: -320px;
-    --curve-y: -240px;
-
-    --outer-x: -500px;
-    --outer-y: -420px;
-
-    --end-x: -780px;
-    --end-y: -700px;
-}
-
-
-.blue2 {
-
-    color: #38bdf8;
-
-    --duration: 19s;
-    --delay: -12s;
-
-    --start-x: 40px;
-    --start-y: 50px;
-
-    --mid-x: 160px;
-    --mid-y: -120px;
-
-    --curve-x: 340px;
-    --curve-y: -260px;
-
-    --outer-x: 520px;
-    --outer-y: -450px;
-
-    --end-x: 820px;
-    --end-y: -760px;
-}
-
-
-/* =========================================================
-   GREEN WARP ENERGY
-   ========================================================= */
-
-.green1 {
-
-    color: #22ff88;
-
-    --duration: 20s;
-    --delay: -4s;
-
-    --start-x: -50px;
-    --start-y: 50px;
-
-    --mid-x: -180px;
-    --mid-y: -140px;
-
-    --curve-x: -380px;
-    --curve-y: -300px;
-
-    --outer-x: -580px;
-    --outer-y: -500px;
-
-    --end-x: -900px;
-    --end-y: -800px;
-}
-
-
-.green2 {
-
-    color: #4ade80;
-
-    --duration: 18s;
-    --delay: -15s;
-
-    --start-x: 50px;
-    --start-y: 50px;
-
-    --mid-x: 180px;
-    --mid-y: -140px;
-
-    --curve-x: 380px;
-    --curve-y: -300px;
-
-    --outer-x: 580px;
-    --outer-y: -500px;
-
-    --end-x: 900px;
-    --end-y: -820px;
-}
-
-
-/* =========================================================
-   LOGIN LAYER
-   ========================================================= */
-
-.login-container {
+.login-layer {
 
     position: relative;
 
     z-index: 20;
+
+    width: 100%;
+    height: 100%;
 
     min-height: 100vh;
 
@@ -696,105 +406,202 @@ body {
    LOGIN BOX
    ========================================================= */
 
-.box {
+.login-box {
 
     position: relative;
 
-    width: 90%;
+    width: min(440px, 94vw);
 
-    max-width: 500px;
-
-    padding: 40px;
-
-    text-align: center;
+    padding: 36px 32px;
 
     background:
-        rgba(12, 12, 15, 0.96);
+        linear-gradient(
+            145deg,
+            rgba(12, 11, 16, 0.97),
+            rgba(4, 4, 7, 0.985)
+        );
 
     border:
         1px solid
-        rgba(201, 168, 76, 0.55);
+        rgba(201, 168, 76, 0.58);
 
-    border-radius: 10px;
+    border-radius: 8px;
 
     box-shadow:
 
-        0 25px 80px
-        rgba(0, 0, 0, 0.9),
+        0 30px 100px
+        rgba(0, 0, 0, 0.95),
 
         0 0 35px
-        rgba(120, 40, 180, 0.15);
+        rgba(150, 30, 255, 0.12),
+
+        inset 0 0 35px
+        rgba(0, 0, 0, 0.75);
 
     backdrop-filter:
-        blur(5px);
+        blur(10px);
 }
 
 
-h1 {
+/* glowing corners */
+
+.login-box::before,
+.login-box::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 70px;
+    height: 70px;
+
+    pointer-events: none;
+}
+
+
+.login-box::before {
+
+    top: -1px;
+    left: -1px;
+
+    border-top:
+        2px solid
+        #c9a84c;
+
+    border-left:
+        2px solid
+        #c9a84c;
+}
+
+
+.login-box::after {
+
+    right: -1px;
+    bottom: -1px;
+
+    border-right:
+        2px solid
+        #c9a84c;
+
+    border-bottom:
+        2px solid
+        #c9a84c;
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.logo {
 
     margin: 0;
 
+    text-align: center;
+
     color: #c9a84c;
 
-    letter-spacing: 5px;
+    font-size: 31px;
+
+    letter-spacing: 7px;
 
     text-shadow:
-        0 0 15px
-        rgba(201, 168, 76, 0.3);
+
+        0 0 8px
+        rgba(201, 168, 76, 0.35),
+
+        0 0 22px
+        rgba(201, 168, 76, 0.15);
 }
 
 
 .subtitle {
 
-    margin-top: 10px;
+    margin-top: 8px;
 
-    margin-bottom: 30px;
+    margin-bottom: 28px;
+
+    text-align: center;
 
     color: #777;
 
-    letter-spacing: 5px;
+    font-size: 11px;
 
-    font-size: 12px;
+    letter-spacing: 6px;
 }
 
 
-h2 {
+.divider {
 
-    color: #ddd;
+    height: 1px;
 
-    letter-spacing: 2px;
+    margin:
+        0
+        10px
+        25px;
 
-}
-
-
-p {
-
-    color: #999;
-
-    font-size: 13px;
-
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(201,168,76,0.55),
+            transparent
+        );
 }
 
 
 /* =========================================================
-   INPUTS
+   FORM
    ========================================================= */
+
+h2 {
+
+    margin:
+        0
+        0
+        8px;
+
+    text-align: center;
+
+    color: #e5e5e5;
+
+    font-size: 20px;
+
+    letter-spacing: 2px;
+}
+
+
+.description {
+
+    margin:
+        0
+        0
+        22px;
+
+    text-align: center;
+
+    color: #777;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
 
 label {
 
     display: block;
 
-    margin-top: 18px;
-
-    margin-bottom: 6px;
-
-    text-align: left;
+    margin:
+        16px
+        0
+        6px;
 
     color: #999;
 
-    font-size: 12px;
+    font-size: 10px;
 
-    letter-spacing: 1px;
+    letter-spacing: 2px;
 
     text-transform: uppercase;
 }
@@ -804,32 +611,51 @@ input {
 
     width: 100%;
 
-    padding: 13px;
+    height: 45px;
 
-    box-sizing: border-box;
-
-    background: #08090b;
-
-    color: white;
+    padding:
+        0
+        13px;
 
     border:
         1px solid
-        #3b3b40;
+        #34343a;
 
-    border-radius: 6px;
+    border-radius: 4px;
 
     outline: none;
+
+    background:
+        rgba(2, 2, 4, 0.95);
+
+    color: white;
+
+    font-size: 14px;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
 }
 
 
 input:focus {
 
     border-color:
-        #c9a84c;
+        #8d5cff;
 
     box-shadow:
-        0 0 12px
-        rgba(201, 168, 76, 0.15);
+
+        0 0 10px
+        rgba(140, 60, 255, 0.22),
+
+        inset 0 0 10px
+        rgba(140, 60, 255, 0.05);
+}
+
+
+input::placeholder {
+
+    color: #555;
 }
 
 
@@ -841,53 +667,40 @@ button {
 
     width: 100%;
 
-    padding: 13px;
+    height: 45px;
 
-    margin-top: 15px;
+    margin-top: 16px;
 
-    border: none;
-
-    border-radius: 6px;
+    border-radius: 4px;
 
     cursor: pointer;
 
     font-weight: bold;
 
-    letter-spacing: 1px;
-}
+    font-size: 12px;
 
+    letter-spacing: 2px;
 
-.primary {
-
-    color: white;
-
-    background:
-        linear-gradient(
-            #a33a2e,
-            #702219
-        );
-
-    border:
-        1px solid
-        #b94b3c;
-}
-
-
-.secondary {
-
-    color: #ddd;
-
-    background: #1b1b1f;
-
-    border:
-        1px solid
-        #3b3b40;
+    transition:
+        transform 0.15s,
+        filter 0.15s,
+        box-shadow 0.15s;
 }
 
 
 button:hover {
 
-    filter: brightness(1.2);
+    filter: brightness(1.18);
+
+    transform:
+        translateY(-1px);
+}
+
+
+button:active {
+
+    transform:
+        translateY(1px);
 }
 
 
@@ -896,6 +709,59 @@ button:disabled {
     opacity: 0.5;
 
     cursor: wait;
+
+    transform: none;
+}
+
+
+.primary {
+
+    border:
+        1px solid
+        #c54a3c;
+
+    background:
+        linear-gradient(
+            180deg,
+            #a63b2e,
+            #681b16
+        );
+
+    color: white;
+
+    box-shadow:
+        0 0 15px
+        rgba(180, 40, 25, 0.12);
+}
+
+
+.secondary {
+
+    border:
+        1px solid
+        #3b3b42;
+
+    background:
+        linear-gradient(
+            180deg,
+            #25252a,
+            #111114
+        );
+
+    color: #bbb;
+}
+
+
+.logout {
+
+    border:
+        1px solid
+        #5b2830;
+
+    background:
+        #160a0c;
+
+    color: #ff8a8a;
 }
 
 
@@ -905,25 +771,33 @@ button:disabled {
 
 #status {
 
-    min-height: 20px;
+    min-height: 18px;
 
-    margin-top: 20px;
+    margin-top: 18px;
 
-    font-size: 13px;
+    text-align: center;
 
-    color: #777;
+    color: #666;
+
+    font-size: 11px;
+
+    line-height: 1.5;
 }
 
 
 #status.success {
 
-    color: #55d879;
+    color: #61df86;
+
+    text-shadow:
+        0 0 8px
+        rgba(80, 220, 120, 0.25);
 }
 
 
 #status.error {
 
-    color: #ff5c5c;
+    color: #ff6262;
 }
 
 
@@ -934,14 +808,53 @@ button:disabled {
 
 
 /* =========================================================
+   AUTHENTICATED SCREEN
+   ========================================================= */
+
+.war-room {
+
+    text-align: center;
+}
+
+
+.war-room h2 {
+
+    color: #c9a84c;
+
+    font-size: 25px;
+
+    letter-spacing: 4px;
+}
+
+
+.war-room .access {
+
+    margin:
+        15px
+        0
+        25px;
+
+    color: #5fe28a;
+
+    font-size: 11px;
+
+    letter-spacing: 3px;
+}
+
+
+/* =========================================================
    MOBILE
    ========================================================= */
 
 @media (max-width: 600px) {
 
-    .box {
+    .login-layer {
 
-        width: 94%;
+        padding: 12px;
+    }
+
+
+    .login-box {
 
         padding:
             30px
@@ -949,46 +862,31 @@ button:disabled {
     }
 
 
-    h1 {
+    .logo {
 
-        font-size: 27px;
+        font-size: 25px;
+
+        letter-spacing: 5px;
+    }
+
+
+    .subtitle {
 
         letter-spacing: 4px;
     }
 
 
-    .warp-core {
-
-        width: 320px;
-        height: 320px;
-    }
-
-
-    .ring-purple {
+    #rift {
 
         width: 350px;
-        height: 220px;
+        height: 350px;
     }
 
 
-    .ring-blue {
+    .vortex {
 
-        width: 300px;
-        height: 190px;
-    }
-
-
-    .ring-red {
-
-        width: 410px;
-        height: 250px;
-    }
-
-
-    .ring-green {
-
-        width: 450px;
-        height: 270px;
+        width: 600px;
+        height: 380px;
     }
 }
 
@@ -999,11 +897,12 @@ button:disabled {
 
 @media (prefers-reduced-motion: reduce) {
 
-    .warp-core,
-    .warp-ring,
-    .particle {
+    #void,
+    .vortex,
+    #rift {
 
-        animation-duration: 30s;
+        animation-duration:
+            20s;
     }
 }
 
@@ -1015,200 +914,230 @@ button:disabled {
 <body>
 
 
-<!-- =====================================================
-     WARP VORTEX
-     ===================================================== -->
+<!-- =======================================================
+     WARP BACKGROUND
+     ======================================================= -->
 
-<div id="warp">
+<canvas id="warpCanvas"></canvas>
 
-    <div class="warp-core"></div>
+<div id="void"></div>
 
-    <div class="warp-ring ring-purple"></div>
+<div class="vortex"></div>
 
-    <div class="warp-ring ring-blue"></div>
-
-    <div class="warp-ring ring-red"></div>
-
-    <div class="warp-ring ring-green"></div>
+<div id="rift"></div>
 
 
-    <div class="particle purple1"></div>
-    <div class="particle purple2"></div>
-    <div class="particle purple3"></div>
-
-    <div class="particle red1"></div>
-    <div class="particle red2"></div>
-    <div class="particle red3"></div>
-
-    <div class="particle blue1"></div>
-    <div class="particle blue2"></div>
-
-    <div class="particle green1"></div>
-    <div class="particle green2"></div>
-
-</div>
-
-
-<!-- =====================================================
+<!-- =======================================================
      LOGIN
-     ===================================================== -->
+     ======================================================= -->
 
-<div class="login-container">
+<div class="login-layer">
 
-<div class="box">
-
-    <h1>
-        ROUTINE 721
-    </h1>
-
-    <div class="subtitle">
-        WAR ROOM
-    </div>
+    <main class="login-box">
 
 
-    <!-- LOGIN VIEW -->
+        <!-- LOGIN VIEW -->
 
-    <div id="loginView">
+        <section id="loginView">
 
-        <h2>
-            Welcome Back
-        </h2>
+            <h1 class="logo">
+                ROUTINE 721
+            </h1>
 
-        <p>
-            Enter your credentials to access the War Room.
-        </p>
+            <div class="subtitle">
+                WAR ROOM
+            </div>
+
+            <div class="divider"></div>
+
+            <h2>
+                WELCOME BACK
+            </h2>
+
+            <p class="description">
+                Enter your credentials to access the War Room.
+            </p>
 
 
-        <label for="loginEmail">
-            Email
-        </label>
+            <label for="loginEmail">
+                Email
+            </label>
 
-        <input
-            id="loginEmail"
-            type="email"
-            autocomplete="email"
-            placeholder="your@email.com"
+            <input
+                id="loginEmail"
+                type="email"
+                autocomplete="email"
+                placeholder="your@email.com"
+            >
+
+
+            <label for="loginPassword">
+                Password
+            </label>
+
+            <input
+                id="loginPassword"
+                type="password"
+                autocomplete="current-password"
+                placeholder="Password"
+            >
+
+
+            <button
+                id="signInButton"
+                class="primary"
+                type="button"
+            >
+                SIGN IN
+            </button>
+
+
+            <button
+                id="showCreateButton"
+                class="secondary"
+                type="button"
+            >
+                CREATE ACCOUNT
+            </button>
+
+        </section>
+
+
+        <!-- CREATE ACCOUNT VIEW -->
+
+        <section
+            id="createView"
+            class="hidden"
         >
 
+            <h1 class="logo">
+                ROUTINE 721
+            </h1>
 
-        <label for="loginPassword">
-            Password
-        </label>
+            <div class="subtitle">
+                WAR ROOM
+            </div>
 
-        <input
-            id="loginPassword"
-            type="password"
-            autocomplete="current-password"
-            placeholder="Password"
+            <div class="divider"></div>
+
+            <h2>
+                JOIN THE WAR ROOM
+            </h2>
+
+            <p class="description">
+                Create your account and enter the battlefield.
+            </p>
+
+
+            <label for="createEmail">
+                Email
+            </label>
+
+            <input
+                id="createEmail"
+                type="email"
+                autocomplete="email"
+                placeholder="your@email.com"
+            >
+
+
+            <label for="createPassword">
+                Password
+            </label>
+
+            <input
+                id="createPassword"
+                type="password"
+                autocomplete="new-password"
+                placeholder="Choose a password"
+            >
+
+
+            <button
+                id="createAccountButton"
+                class="primary"
+                type="button"
+            >
+                CREATE ACCOUNT
+            </button>
+
+
+            <button
+                id="backButton"
+                class="secondary"
+                type="button"
+            >
+                BACK TO SIGN IN
+            </button>
+
+        </section>
+
+
+        <!-- AUTHENTICATED VIEW -->
+
+        <section
+            id="warRoomView"
+            class="war-room hidden"
         >
 
+            <h1 class="logo">
+                ROUTINE 721
+            </h1>
 
-        <button
-            id="signInButton"
-            class="primary"
-            type="button"
+            <div class="subtitle">
+                WAR ROOM
+            </div>
+
+            <div class="divider"></div>
+
+            <h2>
+                ACCESS GRANTED
+            </h2>
+
+            <div class="access">
+                SUPABASE AUTHENTICATION ACTIVE
+            </div>
+
+            <p id="userEmail">
+                Authenticated user
+            </p>
+
+            <button
+                id="logoutButton"
+                class="logout"
+                type="button"
+            >
+                SIGN OUT
+            </button>
+
+        </section>
+
+
+        <div
+            id="status"
+            aria-live="polite"
         >
-            SIGN IN
-        </button>
+            Connecting to database...
+        </div>
 
 
-        <button
-            id="showCreateButton"
-            class="secondary"
-            type="button"
-        >
-            CREATE ACCOUNT
-        </button>
-
-    </div>
-
-
-    <!-- CREATE ACCOUNT VIEW -->
-
-    <div
-        id="createView"
-        class="hidden"
-    >
-
-        <h2>
-            Create Account
-        </h2>
-
-        <p>
-            Create your Routine 721 War Room account.
-        </p>
-
-
-        <label for="createEmail">
-            Email
-        </label>
-
-        <input
-            id="createEmail"
-            type="email"
-            autocomplete="email"
-            placeholder="your@email.com"
-        >
-
-
-        <label for="createPassword">
-            Password
-        </label>
-
-        <input
-            id="createPassword"
-            type="password"
-            autocomplete="new-password"
-            placeholder="Choose a password"
-        >
-
-
-        <button
-            id="createAccountButton"
-            class="primary"
-            type="button"
-        >
-            CREATE ACCOUNT
-        </button>
-
-
-        <button
-            id="backButton"
-            class="secondary"
-            type="button"
-        >
-            BACK TO SIGN IN
-        </button>
-
-    </div>
-
-
-    <div
-        id="status"
-        aria-live="polite"
-    >
-        Connecting to database...
-    </div>
+    </main>
 
 </div>
 
-</div>
 
-
-<!-- =====================================================
+<!-- =======================================================
      SUPABASE
-     ===================================================== -->
+     ======================================================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <script>
 
-/*
-=========================================================
-SUPABASE CONFIG
-=========================================================
-*/
+/* =========================================================
+   SUPABASE CONFIG
+   ========================================================= */
 
 const SUPABASE_URL =
     "https://jbgwdxavydhtvoqpbfmj.supabase.co";
@@ -1218,12 +1147,11 @@ const SUPABASE_KEY =
 
 
 /*
-=========================================================
-CREATE CLIENT
-
 IMPORTANT:
-Do not rename this to "supabase".
-=========================================================
+
+Use "supabaseClient".
+
+Do NOT call this variable "supabase".
 */
 
 const supabaseClient =
@@ -1233,51 +1161,84 @@ const supabaseClient =
     );
 
 
-/*
-=========================================================
-ELEMENTS
-=========================================================
-*/
+/* =========================================================
+   DOM
+   ========================================================= */
 
 const loginView =
-    document.getElementById("loginView");
+    document.getElementById(
+        "loginView"
+    );
 
 const createView =
-    document.getElementById("createView");
+    document.getElementById(
+        "createView"
+    );
+
+const warRoomView =
+    document.getElementById(
+        "warRoomView"
+    );
 
 const loginEmail =
-    document.getElementById("loginEmail");
+    document.getElementById(
+        "loginEmail"
+    );
 
 const loginPassword =
-    document.getElementById("loginPassword");
+    document.getElementById(
+        "loginPassword"
+    );
 
 const createEmail =
-    document.getElementById("createEmail");
+    document.getElementById(
+        "createEmail"
+    );
 
 const createPassword =
-    document.getElementById("createPassword");
+    document.getElementById(
+        "createPassword"
+    );
 
 const signInButton =
-    document.getElementById("signInButton");
+    document.getElementById(
+        "signInButton"
+    );
 
 const showCreateButton =
-    document.getElementById("showCreateButton");
+    document.getElementById(
+        "showCreateButton"
+    );
 
 const createAccountButton =
-    document.getElementById("createAccountButton");
+    document.getElementById(
+        "createAccountButton"
+    );
 
 const backButton =
-    document.getElementById("backButton");
+    document.getElementById(
+        "backButton"
+    );
+
+const logoutButton =
+    document.getElementById(
+        "logoutButton"
+    );
 
 const status =
-    document.getElementById("status");
+    document.getElementById(
+        "status"
+    );
+
+const userEmail =
+    document.getElementById(
+        "userEmail"
+    );
 
 
-/*
-=========================================================
-STATUS
-=========================================================
-*/
+/* =========================================================
+   STATUS
+   ========================================================= */
 
 function setStatus(
     message,
@@ -1289,55 +1250,104 @@ function setStatus(
 
     status.className =
         type;
-
 }
 
 
-/*
-=========================================================
-SHOW CREATE ACCOUNT
-=========================================================
-*/
+/* =========================================================
+   VIEW MANAGEMENT
+   ========================================================= */
+
+function showLogin() {
+
+    loginView.classList.remove(
+        "hidden"
+    );
+
+    createView.classList.add(
+        "hidden"
+    );
+
+    warRoomView.classList.add(
+        "hidden"
+    );
+}
+
+
+function showCreate() {
+
+    loginView.classList.add(
+        "hidden"
+    );
+
+    createView.classList.remove(
+        "hidden"
+    );
+
+    warRoomView.classList.add(
+        "hidden"
+    );
+
+    createEmail.focus();
+}
+
+
+function showWarRoom(
+    user
+) {
+
+    loginView.classList.add(
+        "hidden"
+    );
+
+    createView.classList.add(
+        "hidden"
+    );
+
+    warRoomView.classList.remove(
+        "hidden"
+    );
+
+    if (user && user.email) {
+
+        userEmail.textContent =
+            user.email;
+
+    }
+
+    setStatus(
+        "Supabase authentication is working.",
+        "success"
+    );
+}
+
+
+/* =========================================================
+   CREATE ACCOUNT VIEW
+   ========================================================= */
 
 showCreateButton.addEventListener(
     "click",
     function () {
 
-        loginView.classList.add(
-            "hidden"
-        );
-
-        createView.classList.remove(
-            "hidden"
-        );
-
         setStatus("");
 
-        createEmail.focus();
+        showCreate();
 
     }
 );
 
 
-/*
-=========================================================
-BACK TO LOGIN
-=========================================================
-*/
+/* =========================================================
+   BACK TO LOGIN
+   ========================================================= */
 
 backButton.addEventListener(
     "click",
     function () {
 
-        createView.classList.add(
-            "hidden"
-        );
-
-        loginView.classList.remove(
-            "hidden"
-        );
-
         setStatus("");
+
+        showLogin();
 
         loginEmail.focus();
 
@@ -1345,11 +1355,9 @@ backButton.addEventListener(
 );
 
 
-/*
-=========================================================
-SIGN IN
-=========================================================
-*/
+/* =========================================================
+   SIGN IN
+   ========================================================= */
 
 signInButton.addEventListener(
     "click",
@@ -1362,12 +1370,27 @@ signInButton.addEventListener(
             loginPassword.value;
 
 
-        if (!email || !password) {
+        if (!email) {
 
             setStatus(
-                "Please enter your email and password.",
+                "Enter your email address.",
                 "error"
             );
+
+            loginEmail.focus();
+
+            return;
+        }
+
+
+        if (!password) {
+
+            setStatus(
+                "Enter your password.",
+                "error"
+            );
+
+            loginPassword.focus();
 
             return;
         }
@@ -1377,25 +1400,27 @@ signInButton.addEventListener(
             true;
 
         signInButton.textContent =
-            "SIGNING IN...";
+            "ENTERING WAR ROOM...";
 
 
         try {
 
-            const result =
+            const {
+                data,
+                error
+            } =
                 await supabaseClient.auth.signInWithPassword({
 
-                    email: email,
-
-                    password: password
+                    email,
+                    password
 
                 });
 
 
-            if (result.error) {
+            if (error) {
 
                 setStatus(
-                    result.error.message,
+                    error.message,
                     "error"
                 );
 
@@ -1403,9 +1428,8 @@ signInButton.addEventListener(
             }
 
 
-            setStatus(
-                "Signed in successfully.",
-                "success"
+            showWarRoom(
+                data.user
             );
 
         }
@@ -1434,11 +1458,9 @@ signInButton.addEventListener(
 );
 
 
-/*
-=========================================================
-CREATE ACCOUNT
-=========================================================
-*/
+/* =========================================================
+   CREATE ACCOUNT
+   ========================================================= */
 
 createAccountButton.addEventListener(
     "click",
@@ -1451,12 +1473,27 @@ createAccountButton.addEventListener(
             createPassword.value;
 
 
-        if (!email || !password) {
+        if (!email) {
 
             setStatus(
-                "Please enter an email and password.",
+                "Enter your email address.",
                 "error"
             );
+
+            createEmail.focus();
+
+            return;
+        }
+
+
+        if (!password) {
+
+            setStatus(
+                "Choose a password.",
+                "error"
+            );
+
+            createPassword.focus();
 
             return;
         }
@@ -1477,25 +1514,27 @@ createAccountButton.addEventListener(
             true;
 
         createAccountButton.textContent =
-            "CREATING...";
+            "CREATING ACCOUNT...";
 
 
         try {
 
-            const result =
+            const {
+                data,
+                error
+            } =
                 await supabaseClient.auth.signUp({
 
-                    email: email,
-
-                    password: password
+                    email,
+                    password
 
                 });
 
 
-            if (result.error) {
+            if (error) {
 
                 setStatus(
-                    result.error.message,
+                    error.message,
                     "error"
                 );
 
@@ -1503,9 +1542,14 @@ createAccountButton.addEventListener(
             }
 
 
+            /*
+            If email confirmation is enabled
+            in Supabase, there will be no session yet.
+            */
+
             if (
-                result.data.user &&
-                !result.data.session
+                data.user &&
+                !data.session
             ) {
 
                 setStatus(
@@ -1515,10 +1559,18 @@ createAccountButton.addEventListener(
 
             }
 
+            else if (data.user) {
+
+                showWarRoom(
+                    data.user
+                );
+
+            }
+
             else {
 
                 setStatus(
-                    "Account created successfully.",
+                    "Account created.",
                     "success"
                 );
 
@@ -1550,17 +1602,86 @@ createAccountButton.addEventListener(
 );
 
 
-/*
-=========================================================
-ENTER TO SIGN IN
-=========================================================
-*/
+/* =========================================================
+   SIGN OUT
+   ========================================================= */
+
+logoutButton.addEventListener(
+    "click",
+    async function () {
+
+        logoutButton.disabled =
+            true;
+
+        logoutButton.textContent =
+            "SIGNING OUT...";
+
+
+        try {
+
+            const {
+                error
+            } =
+                await supabaseClient.auth.signOut();
+
+
+            if (error) {
+
+                setStatus(
+                    error.message,
+                    "error"
+                );
+
+                return;
+            }
+
+
+            showLogin();
+
+            loginEmail.focus();
+
+            setStatus(
+                "Signed out.",
+                "success"
+            );
+
+        }
+
+        catch (error) {
+
+            setStatus(
+                "Sign out error: " +
+                error.message,
+                "error"
+            );
+
+        }
+
+        finally {
+
+            logoutButton.disabled =
+                false;
+
+            logoutButton.textContent =
+                "SIGN OUT";
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ENTER KEY
+   ========================================================= */
 
 loginPassword.addEventListener(
     "keydown",
     function (event) {
 
-        if (event.key === "Enter") {
+        if (
+            event.key === "Enter"
+        ) {
 
             signInButton.click();
 
@@ -1570,17 +1691,13 @@ loginPassword.addEventListener(
 );
 
 
-/*
-=========================================================
-ENTER TO CREATE ACCOUNT
-=========================================================
-*/
-
 createPassword.addEventListener(
     "keydown",
     function (event) {
 
-        if (event.key === "Enter") {
+        if (
+            event.key === "Enter"
+        ) {
 
             createAccountButton.click();
 
@@ -1590,43 +1707,72 @@ createPassword.addEventListener(
 );
 
 
-/*
-=========================================================
-CHECK SUPABASE
-=========================================================
-*/
+/* =========================================================
+   AUTH STATE
+   ========================================================= */
 
-async function checkSupabase() {
+supabaseClient.auth.onAuthStateChange(
+    function (
+        event,
+        session
+    ) {
+
+        if (
+            session &&
+            session.user
+        ) {
+
+            showWarRoom(
+                session.user
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INITIAL SUPABASE CHECK
+   ========================================================= */
+
+async function initialiseAuth() {
 
     try {
 
-        const result =
+        const {
+            data,
+            error
+        } =
             await supabaseClient.auth.getSession();
 
 
-        if (result.error) {
+        if (error) {
 
             setStatus(
                 "Supabase error: " +
-                result.error.message,
+                error.message,
                 "error"
             );
 
             return;
-
         }
 
 
-        if (result.data.session) {
+        if (
+            data.session &&
+            data.session.user
+        ) {
 
-            setStatus(
-                "Supabase authentication is working.",
-                "success"
+            showWarRoom(
+                data.session.user
             );
 
         }
 
         else {
+
+            showLogin();
 
             setStatus(
                 "SUPABASE CONNECTED ✓",
@@ -1650,7 +1796,839 @@ async function checkSupabase() {
 }
 
 
-checkSupabase();
+initialiseAuth();
+
+
+/* =========================================================
+   WARP PARTICLE ENGINE
+   ========================================================= */
+
+const canvas =
+    document.getElementById(
+        "warpCanvas"
+    );
+
+const ctx =
+    canvas.getContext(
+        "2d"
+    );
+
+
+let width = 0;
+let height = 0;
+let centerX = 0;
+let centerY = 0;
+
+let particles = [];
+
+let shockwaves = [];
+
+let lastTime = 0;
+
+
+/* =========================================================
+   COLOURS
+   ========================================================= */
+
+const warpColors = [
+
+    "#9b3cff",
+    "#c44cff",
+    "#e879f9",
+
+    "#ff2020",
+    "#ff4545",
+    "#b5122a",
+
+    "#1976ff",
+    "#32a7ff",
+
+    "#21ff78",
+    "#48ff9b"
+
+];
+
+
+/* =========================================================
+   RESIZE
+   ========================================================= */
+
+function resizeCanvas() {
+
+    const dpr =
+        Math.min(
+            window.devicePixelRatio || 1,
+            2
+        );
+
+
+    width =
+        window.innerWidth;
+
+    height =
+        window.innerHeight;
+
+
+    centerX =
+        width / 2;
+
+    centerY =
+        height / 2;
+
+
+    canvas.width =
+        width * dpr;
+
+    canvas.height =
+        height * dpr;
+
+
+    canvas.style.width =
+        width + "px";
+
+    canvas.style.height =
+        height + "px";
+
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
+
+
+    createParticles();
+
+}
+
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+
+/* =========================================================
+   PARTICLE CREATION
+   ========================================================= */
+
+function createParticle() {
+
+    const angle =
+        Math.random() *
+        Math.PI *
+        2;
+
+
+    const radius =
+        80 +
+        Math.random() *
+        Math.max(
+            width,
+            height
+        ) *
+        0.48;
+
+
+    return {
+
+        angle,
+
+        radius,
+
+        speed:
+            0.08 +
+            Math.random() *
+            0.20,
+
+        spin:
+            (Math.random() > 0.5
+                ? 1
+                : -1) *
+            (
+                0.0015 +
+                Math.random() *
+                0.004
+            ),
+
+        size:
+            0.7 +
+            Math.random() *
+            2.7,
+
+        alpha:
+            0.25 +
+            Math.random() *
+            0.75,
+
+        color:
+            warpColors[
+                Math.floor(
+                    Math.random() *
+                    warpColors.length
+                )
+            ],
+
+        wobble:
+            Math.random() *
+            Math.PI *
+            2,
+
+        wobbleSpeed:
+            0.002 +
+            Math.random() *
+            0.009,
+
+        turbulence:
+            10 +
+            Math.random() *
+            55,
+
+        length:
+            5 +
+            Math.random() *
+            35
+
+    };
+
+}
+
+
+/* =========================================================
+   CREATE PARTICLES
+   ========================================================= */
+
+function createParticles() {
+
+    particles = [];
+
+    const mobile =
+        width < 650;
+
+
+    const amount =
+        mobile
+            ? 230
+            : 430;
+
+
+    for (
+        let i = 0;
+        i < amount;
+        i++
+    ) {
+
+        const p =
+            createParticle();
+
+
+        /*
+        Spread particles throughout
+        the vortex immediately.
+        */
+
+        p.radius =
+            50 +
+            Math.random() *
+            Math.max(
+                width,
+                height
+            ) *
+            0.65;
+
+
+        p.angle =
+            Math.random() *
+            Math.PI *
+            2;
+
+
+        particles.push(p);
+
+    }
+
+}
+
+
+/* =========================================================
+   SHOCKWAVE
+   ========================================================= */
+
+function createShockwave() {
+
+    shockwaves.push({
+
+        radius: 20,
+
+        alpha: 0.5,
+
+        speed:
+            3 +
+            Math.random() * 5,
+
+        color:
+            warpColors[
+                Math.floor(
+                    Math.random() *
+                    warpColors.length
+                )
+            ]
+
+    });
+
+}
+
+
+/* =========================================================
+   RANDOM SHOCKWAVES
+   ========================================================= */
+
+setInterval(
+    function () {
+
+        if (
+            Math.random() <
+            0.75
+        ) {
+
+            createShockwave();
+
+        }
+
+    },
+    1600
+);
+
+
+/* =========================================================
+   DRAW PARTICLE
+   ========================================================= */
+
+function drawParticle(
+    p,
+    time
+) {
+
+    /*
+    Slowly rotate the particle
+    around the central rift.
+    */
+
+    p.angle +=
+        p.spin *
+        16;
+
+
+    /*
+    Pull particles inward/outward
+    in a breathing Warp motion.
+    */
+
+    p.radius -=
+        p.speed *
+        2;
+
+
+    if (
+        p.radius < 45
+    ) {
+
+        p.radius =
+            Math.max(
+                width,
+                height
+            ) *
+            (
+                0.38 +
+                Math.random() *
+                0.35
+            );
+
+        p.angle =
+            Math.random() *
+            Math.PI *
+            2;
+
+    }
+
+
+    p.wobble +=
+        p.wobbleSpeed *
+        16;
+
+
+    /*
+    Turbulence makes the path
+    bend rather than forming
+    a perfect circle.
+    */
+
+    const turbulence =
+        Math.sin(
+            p.wobble
+        ) *
+        p.turbulence;
+
+
+    const angle =
+        p.angle +
+        Math.sin(
+            time * 0.00025 +
+            p.wobble
+        ) *
+        0.15;
+
+
+    const x =
+        centerX +
+        Math.cos(angle) *
+        (
+            p.radius +
+            turbulence
+        );
+
+
+    const y =
+        centerY +
+        Math.sin(angle) *
+        (
+            p.radius *
+            0.58 +
+            turbulence *
+            0.45
+        );
+
+
+    /*
+    Tangent direction of the
+    particle around the vortex.
+    */
+
+    const tx =
+        -Math.sin(angle);
+
+    const ty =
+        Math.cos(angle);
+
+
+    const tail =
+        p.length *
+        (
+            0.6 +
+            p.radius /
+            Math.max(
+                width,
+                height
+            )
+        );
+
+
+    const endX =
+        x -
+        tx *
+        tail;
+
+
+    const endY =
+        y -
+        ty *
+        tail;
+
+
+    const gradient =
+        ctx.createLinearGradient(
+            endX,
+            endY,
+            x,
+            y
+        );
+
+
+    gradient.addColorStop(
+        0,
+        "rgba(0,0,0,0)"
+    );
+
+
+    gradient.addColorStop(
+        0.45,
+        p.color
+    );
+
+
+    gradient.addColorStop(
+        1,
+        "#ffffff"
+    );
+
+
+    ctx.save();
+
+    ctx.globalAlpha =
+        p.alpha;
+
+    ctx.strokeStyle =
+        gradient;
+
+    ctx.lineWidth =
+        p.size;
+
+    ctx.shadowBlur =
+        12;
+
+    ctx.shadowColor =
+        p.color;
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        endX,
+        endY
+    );
+
+    ctx.lineTo(
+        x,
+        y
+    );
+
+    ctx.stroke();
+
+
+    /*
+    Bright ember head.
+    */
+
+    ctx.globalAlpha =
+        Math.min(
+            1,
+            p.alpha *
+            1.2
+        );
+
+    ctx.fillStyle =
+        "#ffffff";
+
+    ctx.shadowBlur =
+        16;
+
+    ctx.shadowColor =
+        p.color;
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y,
+        p.size *
+        0.8,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   DRAW SHOCKWAVES
+   ========================================================= */
+
+function drawShockwaves() {
+
+    for (
+        let i =
+            shockwaves.length - 1;
+
+        i >= 0;
+
+        i--
+    ) {
+
+        const wave =
+            shockwaves[i];
+
+
+        wave.radius +=
+            wave.speed;
+
+        wave.alpha *=
+            0.985;
+
+
+        if (
+            wave.alpha <
+                0.02
+        ) {
+
+            shockwaves.splice(
+                i,
+                1
+            );
+
+            continue;
+
+        }
+
+
+        ctx.save();
+
+        ctx.globalAlpha =
+            wave.alpha;
+
+        ctx.strokeStyle =
+            wave.color;
+
+        ctx.shadowBlur =
+            25;
+
+        ctx.shadowColor =
+            wave.color;
+
+        ctx.lineWidth =
+            1.5;
+
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+
+            centerX,
+
+            centerY,
+
+            wave.radius,
+
+            wave.radius *
+                0.55,
+
+            -0.12,
+
+            0,
+            Math.PI * 2
+
+        );
+
+        ctx.stroke();
+
+
+        ctx.restore();
+
+    }
+
+}
+
+
+/* =========================================================
+   DARK CENTRAL VOID
+   ========================================================= */
+
+function drawVoid() {
+
+    const max =
+        Math.max(
+            width,
+            height
+        );
+
+
+    const gradient =
+        ctx.createRadialGradient(
+
+            centerX,
+            centerY,
+            10,
+
+            centerX,
+            centerY,
+            max * 0.55
+
+        );
+
+
+    gradient.addColorStop(
+        0,
+        "rgba(0,0,0,0.98)"
+    );
+
+
+    gradient.addColorStop(
+        0.28,
+        "rgba(8,2,15,0.75)"
+    );
+
+
+    gradient.addColorStop(
+        0.55,
+        "rgba(25,5,35,0.20)"
+    );
+
+
+    gradient.addColorStop(
+        1,
+        "rgba(0,0,0,0)"
+    );
+
+
+    ctx.save();
+
+    ctx.fillStyle =
+        gradient;
+
+    ctx.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   OCCASIONAL ENERGY FLASH
+   ========================================================= */
+
+let flash = 0;
+
+setInterval(
+    function () {
+
+        if (
+            Math.random() <
+            0.35
+        ) {
+
+            flash =
+                0.12 +
+                Math.random() *
+                0.20;
+
+        }
+
+    },
+    900
+);
+
+
+/* =========================================================
+   ANIMATION LOOP
+   ========================================================= */
+
+function animate(
+    time
+) {
+
+    const delta =
+        time -
+        lastTime;
+
+    lastTime =
+        time;
+
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    /*
+    Slight transparent fade
+    creates smoky trails.
+    */
+
+    ctx.fillStyle =
+        "rgba(2,2,4,0.16)";
+
+    ctx.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    /*
+    Draw particles.
+    */
+
+    for (
+        let i = 0;
+
+        i < particles.length;
+
+        i++
+    ) {
+
+        drawParticle(
+            particles[i],
+            time
+        );
+
+    }
+
+
+    drawShockwaves();
+
+    drawVoid();
+
+
+    /*
+    Flash the Warp occasionally.
+    */
+
+    if (
+        flash > 0
+    ) {
+
+        ctx.fillStyle =
+            "rgba(160,40,255," +
+            flash +
+            ")";
+
+        ctx.fillRect(
+            0,
+            0,
+            width,
+            height
+        );
+
+
+        flash *=
+            0.92;
+
+    }
+
+
+    requestAnimationFrame(
+        animate
+    );
+
+}
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+resizeCanvas();
+
+requestAnimationFrame(
+    animate
+);
 
 </script>
 
