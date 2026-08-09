@@ -2,256 +2,789 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Routine 721 - War Room</title>
+<title>Routine 721</title>
 
-  <link rel="stylesheet" href="style.css">
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #080808;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    width: 92%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 60px 0;
+}
+
+.card {
+    background: #151515;
+    border: 1px solid #4d2924;
+    border-radius: 14px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,.4);
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo h1 {
+    margin: 0;
+    color: #c9a84c;
+    letter-spacing: 5px;
+    font-size: 30px;
+}
+
+.logo p {
+    color: #888;
+    margin-top: 8px;
+    letter-spacing: 2px;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+label {
+    display: block;
+    margin-top: 18px;
+    margin-bottom: 7px;
+    color: #bbb;
+    font-size: 14px;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    border-radius: 7px;
+    border: 1px solid #444;
+    background: #090909;
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #c9a84c;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 15px;
+    border: 0;
+    border-radius: 7px;
+    background: #9b3024;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #b63a2b;
+}
+
+button.secondary {
+    background: #333;
+}
+
+button.secondary:hover {
+    background: #444;
+}
+
+.status {
+    min-height: 24px;
+    margin-top: 18px;
+    text-align: center;
+    color: #aaa;
+    line-height: 1.5;
+}
+
+.success {
+    color: #78c98b;
+}
+
+.error {
+    color: #e97868;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.war-room {
+    text-align: center;
+}
+
+.war-room h2 {
+    color: #c9a84c;
+    letter-spacing: 3px;
+}
+
+.panel {
+    background: #101010;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.small {
+    color: #888;
+    font-size: 13px;
+}
+</style>
 </head>
 
 <body>
 
-  <div id="app">
+<div class="container">
 
-    <!-- LOGIN -->
-    <section id="auth-screen" class="screen">
-      <div class="card auth-card">
-        <div class="logo">ROUTINE 721</div>
-        <p class="subtitle">WAR ROOM</p>
+    <!-- AUTH SCREEN -->
+    <div id="authScreen" class="card">
 
-        <div id="auth-message" class="message"></div>
-
-        <input id="email" type="email" placeholder="Email address">
-        <input id="password" type="password" placeholder="Password">
-
-        <button id="login-btn" class="primary">SIGN IN</button>
-        <button id="signup-btn" class="secondary">CREATE ACCOUNT</button>
-      </div>
-    </section>
-
-
-    <!-- MAIN APP -->
-    <section id="main-screen" class="hidden">
-
-      <header class="topbar">
-        <div>
-          <div class="logo small">ROUTINE 721</div>
-          <div id="group-name" class="group-title">WAR ROOM</div>
+        <div class="logo">
+            <h1>ROUTINE 721</h1>
+            <p>WAR ROOM</p>
         </div>
 
-        <button id="logout-btn" class="logout">LOG OUT</button>
-      </header>
+        <h2>Sign In</h2>
+
+        <label for="email">Email</label>
+
+        <input
+            id="email"
+            type="email"
+            autocomplete="email"
+            placeholder="your@email.com"
+        >
+
+        <label for="password">Password</label>
+
+        <input
+            id="password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Password"
+        >
+
+        <button id="signInButton" type="button">
+            SIGN IN
+        </button>
+
+        <button id="createAccountButton"
+                class="secondary"
+                type="button">
+            CREATE ACCOUNT
+        </button>
+
+        <div id="authStatus" class="status">
+            Ready.
+        </div>
+
+    </div>
 
 
-      <nav class="tabs">
-        <button data-page="dashboard" class="tab active">WAR ROOM</button>
-        <button data-page="battle" class="tab">RECORD BATTLE</button>
-        <button data-page="players" class="tab">PLAYERS</button>
-        <button data-page="factions" class="tab">FACTIONS</button>
-        <button data-page="profile" class="tab">PROFILE</button>
-      </nav>
+    <!-- WAR ROOM -->
+    <div id="warRoom" class="card hidden">
 
+        <div class="war-room">
 
-      <main>
-
-        <!-- DASHBOARD -->
-        <section id="dashboard-page" class="page">
-
-          <div class="page-title">
-            <h1>WAR ROOM</h1>
-            <p>Battlefield statistics</p>
-          </div>
-
-          <div class="stats-grid">
-
-            <div class="stat-card">
-              <span>GAMES</span>
-              <strong id="stat-games">0</strong>
+            <div class="logo">
+                <h1>ROUTINE 721</h1>
+                <p>WAR ROOM</p>
             </div>
 
-            <div class="stat-card">
-              <span>WINS</span>
-              <strong id="stat-wins">0</strong>
-            </div>
+            <div class="panel">
 
-            <div class="stat-card">
-              <span>LOSSES</span>
-              <strong id="stat-losses">0</strong>
-            </div>
+                <h2>Welcome</h2>
 
-            <div class="stat-card">
-              <span>DRAWS</span>
-              <strong id="stat-draws">0</strong>
-            </div>
+                <p id="userEmail"></p>
 
-            <div class="stat-card highlight">
-              <span>WIN RATE</span>
-              <strong id="stat-winrate">0%</strong>
-            </div>
-
-          </div>
-
-
-          <div class="card">
-            <h2>GROUP LEADERBOARD</h2>
-            <div id="leaderboard"></div>
-          </div>
-
-
-          <div class="card">
-            <h2>RECENT BATTLES</h2>
-            <div id="recent-games"></div>
-          </div>
-
-        </section>
-
-
-        <!-- RECORD BATTLE -->
-        <section id="battle-page" class="page hidden">
-
-          <div class="page-title">
-            <h1>RECORD BATTLE</h1>
-            <p>Enter the result of your latest engagement.</p>
-          </div>
-
-          <div class="card">
-
-            <label>Your Faction</label>
-            <input id="player-faction" placeholder="e.g. Space Marines">
-
-            <label>Opponent</label>
-            <input id="opponent-name" placeholder="Opponent name">
-
-            <label>Opponent Faction</label>
-            <input id="opponent-faction" placeholder="e.g. Orks">
-
-            <label>Result</label>
-            <select id="result">
-              <option value="win">WIN</option>
-              <option value="loss">LOSS</option>
-              <option value="draw">DRAW</option>
-            </select>
-
-            <div class="two-column">
-
-              <div>
-                <label>Your VP</label>
-                <input id="player-vp" type="number" min="0" placeholder="0">
-              </div>
-
-              <div>
-                <label>Opponent VP</label>
-                <input id="opponent-vp" type="number" min="0" placeholder="0">
-              </div>
+                <p class="small">
+                    Supabase authentication is working.
+                </p>
 
             </div>
 
-            <label>Mission</label>
-            <input id="mission" placeholder="Mission name">
-
-            <label>Event</label>
-            <input id="event-name" placeholder="Event / League">
-
-            <label>Date</label>
-            <input id="played-at" type="date">
-
-            <label>Notes</label>
-            <textarea id="notes" placeholder="Battle notes..."></textarea>
-
-            <button id="save-battle" class="primary full">
-              SAVE BATTLE
+            <button
+                id="signOutButton"
+                class="secondary"
+                type="button">
+                SIGN OUT
             </button>
 
-            <div id="battle-message" class="message"></div>
+            <div id="warStatus" class="status"></div>
 
-          </div>
+        </div>
 
-        </section>
+    </div>
 
-
-        <!-- PLAYERS -->
-        <section id="players-page" class="page hidden">
-
-          <div class="page-title">
-            <h1>PLAYERS</h1>
-            <p>Your group's battlefield statistics.</p>
-          </div>
-
-          <div id="players-list"></div>
-
-        </section>
+</div>
 
 
-        <!-- FACTIONS -->
-        <section id="factions-page" class="page hidden">
-
-          <div class="page-title">
-            <h1>FACTIONS</h1>
-            <p>Faction performance across your group.</p>
-          </div>
-
-          <div id="factions-list"></div>
-
-        </section>
+<!-- SUPABASE LIBRARY -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
-        <!-- PROFILE -->
-        <section id="profile-page" class="page hidden">
+<script>
+/*
+=====================================================
+ROUTINE 721 AUTHENTICATION
+=====================================================
+*/
 
-          <div class="page-title">
-            <h1>MY PROFILE</h1>
-          </div>
+/*
+IMPORTANT:
 
-          <div class="card profile-card">
+We use "routineClient".
 
-            <div id="profile-name">Loading...</div>
+We DO NOT create a variable called "supabase".
+This avoids the browser error:
 
-            <div class="profile-stats">
+Uncaught SyntaxError:
+redeclaration of non-configurable global property supabase
+*/
 
-              <div>
-                <span>GAMES</span>
-                <strong id="profile-games">0</strong>
-              </div>
+const ROUTINE_URL =
+    "https://jbgwdxavydhtvoqpbfmj.supabase.co";
 
-              <div>
-                <span>WINS</span>
-                <strong id="profile-wins">0</strong>
-              </div>
-
-              <div>
-                <span>LOSSES</span>
-                <strong id="profile-losses">0</strong>
-              </div>
-
-              <div>
-                <span>DRAWS</span>
-                <strong id="profile-draws">0</strong>
-              </div>
-
-              <div>
-                <span>WIN RATE</span>
-                <strong id="profile-winrate">0%</strong>
-              </div>
-
-            </div>
-
-          </div>
-
-        </section>
-
-      </main>
-
-    </section>
-
-  </div>
+const ROUTINE_KEY =
+    "sb_publishable_Wt8h6fNelT6zrzf-Dm8FXw_cdSGylaz";
 
 
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+const routineClient =
+    window.supabase.createClient(
+        ROUTINE_URL,
+        ROUTINE_KEY
+    );
 
-  <!-- Your application -->
-  <script src="app.js"></script>
+
+/*
+=====================================================
+ELEMENTS
+=====================================================
+*/
+
+const authScreen =
+    document.getElementById("authScreen");
+
+const warRoom =
+    document.getElementById("warRoom");
+
+const signInButton =
+    document.getElementById("signInButton");
+
+const createAccountButton =
+    document.getElementById("createAccountButton");
+
+const signOutButton =
+    document.getElementById("signOutButton");
+
+const authStatus =
+    document.getElementById("authStatus");
+
+const warStatus =
+    document.getElementById("warStatus");
+
+const emailInput =
+    document.getElementById("email");
+
+const passwordInput =
+    document.getElementById("password");
+
+const userEmail =
+    document.getElementById("userEmail");
+
+
+/*
+=====================================================
+STATUS
+=====================================================
+*/
+
+function authMessage(message, type) {
+
+    authStatus.textContent = message;
+
+    authStatus.className =
+        "status";
+
+    if (type) {
+        authStatus.classList.add(type);
+    }
+}
+
+
+function warMessage(message, type) {
+
+    warStatus.textContent = message;
+
+    warStatus.className =
+        "status";
+
+    if (type) {
+        warStatus.classList.add(type);
+    }
+}
+
+
+/*
+=====================================================
+SHOW AUTH
+=====================================================
+*/
+
+function showAuth() {
+
+    authScreen.classList.remove("hidden");
+
+    warRoom.classList.add("hidden");
+}
+
+
+/*
+=====================================================
+SHOW WAR ROOM
+=====================================================
+*/
+
+function showWarRoom(user) {
+
+    authScreen.classList.add("hidden");
+
+    warRoom.classList.remove("hidden");
+
+    if (user && user.email) {
+
+        userEmail.textContent =
+            user.email;
+
+    } else {
+
+        userEmail.textContent =
+            "";
+    }
+}
+
+
+/*
+=====================================================
+SIGN IN
+=====================================================
+*/
+
+async function signIn() {
+
+    const email =
+        emailInput.value.trim();
+
+    const password =
+        passwordInput.value;
+
+
+    if (!email) {
+
+        authMessage(
+            "Please enter your email.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (!password) {
+
+        authMessage(
+            "Please enter your password.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    authMessage(
+        "Signing in...",
+        ""
+    );
+
+
+    signInButton.disabled =
+        true;
+
+
+    try {
+
+        const response =
+            await routineClient.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+
+
+        if (response.error) {
+
+            console.error(
+                "Supabase sign in error:",
+                response.error
+            );
+
+            authMessage(
+                response.error.message,
+                "error"
+            );
+
+            signInButton.disabled =
+                false;
+
+            return;
+        }
+
+
+        authMessage(
+            "Signed in successfully.",
+            "success"
+        );
+
+
+        showWarRoom(
+            response.data.user
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        authMessage(
+            "Sign in failed: " +
+            error.message,
+            "error"
+        );
+
+    }
+
+
+    signInButton.disabled =
+        false;
+}
+
+
+/*
+=====================================================
+CREATE ACCOUNT
+=====================================================
+*/
+
+async function createAccount() {
+
+    const email =
+        emailInput.value.trim();
+
+    const password =
+        passwordInput.value;
+
+
+    if (!email) {
+
+        authMessage(
+            "Please enter your email.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (!password) {
+
+        authMessage(
+            "Please enter a password.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (password.length < 6) {
+
+        authMessage(
+            "Password must be at least 6 characters.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    authMessage(
+        "Creating account...",
+        ""
+    );
+
+
+    createAccountButton.disabled =
+        true;
+
+
+    try {
+
+        const response =
+            await routineClient.auth.signUp({
+                email: email,
+                password: password
+            });
+
+
+        if (response.error) {
+
+            console.error(
+                "Supabase account error:",
+                response.error
+            );
+
+            authMessage(
+                response.error.message,
+                "error"
+            );
+
+            createAccountButton.disabled =
+                false;
+
+            return;
+        }
+
+
+        /*
+        If email confirmation is enabled,
+        Supabase will not immediately create
+        a logged-in session.
+        */
+
+        if (!response.data.session) {
+
+            authMessage(
+                "Account created! Check your email and confirm your account, then sign in.",
+                "success"
+            );
+
+        } else {
+
+            authMessage(
+                "Account created successfully.",
+                "success"
+            );
+
+            showWarRoom(
+                response.data.user
+            );
+        }
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        authMessage(
+            "Account creation failed: " +
+            error.message,
+            "error"
+        );
+
+    }
+
+
+    createAccountButton.disabled =
+        false;
+}
+
+
+/*
+=====================================================
+SIGN OUT
+=====================================================
+*/
+
+async function signOut() {
+
+    warMessage(
+        "Signing out...",
+        ""
+    );
+
+
+    const response =
+        await routineClient.auth.signOut();
+
+
+    if (response.error) {
+
+        warMessage(
+            response.error.message,
+            "error"
+        );
+
+        return;
+    }
+
+
+    showAuth();
+
+    authMessage(
+        "You have been signed out.",
+        "success"
+    );
+}
+
+
+/*
+=====================================================
+BUTTONS
+=====================================================
+*/
+
+signInButton.addEventListener(
+    "click",
+    signIn
+);
+
+
+createAccountButton.addEventListener(
+    "click",
+    createAccount
+);
+
+
+signOutButton.addEventListener(
+    "click",
+    signOut
+);
+
+
+/*
+=====================================================
+ENTER KEY
+=====================================================
+*/
+
+passwordInput.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Enter") {
+
+            signIn();
+
+        }
+
+    }
+);
+
+
+/*
+=====================================================
+CHECK EXISTING SESSION
+=====================================================
+*/
+
+async function checkSession() {
+
+    try {
+
+        const response =
+            await routineClient.auth.getSession();
+
+
+        if (
+            response.data &&
+            response.data.session
+        ) {
+
+            showWarRoom(
+                response.data.session.user
+            );
+
+        } else {
+
+            showAuth();
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Session error:",
+            error
+        );
+
+        showAuth();
+
+        authMessage(
+            "Unable to check your session.",
+            "error"
+        );
+    }
+}
+
+
+/*
+=====================================================
+AUTH STATE
+=====================================================
+*/
+
+routineClient.auth.onAuthStateChange(
+    function(event, session) {
+
+        console.log(
+            "Auth event:",
+            event
+        );
+
+
+        if (session && session.user) {
+
+            showWarRoom(
+                session.user
+            );
+
+        }
+
+    }
+);
+
+
+/*
+=====================================================
+START
+=====================================================
+*/
+
+console.log(
+    "ROUTINE 721 authentication loaded."
+);
+
+
+checkSession();
+
+</script>
 
 </body>
 </html>
