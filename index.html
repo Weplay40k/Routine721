@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,6 +59,7 @@ CREATE ACCOUNT
 
 </div>
 
+<!-- Supabase library -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
@@ -66,7 +68,7 @@ const SUPABASE_URL =
 "https://jbgwdxavydhtvoqpbfmj.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_Wt8h6fNelT6zrzf-Dm8FXw_cdSGylaz";
+"PUT_YOUR_EXISTING_SB_PUBLISHABLE_KEY_HERE";
 
 const supabase =
 window.supabase.createClient(
@@ -76,38 +78,35 @@ SUPABASE_KEY
 
 async function testConnection() {
 
-const status =
-document.getElementById("status");
+    const status =
+    document.getElementById("status");
 
-try {
+    try {
 
-const result =
-await supabase.auth.getSession();
+        const result =
+        await supabase.auth.getSession();
 
-if (result.error) {
+        if (result.error) {
 
-status.textContent =
-"Supabase error: " +
-result.error.message;
+            status.textContent =
+            "Supabase error: " +
+            result.error.message;
 
-return;
+            return;
+        }
 
-}
+        status.textContent =
+        "SUPABASE CONNECTED ✓";
 
-status.textContent =
-"SUPABASE CONNECTED ✓";
+        document.getElementById("test").style.display =
+        "inline-block";
 
-document.getElementById("test").style.display =
-"inline-block";
+    } catch(error) {
 
-} catch(error) {
-
-status.textContent =
-"Connection error: " +
-error.message;
-
-}
-
+        status.textContent =
+        "Connection error: " +
+        error.message;
+    }
 }
 
 testConnection();
@@ -116,3 +115,4 @@ testConnection();
 
 </body>
 </html>
+```
