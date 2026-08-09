@@ -1,103 +1,320 @@
 /* =========================================================
-ROUTINE 721 — CLEAN LOGIN
+ROUTINE 721 — LOGIN SCREEN
+DARK RED / PURPLE COMMAND TERMINAL
+========================================================= */
+
+html,
+body {
+margin: 0;
+padding: 0;
+
+```
+width: 100%;
+min-height: 100%;
+
+background: #050507;
+color: #eeeeF2;
+
+font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+```
+
+}
+
+body {
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+  }
+
+.hidden {
+display: none !important;
+}
+
+/* =========================================================
+BACKGROUND
+========================================================= */
+
+.background-effects {
+position: fixed;
+
+```
+inset: 0;
+
+width: 100%;
+height: 100%;
+
+overflow: hidden;
+
+pointer-events: none;
+
+z-index: 0;
+
+background: #050507;
+```
+
+}
+
+.red-glow {
+position: absolute;
+
+```
+left: -20%;
+top: -20%;
+
+width: 75%;
+height: 140%;
+
+background:
+    radial-gradient(
+        ellipse at center,
+        rgba(130, 0, 35, 0.30) 0%,
+        rgba(100, 0, 30, 0.16) 35%,
+        transparent 72%
+    );
+
+animation: redPulse 7s ease-in-out infinite;
+
+pointer-events: none;
+```
+
+}
+
+.blue-glow {
+position: absolute;
+
+```
+right: -20%;
+top: -20%;
+
+width: 75%;
+height: 140%;
+
+background:
+    radial-gradient(
+        ellipse at center,
+        rgba(65, 25, 150, 0.30) 0%,
+        rgba(55, 20, 120, 0.16) 35%,
+        transparent 72%
+    );
+
+animation: purplePulse 8s ease-in-out infinite;
+
+pointer-events: none;
+```
+
+}
+
+.center-shadow {
+position: absolute;
+
+```
+inset: 0;
+
+background:
+    radial-gradient(
+        ellipse at center,
+        transparent 0%,
+        rgba(0, 0, 0, 0.18) 45%,
+        rgba(0, 0, 0, 0.65) 100%
+    );
+
+pointer-events: none;
+```
+
+}
+
+/* =========================================================
+PULSING
+========================================================= */
+
+@keyframes redPulse {
+
+```
+0%,
+100% {
+    opacity: 0.65;
+    transform: scale(1);
+}
+
+50% {
+    opacity: 1;
+    transform: scale(1.08);
+}
+```
+
+}
+
+@keyframes purplePulse {
+
+```
+0%,
+100% {
+    opacity: 0.60;
+    transform: scale(1);
+}
+
+50% {
+    opacity: 0.95;
+    transform: scale(1.08);
+}
+```
+
+}
+
+/* Respect reduced-motion settings */
+
+@media (prefers-reduced-motion: reduce) {
+
+```
+.red-glow,
+.blue-glow {
+    animation: none;
+}
+```
+
+}
+
+/* =========================================================
+LOGIN SCREEN
 ========================================================= */
 
 .screen {
 position: relative;
-z-index: 10;
 
 ```
-min-height: 100vh;
+z-index: 10;
+
 width: 100%;
+min-height: 100vh;
 
 display: flex;
+
 align-items: center;
 justify-content: center;
 
-padding: 30px 20px;
+padding: 24px;
+
+pointer-events: auto;
 ```
 
 }
+
+/* =========================================================
+LOGIN CARD
+========================================================= */
 
 .login-box {
 position: relative;
-z-index: 11;
 
 ```
+z-index: 20;
+
 width: 100%;
-max-width: 410px;
+max-width: 400px;
 
-padding: 36px 38px;
+padding: 36px 38px 32px;
 
-background: #09090e;
+background:
+    rgba(8, 8, 13, 0.96);
 
-border: 1px solid rgba(170, 35, 55, 0.45);
+border:
+    1px solid rgba(150, 35, 55, 0.42);
+
 border-radius: 9px;
 
 box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.70);
+    0 24px 70px rgba(0, 0, 0, 0.75),
+    0 0 35px rgba(90, 10, 35, 0.12);
 
-color: #eeeeF2;
+pointer-events: auto;
 ```
 
 }
 
-/* BRAND */
+/* =========================================================
+ROUTINE 721
+========================================================= */
 
 .logo {
 margin: 0;
 
 ```
-color: #ffffff !important;
+color: #ffffff;
 
 text-align: center;
 
-font-size: 29px;
+font-size: 28px;
+
 font-weight: 800;
 
 letter-spacing: 5px;
+
+line-height: 1.2;
 ```
 
 }
 
 .logo-sub {
-margin-top: 7px;
+margin-top: 8px;
 
 ```
-color: #777783 !important;
+color: #73737f;
 
 text-align: center;
 
 font-size: 9px;
 
 letter-spacing: 4px;
+
+line-height: 1.4;
 ```
 
 }
+
+/* =========================================================
+DIVIDER
+========================================================= */
 
 .divider {
 width: 100%;
-height: 1px;
 
 ```
-margin: 27px 0 25px;
+height: 1px;
 
-background: #292932;
+margin: 28px 0 26px;
+
+background:
+    linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.10),
+        transparent
+    );
 ```
 
 }
 
-/* ACCESS TERMINAL */
+/* =========================================================
+ACCESS TERMINAL
+========================================================= */
 
 .login-box h2 {
 margin: 0;
 
 ```
-color: #ffffff !important;
+color: #ffffff;
 
 text-align: center;
 
-font-size: 18px;
+font-size: 17px;
+
+font-weight: 700;
 
 letter-spacing: 2px;
 ```
@@ -105,10 +322,10 @@ letter-spacing: 2px;
 }
 
 .login-description {
-margin: 9px 0 27px;
+margin: 9px 0 25px;
 
 ```
-color: #81818d !important;
+color: #777783;
 
 text-align: center;
 
@@ -119,75 +336,83 @@ line-height: 1.6;
 
 }
 
-/* FORM */
+/* =========================================================
+LOGIN FORM
+========================================================= */
 
-#signInView label,
-#createView label {
+#signInView {
+width: 100%;
+}
+
+#signInView label {
 display: block;
 
 ```
 margin: 0 0 7px;
 
-color: #a7a7b1 !important;
+color: #a3a3ad;
 
 font-size: 9px;
 
 font-weight: 700;
 
-letter-spacing: 1.4px;
+letter-spacing: 1.5px;
 
 text-transform: uppercase;
 ```
 
 }
 
-#signInView input,
-#createView input {
+#signInView input {
 display: block;
 
 ```
 width: 100%;
-
-height: 44px;
+height: 43px;
 
 padding: 11px 12px;
 
-border: 1px solid #2b2b34;
+border:
+    1px solid #2b2b34;
 
 border-radius: 6px;
 
-background: #0d0d13 !important;
+background: #0d0d13;
 
-color: #ffffff !important;
+color: #ffffff;
 
 font-size: 13px;
 ```
 
 }
 
-/* THE SPACE BETWEEN THE TWO FIELDS */
+#signInView input::placeholder {
+color: #555560;
+}
+
+/* SPACE BETWEEN EMAIL AND PASSWORD */
 
 #signInView input + label {
-margin-top: 22px;
+margin-top: 21px;
 }
 
-#signInView input:focus,
-#createView input:focus {
-border-color: #a92b43;
+#signInView input:focus {
+border-color: #982941;
 
 ```
+background: #0f0f15;
+
+outline: none;
+
 box-shadow:
-    0 0 0 2px rgba(169, 43, 67, 0.08);
+    0 0 0 2px rgba(152, 41, 65, 0.08);
 ```
 
 }
 
-#signInView input::placeholder,
-#createView input::placeholder {
-color: #555560 !important;
-}
-
-/* SIGN IN */
+/* =========================================================
+SIGN IN
+========================================================= */
 
 #signInButton {
 width: 100%;
@@ -195,15 +420,16 @@ width: 100%;
 ```
 height: 44px;
 
-margin-top: 25px;
+margin-top: 24px;
 
-border: 1px solid #a62a42;
+border:
+    1px solid #9f2941;
 
 border-radius: 5px;
 
-background: #8e2038;
+background: #851f37;
 
-color: #ffffff !important;
+color: #ffffff;
 
 font-size: 10px;
 
@@ -215,10 +441,12 @@ letter-spacing: 1px;
 }
 
 #signInButton:hover {
-background: #a52640;
+background: #9b2440;
 }
 
-/* CREATE ACCOUNT */
+/* =========================================================
+CREATE ACCOUNT
+========================================================= */
 
 #showCreateButton {
 width: 100%;
@@ -228,13 +456,14 @@ height: 42px;
 
 margin-top: 9px;
 
-border: 1px solid #34343e;
+border:
+    1px solid #32323c;
 
 border-radius: 5px;
 
-background: #111118 !important;
+background: #111118;
 
-color: #ddddE3 !important;
+color: #d5d5dc;
 
 font-size: 10px;
 
@@ -246,18 +475,20 @@ letter-spacing: 0.8px;
 }
 
 #showCreateButton:hover {
-background: #181820 !important;
+background: #181820;
 }
 
-/* STATUS */
+/* =========================================================
+STATUS
+========================================================= */
 
 #loginStatus {
 min-height: 18px;
 
 ```
-margin-top: 16px;
+margin-top: 15px;
 
-color: #777783 !important;
+color: #686873;
 
 text-align: center;
 
@@ -268,49 +499,92 @@ line-height: 1.5;
 
 }
 
-/* CREATE VIEW */
+/* =========================================================
+CREATE ACCOUNT VIEW
+========================================================= */
 
-#createView .login-description {
-margin-bottom: 22px;
+#createView {
+width: 100%;
 }
 
-#createView label + input {
-margin-bottom: 0;
+#createView label {
+display: block;
+
+```
+margin: 17px 0 7px;
+
+color: #a3a3ad;
+
+font-size: 9px;
+
+font-weight: 700;
+
+letter-spacing: 1.5px;
+
+text-transform: uppercase;
+```
+
 }
 
-#createView label:not(:first-child) {
-margin-top: 18px;
+#createView input {
+width: 100%;
+height: 43px;
+
+```
+padding: 11px 12px;
+
+border:
+    1px solid #2b2b34;
+
+border-radius: 6px;
+
+background: #0d0d13;
+
+color: #ffffff;
+```
+
 }
 
 #createView .primary {
+width: 100%;
+
+```
 margin-top: 24px;
+```
+
 }
 
-/* MOBILE */
+/* =========================================================
+MOBILE
+========================================================= */
 
 @media (max-width: 550px) {
 
 ```
 .screen {
-    padding: 18px 12px;
+    padding: 15px;
 }
 
 .login-box {
-    padding: 30px 22px;
+    max-width: 400px;
+
+    padding: 30px 23px;
 }
 
 .logo {
-    font-size: 25px;
+    font-size: 24px;
+
     letter-spacing: 4px;
 }
 
 .logo-sub {
     font-size: 8px;
+
     letter-spacing: 3px;
 }
 
 .divider {
-    margin: 24px 0 23px;
+    margin: 25px 0 23px;
 }
 ```
 
