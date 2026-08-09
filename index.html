@@ -4,38 +4,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Routine 721 — War Room</title>
 
 <style>
-* {
-    box-sizing: border-box;
+*{box-sizing:border-box}
+
+html,body{
+    margin:0;
+    min-height:100%;
 }
 
-html,
-body {
-    margin: 0;
-    min-height: 100%;
+body{
+    min-height:100vh;
+    background:#050505;
+    color:#eee;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
-body {
-    min-height: 100vh;
-    background: #050505;
-    color: #eee;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-/* =====================================================
-   BACKGROUND
-===================================================== */
-
-.war-bg {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    overflow: hidden;
-
+.war-bg{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    overflow:hidden;
     background:
         linear-gradient(
             90deg,
@@ -48,1124 +39,769 @@ body {
         );
 }
 
-.red-glow {
-    position: absolute;
-    left: -15%;
-    top: 0;
-    width: 65%;
-    height: 100%;
-
-    background:
-        radial-gradient(
-            ellipse at 20% 50%,
-            rgba(150,15,15,.18),
-            transparent 68%
-        );
-
-    animation: redPulse 9s ease-in-out infinite alternate;
+.red-glow{
+    position:absolute;
+    left:-15%;
+    top:0;
+    width:65%;
+    height:100%;
+    background:radial-gradient(
+        ellipse at 20% 50%,
+        rgba(150,15,15,.18),
+        transparent 68%
+    );
+    animation:redPulse 9s ease-in-out infinite alternate;
 }
 
-.blue-glow {
-    position: absolute;
-    right: -15%;
-    top: 0;
-    width: 65%;
-    height: 100%;
-
-    background:
-        radial-gradient(
-            ellipse at 80% 50%,
-            rgba(65,25,155,.16),
-            transparent 68%
-        );
-
-    animation: bluePulse 11s ease-in-out infinite alternate;
+.blue-glow{
+    position:absolute;
+    right:-15%;
+    top:0;
+    width:65%;
+    height:100%;
+    background:radial-gradient(
+        ellipse at 80% 50%,
+        rgba(65,25,155,.16),
+        transparent 68%
+    );
+    animation:bluePulse 11s ease-in-out infinite alternate;
 }
 
-@keyframes redPulse {
-    from { opacity: .45; }
-    to { opacity: .85; }
+@keyframes redPulse{
+    from{opacity:.45}
+    to{opacity:.85}
 }
 
-@keyframes bluePulse {
-    from { opacity: .45; }
-    to { opacity: .85; }
+@keyframes bluePulse{
+    from{opacity:.45}
+    to{opacity:.85}
 }
 
-.center-shadow {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    width: 180px;
-    height: 100%;
-    transform: translateX(-50%);
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(0,0,0,.25),
-            transparent
-        );
+.center-shadow{
+    position:absolute;
+    left:50%;
+    top:0;
+    width:180px;
+    height:100%;
+    transform:translateX(-50%);
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(0,0,0,.25),
+        transparent
+    );
 }
 
-/* =====================================================
-   GENERAL
-===================================================== */
-
-.hidden {
-    display: none !important;
+.hidden{
+    display:none!important;
 }
 
-.page {
-    position: relative;
-    z-index: 10;
+.page{
+    position:relative;
+    z-index:10;
 }
 
-/* =====================================================
-   LOGIN
-===================================================== */
+/* LOGIN */
 
-.login-page {
-    min-height: 100vh;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 20px;
+.login-page{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
 }
 
-.login-box {
-    width: 100%;
-    max-width: 430px;
-
-    padding: 35px;
-
-    background: rgba(6,6,8,.97);
-
-    border: 1px solid rgba(190,190,190,.17);
-
-    border-radius: 8px;
-
-    box-shadow:
-        0 20px 60px rgba(0,0,0,.72);
+.login-box{
+    width:100%;
+    max-width:430px;
+    padding:35px;
+    background:rgba(6,6,8,.97);
+    border:1px solid rgba(190,190,190,.17);
+    border-radius:8px;
+    box-shadow:0 20px 60px rgba(0,0,0,.72);
 }
 
-.logo {
-    margin: 0;
-
-    text-align: center;
-
-    color: #c9a84c;
-
-    font-size: 30px;
-
-    letter-spacing: 6px;
+.logo{
+    margin:0;
+    text-align:center;
+    color:#c9a84c;
+    font-size:30px;
+    letter-spacing:6px;
 }
 
-.logo-sub {
-    margin-top: 7px;
-
-    text-align: center;
-
-    color: #777;
-
-    font-size: 10px;
-
-    letter-spacing: 5px;
+.logo-sub{
+    margin-top:7px;
+    text-align:center;
+    color:#777;
+    font-size:10px;
+    letter-spacing:5px;
 }
 
-.divider {
-    height: 1px;
-
-    margin: 24px 0;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(201,168,76,.45),
-            transparent
-        );
+.divider{
+    height:1px;
+    margin:24px 0;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(201,168,76,.45),
+        transparent
+    );
 }
 
-.login-box h2 {
-    margin: 0 0 7px;
-
-    text-align: center;
-
-    color: #ddd;
-
-    font-size: 17px;
-
-    letter-spacing: 2px;
+.login-box h2{
+    margin:0 0 7px;
+    text-align:center;
+    color:#ddd;
+    font-size:17px;
+    letter-spacing:2px;
 }
 
-.login-description {
-    margin: 0 0 20px;
-
-    color: #777;
-
-    text-align: center;
-
-    font-size: 12px;
+.login-description{
+    margin:0 0 20px;
+    color:#777;
+    text-align:center;
+    font-size:12px;
 }
 
-/* =====================================================
-   INPUTS
-===================================================== */
+/* INPUTS */
 
-label {
-    display: block;
-
-    margin: 15px 0 6px;
-
-    color: #888;
-
-    font-size: 10px;
-
-    text-transform: uppercase;
-
-    letter-spacing: 1px;
+label{
+    display:block;
+    margin:15px 0 6px;
+    color:#888;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:1px;
 }
 
-input,
-select,
-textarea {
-    width: 100%;
-
-    padding: 11px;
-
-    background: #08080a;
-
-    color: #eee;
-
-    border: 1px solid #33333a;
-
-    border-radius: 5px;
-
-    outline: none;
-
-    font-family: inherit;
+input,select,textarea{
+    width:100%;
+    padding:11px;
+    background:#08080a;
+    color:#eee;
+    border:1px solid #33333a;
+    border-radius:5px;
+    outline:none;
+    font-family:inherit;
 }
 
-textarea {
-    min-height: 80px;
-
-    resize: vertical;
+textarea{
+    min-height:80px;
+    resize:vertical;
 }
 
 input:focus,
 select:focus,
-textarea:focus {
-    border-color: #7651a9;
+textarea:focus{
+    border-color:#7651a9;
 }
 
-/* =====================================================
-   BUTTONS
-===================================================== */
+/* BUTTONS */
 
-button {
-    cursor: pointer;
-
-    font-weight: bold;
-
-    letter-spacing: 1px;
-
-    border-radius: 5px;
-}
-
-button:disabled {
-    cursor: wait;
-
-    opacity: .5;
-}
-
-.primary {
-    width: 100%;
-
-    margin-top: 15px;
-
-    padding: 12px;
-
-    background: #8e2b25;
-
-    color: white;
-
-    border: 1px solid #b13c32;
-}
-
-.secondary {
-    width: 100%;
-
-    margin-top: 10px;
-
-    padding: 12px;
-
-    background: #151519;
-
-    color: #aaa;
-
-    border: 1px solid #38383e;
-}
-
-.small-btn {
-    padding: 8px 12px;
-
-    background: #151519;
-
-    color: #bbb;
-
-    border: 1px solid #36363c;
-
-    font-size: 10px;
+button{
+    cursor:pointer;
+    font-weight:bold;
+    letter-spacing:1px;
+    border-radius:5px;
 }
 
-.gold-btn {
-    background: #806b2e;
-
-    border-color: #b79a42;
-
-    color: white;
+button:disabled{
+    cursor:wait;
+    opacity:.5;
 }
-
-.delete-btn {
-    display: inline-block !important;
-
-    padding: 9px 14px;
 
-    background: #35100e;
-
-    color: #ff6257;
-
-    border: 1px solid #96382f;
-
-    font-size: 10px;
+.primary{
+    width:100%;
+    margin-top:15px;
+    padding:12px;
+    background:#8e2b25;
+    color:white;
+    border:1px solid #b13c32;
 }
 
-.delete-btn:hover {
-    background: #541713;
-
-    border-color: #d24a3e;
-
-    color: #fff;
+.secondary{
+    width:100%;
+    margin-top:10px;
+    padding:12px;
+    background:#151519;
+    color:#aaa;
+    border:1px solid #38383e;
 }
-
-/* =====================================================
-   STATUS
-===================================================== */
-
-.status {
-    min-height: 18px;
 
-    margin-top: 16px;
-
-    text-align: center;
-
-    color: #777;
-
-    font-size: 11px;
+.small-btn{
+    padding:8px 12px;
+    background:#151519;
+    color:#bbb;
+    border:1px solid #36363c;
+    font-size:10px;
 }
 
-.status.success {
-    color: #59c879;
+.gold-btn{
+    background:#806b2e;
+    border-color:#b79a42;
+    color:white;
 }
 
-.status.error {
-    color: #ff5959;
+.delete-btn{
+    display:inline-block!important;
+    padding:9px 14px;
+    background:#35100e;
+    color:#ff6257;
+    border:1px solid #96382f;
+    font-size:10px;
 }
-
-/* =====================================================
-   WAR ROOM
-===================================================== */
 
-.war-room {
-    position: relative;
-
-    z-index: 10;
-
-    min-height: 100vh;
-
-    padding: 15px;
+.status{
+    min-height:18px;
+    margin-top:16px;
+    text-align:center;
+    color:#777;
+    font-size:11px;
 }
-
-/* =====================================================
-   TOP BAR
-===================================================== */
 
-.topbar {
-    max-width: 1450px;
-
-    margin: 0 auto 15px;
-
-    padding: 13px 18px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    background: rgba(6,6,8,.97);
-
-    border: 1px solid rgba(201,168,76,.3);
-
-    border-radius: 7px;
+.status.success{
+    color:#59c879;
 }
-
-.brand {
-    color: #c9a84c;
-
-    font-size: 19px;
-
-    font-weight: bold;
 
-    letter-spacing: 4px;
+.status.error{
+    color:#ff5959;
 }
 
-.brand-sub {
-    margin-top: 3px;
+/* WAR ROOM */
 
-    color: #666;
-
-    font-size: 8px;
-
-    letter-spacing: 3px;
+.war-room{
+    position:relative;
+    z-index:10;
+    min-height:100vh;
+    padding:15px;
 }
-
-.user-area {
-    display: flex;
-
-    align-items: center;
 
-    gap: 10px;
-
-    color: #888;
-
-    font-size: 11px;
+.topbar{
+    max-width:1450px;
+    margin:0 auto 15px;
+    padding:13px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:rgba(6,6,8,.97);
+    border:1px solid rgba(201,168,76,.3);
+    border-radius:7px;
 }
-
-/* =====================================================
-   DASHBOARD
-===================================================== */
-
-.dashboard {
-    max-width: 1450px;
-
-    margin: auto;
-
-    display: grid;
-
-    grid-template-columns: 235px 1fr;
 
-    gap: 15px;
+.brand{
+    color:#c9a84c;
+    font-size:19px;
+    font-weight:bold;
+    letter-spacing:4px;
 }
 
-/* =====================================================
-   SIDEBAR
-===================================================== */
-
-.sidebar {
-    min-height: 720px;
-
-    padding: 15px;
-
-    background: rgba(6,6,8,.97);
-
-    border: 1px solid #29292e;
-
-    border-radius: 7px;
+.brand-sub{
+    margin-top:3px;
+    color:#666;
+    font-size:8px;
+    letter-spacing:3px;
 }
-
-.sidebar-title {
-    margin-bottom: 14px;
-
-    color: #666;
-
-    font-size: 10px;
 
-    letter-spacing: 2px;
+.user-area{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#888;
+    font-size:11px;
 }
 
-.nav-btn {
-    width: 100%;
-
-    margin-bottom: 7px;
-
-    padding: 11px;
-
-    text-align: left;
-
-    background: #111114;
-
-    color: #999;
-
-    border: 1px solid #29292e;
-
-    font-size: 10px;
+.dashboard{
+    max-width:1450px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:235px 1fr;
+    gap:15px;
 }
 
-.nav-btn:hover {
-    color: #ddd;
+.sidebar{
+    min-height:720px;
+    padding:15px;
+    background:rgba(6,6,8,.97);
+    border:1px solid #29292e;
+    border-radius:7px;
 }
 
-.nav-btn.active {
-    background: #251416;
-
-    border-color: #71332c;
-
-    color: #eee;
+.sidebar-title{
+    margin-bottom:14px;
+    color:#666;
+    font-size:10px;
+    letter-spacing:2px;
 }
-
-.sidebar-separator {
-    height: 1px;
-
-    margin: 15px 0;
 
-    background: #242429;
+.nav-btn{
+    width:100%;
+    margin-bottom:7px;
+    padding:11px;
+    text-align:left;
+    background:#111114;
+    color:#999;
+    border:1px solid #29292e;
+    font-size:10px;
 }
 
-/* =====================================================
-   CONTENT
-===================================================== */
-
-.content {
-    min-width: 0;
+.nav-btn:hover{
+    color:#ddd;
 }
-
-.panel {
-    margin-bottom: 15px;
-
-    padding: 20px;
-
-    background: rgba(6,6,8,.97);
 
-    border: 1px solid #29292e;
-
-    border-radius: 7px;
+.nav-btn.active{
+    background:#251416;
+    border-color:#71332c;
+    color:#eee;
 }
-
-.panel-header {
-    display: flex;
-
-    align-items: center;
 
-    justify-content: space-between;
-
-    gap: 10px;
-
-    margin-bottom: 17px;
+.sidebar-separator{
+    height:1px;
+    margin:15px 0;
+    background:#242429;
 }
-
-.panel-title {
-    margin: 0;
-
-    color: #ddd;
 
-    font-size: 17px;
-
-    letter-spacing: 2px;
+.content{
+    min-width:0;
 }
-
-.panel-subtitle {
-    margin-top: 4px;
-
-    color: #666;
-
-    font-size: 9px;
 
-    letter-spacing: 1px;
+.panel{
+    margin-bottom:15px;
+    padding:20px;
+    background:rgba(6,6,8,.97);
+    border:1px solid #29292e;
+    border-radius:7px;
 }
-
-/* =====================================================
-   STATS
-===================================================== */
-
-.stat-grid {
-    display: grid;
-
-    grid-template-columns: repeat(4,1fr);
-
-    gap: 10px;
 
-    margin-bottom: 15px;
+.panel-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:17px;
 }
 
-.stat-card {
-    padding: 15px;
-
-    background: #0d0d10;
-
-    border: 1px solid #27272d;
-
-    border-radius: 6px;
+.panel-title{
+    margin:0;
+    color:#ddd;
+    font-size:17px;
+    letter-spacing:2px;
 }
 
-.stat-label {
-    color: #666;
-
-    font-size: 9px;
-
-    letter-spacing: 1px;
+.panel-subtitle{
+    margin-top:4px;
+    color:#666;
+    font-size:9px;
+    letter-spacing:1px;
 }
-
-.stat-number {
-    margin-top: 7px;
-
-    color: #ddd;
 
-    font-size: 25px;
+/* STATS */
 
-    font-weight: bold;
+.stat-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin-bottom:15px;
 }
 
-.stat-number.gold {
-    color: #c9a84c;
+.stat-card{
+    padding:15px;
+    background:#0d0d10;
+    border:1px solid #27272d;
+    border-radius:6px;
 }
 
-.stat-number.green {
-    color: #59c879;
+.stat-label{
+    color:#666;
+    font-size:9px;
+    letter-spacing:1px;
 }
 
-.stat-number.red {
-    color: #d85a50;
+.stat-number{
+    margin-top:7px;
+    color:#ddd;
+    font-size:25px;
+    font-weight:bold;
 }
 
-/* =====================================================
-   GROUPS
-===================================================== */
+.stat-number.gold{color:#c9a84c}
+.stat-number.green{color:#59c879}
+.stat-number.red{color:#d85a50}
 
-.group-grid {
-    display: grid;
+/* GROUPS */
 
-    grid-template-columns: repeat(2,1fr);
-
-    gap: 10px;
+.group-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
 }
-
-.group-card {
-    padding: 15px;
-
-    background: #0d0d10;
-
-    border: 1px solid #29292e;
 
-    border-radius: 6px;
-
-    cursor: pointer;
+.group-card{
+    padding:15px;
+    background:#0d0d10;
+    border:1px solid #29292e;
+    border-radius:6px;
+    cursor:pointer;
 }
 
-.group-card:hover {
-    border-color: #806b2e;
+.group-card:hover{
+    border-color:#806b2e;
 }
-
-.group-card.selected {
-    border-color: #c9a84c;
 
-    background: #13120e;
+.group-card.selected{
+    border-color:#c9a84c;
+    background:#13120e;
 }
-
-.group-name {
-    color: #ddd;
-
-    font-size: 14px;
 
-    font-weight: bold;
+.group-name{
+    color:#ddd;
+    font-size:14px;
+    font-weight:bold;
 }
 
-.group-info {
-    margin-top: 7px;
-
-    color: #666;
-
-    font-size: 10px;
+.group-info{
+    margin-top:7px;
+    color:#666;
+    font-size:10px;
 }
-
-/* =====================================================
-   SELECTED GROUP
-===================================================== */
-
-.selected-group {
-    padding: 15px;
-
-    margin-bottom: 15px;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(100,20,15,.17),
-            rgba(50,20,80,.13)
-        );
-
-    border: 1px solid #40343e;
 
-    border-radius: 6px;
+.selected-group{
+    padding:15px;
+    margin-bottom:15px;
+    background:linear-gradient(
+        90deg,
+        rgba(100,20,15,.17),
+        rgba(50,20,80,.13)
+    );
+    border:1px solid #40343e;
+    border-radius:6px;
 }
 
-.selected-group-name {
-    color: #c9a84c;
-
-    font-size: 18px;
-
-    font-weight: bold;
-
-    letter-spacing: 2px;
+.selected-group-name{
+    color:#c9a84c;
+    font-size:18px;
+    font-weight:bold;
+    letter-spacing:2px;
 }
-
-.selected-group-code {
-    margin-top: 6px;
 
-    color: #777;
-
-    font-size: 10px;
+.selected-group-code{
+    margin-top:6px;
+    color:#777;
+    font-size:10px;
 }
-
-/* =====================================================
-   PLAYERS
-===================================================== */
-
-.player-card {
-    display: flex;
-
-    align-items: center;
 
-    justify-content: space-between;
+/* PLAYERS */
 
-    gap: 15px;
-
-    padding: 15px;
-
-    margin-bottom: 8px;
-
-    background: #0d0d10;
-
-    border: 1px solid #29292e;
-
-    border-radius: 6px;
+.player-card{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    padding:15px;
+    margin-bottom:8px;
+    background:#0d0d10;
+    border:1px solid #29292e;
+    border-radius:6px;
 }
 
-.player-left {
-    min-width: 0;
+.player-left{
+    min-width:0;
 }
-
-.player-name {
-    color: #ddd;
-
-    font-size: 14px;
 
-    font-weight: bold;
+.player-name{
+    color:#ddd;
+    font-size:14px;
+    font-weight:bold;
 }
 
-.player-email {
-    margin-top: 4px;
-
-    color: #555;
-
-    font-size: 9px;
+.player-email{
+    margin-top:4px;
+    color:#555;
+    font-size:9px;
 }
-
-.player-role {
-    margin-top: 4px;
-
-    color: #806b2e;
 
-    font-size: 8px;
-
-    text-transform: uppercase;
-
-    letter-spacing: 1px;
+.player-role{
+    margin-top:4px;
+    color:#806b2e;
+    font-size:8px;
+    text-transform:uppercase;
+    letter-spacing:1px;
 }
-
-.player-stats {
-    display: flex;
-
-    gap: 14px;
 
-    text-align: center;
+.player-stats{
+    display:flex;
+    gap:14px;
+    text-align:center;
 }
 
-.player-stat-number {
-    color: #ddd;
-
-    font-size: 14px;
-
-    font-weight: bold;
+.player-stat-number{
+    color:#ddd;
+    font-size:14px;
+    font-weight:bold;
 }
-
-.player-stat-label {
-    margin-top: 3px;
 
-    color: #555;
-
-    font-size: 7px;
+.player-stat-label{
+    margin-top:3px;
+    color:#555;
+    font-size:7px;
 }
-
-/* =====================================================
-   MATCH CARDS
-===================================================== */
-
-.match-card {
-    padding: 17px;
-
-    margin-bottom: 10px;
 
-    background: #0d0d10;
+/* MATCHES */
 
-    border: 1px solid #29292e;
-
-    border-radius: 6px;
+.match-card{
+    padding:17px;
+    margin-bottom:10px;
+    background:#0d0d10;
+    border:1px solid #29292e;
+    border-radius:6px;
 }
-
-.match-top {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
 
-    gap: 15px;
+.match-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
 }
 
-.match-factions {
-    color: #ddd;
-
-    font-size: 14px;
-
-    font-weight: bold;
+.match-factions{
+    color:#ddd;
+    font-size:14px;
+    font-weight:bold;
 }
-
-.match-vs {
-    margin: 0 7px;
-
-    color: #806b2e;
 
-    font-size: 9px;
+.match-vs{
+    margin:0 7px;
+    color:#806b2e;
+    font-size:9px;
 }
 
-.match-result {
-    padding: 6px 10px;
-
-    border-radius: 4px;
-
-    font-size: 9px;
-
-    font-weight: bold;
-
-    letter-spacing: 1px;
+.match-result{
+    padding:6px 10px;
+    border-radius:4px;
+    font-size:9px;
+    font-weight:bold;
+    letter-spacing:1px;
 }
-
-.match-result.win {
-    color: #59c879;
 
-    background: rgba(40,130,65,.15);
-
-    border: 1px solid rgba(70,170,90,.3);
+.match-result.win{
+    color:#59c879;
+    background:rgba(40,130,65,.15);
+    border:1px solid rgba(70,170,90,.3);
 }
-
-.match-result.loss {
-    color: #e15a50;
 
-    background: rgba(150,35,30,.15);
-
-    border: 1px solid rgba(190,50,40,.3);
+.match-result.loss{
+    color:#e15a50;
+    background:rgba(150,35,30,.15);
+    border:1px solid rgba(190,50,40,.3);
 }
-
-.match-result.draw {
-    color: #c9a84c;
 
-    background: rgba(160,125,40,.12);
-
-    border: 1px solid rgba(190,150,55,.3);
+.match-result.draw{
+    color:#c9a84c;
+    background:rgba(160,125,40,.12);
+    border:1px solid rgba(190,150,55,.3);
 }
-
-.match-details {
-    display: flex;
-
-    flex-wrap: wrap;
-
-    gap: 20px;
-
-    margin-top: 13px;
-
-    color: #777;
 
-    font-size: 10px;
+.match-details{
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+    margin-top:13px;
+    color:#777;
+    font-size:10px;
 }
 
-.match-detail strong {
-    color: #bbb;
+.match-detail strong{
+    color:#bbb;
 }
 
-.match-notes {
-    margin-top: 10px;
-
-    color: #555;
-
-    font-size: 10px;
-
-    line-height: 1.5;
+.match-notes{
+    margin-top:10px;
+    color:#555;
+    font-size:10px;
+    line-height:1.5;
 }
 
-/* =====================================================
-   QUICK ACTIONS
-===================================================== */
-
-.quick-actions {
-    display: grid;
-
-    grid-template-columns: repeat(3,1fr);
-
-    gap: 10px;
+.quick-actions{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
 }
-
-.quick-action {
-    padding: 16px;
 
-    background: #0d0d10;
-
-    border: 1px solid #29292e;
-
-    border-radius: 6px;
-
-    color: #aaa;
-
-    cursor: pointer;
-
-    text-align: left;
+.quick-action{
+    padding:16px;
+    background:#0d0d10;
+    border:1px solid #29292e;
+    border-radius:6px;
+    color:#aaa;
+    cursor:pointer;
+    text-align:left;
 }
-
-.quick-action:hover {
-    border-color: #806b2e;
 
-    color: #eee;
+.quick-action:hover{
+    border-color:#806b2e;
+    color:#eee;
 }
-
-.quick-action-title {
-    color: #ddd;
-
-    font-size: 12px;
 
-    font-weight: bold;
+.quick-action-title{
+    color:#ddd;
+    font-size:12px;
+    font-weight:bold;
 }
 
-.quick-action-text {
-    margin-top: 6px;
-
-    color: #666;
-
-    font-size: 9px;
-
-    line-height: 1.5;
+.quick-action-text{
+    margin-top:6px;
+    color:#666;
+    font-size:9px;
+    line-height:1.5;
 }
-
-/* =====================================================
-   MODAL
-===================================================== */
-
-.modal {
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 100;
 
-    display: flex;
+/* MODAL */
 
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 20px;
-
-    background: rgba(0,0,0,.76);
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(0,0,0,.76);
 }
-
-.modal-box {
-    width: 100%;
-
-    max-width: 500px;
-
-    max-height: 92vh;
-
-    overflow-y: auto;
-
-    padding: 25px;
 
-    background: #0b0b0e;
-
-    border: 1px solid #39393f;
-
-    border-radius: 7px;
+.modal-box{
+    width:100%;
+    max-width:500px;
+    max-height:92vh;
+    overflow-y:auto;
+    padding:25px;
+    background:#0b0b0e;
+    border:1px solid #39393f;
+    border-radius:7px;
 }
-
-.modal-title {
-    margin: 0;
 
-    color: #ddd;
-
-    font-size: 18px;
-
-    letter-spacing: 2px;
+.modal-title{
+    margin:0;
+    color:#ddd;
+    font-size:18px;
+    letter-spacing:2px;
 }
-
-.modal-buttons {
-    display: flex;
-
-    gap: 10px;
 
-    margin-top: 18px;
+.modal-buttons{
+    display:flex;
+    gap:10px;
+    margin-top:18px;
 }
 
-.modal-buttons button {
-    flex: 1;
-
-    margin: 0;
+.modal-buttons button{
+    flex:1;
+    margin:0;
 }
-
-.modal-status {
-    min-height: 17px;
-
-    margin-top: 12px;
-
-    text-align: center;
 
-    color: #777;
-
-    font-size: 10px;
+.modal-status{
+    min-height:17px;
+    margin-top:12px;
+    text-align:center;
+    color:#777;
+    font-size:10px;
 }
-
-.empty {
-    padding: 25px;
-
-    text-align: center;
-
-    color: #555;
 
-    font-size: 11px;
-
-    border: 1px dashed #29292e;
-
-    border-radius: 6px;
+.empty{
+    padding:25px;
+    text-align:center;
+    color:#555;
+    font-size:11px;
+    border:1px dashed #29292e;
+    border-radius:6px;
 }
-
-/* =====================================================
-   GROUP MANAGEMENT
-===================================================== */
-
-.group-management-bar {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 15px;
-
-    margin-bottom: 20px;
 
-    padding: 14px;
-
-    background: #0b0b0e;
-
-    border: 1px solid #29292e;
-
-    border-radius: 6px;
+.group-management-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:20px;
+    padding:14px;
+    background:#0b0b0e;
+    border:1px solid #29292e;
+    border-radius:6px;
 }
-
-.group-management-info {
-    color: #666;
 
-    font-size: 10px;
-
-    line-height: 1.5;
+.group-management-info{
+    color:#666;
+    font-size:10px;
+    line-height:1.5;
 }
 
-.group-management-info strong {
-    color: #aaa;
+.group-management-info strong{
+    color:#aaa;
 }
-
-.group-management-actions {
-    display: flex;
 
-    gap: 8px;
-
-    flex-wrap: wrap;
+.group-management-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
 }
-
-/* =====================================================
-   MOBILE
-===================================================== */
 
-@media(max-width:900px) {
+@media(max-width:900px){
 
-    .dashboard {
-        grid-template-columns: 1fr;
+    .dashboard{
+        grid-template-columns:1fr;
     }
 
-    .sidebar {
-        min-height: auto;
+    .sidebar{
+        min-height:auto;
     }
 
-    .stat-grid {
-        grid-template-columns: repeat(2,1fr);
+    .stat-grid{
+        grid-template-columns:repeat(2,1fr);
     }
-
 }
 
-@media(max-width:650px) {
+@media(max-width:650px){
 
-    .topbar {
-        flex-direction: column;
-
-        align-items: flex-start;
-
-        gap: 10px;
+    .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
     }
 
-    .group-grid {
-        grid-template-columns: 1fr;
+    .group-grid{
+        grid-template-columns:1fr;
     }
 
-    .quick-actions {
-        grid-template-columns: 1fr;
+    .quick-actions{
+        grid-template-columns:1fr;
     }
 
-    .player-card {
-        flex-direction: column;
-
-        align-items: flex-start;
+    .player-card{
+        flex-direction:column;
+        align-items:flex-start;
     }
 
-    .group-management-bar {
-        flex-direction: column;
-
-        align-items: stretch;
+    .group-management-bar{
+        flex-direction:column;
+        align-items:stretch;
     }
 
-    .group-management-actions {
-        width: 100%;
+    .group-management-actions{
+        width:100%;
     }
 
-    .group-management-actions button {
-        flex: 1;
+    .group-management-actions button{
+        flex:1;
     }
 
-    .match-top {
-        flex-direction: column;
-
-        align-items: flex-start;
+    .match-top{
+        flex-direction:column;
+        align-items:flex-start;
     }
-
 }
 
-@media(prefers-reduced-motion:reduce) {
+@media(prefers-reduced-motion:reduce){
 
     .red-glow,
-    .blue-glow {
-        animation: none;
+    .blue-glow{
+        animation:none;
     }
-
 }
 </style>
 </head>
@@ -1178,31 +814,21 @@ button:disabled {
     <div class="center-shadow"></div>
 </div>
 
-
-<!-- =====================================================
-     LOGIN
-===================================================== -->
+<!-- LOGIN -->
 
 <div id="loginScreen" class="page login-page">
 
 <div class="login-box">
 
-<h1 class="logo">
-ROUTINE 721
-</h1>
+<h1 class="logo">ROUTINE 721</h1>
 
-<div class="logo-sub">
-WAR ROOM
-</div>
+<div class="logo-sub">WAR ROOM</div>
 
 <div class="divider"></div>
 
-
 <div id="signInView">
 
-<h2>
-ACCESS TERMINAL
-</h2>
+<h2>ACCESS TERMINAL</h2>
 
 <p class="login-description">
 Enter the War Room command network.
@@ -1242,15 +868,9 @@ CREATE ACCOUNT
 
 </div>
 
+<div id="createView" class="hidden">
 
-<div
-    id="createView"
-    class="hidden"
->
-
-<h2>
-CREATE PLAYER
-</h2>
+<h2>CREATE PLAYER</h2>
 
 <p class="login-description">
 Create your Routine 721 player account.
@@ -1298,27 +918,16 @@ BACK TO SIGN IN
 
 </div>
 
-
-<div
-    id="loginStatus"
-    class="status"
->
+<div id="loginStatus" class="status">
 Connecting to database...
 </div>
 
 </div>
-
 </div>
 
+<!-- WAR ROOM -->
 
-<!-- =====================================================
-     WAR ROOM
-===================================================== -->
-
-<div
-    id="warRoom"
-    class="war-room hidden"
->
+<div id="warRoom" class="war-room hidden">
 
 <header class="topbar">
 
@@ -1336,9 +945,7 @@ WAR ROOM COMMAND NETWORK
 
 <div class="user-area">
 
-<span id="currentUserEmail">
--
-</span>
+<span id="currentUserEmail">-</span>
 
 <button
     id="signOutButton"
@@ -1352,9 +959,7 @@ SIGN OUT
 
 </header>
 
-
 <main class="dashboard">
-
 
 <aside class="sidebar">
 
@@ -1414,18 +1019,11 @@ MATCHES
 
 </aside>
 
-
 <section class="content">
 
+<!-- OVERVIEW -->
 
-<!-- =====================================================
-     OVERVIEW
-===================================================== -->
-
-<div
-    id="overviewPage"
-    class="page-section"
->
+<div id="overviewPage" class="page-section">
 
 <div class="panel">
 
@@ -1445,104 +1043,48 @@ COMMAND OVERVIEW
 
 </div>
 
-
 <div class="stat-grid">
 
 <div class="stat-card">
-
-<div class="stat-label">
-GROUPS
+<div class="stat-label">GROUPS</div>
+<div id="groupsStat" class="stat-number gold">0</div>
 </div>
-
-<div
-    id="groupsStat"
-    class="stat-number gold"
->
-0
-</div>
-
-</div>
-
 
 <div class="stat-card">
-
-<div class="stat-label">
-PLAYERS
+<div class="stat-label">PLAYERS</div>
+<div id="playersStat" class="stat-number">0</div>
 </div>
-
-<div
-    id="playersStat"
-    class="stat-number"
->
-0
-</div>
-
-</div>
-
 
 <div class="stat-card">
-
-<div class="stat-label">
-MATCHES
+<div class="stat-label">MATCHES</div>
+<div id="matchesStat" class="stat-number">0</div>
 </div>
-
-<div
-    id="matchesStat"
-    class="stat-number"
->
-0
-</div>
-
-</div>
-
 
 <div class="stat-card">
-
-<div class="stat-label">
-WIN RATE
-</div>
-
-<div
-    id="winRateStat"
-    class="stat-number green"
->
-0%
+<div class="stat-label">WIN RATE</div>
+<div id="winRateStat" class="stat-number green">0%</div>
 </div>
 
 </div>
-
-</div>
-
 
 <div class="selected-group">
 
 <div class="selected-group-name">
-
 <span id="selectedGroupName">
 NO GROUP SELECTED
 </span>
-
 </div>
 
 <div class="selected-group-code">
-
 Invite code:
-
-<strong id="selectedGroupCode">
-—
-</strong>
-
+<strong id="selectedGroupCode">—</strong>
 </div>
 
 </div>
-
 
 <div class="quick-actions">
 
-<div
-    id="quickCreate"
-    class="quick-action"
->
+<div id="quickCreate" class="quick-action">
 
 <div class="quick-action-title">
 CREATE GROUP
@@ -1554,11 +1096,7 @@ Create your own Routine 721 war group.
 
 </div>
 
-
-<div
-    id="quickPlayers"
-    class="quick-action"
->
+<div id="quickPlayers" class="quick-action">
 
 <div class="quick-action-title">
 VIEW PLAYERS
@@ -1570,11 +1108,7 @@ View everyone registered in Routine 721.
 
 </div>
 
-
-<div
-    id="quickMatch"
-    class="quick-action"
->
+<div id="quickMatch" class="quick-action">
 
 <div class="quick-action-title">
 RECORD MATCH
@@ -1589,7 +1123,6 @@ Record factions, victory points and battle results.
 </div>
 
 </div>
-
 
 <div class="panel">
 
@@ -1609,24 +1142,15 @@ ACTIVE WAR GROUPS
 
 </div>
 
-<div
-    id="overviewGroups"
-    class="group-grid"
-></div>
+<div id="overviewGroups" class="group-grid"></div>
 
 </div>
 
 </div>
 
+<!-- GROUPS -->
 
-<!-- =====================================================
-     GROUPS
-===================================================== -->
-
-<div
-    id="groupsPage"
-    class="page-section hidden"
->
+<div id="groupsPage" class="page-section hidden">
 
 <div class="panel">
 
@@ -1646,14 +1170,13 @@ CREATE, JOIN AND MANAGE YOUR WAR GROUPS
 
 </div>
 
-
 <div class="group-management-bar">
 
 <div class="group-management-info">
 
 <strong>Group administration</strong><br>
 
-Select a group below before using
+Select a group before using
 <strong>DELETE GROUP</strong>.
 
 </div>
@@ -1688,25 +1211,15 @@ DELETE GROUP
 
 </div>
 
-
-<div
-    id="groupsList"
-    class="group-grid"
-></div>
+<div id="groupsList" class="group-grid"></div>
 
 </div>
 
 </div>
 
+<!-- PLAYERS -->
 
-<!-- =====================================================
-     PLAYERS
-===================================================== -->
-
-<div
-    id="playersPage"
-    class="page-section hidden"
->
+<div id="playersPage" class="page-section hidden">
 
 <div class="panel">
 
@@ -1732,15 +1245,9 @@ ALL REGISTERED ROUTINE 721 PLAYERS
 
 </div>
 
+<!-- MATCHES -->
 
-<!-- =====================================================
-     MATCHES
-===================================================== -->
-
-<div
-    id="matchesPage"
-    class="page-section hidden"
->
+<div id="matchesPage" class="page-section hidden">
 
 <div class="panel">
 
@@ -1753,7 +1260,7 @@ MATCHES
 </h2>
 
 <div class="panel-subtitle">
-WAR RECORD
+SHARED WAR RECORD
 </div>
 
 </div>
@@ -1771,7 +1278,7 @@ RECORD MATCH
 <div id="matchesList">
 
 <div class="empty">
-No matches recorded yet.
+Loading battle records...
 </div>
 
 </div>
@@ -1779,7 +1286,6 @@ No matches recorded yet.
 </div>
 
 </div>
-
 
 </section>
 
@@ -1787,36 +1293,19 @@ No matches recorded yet.
 
 </div>
 
+<!-- MODAL -->
 
-<!-- =====================================================
-     MODAL
-===================================================== -->
-
-<div
-    id="modal"
-    class="modal hidden"
->
+<div id="modal" class="modal hidden">
 
 <div class="modal-box">
 
-<h2
-    id="modalTitle"
-    class="modal-title"
->
+<h2 id="modalTitle" class="modal-title">
 CREATE GROUP
 </h2>
 
+<div id="createGroupForm" class="hidden">
 
-<!-- CREATE GROUP -->
-
-<div
-    id="createGroupForm"
-    class="hidden"
->
-
-<label>
-Group Name
-</label>
+<label>Group Name</label>
 
 <input
     id="groupName"
@@ -1826,17 +1315,9 @@ Group Name
 
 </div>
 
+<div id="joinGroupForm" class="hidden">
 
-<!-- JOIN GROUP -->
-
-<div
-    id="joinGroupForm"
-    class="hidden"
->
-
-<label>
-Invite Code
-</label>
+<label>Invite Code</label>
 
 <input
     id="inviteCode"
@@ -1846,17 +1327,9 @@ Invite Code
 
 </div>
 
+<div id="matchForm" class="hidden">
 
-<!-- RECORD MATCH -->
-
-<div
-    id="matchForm"
-    class="hidden"
->
-
-<label>
-Your Faction
-</label>
+<label>Your Faction</label>
 
 <input
     id="matchPlayerFaction"
@@ -1864,10 +1337,7 @@ Your Faction
     placeholder="Example: Ultramarines"
 >
 
-
-<label>
-Opponent Faction
-</label>
+<label>Opponent Faction</label>
 
 <input
     id="matchOpponentFaction"
@@ -1875,10 +1345,7 @@ Opponent Faction
     placeholder="Example: Chaos Space Marines"
 >
 
-
-<label>
-Opponent
-</label>
+<label>Opponent</label>
 
 <input
     id="matchOpponent"
@@ -1886,10 +1353,7 @@ Opponent
     placeholder="Opponent player name"
 >
 
-
-<label>
-Your Victory Points
-</label>
+<label>Your Victory Points</label>
 
 <input
     id="matchPlayerVP"
@@ -1899,10 +1363,7 @@ Your Victory Points
     placeholder="87"
 >
 
-
-<label>
-Opponent Victory Points
-</label>
+<label>Opponent Victory Points</label>
 
 <input
     id="matchOpponentVP"
@@ -1912,10 +1373,7 @@ Opponent Victory Points
     placeholder="71"
 >
 
-
-<label>
-Result
-</label>
+<label>Result</label>
 
 <select id="matchResult">
 
@@ -1933,10 +1391,7 @@ DRAW
 
 </select>
 
-
-<label>
-Notes
-</label>
+<label>Notes</label>
 
 <textarea
     id="matchNotes"
@@ -1944,7 +1399,6 @@ Notes
 ></textarea>
 
 </div>
-
 
 <div class="modal-buttons">
 
@@ -1966,43 +1420,24 @@ CONFIRM
 
 </div>
 
-
-<div
-    id="modalStatus"
-    class="modal-status"
-></div>
+<div id="modalStatus" class="modal-status"></div>
 
 </div>
-
 </div>
-
-
-<!-- =====================================================
-     SUPABASE
-===================================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-/*
-==========================================================
-SUPABASE
-==========================================================
-*/
+/* =====================================================
+   SUPABASE
+===================================================== */
 
 const SUPABASE_URL =
 "https://jbgwdxavydhtvoqpbfmj.supabase.co";
 
 const SUPABASE_KEY =
 "sb_publishable_Wt8h6fNelT6zrzf-Dm8FXw_cdSGylaz";
-
-
-/*
-Use routineClient rather than "supabase".
-This avoids the global redeclaration problem
-you previously encountered.
-*/
 
 const routineClient =
 window.supabase.createClient(
@@ -2011,217 +1446,93 @@ window.supabase.createClient(
 );
 
 
-/*
-==========================================================
-STATE
-==========================================================
-*/
+/* =====================================================
+   STATE
+===================================================== */
 
 let currentUser = null;
-
 let groups = [];
-
 let allPlayers = [];
-
+let matches = [];
 let selectedGroup = null;
-
 let modalMode = null;
 
 
-/*
-MATCHES ARE STORED LOCALLY FOR NOW.
+/* =====================================================
+   HELPERS
+===================================================== */
 
-This deliberately does NOT query public.matches,
-because that table does not exist in your current
-Supabase database.
-*/
-
-let matches = [];
-
-
-/*
-Load locally saved matches.
-*/
-
-function loadLocalMatches() {
-
-    if (!currentUser) {
-
-        matches = [];
-
-        return;
-
-    }
-
-    const key =
-        "routine721_matches_" +
-        currentUser.id;
-
-    try {
-
-        matches =
-            JSON.parse(
-                localStorage.getItem(key)
-            ) || [];
-
-    }
-
-    catch(error) {
-
-        console.error(error);
-
-        matches = [];
-
-    }
-
-}
-
-
-/*
-Save locally saved matches.
-*/
-
-function saveLocalMatches() {
-
-    if (!currentUser) {
-        return;
-    }
-
-    const key =
-        "routine721_matches_" +
-        currentUser.id;
-
-    localStorage.setItem(
-        key,
-        JSON.stringify(matches)
-    );
-
-}
-
-
-/*
-==========================================================
-HELPERS
-==========================================================
-*/
-
-function $(id) {
-
+function $(id){
     return document.getElementById(id);
-
 }
 
-
-function escapeHtml(value) {
-
+function escapeHtml(value){
     return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
 
+function loginMessage(message,type=""){
+    $("loginStatus").textContent = message;
+    $("loginStatus").className = "status " + type;
 }
 
 
-function loginMessage(
-    message,
-    type = ""
-) {
+/* =====================================================
+   LOGIN
+===================================================== */
 
-    $("loginStatus").textContent =
-        message;
+$("showCreateButton").addEventListener(
+"click",
+function(){
 
-    $("loginStatus").className =
-        "status " + type;
+    $("signInView").classList.add("hidden");
+    $("createView").classList.remove("hidden");
+    loginMessage("");
 
-}
+});
 
 
-/*
-==========================================================
-LOGIN
-==========================================================
-*/
+$("backToLoginButton").addEventListener(
+"click",
+function(){
 
-$("showCreateButton")
-.addEventListener(
-    "click",
-    function() {
+    $("createView").classList.add("hidden");
+    $("signInView").classList.remove("hidden");
+    loginMessage("");
 
-        $("signInView")
-            .classList
-            .add("hidden");
+});
 
-        $("createView")
-            .classList
-            .remove("hidden");
 
-        loginMessage("");
+$("signInButton").addEventListener(
+"click",
+signIn
+);
 
+
+$("loginPassword").addEventListener(
+"keydown",
+function(event){
+
+    if(event.key === "Enter"){
+        signIn();
     }
-);
+
+});
 
 
-$("backToLoginButton")
-.addEventListener(
-    "click",
-    function() {
-
-        $("createView")
-            .classList
-            .add("hidden");
-
-        $("signInView")
-            .classList
-            .remove("hidden");
-
-        loginMessage("");
-
-    }
-);
-
-
-$("signInButton")
-.addEventListener(
-    "click",
-    signIn
-);
-
-
-$("loginPassword")
-.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (
-            event.key === "Enter"
-        ) {
-
-            signIn();
-
-        }
-
-    }
-);
-
-
-async function signIn() {
+async function signIn(){
 
     const email =
-        $("loginEmail")
-        .value
-        .trim();
+        $("loginEmail").value.trim();
 
     const password =
-        $("loginPassword")
-        .value;
+        $("loginPassword").value;
 
-
-    if (
-        !email ||
-        !password
-    ) {
+    if(!email || !password){
 
         loginMessage(
             "Enter your email and password.",
@@ -2229,34 +1540,21 @@ async function signIn() {
         );
 
         return;
-
     }
 
+    try{
 
-    try {
-
-        $("signInButton")
-            .disabled = true;
-
-        $("signInButton")
-            .textContent =
+        $("signInButton").disabled = true;
+        $("signInButton").textContent =
             "SIGNING IN...";
 
-
         const result =
-            await routineClient
-            .auth
-            .signInWithPassword({
-
+            await routineClient.auth.signInWithPassword({
                 email,
                 password
-
             });
 
-
-        if (
-            result.error
-        ) {
+        if(result.error){
 
             loginMessage(
                 result.error.message,
@@ -2264,17 +1562,14 @@ async function signIn() {
             );
 
             return;
-
         }
-
 
         await showWarRoom(
             result.data.user
         );
 
     }
-
-    catch(error) {
+    catch(error){
 
         loginMessage(
             error.message,
@@ -2282,14 +1577,10 @@ async function signIn() {
         );
 
     }
+    finally{
 
-    finally {
-
-        $("signInButton")
-            .disabled = false;
-
-        $("signInButton")
-            .textContent =
+        $("signInButton").disabled = false;
+        $("signInButton").textContent =
             "SIGN IN";
 
     }
@@ -2297,41 +1588,28 @@ async function signIn() {
 }
 
 
-/*
-==========================================================
-CREATE ACCOUNT
-==========================================================
-*/
+/* =====================================================
+   CREATE ACCOUNT
+===================================================== */
 
-$("createAccountButton")
-.addEventListener(
-    "click",
-    createAccount
+$("createAccountButton").addEventListener(
+"click",
+createAccount
 );
 
 
-async function createAccount() {
+async function createAccount(){
 
     const name =
-        $("createName")
-        .value
-        .trim();
+        $("createName").value.trim();
 
     const email =
-        $("createEmail")
-        .value
-        .trim();
+        $("createEmail").value.trim();
 
     const password =
-        $("createPassword")
-        .value;
+        $("createPassword").value;
 
-
-    if (
-        !name ||
-        !email ||
-        !password
-    ) {
+    if(!name || !email || !password){
 
         loginMessage(
             "Enter your player name, email and password.",
@@ -2339,13 +1617,9 @@ async function createAccount() {
         );
 
         return;
-
     }
 
-
-    if (
-        password.length < 6
-    ) {
+    if(password.length < 6){
 
         loginMessage(
             "Password must contain at least 6 characters.",
@@ -2353,46 +1627,30 @@ async function createAccount() {
         );
 
         return;
-
     }
 
+    try{
 
-    try {
+        $("createAccountButton").disabled = true;
 
-        $("createAccountButton")
-            .disabled = true;
-
-        $("createAccountButton")
-            .textContent =
+        $("createAccountButton").textContent =
             "CREATING PLAYER...";
 
-
         const result =
-            await routineClient
-            .auth
-            .signUp({
+            await routineClient.auth.signUp({
 
                 email,
-
                 password,
 
-                options: {
-
-                    data: {
-
-                        display_name:
-                            name
-
+                options:{
+                    data:{
+                        display_name:name
                     }
-
                 }
 
             });
 
-
-        if (
-            result.error
-        ) {
+        if(result.error){
 
             loginMessage(
                 result.error.message,
@@ -2400,21 +1658,16 @@ async function createAccount() {
             );
 
             return;
-
         }
 
-
-        if (
-            result.data.session
-        ) {
+        if(result.data.session){
 
             await showWarRoom(
                 result.data.user
             );
 
         }
-
-        else {
+        else{
 
             loginMessage(
                 "Player created. Check your email to confirm your account.",
@@ -2424,8 +1677,7 @@ async function createAccount() {
         }
 
     }
-
-    catch(error) {
+    catch(error){
 
         loginMessage(
             error.message,
@@ -2433,14 +1685,11 @@ async function createAccount() {
         );
 
     }
+    finally{
 
-    finally {
+        $("createAccountButton").disabled = false;
 
-        $("createAccountButton")
-            .disabled = false;
-
-        $("createAccountButton")
-            .textContent =
+        $("createAccountButton").textContent =
             "CREATE PLAYER ACCOUNT";
 
     }
@@ -2448,48 +1697,30 @@ async function createAccount() {
 }
 
 
-/*
-==========================================================
-SHOW WAR ROOM
-==========================================================
-*/
+/* =====================================================
+   SHOW WAR ROOM
+===================================================== */
 
-async function showWarRoom(user) {
+async function showWarRoom(user){
 
-    currentUser =
-        user;
+    currentUser = user;
 
+    $("loginScreen").classList.add("hidden");
+    $("warRoom").classList.remove("hidden");
 
-    loadLocalMatches();
-
-
-    $("loginScreen")
-        .classList
-        .add("hidden");
-
-
-    $("warRoom")
-        .classList
-        .remove("hidden");
-
-
-    $("currentUserEmail")
-        .textContent =
+    $("currentUserEmail").textContent =
         user.email || "";
-
 
     await refreshData();
 
 }
 
 
-/*
-==========================================================
-LOAD GROUPS
-==========================================================
-*/
+/* =====================================================
+   GROUPS
+===================================================== */
 
-async function loadGroups() {
+async function loadGroups(){
 
     const result =
         await routineClient
@@ -2511,10 +1742,7 @@ async function loadGroups() {
             currentUser.id
         );
 
-
-    if (
-        result.error
-    ) {
+    if(result.error){
 
         console.error(
             "Groups error:",
@@ -2522,80 +1750,47 @@ async function loadGroups() {
         );
 
         groups = [];
-
         return;
-
     }
-
 
     groups =
         (result.data || [])
-        .filter(
-            row => row.groups
-        )
-        .map(
-            row => ({
+        .filter(row => row.groups)
+        .map(row => ({
 
-                id:
-                    row.groups.id,
+            id:row.groups.id,
+            name:row.groups.name,
+            invite_code:row.groups.invite_code,
+            created_by:row.groups.created_by,
+            created_at:row.groups.created_at,
+            role:row.role
 
-                name:
-                    row.groups.name,
+        }));
 
-                invite_code:
-                    row.groups.invite_code,
-
-                created_by:
-                    row.groups.created_by,
-
-                created_at:
-                    row.groups.created_at,
-
-                role:
-                    row.role
-
-            })
-        );
-
-
-    if (
-        selectedGroup
-    ) {
-
-        const found =
-            groups.find(
-                group =>
-                    group.id ===
-                    selectedGroup.id
-            );
-
+    if(selectedGroup){
 
         selectedGroup =
-            found || null;
+            groups.find(
+                group =>
+                    group.id === selectedGroup.id
+            ) || null;
 
     }
 
+    if(!selectedGroup && groups.length){
 
-    if (
-        !selectedGroup &&
-        groups.length
-    ) {
-
-        selectedGroup =
-            groups[0];
+        selectedGroup = groups[0];
 
     }
 
 }
 
 
-/*
-==========================================================
-LOAD PLAYERS
-==========================================================
-*/
+/* =====================================================
+   PLAYERS
+===================================================== */
 
-async function loadPlayers() {
+async function loadPlayers(){
 
     const result =
         await routineClient
@@ -2605,15 +1800,10 @@ async function loadPlayers() {
         )
         .order(
             "display_name",
-            {
-                ascending: true
-            }
+            {ascending:true}
         );
 
-
-    if (
-        result.error
-    ) {
+    if(result.error){
 
         console.error(
             "Players error:",
@@ -2621,11 +1811,8 @@ async function loadPlayers() {
         );
 
         allPlayers = [];
-
         return;
-
     }
-
 
     allPlayers =
         result.data || [];
@@ -2633,40 +1820,88 @@ async function loadPlayers() {
 }
 
 
-/*
-==========================================================
-REFRESH
-==========================================================
-*/
+/* =====================================================
+   LOAD MATCHES FROM SUPABASE
+===================================================== */
 
-async function refreshData() {
+async function loadMatches(){
 
     /*
-    Notice that there is NO loadMatches()
-    here.
+    IMPORTANT:
 
-    Therefore the page never asks Supabase
-    for public.matches.
+    We now load matches from Supabase.
+
+    RLS ensures the player can only see
+    matches belonging to groups they belong to.
     */
 
-    await Promise.all([
-        loadGroups(),
-        loadPlayers()
-    ]);
+    const result =
+        await routineClient
+        .from("matches")
+        .select(`
+            id,
+            group_id,
+            user_id,
+            player_faction,
+            opponent_faction,
+            opponent_name,
+            player_vp,
+            opponent_vp,
+            result,
+            notes,
+            created_at
+        `)
+        .order(
+            "created_at",
+            {
+                ascending:false
+            }
+        );
 
+    if(result.error){
+
+        console.error(
+            "Matches error:",
+            result.error
+        );
+
+        matches = [];
+
+        return;
+    }
+
+    matches =
+        result.data || [];
+
+}
+
+
+/* =====================================================
+   REFRESH
+===================================================== */
+
+async function refreshData(){
+
+    await Promise.all([
+
+        loadGroups(),
+
+        loadPlayers(),
+
+        loadMatches()
+
+    ]);
 
     render();
 
 }
 
 
-/*
-==========================================================
-RENDER
-==========================================================
-*/
+/* =====================================================
+   RENDER
+===================================================== */
 
-function render() {
+function render(){
 
     renderStats();
 
@@ -2681,28 +1916,20 @@ function render() {
 }
 
 
-/*
-==========================================================
-STATISTICS
-==========================================================
-*/
+/* =====================================================
+   STATS
+===================================================== */
 
-function renderStats() {
+function renderStats(){
 
-    $("groupsStat")
-        .textContent =
+    $("groupsStat").textContent =
         groups.length;
 
-
-    $("playersStat")
-        .textContent =
+    $("playersStat").textContent =
         allPlayers.length;
 
-
-    $("matchesStat")
-        .textContent =
+    $("matchesStat").textContent =
         matches.length;
-
 
     const wins =
         matches.filter(
@@ -2710,10 +1937,8 @@ function renderStats() {
                 match.result === "win"
         ).length;
 
-
     const total =
         matches.length;
-
 
     const winRate =
         total
@@ -2722,44 +1947,32 @@ function renderStats() {
         )
         : 0;
 
-
-    $("winRateStat")
-        .textContent =
+    $("winRateStat").textContent =
         winRate + "%";
 
 }
 
 
-/*
-==========================================================
-GROUP CARDS
-==========================================================
-*/
+/* =====================================================
+   GROUP CARDS
+===================================================== */
 
-function makeGroupCard(group) {
+function makeGroupCard(group){
 
     const card =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     card.className =
         "group-card";
 
-
-    if (
+    if(
         selectedGroup &&
-        selectedGroup.id ===
-        group.id
-    ) {
+        selectedGroup.id === group.id
+    ){
 
-        card.classList.add(
-            "selected"
-        );
+        card.classList.add("selected");
 
     }
-
 
     card.innerHTML = `
 
@@ -2769,40 +1982,33 @@ function makeGroupCard(group) {
 
         <div class="group-info">
             ROLE:
-            ${escapeHtml(
-                group.role || "member"
-            )}
+            ${escapeHtml(group.role || "member")}
         </div>
 
         <div class="group-info">
             INVITE:
-            ${escapeHtml(
-                group.invite_code || "—"
-            )}
+            ${escapeHtml(group.invite_code || "—")}
         </div>
 
     `;
 
-
     card.addEventListener(
         "click",
-        function() {
+        function(){
 
-            selectedGroup =
-                group;
+            selectedGroup = group;
 
             render();
 
         }
     );
 
-
     return card;
 
 }
 
 
-function renderGroups() {
+function renderGroups(){
 
     const list =
         $("groupsList");
@@ -2810,86 +2016,58 @@ function renderGroups() {
     const overview =
         $("overviewGroups");
 
-
     list.innerHTML = "";
-
     overview.innerHTML = "";
 
+    if(!groups.length){
 
-    if (
-        !groups.length
-    ) {
-
-        list.innerHTML =
-            `
+        list.innerHTML = `
             <div class="empty">
                 You are not in any groups yet.
             </div>
-            `;
+        `;
 
-
-        overview.innerHTML =
-            `
+        overview.innerHTML = `
             <div class="empty">
                 Create or join your first group.
             </div>
-            `;
+        `;
 
         return;
-
     }
 
+    groups.forEach(group => {
 
-    groups.forEach(
-        group => {
+        list.appendChild(
+            makeGroupCard(group)
+        );
 
-            list.appendChild(
-                makeGroupCard(
-                    group
-                )
-            );
+        overview.appendChild(
+            makeGroupCard(group)
+        );
 
-
-            overview.appendChild(
-                makeGroupCard(
-                    group
-                )
-            );
-
-        }
-    );
+    });
 
 }
 
 
-function renderSelectedGroup() {
+function renderSelectedGroup(){
 
-    if (
-        selectedGroup
-    ) {
+    if(selectedGroup){
 
-        $("selectedGroupName")
-            .textContent =
-            selectedGroup.name ||
-            "UNKNOWN GROUP";
+        $("selectedGroupName").textContent =
+            selectedGroup.name || "UNKNOWN GROUP";
 
-
-        $("selectedGroupCode")
-            .textContent =
-            selectedGroup.invite_code ||
-            "—";
+        $("selectedGroupCode").textContent =
+            selectedGroup.invite_code || "—";
 
     }
+    else{
 
-    else {
-
-        $("selectedGroupName")
-            .textContent =
+        $("selectedGroupName").textContent =
             "NO GROUP SELECTED";
 
-
-        $("selectedGroupCode")
-            .textContent =
+        $("selectedGroupCode").textContent =
             "—";
 
     }
@@ -2897,21 +2075,17 @@ function renderSelectedGroup() {
 }
 
 
-/*
-==========================================================
-PLAYER STATISTICS
-==========================================================
-*/
+/* =====================================================
+   PLAYER STATISTICS
+===================================================== */
 
-function playerStats(playerId) {
+function playerStats(playerId){
 
     const playerMatches =
         matches.filter(
             match =>
-                match.user_id ===
-                playerId
+                match.user_id === playerId
         );
-
 
     const wins =
         playerMatches.filter(
@@ -2919,13 +2093,11 @@ function playerStats(playerId) {
                 match.result === "win"
         ).length;
 
-
     const losses =
         playerMatches.filter(
             match =>
                 match.result === "loss"
         ).length;
-
 
     const draws =
         playerMatches.filter(
@@ -2933,12 +2105,8 @@ function playerStats(playerId) {
                 match.result === "draw"
         ).length;
 
-
     const total =
-        wins +
-        losses +
-        draws;
-
+        wins + losses + draws;
 
     const rate =
         total
@@ -2946,7 +2114,6 @@ function playerStats(playerId) {
             wins / total * 100
         )
         : 0;
-
 
     return {
         wins,
@@ -2958,337 +2125,292 @@ function playerStats(playerId) {
 }
 
 
-function renderPlayers() {
+function renderPlayers(){
 
     const container =
         $("playersList");
 
-
     container.innerHTML = "";
 
+    if(!allPlayers.length){
 
-    if (
-        !allPlayers.length
-    ) {
-
-        container.innerHTML =
-            `
+        container.innerHTML = `
             <div class="empty">
                 No players found.
             </div>
-            `;
+        `;
 
         return;
-
     }
 
+    allPlayers.forEach(player => {
 
-    allPlayers.forEach(
-        player => {
+        const stats =
+            playerStats(player.id);
 
-            const stats =
-                playerStats(
-                    player.id
-                );
+        const card =
+            document.createElement("div");
 
+        card.className =
+            "player-card";
 
-            const card =
-                document.createElement(
-                    "div"
-                );
+        const isYou =
+            currentUser &&
+            currentUser.id === player.id;
 
+        card.innerHTML = `
 
-            card.className =
-                "player-card";
+            <div class="player-left">
 
+                <div class="player-name">
 
-            const isYou =
-                currentUser &&
-                currentUser.id ===
-                player.id;
+                    ${escapeHtml(
+                        player.display_name || "Player"
+                    )}
 
-
-            card.innerHTML = `
-
-                <div class="player-left">
-
-                    <div class="player-name">
-
-                        ${escapeHtml(
-                            player.display_name ||
-                            "Player"
-                        )}
-
-                        ${
-                            isYou
-                            ? " <span style='color:#c9a84c'>YOU</span>"
-                            : ""
-                        }
-
-                    </div>
-
-                    <div class="player-email">
-
-                        ${
-                            isYou
-                            ? escapeHtml(
-                                currentUser.email
-                            )
-                            : "Routine 721 Player"
-                        }
-
-                    </div>
-
-                    <div class="player-role">
-                        ${
-                            isYou
-                            ? "ACTIVE PLAYER"
-                            : "PLAYER"
-                        }
-                    </div>
+                    ${
+                        isYou
+                        ? " <span style='color:#c9a84c'>YOU</span>"
+                        : ""
+                    }
 
                 </div>
 
+                <div class="player-email">
 
-                <div class="player-stats">
-
-                    <div>
-                        <div class="player-stat-number">
-                            ${stats.wins}
-                        </div>
-                        <div class="player-stat-label">
-                            WINS
-                        </div>
-                    </div>
-
-
-                    <div>
-                        <div class="player-stat-number">
-                            ${stats.losses}
-                        </div>
-                        <div class="player-stat-label">
-                            LOSSES
-                        </div>
-                    </div>
-
-
-                    <div>
-                        <div class="player-stat-number">
-                            ${stats.draws}
-                        </div>
-                        <div class="player-stat-label">
-                            DRAWS
-                        </div>
-                    </div>
-
-
-                    <div>
-                        <div
-                            class="player-stat-number"
-                            style="color:#59c879"
-                        >
-                            ${stats.rate}%
-                        </div>
-                        <div class="player-stat-label">
-                            WIN RATE
-                        </div>
-                    </div>
+                    ${
+                        isYou
+                        ? escapeHtml(currentUser.email)
+                        : "Routine 721 Player"
+                    }
 
                 </div>
 
-            `;
+                <div class="player-role">
+                    ${
+                        isYou
+                        ? "ACTIVE PLAYER"
+                        : "PLAYER"
+                    }
+                </div>
 
+            </div>
 
-            container.appendChild(
-                card
-            );
+            <div class="player-stats">
 
-        }
-    );
+                <div>
+                    <div class="player-stat-number">
+                        ${stats.wins}
+                    </div>
+                    <div class="player-stat-label">
+                        WINS
+                    </div>
+                </div>
+
+                <div>
+                    <div class="player-stat-number">
+                        ${stats.losses}
+                    </div>
+                    <div class="player-stat-label">
+                        LOSSES
+                    </div>
+                </div>
+
+                <div>
+                    <div class="player-stat-number">
+                        ${stats.draws}
+                    </div>
+                    <div class="player-stat-label">
+                        DRAWS
+                    </div>
+                </div>
+
+                <div>
+                    <div
+                        class="player-stat-number"
+                        style="color:#59c879"
+                    >
+                        ${stats.rate}%
+                    </div>
+
+                    <div class="player-stat-label">
+                        WIN RATE
+                    </div>
+                </div>
+
+            </div>
+
+        `;
+
+        container.appendChild(card);
+
+    });
 
 }
 
 
-/*
-==========================================================
-MATCH DISPLAY
-==========================================================
-*/
+/* =====================================================
+   MATCHES
+===================================================== */
 
-function renderMatches() {
+function renderMatches(){
 
     const container =
         $("matchesList");
 
-
     container.innerHTML = "";
 
+    if(!matches.length){
 
-    if (
-        !matches.length
-    ) {
-
-        container.innerHTML =
-            `
+        container.innerHTML = `
             <div class="empty">
                 No matches recorded yet.
                 <br><br>
                 Press RECORD MATCH to enter your first battle.
             </div>
-            `;
+        `;
 
         return;
-
     }
 
+    matches.forEach(match => {
 
-    matches.forEach(
-        match => {
+        const card =
+            document.createElement("div");
 
-            const card =
-                document.createElement(
-                    "div"
-                );
+        card.className =
+            "match-card";
 
+        const resultText =
+            match.result === "win"
+            ? "VICTORY"
+            : match.result === "loss"
+            ? "DEFEAT"
+            : "DRAW";
 
-            card.className =
-                "match-card";
+        const group =
+            groups.find(
+                g =>
+                    g.id === match.group_id
+            );
 
+        card.innerHTML = `
 
-            const resultText =
-                match.result === "win"
-                ? "VICTORY"
-                : match.result === "loss"
-                ? "DEFEAT"
-                : "DRAW";
+            <div class="match-top">
 
+                <div class="match-factions">
 
-            card.innerHTML = `
+                    ${escapeHtml(
+                        match.player_faction
+                    )}
 
-                <div class="match-top">
+                    <span class="match-vs">
+                        VS
+                    </span>
 
-                    <div class="match-factions">
-
-                        ${escapeHtml(
-                            match.player_faction
-                        )}
-
-                        <span class="match-vs">
-                            VS
-                        </span>
-
-                        ${escapeHtml(
-                            match.opponent_faction
-                        )}
-
-                    </div>
-
-
-                    <div
-                        class="match-result ${escapeHtml(
-                            match.result
-                        )}"
-                    >
-                        ${resultText}
-                    </div>
+                    ${escapeHtml(
+                        match.opponent_faction
+                    )}
 
                 </div>
 
-
-                <div class="match-details">
-
-                    <div class="match-detail">
-                        Opponent:
-                        <strong>
-                            ${escapeHtml(
-                                match.opponent_name
-                            )}
-                        </strong>
-                    </div>
-
-
-                    <div class="match-detail">
-                        VP:
-                        <strong>
-                            ${escapeHtml(
-                                match.player_vp
-                            )}
-                            -
-                            ${escapeHtml(
-                                match.opponent_vp
-                            )}
-                        </strong>
-                    </div>
-
-
-                    <div class="match-detail">
-                        ${
-                            match.group_name
-                            ? "Group: "
-                            + escapeHtml(
-                                match.group_name
-                            )
-                            : ""
-                        }
-                    </div>
-
+                <div
+                    class="match-result ${escapeHtml(
+                        match.result
+                    )}"
+                >
+                    ${resultText}
                 </div>
 
+            </div>
 
-                ${
-                    match.notes
-                    ? `
+            <div class="match-details">
+
+                <div class="match-detail">
+                    Opponent:
+                    <strong>
+                        ${escapeHtml(
+                            match.opponent_name
+                        )}
+                    </strong>
+                </div>
+
+                <div class="match-detail">
+                    VP:
+                    <strong>
+                        ${escapeHtml(
+                            match.player_vp
+                        )}
+                        -
+                        ${escapeHtml(
+                            match.opponent_vp
+                        )}
+                    </strong>
+                </div>
+
+                <div class="match-detail">
+                    ${
+                        group
+                        ? "Group: " +
+                          escapeHtml(group.name)
+                        : "Group match"
+                    }
+                </div>
+
+                <div class="match-detail">
+                    ${
+                        match.created_at
+                        ? new Date(
+                            match.created_at
+                          ).toLocaleDateString()
+                        : ""
+                    }
+                </div>
+
+            </div>
+
+            ${
+                match.notes
+                ? `
                     <div class="match-notes">
-                        ${escapeHtml(
-                            match.notes
-                        )}
+                        ${escapeHtml(match.notes)}
                     </div>
-                    `
-                    : ""
-                }
+                `
+                : ""
+            }
 
-            `;
+        `;
+
+        container.appendChild(card);
+
+    });
+
+}
 
 
-            container.appendChild(
-                card
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+document
+.querySelectorAll(".nav-btn[data-page]")
+.forEach(button => {
+
+    button.addEventListener(
+        "click",
+        function(){
+
+            showPage(
+                this.dataset.page
             );
 
         }
     );
 
-}
+});
 
 
-/*
-==========================================================
-NAVIGATION
-==========================================================
-*/
-
-document
-.querySelectorAll(
-    ".nav-btn[data-page]"
-)
-.forEach(
-    button => {
-
-        button.addEventListener(
-            "click",
-            function() {
-
-                showPage(
-                    this.dataset.page
-                );
-
-            }
-        );
-
-    }
-);
-
-
-function showPage(page) {
+function showPage(page){
 
     [
         "overview",
@@ -3296,55 +2418,44 @@ function showPage(page) {
         "players",
         "matches"
     ]
-    .forEach(
-        name => {
+    .forEach(name => {
 
-            $(name + "Page")
-                .classList
-                .toggle(
-                    "hidden",
-                    name !== page
-                );
+        $(name + "Page")
+            .classList
+            .toggle(
+                "hidden",
+                name !== page
+            );
 
-        }
-    );
-
+    });
 
     document
     .querySelectorAll(
         ".nav-btn[data-page]"
     )
-    .forEach(
-        button => {
+    .forEach(button => {
 
-            button.classList.toggle(
-                "active",
-                button.dataset.page ===
-                page
-            );
+        button.classList.toggle(
+            "active",
+            button.dataset.page === page
+        );
 
-        }
-    );
+    });
 
 }
 
 
-/*
-==========================================================
-MODAL
-==========================================================
-*/
+/* =====================================================
+   MODAL
+===================================================== */
 
-function openModal(mode) {
+function openModal(mode){
 
-    modalMode =
-        mode;
-
+    modalMode = mode;
 
     $("modal")
         .classList
         .remove("hidden");
-
 
     $("createGroupForm")
         .classList
@@ -3358,17 +2469,12 @@ function openModal(mode) {
         .classList
         .add("hidden");
 
-
     $("modalStatus")
         .textContent = "";
 
+    if(mode === "create"){
 
-    if (
-        mode === "create"
-    ) {
-
-        $("modalTitle")
-            .textContent =
+        $("modalTitle").textContent =
             "CREATE GROUP";
 
         $("createGroupForm")
@@ -3377,13 +2483,9 @@ function openModal(mode) {
 
     }
 
+    if(mode === "join"){
 
-    if (
-        mode === "join"
-    ) {
-
-        $("modalTitle")
-            .textContent =
+        $("modalTitle").textContent =
             "JOIN GROUP";
 
         $("joinGroupForm")
@@ -3392,13 +2494,9 @@ function openModal(mode) {
 
     }
 
+    if(mode === "match"){
 
-    if (
-        mode === "match"
-    ) {
-
-        $("modalTitle")
-            .textContent =
+        $("modalTitle").textContent =
             "RECORD WAR MATCH";
 
         $("matchForm")
@@ -3410,350 +2508,264 @@ function openModal(mode) {
 }
 
 
-function closeModal() {
+function closeModal(){
 
     $("modal")
         .classList
         .add("hidden");
 
-    modalMode =
-        null;
+    modalMode = null;
 
 }
 
 
-$("modalCancel")
-.addEventListener(
+$("modalCancel").addEventListener(
     "click",
     closeModal
 );
 
 
-/*
-==========================================================
-MODAL CONFIRM
-==========================================================
-*/
+/* =====================================================
+   MODAL CONFIRM
+===================================================== */
 
-$("modalConfirm")
-.addEventListener(
-    "click",
-    async function() {
+$("modalConfirm").addEventListener(
+"click",
+async function(){
 
-        const status =
-            $("modalStatus");
+    const status =
+        $("modalStatus");
 
-
-        status.textContent =
-            "Processing...";
+    status.textContent =
+        "Processing...";
 
 
-        try {
+    try{
 
+        /* CREATE GROUP */
 
-            /*
-            CREATE GROUP
-            */
+        if(modalMode === "create"){
 
-            if (
-                modalMode ===
-                "create"
-            ) {
-
-                const name =
-                    $("groupName")
-                    .value
-                    .trim();
-
-
-                if (!name) {
-
-                    status.textContent =
-                        "Enter a group name.";
-
-                    return;
-
-                }
-
-
-                const result =
-                    await routineClient
-                    .rpc(
-                        "create_group",
-                        {
-                            p_name:
-                                name
-                        }
-                    );
-
-
-                if (
-                    result.error
-                ) {
-
-                    status.textContent =
-                        result.error.message;
-
-                    return;
-
-                }
-
-
+            const name =
                 $("groupName")
-                    .value = "";
+                .value
+                .trim();
 
+            if(!name){
 
-                closeModal();
-
-                await refreshData();
-
-                showPage(
-                    "groups"
-                );
+                status.textContent =
+                    "Enter a group name.";
 
                 return;
-
             }
 
+            const result =
+                await routineClient.rpc(
+                    "create_group",
+                    {
+                        p_name:name
+                    }
+                );
 
-            /*
-            JOIN GROUP
-            */
+            if(result.error){
 
-            if (
-                modalMode ===
-                "join"
-            ) {
+                status.textContent =
+                    result.error.message;
 
-                const code =
-                    $("inviteCode")
-                    .value
-                    .trim();
+                return;
+            }
 
+            $("groupName").value = "";
 
-                if (!code) {
+            closeModal();
 
-                    status.textContent =
-                        "Enter an invite code.";
+            await refreshData();
 
-                    return;
+            showPage("groups");
 
-                }
-
-
-                const groupResult =
-                    await routineClient
-                    .from("groups")
-                    .select("id")
-                    .eq(
-                        "invite_code",
-                        code
-                    )
-                    .maybeSingle();
+            return;
+        }
 
 
-                if (
-                    groupResult.error
-                ) {
+        /* JOIN GROUP */
 
-                    status.textContent =
-                        groupResult.error.message;
+        if(modalMode === "join"){
 
-                    return;
-
-                }
-
-
-                if (
-                    !groupResult.data
-                ) {
-
-                    status.textContent =
-                        "Group not found.";
-
-                    return;
-
-                }
-
-
-                const insert =
-                    await routineClient
-                    .from("group_members")
-                    .insert({
-
-                        group_id:
-                            groupResult.data.id,
-
-                        user_id:
-                            currentUser.id,
-
-                        role:
-                            "member"
-
-                    });
-
-
-                if (
-                    insert.error
-                ) {
-
-                    status.textContent =
-                        insert.error.message;
-
-                    return;
-
-                }
-
-
+            const code =
                 $("inviteCode")
-                    .value = "";
+                .value
+                .trim();
 
+            if(!code){
 
-                closeModal();
-
-                await refreshData();
-
-                showPage(
-                    "groups"
-                );
+                status.textContent =
+                    "Enter an invite code.";
 
                 return;
-
             }
 
+            const groupResult =
+                await routineClient
+                .from("groups")
+                .select("id")
+                .eq(
+                    "invite_code",
+                    code
+                )
+                .maybeSingle();
 
-            /*
-            RECORD MATCH
-            */
+            if(groupResult.error){
 
-            if (
-                modalMode ===
-                "match"
-            ) {
+                status.textContent =
+                    groupResult.error.message;
 
-                if (
-                    !selectedGroup
-                ) {
+                return;
+            }
 
-                    status.textContent =
-                        "Select a group before recording a match.";
+            if(!groupResult.data){
 
-                    return;
+                status.textContent =
+                    "Group not found.";
 
-                }
+                return;
+            }
 
+            const insert =
+                await routineClient
+                .from("group_members")
+                .insert({
 
-                const playerFaction =
-                    $("matchPlayerFaction")
-                    .value
-                    .trim();
-
-
-                const opponentFaction =
-                    $("matchOpponentFaction")
-                    .value
-                    .trim();
-
-
-                const opponent =
-                    $("matchOpponent")
-                    .value
-                    .trim();
-
-
-                const playerVP =
-                    Number(
-                        $("matchPlayerVP")
-                        .value
-                    );
-
-
-                const opponentVP =
-                    Number(
-                        $("matchOpponentVP")
-                        .value
-                    );
-
-
-                const result =
-                    $("matchResult")
-                    .value;
-
-
-                const notes =
-                    $("matchNotes")
-                    .value
-                    .trim();
-
-
-                if (
-                    !playerFaction ||
-                    !opponentFaction ||
-                    !opponent
-                ) {
-
-                    status.textContent =
-                        "Enter both factions and the opponent.";
-
-                    return;
-
-                }
-
-
-                if (
-                    !Number.isFinite(
-                        playerVP
-                    ) ||
-                    playerVP < 0
-                ) {
-
-                    status.textContent =
-                        "Enter valid Victory Points for your army.";
-
-                    return;
-
-                }
-
-
-                if (
-                    !Number.isFinite(
-                        opponentVP
-                    ) ||
-                    opponentVP < 0
-                ) {
-
-                    status.textContent =
-                        "Enter valid Victory Points for your opponent.";
-
-                    return;
-
-                }
-
-
-                /*
-                Create match object.
-
-                It is saved to localStorage for now
-                because public.matches does not exist.
-                */
-
-                const match = {
-
-                    id:
-                        crypto.randomUUID
-                        ? crypto.randomUUID()
-                        : String(
-                            Date.now()
-                        ),
+                    group_id:
+                        groupResult.data.id,
 
                     user_id:
                         currentUser.id,
 
+                    role:
+                        "member"
+
+                });
+
+            if(insert.error){
+
+                status.textContent =
+                    insert.error.message;
+
+                return;
+            }
+
+            $("inviteCode").value = "";
+
+            closeModal();
+
+            await refreshData();
+
+            showPage("groups");
+
+            return;
+        }
+
+
+        /* RECORD MATCH */
+
+        if(modalMode === "match"){
+
+            if(!selectedGroup){
+
+                status.textContent =
+                    "Select a group before recording a match.";
+
+                return;
+            }
+
+            const playerFaction =
+                $("matchPlayerFaction")
+                .value
+                .trim();
+
+            const opponentFaction =
+                $("matchOpponentFaction")
+                .value
+                .trim();
+
+            const opponent =
+                $("matchOpponent")
+                .value
+                .trim();
+
+            const playerVP =
+                Number(
+                    $("matchPlayerVP")
+                    .value
+                );
+
+            const opponentVP =
+                Number(
+                    $("matchOpponentVP")
+                    .value
+                );
+
+            const result =
+                $("matchResult")
+                .value;
+
+            const notes =
+                $("matchNotes")
+                .value
+                .trim();
+
+
+            if(
+                !playerFaction ||
+                !opponentFaction ||
+                !opponent
+            ){
+
+                status.textContent =
+                    "Enter both factions and the opponent.";
+
+                return;
+            }
+
+
+            if(
+                !Number.isFinite(playerVP) ||
+                playerVP < 0
+            ){
+
+                status.textContent =
+                    "Enter valid Victory Points for your army.";
+
+                return;
+            }
+
+
+            if(
+                !Number.isFinite(opponentVP) ||
+                opponentVP < 0
+            ){
+
+                status.textContent =
+                    "Enter valid Victory Points for your opponent.";
+
+                return;
+            }
+
+
+            /*
+            WRITE DIRECTLY TO SUPABASE
+            */
+
+            const insertResult =
+                await routineClient
+                .from("matches")
+                .insert({
+
                     group_id:
                         selectedGroup.id,
 
-                    group_name:
-                        selectedGroup.name,
+                    user_id:
+                        currentUser.id,
 
                     player_faction:
                         playerFaction,
@@ -3774,408 +2786,273 @@ $("modalConfirm")
                         result,
 
                     notes:
-                        notes,
+                        notes || null
 
-                    created_at:
-                        new Date()
-                        .toISOString()
+                });
 
-                };
 
-
-                matches.unshift(
-                    match
-                );
-
-
-                saveLocalMatches();
-
-
-                /*
-                Clear form.
-                */
-
-                $("matchPlayerFaction")
-                    .value = "";
-
-                $("matchOpponentFaction")
-                    .value = "";
-
-                $("matchOpponent")
-                    .value = "";
-
-                $("matchPlayerVP")
-                    .value = "";
-
-                $("matchOpponentVP")
-                    .value = "";
-
-                $("matchResult")
-                    .value = "win";
-
-                $("matchNotes")
-                    .value = "";
-
-
-                closeModal();
-
-                render();
-
-                showPage(
-                    "matches"
-                );
-
-                return;
-
-            }
-
-        }
-
-        catch(error) {
-
-            console.error(
-                error
-            );
-
-            status.textContent =
-                error.message;
-
-        }
-
-    }
-);
-
-
-/*
-==========================================================
-CREATE GROUP BUTTONS
-==========================================================
-*/
-
-$("createGroupButton")
-.addEventListener(
-    "click",
-    function() {
-
-        openModal("create");
-
-    }
-);
-
-
-$("groupsCreate")
-.addEventListener(
-    "click",
-    function() {
-
-        openModal("create");
-
-    }
-);
-
-
-/*
-==========================================================
-JOIN GROUP BUTTONS
-==========================================================
-*/
-
-$("joinGroupButton")
-.addEventListener(
-    "click",
-    function() {
-
-        openModal("join");
-
-    }
-);
-
-
-$("groupsJoin")
-.addEventListener(
-    "click",
-    function() {
-
-        openModal("join");
-
-    }
-);
-
-
-/*
-==========================================================
-QUICK ACTIONS
-==========================================================
-*/
-
-$("quickCreate")
-.addEventListener(
-    "click",
-    function() {
-
-        openModal("create");
-
-    }
-);
-
-
-$("quickPlayers")
-.addEventListener(
-    "click",
-    function() {
-
-        showPage("players");
-
-    }
-);
-
-
-$("quickMatch")
-.addEventListener(
-    "click",
-    function() {
-
-        openModal("match");
-
-    }
-);
-
-
-$("recordMatchButton")
-.addEventListener(
-    "click",
-    function() {
-
-        openModal("match");
-
-    }
-);
-
-
-/*
-==========================================================
-DELETE GROUP
-==========================================================
-*/
-
-$("deleteSelectedGroup")
-.addEventListener(
-    "click",
-    async function() {
-
-        if (
-            !selectedGroup
-        ) {
-
-            alert(
-                "SELECT A GROUP FIRST.\n\n" +
-                "Click the group you want to delete."
-            );
-
-            return;
-
-        }
-
-
-        const groupName =
-            selectedGroup.name ||
-            "UNKNOWN GROUP";
-
-
-        const confirmed =
-            confirm(
-
-                "DELETE GROUP?\n\n" +
-
-                "GROUP: " +
-                groupName +
-
-                "\n\n" +
-
-                "This action is permanent.\n\n" +
-
-                "Are you absolutely sure?"
-
-            );
-
-
-        if (
-            !confirmed
-        ) {
-
-            return;
-
-        }
-
-
-        try {
-
-            this.disabled =
-                true;
-
-            this.textContent =
-                "DELETING...";
-
-
-            const result =
-                await routineClient
-                .rpc(
-                    "delete_group",
-                    {
-                        p_group_id:
-                            selectedGroup.id
-                    }
-                );
-
-
-            if (
-                result.error
-            ) {
+            if(insertResult.error){
 
                 console.error(
-                    result.error
+                    "Match insert error:",
+                    insertResult.error
                 );
 
-                alert(
-                    "DELETE FAILED\n\n" +
-                    result.error.message
-                );
+                status.textContent =
+                    insertResult.error.message;
 
                 return;
-
             }
 
 
-            selectedGroup =
-                null;
+            /*
+            Clear form.
+            */
+
+            $("matchPlayerFaction").value = "";
+            $("matchOpponentFaction").value = "";
+            $("matchOpponent").value = "";
+            $("matchPlayerVP").value = "";
+            $("matchOpponentVP").value = "";
+            $("matchResult").value = "win";
+            $("matchNotes").value = "";
 
 
-            await refreshData();
-
-            showPage(
-                "groups"
-            );
+            closeModal();
 
 
-            alert(
-                "GROUP DELETED SUCCESSFULLY."
-            );
+            /*
+            Reload from Supabase so the new
+            match is confirmed in the database.
+            */
 
+            await loadMatches();
+
+            render();
+
+            showPage("matches");
+
+            return;
         }
 
-        catch(error) {
+    }
+    catch(error){
 
-            console.error(
-                error
+        console.error(error);
+
+        status.textContent =
+            error.message;
+
+    }
+
+});
+
+
+/* =====================================================
+   CREATE / JOIN GROUP
+===================================================== */
+
+$("createGroupButton").addEventListener(
+    "click",
+    () => openModal("create")
+);
+
+$("groupsCreate").addEventListener(
+    "click",
+    () => openModal("create")
+);
+
+$("joinGroupButton").addEventListener(
+    "click",
+    () => openModal("join")
+);
+
+$("groupsJoin").addEventListener(
+    "click",
+    () => openModal("join")
+);
+
+
+/* =====================================================
+   QUICK ACTIONS
+===================================================== */
+
+$("quickCreate").addEventListener(
+    "click",
+    () => openModal("create")
+);
+
+$("quickPlayers").addEventListener(
+    "click",
+    () => showPage("players")
+);
+
+$("quickMatch").addEventListener(
+    "click",
+    () => openModal("match")
+);
+
+$("recordMatchButton").addEventListener(
+    "click",
+    () => openModal("match")
+);
+
+
+/* =====================================================
+   DELETE GROUP
+===================================================== */
+
+$("deleteSelectedGroup").addEventListener(
+"click",
+async function(){
+
+    if(!selectedGroup){
+
+        alert(
+            "SELECT A GROUP FIRST.\n\n" +
+            "Click the group you want to delete."
+        );
+
+        return;
+    }
+
+    const confirmed =
+        confirm(
+            "DELETE GROUP?\n\n" +
+            "GROUP: " +
+            selectedGroup.name +
+            "\n\n" +
+            "This action is permanent."
+        );
+
+    if(!confirmed){
+        return;
+    }
+
+    try{
+
+        this.disabled = true;
+        this.textContent = "DELETING...";
+
+        const result =
+            await routineClient.rpc(
+                "delete_group",
+                {
+                    p_group_id:
+                        selectedGroup.id
+                }
             );
+
+        if(result.error){
 
             alert(
                 "DELETE FAILED\n\n" +
-                error.message
+                result.error.message
             );
 
+            return;
         }
 
-        finally {
+        selectedGroup = null;
 
-            this.disabled =
-                false;
+        await refreshData();
 
-            this.textContent =
-                "DELETE GROUP";
+        showPage("groups");
 
-        }
-
-    }
-);
-
-
-/*
-==========================================================
-SIGN OUT
-==========================================================
-*/
-
-$("signOutButton")
-.addEventListener(
-    "click",
-    async function() {
-
-        await routineClient
-            .auth
-            .signOut();
+        alert(
+            "GROUP DELETED SUCCESSFULLY."
+        );
 
     }
-);
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "DELETE FAILED\n\n" +
+            error.message
+        );
+
+    }
+    finally{
+
+        this.disabled = false;
+        this.textContent = "DELETE GROUP";
+
+    }
+
+});
 
 
-/*
-==========================================================
-AUTH STATE
-==========================================================
-*/
+/* =====================================================
+   SIGN OUT
+===================================================== */
+
+$("signOutButton").addEventListener(
+"click",
+async function(){
+
+    await routineClient
+        .auth
+        .signOut();
+
+});
+
+
+/* =====================================================
+   AUTH STATE
+===================================================== */
 
 routineClient
 .auth
 .onAuthStateChange(
-    function(
-        event,
-        session
-    ) {
+function(event,session){
 
-        if (
-            session &&
+    if(
+        session &&
+        session.user
+    ){
+
+        showWarRoom(
             session.user
-        ) {
-
-            showWarRoom(
-                session.user
-            );
-
-        }
-        else {
-
-            currentUser =
-                null;
-
-            matches = [];
-
-            selectedGroup =
-                null;
-
-            $("warRoom")
-                .classList
-                .add("hidden");
-
-            $("loginScreen")
-                .classList
-                .remove("hidden");
-
-        }
+        );
 
     }
-);
+    else{
+
+        currentUser = null;
+        groups = [];
+        allPlayers = [];
+        matches = [];
+        selectedGroup = null;
+
+        $("warRoom")
+            .classList
+            .add("hidden");
+
+        $("loginScreen")
+            .classList
+            .remove("hidden");
+
+    }
+
+});
 
 
-/*
-==========================================================
-INITIALISE
-==========================================================
-*/
+/* =====================================================
+   INITIALISE
+===================================================== */
 
-async function initialise() {
+async function initialise(){
 
-    try {
+    try{
 
         const result =
             await routineClient
             .auth
             .getSession();
 
-
-        if (
-            result.error
-        ) {
+        if(result.error){
 
             loginMessage(
                 result.error.message,
@@ -4183,21 +3060,16 @@ async function initialise() {
             );
 
             return;
-
         }
 
-
-        if (
-            result.data.session
-        ) {
+        if(result.data.session){
 
             await showWarRoom(
                 result.data.session.user
             );
 
         }
-
-        else {
+        else{
 
             loginMessage(
                 "SUPABASE CONNECTED ✓",
@@ -4207,12 +3079,9 @@ async function initialise() {
         }
 
     }
+    catch(error){
 
-    catch(error) {
-
-        console.error(
-            error
-        );
+        console.error(error);
 
         loginMessage(
             error.message,
@@ -4222,7 +3091,6 @@ async function initialise() {
     }
 
 }
-
 
 initialise();
 
