@@ -1,13 +1,7 @@
 ```javascript
-/* =========================================================
-   ROUTINE 721
-   WAR ROOM
-   ========================================================= */
-
-/*
-   IMPORTANT:
-   These are your existing Supabase details.
-*/
+/* =====================================================
+   ROUTINE 721 - WAR ROOM
+   ===================================================== */
 
 const ROUTINE_SUPABASE_URL =
   "https://jbgwdxavydhtvoqpbfmj.supabase.co";
@@ -15,13 +9,11 @@ const ROUTINE_SUPABASE_URL =
 const ROUTINE_SUPABASE_KEY =
   "sb_publishable_Wt8h6fNelT6zrzf-Dm8FXw_cdSGylaz";
 
-
 /*
-   We deliberately use a different variable name here.
-
-   This prevents the previous:
-   "redeclaration of non-configurable global property supabase"
-   error.
+  IMPORTANT:
+  We call the client routineClient instead of supabase.
+  This avoids the browser error:
+  "redeclaration of non-configurable global property supabase"
 */
 
 const routineClient =
@@ -31,10 +23,6 @@ const routineClient =
   );
 
 
-/* =========================================================
-   STATE
-   ========================================================= */
-
 let currentUser = null;
 let currentGroup = null;
 let currentProfile = null;
@@ -42,9 +30,9 @@ let groupGames = [];
 let groupProfiles = [];
 
 
-/* =========================================================
+/* =====================================================
    HELPERS
-   ========================================================= */
+   ===================================================== */
 
 function $(id) {
   return document.getElementById(id);
@@ -52,32 +40,35 @@ function $(id) {
 
 
 function show(id) {
-  $(id)?.classList.remove("hidden");
+  const element = $(id);
+
+  if (element) {
+    element.classList.remove("hidden");
+  }
 }
 
 
 function hide(id) {
-  $(id)?.classList.add("hidden");
+  const element = $(id);
+
+  if (element) {
+    element.classList.add("hidden");
+  }
 }
 
 
-function message(id, text, success = false) {
+function setMessage(id, text, success = false) {
 
   const element = $(id);
 
   if (!element) return;
 
   element.textContent = text;
+
   element.className =
-    success ? "message success" : "message";
-}
-
-
-function calculateWinRate(wins, games) {
-
-  if (!games) return 0;
-
-  return Math.round((wins / games) * 100);
+    success
+      ? "message success"
+      : "message";
 }
 
 
@@ -96,53 +87,52 @@ function escapeHTML(value) {
 }
 
 
-/* =========================================================
-   AUTH
-   ========================================================= */
+function winRate(wins, games) {
 
-async function checkSession() {
-
-  const { data, error } =
-    await routineClient.auth.getSession();
-
-  if (error) {
-
-    console.error(error);
-
-    showAuth();
-
-    return;
+  if (!games) {
+    return 0;
   }
 
-  if (data.session) {
-
-    currentUser = data.session.user;
-
-    await startApplication();
-
-  } else {
-
-    showAuth();
-
-  }
+  return Math.round(
+    (wins / games) * 100
+  );
 }
 
 
-function showAuth() {
+/* =====================================================
+   AUTH SCREEN
+   ===================================================== */
+
+function showAuthScreen() {
 
   show("auth-screen");
   hide("main-screen");
 }
 
 
-async function login() {
+function showMainScreen() {
 
-  const email = $("email").value.trim();
-  const password = $("password").value;
+  hide("auth-screen");
+  show("main-screen");
+}
+
+
+/* =====================================================
+   SIGN IN
+   ===================================================== */
+
+async function signIn() {
+
+  const email =
+    $("email")?.value.trim();
+
+  const password =
+    $("password")?.value;
+
 
   if (!email || !password) {
 
-    message(
+    setMessage(
       "auth-message",
       "Please enter your email and password."
     );
@@ -150,41 +140,80 @@ async function login() {
     return;
   }
 
-  message(
+
+  setMessage(
     "auth-message",
     "Signing in..."
   );
 
-  const { data, error } =
-    await routineClient.auth.signInWithPassword({
-      email,
-      password
-    });
 
-  if (error) {
+  try {
 
-    message(
+    const result =
+      await routineClient.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+
+    if (result.error) {
+
+      console.error(
+        "Sign in error:",
+        result.error
+      );
+
+      setMessage(
+        "auth-message",
+        result.error.message
+      );
+
+      return;
+    }
+
+
+    currentUser =
+      result.data.user;
+
+
+    setMessage(
       "auth-message",
-      error.message
+      "Signed in successfully.",
+      true
     );
 
-    return;
+
+    await startApp();
+
+  } catch (error) {
+
+    console.error(error);
+
+    setMessage(
+      "auth-message",
+      "Sign in error: " +
+      error.message
+    );
   }
-
-  currentUser = data.user;
-
-  await startApplication();
 }
 
 
-async function signup() {
+/* =====================================================
+   CREATE ACCOUNT
+   ===================================================== */
 
-  const email = $("email").value.trim();
-  const password = $("password").value;
+async function createAccount() {
+
+  const email =
+    $("email")?.value.trim();
+
+  const password =
+    $("password")?.value;
+
 
   if (!email || !password) {
 
-    message(
+    setMessage(
       "auth-message",
       "Please enter an email and password."
     );
@@ -192,195 +221,290 @@ async function signup() {
     return;
   }
 
+
   if (password.length < 6) {
 
-    message(
+    setMessage(
       "auth-message",
-      "Password must be at least 6 characters."
+      "Password must contain at least 6 characters."
     );
 
     return;
   }
 
-  message(
+
+  setMessage(
     "auth-message",
     "Creating account..."
   );
 
-  const { data, error } =
-    await routineClient.auth.signUp({
-      email,
-      password
-    });
 
-  if (error) {
+  try {
 
-    message(
+    const result =
+      await routineClient.auth.signUp({
+        email: email,
+        password: password
+      });
+
+
+    if (result.error) {
+
+      console.error(
+        "Create account error:",
+        result.error
+      );
+
+      setMessage(
+        "auth-message",
+        result.error.message
+      );
+
+      return;
+    }
+
+
+    /*
+      Supabase may require email confirmation.
+    */
+
+    if (!result.data.session) {
+
+      setMessage(
+        "auth-message",
+        "Account created! Check your email to confirm your account.",
+        true
+      );
+
+      return;
+    }
+
+
+    currentUser =
+      result.data.user;
+
+
+    await startApp();
+
+  } catch (error) {
+
+    console.error(error);
+
+    setMessage(
       "auth-message",
+      "Account error: " +
       error.message
-    );
-
-    return;
-  }
-
-  if (data.session) {
-
-    currentUser = data.user;
-
-    await startApplication();
-
-  } else {
-
-    message(
-      "auth-message",
-      "Account created. Check your email if confirmation is required.",
-      true
     );
   }
 }
 
 
-async function logout() {
+/* =====================================================
+   LOG OUT
+   ===================================================== */
+
+async function logOut() {
 
   await routineClient.auth.signOut();
 
   currentUser = null;
   currentGroup = null;
 
-  showAuth();
+  showAuthScreen();
 }
 
 
-/* =========================================================
-   APPLICATION START
-   ========================================================= */
+/* =====================================================
+   START APPLICATION
+   ===================================================== */
 
-async function startApplication() {
+async function startApp() {
 
-  hide("auth-screen");
-  show("main-screen");
+  showMainScreen();
 
   await loadProfile();
+
   await loadGroup();
 
   setDefaultDate();
 }
 
 
-/* =========================================================
-   PROFILE
-   ========================================================= */
+/* =====================================================
+   LOAD PROFILE
+   ===================================================== */
 
 async function loadProfile() {
 
-  if (!currentUser) return;
-
-  const { data, error } =
-    await routineClient
-      .from("profiles")
-      .select("*")
-      .eq("id", currentUser.id)
-      .maybeSingle();
-
-  if (error) {
-
-    console.error(
-      "Could not load profile:",
-      error
-    );
-
+  if (!currentUser) {
     return;
   }
 
-  currentProfile = data;
 
-  if (data) {
+  try {
 
-    $("profile-name").textContent =
-      data.display_name ||
-      currentUser.email ||
-      "Player";
+    const result =
+      await routineClient
+        .from("profiles")
+        .select("*")
+        .eq("id", currentUser.id)
+        .maybeSingle();
+
+
+    if (result.error) {
+
+      console.error(
+        "Profile error:",
+        result.error
+      );
+
+      return;
+    }
+
+
+    currentProfile =
+      result.data;
+
+
+    if (currentProfile) {
+
+      const name =
+        currentProfile.display_name ||
+        currentUser.email ||
+        "Player";
+
+
+      if ($("profile-name")) {
+
+        $("profile-name").textContent =
+          name;
+      }
+    }
+
+  } catch (error) {
+
+    console.error(
+      "Profile loading error:",
+      error
+    );
   }
 }
 
 
-/* =========================================================
-   GROUP
-   ========================================================= */
+/* =====================================================
+   LOAD GROUP
+   ===================================================== */
 
 async function loadGroup() {
 
-  if (!currentUser) return;
+  if (!currentUser) {
+    return;
+  }
 
-  const { data, error } =
-    await routineClient
-      .from("group_members")
-      .select(`
-        group_id,
-        role,
-        groups (
-          id,
-          name,
-          invite_code
+
+  try {
+
+    const result =
+      await routineClient
+        .from("group_members")
+        .select(`
+          group_id,
+          role,
+          groups (
+            id,
+            name,
+            invite_code
+          )
+        `)
+        .eq(
+          "user_id",
+          currentUser.id
         )
-      `)
-      .eq("user_id", currentUser.id)
-      .limit(1);
+        .limit(1);
 
-  if (error) {
+
+    if (result.error) {
+
+      console.error(
+        "Group error:",
+        result.error
+      );
+
+      $("group-name").textContent =
+        "GROUP ERROR";
+
+      return;
+    }
+
+
+    if (!result.data || !result.data.length) {
+
+      $("group-name").textContent =
+        "NO GROUP";
+
+      return;
+    }
+
+
+    currentGroup =
+      result.data[0].groups;
+
+
+    if ($("group-name")) {
+
+      $("group-name").textContent =
+        currentGroup.name;
+    }
+
+
+    await loadGames();
+
+    await loadGroupProfiles();
+
+    refreshAll();
+
+  } catch (error) {
 
     console.error(
-      "Could not load group:",
+      "Group loading error:",
       error
     );
-
-    $("group-name").textContent =
-      "NO GROUP";
-
-    return;
   }
-
-  if (!data || !data.length) {
-
-    $("group-name").textContent =
-      "NO GROUP";
-
-    return;
-  }
-
-  currentGroup = data[0].groups;
-
-  $("group-name").textContent =
-    currentGroup.name;
-
-  await loadGames();
-  await loadGroupProfiles();
-
-  refreshDashboard();
-  refreshPlayers();
-  refreshFactions();
-  refreshProfile();
 }
 
 
+/* =====================================================
+   LOAD GAMES
+   ===================================================== */
+
 async function loadGames() {
 
-  if (!currentGroup) return;
+  if (!currentGroup) {
+    return;
+  }
 
-  const { data, error } =
+
+  const result =
     await routineClient
       .from("games")
       .select("*")
-      .eq("group_id", currentGroup.id)
-      .order("played_at", {
-        ascending: false
-      });
+      .eq(
+        "group_id",
+        currentGroup.id
+      )
+      .order(
+        "played_at",
+        {
+          ascending: false
+        }
+      );
 
-  if (error) {
+
+  if (result.error) {
 
     console.error(
-      "Could not load games:",
-      error
+      "Games error:",
+      result.error
     );
 
     groupGames = [];
@@ -388,15 +512,24 @@ async function loadGames() {
     return;
   }
 
-  groupGames = data || [];
+
+  groupGames =
+    result.data || [];
 }
 
 
+/* =====================================================
+   LOAD GROUP MEMBERS
+   ===================================================== */
+
 async function loadGroupProfiles() {
 
-  if (!currentGroup) return;
+  if (!currentGroup) {
+    return;
+  }
 
-  const { data: members, error } =
+
+  const result =
     await routineClient
       .from("group_members")
       .select(`
@@ -408,13 +541,17 @@ async function loadGroupProfiles() {
           avatar_url
         )
       `)
-      .eq("group_id", currentGroup.id);
+      .eq(
+        "group_id",
+        currentGroup.id
+      );
 
-  if (error) {
+
+  if (result.error) {
 
     console.error(
-      "Could not load members:",
-      error
+      "Members error:",
+      result.error
     );
 
     groupProfiles = [];
@@ -422,40 +559,23 @@ async function loadGroupProfiles() {
     return;
   }
 
+
   groupProfiles =
-    (members || [])
+    (result.data || [])
       .map(member => member.profiles)
-      .filter(Boolean);
+      .filter(profile => profile);
 }
 
 
-/* =========================================================
-   BATTLE
-   ========================================================= */
-
-function setDefaultDate() {
-
-  const date = new Date();
-
-  const localDate =
-    new Date(
-      date.getTime() -
-      date.getTimezoneOffset() * 60000
-    )
-      .toISOString()
-      .split("T")[0];
-
-  if ($("played-at")) {
-    $("played-at").value = localDate;
-  }
-}
-
+/* =====================================================
+   SAVE BATTLE
+   ===================================================== */
 
 async function saveBattle() {
 
   if (!currentUser) {
 
-    message(
+    setMessage(
       "battle-message",
       "You must be signed in."
     );
@@ -463,121 +583,141 @@ async function saveBattle() {
     return;
   }
 
+
   if (!currentGroup) {
 
-    message(
+    setMessage(
       "battle-message",
-      "You need to be in a group first."
+      "You need to join or create a group first."
     );
 
     return;
   }
 
+
   const playerFaction =
-    $("player-faction").value.trim();
+    $("player-faction")?.value.trim();
 
   const opponentName =
-    $("opponent-name").value.trim();
+    $("opponent-name")?.value.trim();
 
   const opponentFaction =
-    $("opponent-faction").value.trim();
+    $("opponent-faction")?.value.trim();
 
   const result =
-    $("result").value;
+    $("result")?.value;
 
   const playerVP =
-    parseInt($("player-vp").value || "0", 10);
+    Number(
+      $("player-vp")?.value || 0
+    );
 
   const opponentVP =
-    parseInt($("opponent-vp").value || "0", 10);
+    Number(
+      $("opponent-vp")?.value || 0
+    );
 
   const mission =
-    $("mission").value.trim();
+    $("mission")?.value.trim();
 
   const eventName =
-    $("event-name").value.trim();
+    $("event-name")?.value.trim();
 
   const playedAt =
-    $("played-at").value;
+    $("played-at")?.value;
 
   const notes =
-    $("notes").value.trim();
+    $("notes")?.value.trim();
 
 
   if (!playerFaction) {
 
-    message(
+    setMessage(
       "battle-message",
-      "Please enter your faction."
+      "Enter your faction."
     );
 
     return;
   }
+
 
   if (!opponentName) {
 
-    message(
+    setMessage(
       "battle-message",
-      "Please enter your opponent."
+      "Enter your opponent."
     );
 
     return;
   }
 
 
-  message(
+  setMessage(
     "battle-message",
     "Saving battle..."
   );
 
 
-  const { error } =
+  const insertResult =
     await routineClient
       .from("games")
       .insert({
 
-        group_id: currentGroup.id,
+        group_id:
+          currentGroup.id,
 
-        player_id: currentUser.id,
+        player_id:
+          currentUser.id,
 
-        player_faction: playerFaction,
+        player_faction:
+          playerFaction,
 
-        opponent_name: opponentName,
+        opponent_name:
+          opponentName,
 
-        opponent_faction: opponentFaction,
+        opponent_faction:
+          opponentFaction,
 
-        result: result,
+        result:
+          result,
 
-        player_vp: playerVP,
+        player_vp:
+          playerVP,
 
-        opponent_vp: opponentVP,
+        opponent_vp:
+          opponentVP,
 
-        mission: mission,
+        mission:
+          mission,
 
-        event_name: eventName,
+        event_name:
+          eventName,
 
-        played_at: playedAt || null,
+        played_at:
+          playedAt || null,
 
-        notes: notes
-
+        notes:
+          notes
       });
 
 
-  if (error) {
+  if (insertResult.error) {
 
-    console.error(error);
+    console.error(
+      "Save battle error:",
+      insertResult.error
+    );
 
-    message(
+    setMessage(
       "battle-message",
-      "Could not save battle: " +
-      error.message
+      insertResult.error.message
     );
 
     return;
   }
 
 
-  message(
+  setMessage(
     "battle-message",
     "BATTLE SAVED ✓",
     true
@@ -593,49 +733,58 @@ async function saveBattle() {
   $("event-name").value = "";
   $("notes").value = "";
 
+
   setDefaultDate();
 
 
   await loadGames();
 
-  refreshDashboard();
-  refreshPlayers();
-  refreshFactions();
-  refreshProfile();
+  refreshAll();
 }
 
 
-/* =========================================================
+/* =====================================================
    DASHBOARD
-   ========================================================= */
+   ===================================================== */
 
 function refreshDashboard() {
 
-  const myGames =
+  if (!currentUser) {
+    return;
+  }
+
+
+  const games =
     groupGames.filter(
       game =>
-        game.player_id === currentUser?.id
+        game.player_id ===
+        currentUser.id
     );
 
 
   const wins =
-    myGames.filter(
-      game => game.result === "win"
+    games.filter(
+      game =>
+        game.result === "win"
     ).length;
+
 
   const losses =
-    myGames.filter(
-      game => game.result === "loss"
+    games.filter(
+      game =>
+        game.result === "loss"
     ).length;
 
+
   const draws =
-    myGames.filter(
-      game => game.result === "draw"
+    games.filter(
+      game =>
+        game.result === "draw"
     ).length;
 
 
   $("stat-games").textContent =
-    myGames.length;
+    games.length;
 
   $("stat-wins").textContent =
     wins;
@@ -647,23 +796,30 @@ function refreshDashboard() {
     draws;
 
   $("stat-winrate").textContent =
-    calculateWinRate(
+    winRate(
       wins,
-      myGames.length
+      games.length
     ) + "%";
 
 
   renderLeaderboard();
+
   renderRecentGames();
 }
 
+
+/* =====================================================
+   LEADERBOARD
+   ===================================================== */
 
 function renderLeaderboard() {
 
   const container =
     $("leaderboard");
 
-  if (!container) return;
+  if (!container) {
+    return;
+  }
 
 
   const stats = {};
@@ -671,12 +827,13 @@ function renderLeaderboard() {
 
   groupGames.forEach(game => {
 
-    const playerId =
+    const player =
       game.player_id;
 
-    if (!stats[playerId]) {
 
-      stats[playerId] = {
+    if (!stats[player]) {
+
+      stats[player] = {
         games: 0,
         wins: 0,
         losses: 0,
@@ -685,32 +842,32 @@ function renderLeaderboard() {
     }
 
 
-    stats[playerId].games++;
+    stats[player].games++;
 
 
     if (game.result === "win") {
-      stats[playerId].wins++;
+      stats[player].wins++;
     }
 
     if (game.result === "loss") {
-      stats[playerId].losses++;
+      stats[player].losses++;
     }
 
     if (game.result === "draw") {
-      stats[playerId].draws++;
+      stats[player].draws++;
     }
-
   });
 
 
   const rows =
     Object.entries(stats)
-      .map(([playerId, stat]) => {
+      .map(([id, stats]) => {
 
         const profile =
           groupProfiles.find(
-            p => p.id === playerId
+            p => p.id === id
           );
+
 
         return {
 
@@ -718,26 +875,37 @@ function renderLeaderboard() {
             profile?.display_name ||
             "Unknown Player",
 
-          ...stat,
+          games:
+            stats.games,
 
-          winRate:
-            calculateWinRate(
-              stat.wins,
-              stat.games
+          wins:
+            stats.wins,
+
+          losses:
+            stats.losses,
+
+          draws:
+            stats.draws,
+
+          rate:
+            winRate(
+              stats.wins,
+              stats.games
             )
-
         };
       })
       .sort(
         (a, b) =>
-          b.winRate - a.winRate
+          b.rate - a.rate
       );
 
 
   if (!rows.length) {
 
     container.innerHTML =
-      `<p class="muted">No battles recorded yet.</p>`;
+      `<p class="muted">
+        No battles recorded yet.
+      </p>`;
 
     return;
   }
@@ -750,10 +918,11 @@ function renderLeaderboard() {
         <div class="player-row">
 
           <div>
-            <span class="name">
+
+            <div class="name">
               #${index + 1}
               ${escapeHTML(player.name)}
-            </span>
+            </div>
 
             <div class="muted">
               ${player.games} games ·
@@ -761,10 +930,11 @@ function renderLeaderboard() {
               ${player.losses}L /
               ${player.draws}D
             </div>
+
           </div>
 
           <strong>
-            ${player.winRate}%
+            ${player.rate}%
           </strong>
 
         </div>
@@ -774,33 +944,43 @@ function renderLeaderboard() {
 }
 
 
+/* =====================================================
+   RECENT GAMES
+   ===================================================== */
+
 function renderRecentGames() {
 
   const container =
     $("recent-games");
 
-  if (!container) return;
+  if (!container) {
+    return;
+  }
 
 
-  const recent =
+  const games =
     groupGames.slice(0, 10);
 
 
-  if (!recent.length) {
+  if (!games.length) {
 
     container.innerHTML =
-      `<p class="muted">No battles recorded yet.</p>`;
+      `<p class="muted">
+        No battles recorded yet.
+      </p>`;
 
     return;
   }
 
 
   container.innerHTML =
-    recent.map(game => {
+    games.map(game => {
 
       const profile =
         groupProfiles.find(
-          p => p.id === game.player_id
+          p =>
+            p.id ===
+            game.player_id
         );
 
 
@@ -818,38 +998,53 @@ function renderRecentGames() {
           <div>
 
             <div class="name">
+
               ${escapeHTML(
                 profile?.display_name ||
-                "Unknown"
+                "Player"
               )}
+
               vs
+
               ${escapeHTML(
                 game.opponent_name ||
-                "Unknown"
+                "Opponent"
               )}
+
             </div>
 
             <div class="muted">
+
               ${escapeHTML(
                 game.player_faction ||
                 ""
               )}
+
               vs
+
               ${escapeHTML(
                 game.opponent_faction ||
                 ""
               )}
+
             </div>
 
           </div>
 
           <div class="${resultClass}">
-            ${String(game.result || "").toUpperCase()}
+
+            ${String(
+              game.result || ""
+            ).toUpperCase()}
+
             <br>
+
             <small>
-              ${game.player_vp ?? 0} -
+              ${game.player_vp ?? 0}
+              -
               ${game.opponent_vp ?? 0}
             </small>
+
           </div>
 
         </div>
@@ -859,23 +1054,27 @@ function renderRecentGames() {
 }
 
 
-/* =========================================================
+/* =====================================================
    PLAYERS
-   ========================================================= */
+   ===================================================== */
 
 function refreshPlayers() {
 
   const container =
     $("players-list");
 
-  if (!container) return;
+  if (!container) {
+    return;
+  }
 
 
   if (!groupProfiles.length) {
 
     container.innerHTML =
       `<div class="card">
-        <p class="muted">No players found.</p>
+        <p class="muted">
+          No players found.
+        </p>
       </div>`;
 
     return;
@@ -888,23 +1087,29 @@ function refreshPlayers() {
       const games =
         groupGames.filter(
           game =>
-            game.player_id === profile.id
+            game.player_id ===
+            profile.id
         );
 
 
       const wins =
         games.filter(
-          game => game.result === "win"
+          game =>
+            game.result === "win"
         ).length;
+
 
       const losses =
         games.filter(
-          game => game.result === "loss"
+          game =>
+            game.result === "loss"
         ).length;
+
 
       const draws =
         games.filter(
-          game => game.result === "draw"
+          game =>
+            game.result === "draw"
         ).length;
 
 
@@ -932,7 +1137,7 @@ function refreshPlayers() {
             </div>
 
             <strong>
-              ${calculateWinRate(
+              ${winRate(
                 wins,
                 games.length
               )}%
@@ -947,16 +1152,18 @@ function refreshPlayers() {
 }
 
 
-/* =========================================================
+/* =====================================================
    FACTIONS
-   ========================================================= */
+   ===================================================== */
 
 function refreshFactions() {
 
   const container =
     $("factions-list");
 
-  if (!container) return;
+  if (!container) {
+    return;
+  }
 
 
   const factions = {};
@@ -967,7 +1174,10 @@ function refreshFactions() {
     const faction =
       game.player_faction;
 
-    if (!faction) return;
+
+    if (!faction) {
+      return;
+    }
 
 
     if (!factions[faction]) {
@@ -1003,7 +1213,8 @@ function refreshFactions() {
     Object.entries(factions)
       .sort(
         (a, b) =>
-          b[1].games - a[1].games
+          b[1].games -
+          a[1].games
       );
 
 
@@ -1011,7 +1222,9 @@ function refreshFactions() {
 
     container.innerHTML =
       `<div class="card">
-        <p class="muted">No faction data yet.</p>
+        <p class="muted">
+          No faction data yet.
+        </p>
       </div>`;
 
     return;
@@ -1042,7 +1255,7 @@ function refreshFactions() {
             </div>
 
             <strong>
-              ${calculateWinRate(
+              ${winRate(
                 stat.wins,
                 stat.games
               )}%
@@ -1057,35 +1270,43 @@ function refreshFactions() {
 }
 
 
-/* =========================================================
-   PROFILE STATISTICS
-   ========================================================= */
+/* =====================================================
+   PROFILE
+   ===================================================== */
 
 function refreshProfile() {
 
-  if (!currentUser) return;
+  if (!currentUser) {
+    return;
+  }
 
 
   const games =
     groupGames.filter(
       game =>
-        game.player_id === currentUser.id
+        game.player_id ===
+        currentUser.id
     );
 
 
   const wins =
     games.filter(
-      game => game.result === "win"
+      game =>
+        game.result === "win"
     ).length;
+
 
   const losses =
     games.filter(
-      game => game.result === "loss"
+      game =>
+        game.result === "loss"
     ).length;
+
 
   const draws =
     games.filter(
-      game => game.result === "draw"
+      game =>
+        game.result === "draw"
     ).length;
 
 
@@ -1102,23 +1323,43 @@ function refreshProfile() {
     draws;
 
   $("profile-winrate").textContent =
-    calculateWinRate(
+    winRate(
       wins,
       games.length
     ) + "%";
 }
 
 
-/* =========================================================
+/* =====================================================
+   REFRESH EVERYTHING
+   ===================================================== */
+
+function refreshAll() {
+
+  refreshDashboard();
+
+  refreshPlayers();
+
+  refreshFactions();
+
+  refreshProfile();
+}
+
+
+/* =====================================================
    NAVIGATION
-   ========================================================= */
+   ===================================================== */
 
 function openPage(page) {
 
   document
     .querySelectorAll(".page")
     .forEach(section => {
-      section.classList.add("hidden");
+
+      section.classList.add(
+        "hidden"
+      );
+
     });
 
 
@@ -1127,8 +1368,12 @@ function openPage(page) {
       page + "-page"
     );
 
+
   if (selected) {
-    selected.classList.remove("hidden");
+
+    selected.classList.remove(
+      "hidden"
+    );
   }
 
 
@@ -1145,40 +1390,117 @@ function openPage(page) {
 }
 
 
-/* =========================================================
-   EVENT LISTENERS
-   ========================================================= */
+/* =====================================================
+   DATE
+   ===================================================== */
+
+function setDefaultDate() {
+
+  const input =
+    $("played-at");
+
+  if (!input) {
+    return;
+  }
+
+
+  const now =
+    new Date();
+
+
+  const local =
+    new Date(
+      now.getTime() -
+      now.getTimezoneOffset() *
+      60000
+    );
+
+
+  input.value =
+    local
+      .toISOString()
+      .split("T")[0];
+}
+
+
+/* =====================================================
+   INITIALISE
+   ===================================================== */
 
 document.addEventListener(
   "DOMContentLoaded",
-  () => {
+  async () => {
 
-    $("login-btn")
-      ?.addEventListener(
+    console.log(
+      "ROUTINE 721 JavaScript loaded."
+    );
+
+
+    /*
+      Button listeners are attached here.
+    */
+
+    const loginButton =
+      $("login-btn");
+
+    const signupButton =
+      $("signup-btn");
+
+    const logoutButton =
+      $("logout-btn");
+
+    const saveBattleButton =
+      $("save-battle");
+
+
+    if (loginButton) {
+
+      loginButton.addEventListener(
         "click",
-        login
+        signIn
       );
 
+    } else {
 
-    $("signup-btn")
-      ?.addEventListener(
+      console.error(
+        "LOGIN BUTTON NOT FOUND"
+      );
+    }
+
+
+    if (signupButton) {
+
+      signupButton.addEventListener(
         "click",
-        signup
+        createAccount
       );
 
+    } else {
 
-    $("logout-btn")
-      ?.addEventListener(
+      console.error(
+        "CREATE ACCOUNT BUTTON NOT FOUND"
+      );
+    }
+
+
+    if (logoutButton) {
+
+      logoutButton.addEventListener(
         "click",
-        logout
+        logOut
       );
 
+    }
 
-    $("save-battle")
-      ?.addEventListener(
+
+    if (saveBattleButton) {
+
+      saveBattleButton.addEventListener(
         "click",
         saveBattle
       );
+
+    }
 
 
     document
@@ -1199,27 +1521,62 @@ document.addEventListener(
       });
 
 
-    checkSession();
+    /*
+      Check whether somebody is already logged in.
+    */
+
+    try {
+
+      const sessionResult =
+        await routineClient.auth.getSession();
+
+
+      if (
+        sessionResult.data &&
+        sessionResult.data.session
+      ) {
+
+        currentUser =
+          sessionResult.data.session.user;
+
+        await startApp();
+
+      } else {
+
+        showAuthScreen();
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Startup error:",
+        error
+      );
+
+      showAuthScreen();
+    }
 
   }
 );
 
 
-/* =========================================================
+/* =====================================================
    AUTH STATE
-   ========================================================= */
+   ===================================================== */
 
 routineClient.auth.onAuthStateChange(
-  async (_event, session) => {
+  (_event, session) => {
 
     if (session?.user) {
 
-      currentUser = session.user;
+      currentUser =
+        session.user;
 
     } else {
 
-      currentUser = null;
-
+      currentUser =
+        null;
     }
 
   }
