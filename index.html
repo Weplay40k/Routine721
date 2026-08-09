@@ -6,68 +6,679 @@
 
 <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Routine 721</title>
 
+
 <style>
+
+/* =========================================================
+   BASE
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
 
 html,
 body {
-    margin: 0;
-    padding: 0;
     width: 100%;
     min-height: 100%;
-    background: #080808;
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    min-height: 100vh;
-}
 
+    overflow: hidden;
 
-/* =====================================================
-   EFFECT TEST
-   ===================================================== */
-
-#effect-test {
-
-    position: fixed;
-
-    top: 20px;
-    left: 20px;
-    right: 20px;
-
-    z-index: 999999;
-
-    padding: 30px;
-
-    background: red;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
     color: white;
 
-    font-size: 30px;
+    background:
+        radial-gradient(
+            circle at 20% 50%,
+            rgba(35, 70, 180, 0.18),
+            transparent 45%
+        ),
 
-    font-weight: bold;
+        radial-gradient(
+            circle at 80% 50%,
+            rgba(150, 20, 30, 0.18),
+            transparent 45%
+        ),
 
-    text-align: center;
-
-    box-shadow:
-        0 0 30px red;
-
+        #050507;
 }
 
 
-/* =====================================================
-   MAIN LOGIN AREA
-   ===================================================== */
+/* =========================================================
+   WARP EFFECT LAYER
+   ========================================================= */
+
+#warp {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100vw;
+
+    height: 100vh;
+
+    overflow: hidden;
+
+    pointer-events: none;
+
+    z-index: 1;
+}
+
+
+/* =========================================================
+   CENTRAL WARP GLOW
+   ========================================================= */
+
+.warp-core {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 500px;
+    height: 500px;
+
+    transform:
+        translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(150, 40, 255, 0.13) 0%,
+            rgba(70, 40, 180, 0.08) 30%,
+            rgba(20, 80, 180, 0.04) 50%,
+            transparent 72%
+        );
+
+    filter: blur(2px);
+
+    animation:
+        corePulse 5s ease-in-out infinite;
+}
+
+
+@keyframes corePulse {
+
+    0%,
+    100% {
+
+        transform:
+            translate(-50%, -50%)
+            scale(0.90);
+
+        opacity: 0.55;
+    }
+
+    50% {
+
+        transform:
+            translate(-50%, -50%)
+            scale(1.10);
+
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   WARP RINGS
+   ========================================================= */
+
+.warp-ring {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    border-radius: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    opacity: 0.7;
+}
+
+
+.ring-purple {
+
+    width: 520px;
+    height: 300px;
+
+    border:
+        2px solid
+        rgba(180, 60, 255, 0.30);
+
+    box-shadow:
+        0 0 20px rgba(170, 40, 255, 0.25),
+        inset 0 0 20px rgba(170, 40, 255, 0.12);
+
+    animation:
+        spin1 13s linear infinite;
+}
+
+
+.ring-blue {
+
+    width: 440px;
+    height: 260px;
+
+    border:
+        2px solid
+        rgba(40, 120, 255, 0.28);
+
+    box-shadow:
+        0 0 20px rgba(40, 120, 255, 0.25),
+        inset 0 0 20px rgba(40, 120, 255, 0.12);
+
+    animation:
+        spin2 17s linear infinite;
+}
+
+
+.ring-red {
+
+    width: 600px;
+    height: 350px;
+
+    border:
+        2px solid
+        rgba(255, 40, 40, 0.22);
+
+    box-shadow:
+        0 0 25px rgba(255, 30, 30, 0.20),
+        inset 0 0 25px rgba(255, 30, 30, 0.10);
+
+    animation:
+        spin1 21s linear infinite;
+}
+
+
+.ring-green {
+
+    width: 680px;
+    height: 390px;
+
+    border:
+        1px solid
+        rgba(30, 255, 120, 0.18);
+
+    box-shadow:
+        0 0 25px rgba(30, 255, 120, 0.12);
+
+    animation:
+        spin2 25s linear infinite;
+}
+
+
+@keyframes spin1 {
+
+    from {
+
+        transform:
+            translate(-50%, -50%)
+            rotate(0deg);
+    }
+
+    to {
+
+        transform:
+            translate(-50%, -50%)
+            rotate(360deg);
+    }
+}
+
+
+@keyframes spin2 {
+
+    from {
+
+        transform:
+            translate(-50%, -50%)
+            rotate(360deg);
+    }
+
+    to {
+
+        transform:
+            translate(-50%, -50%)
+            rotate(0deg);
+    }
+}
+
+
+/* =========================================================
+   PARTICLES
+   ========================================================= */
+
+.particle {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    opacity: 0;
+
+    box-shadow:
+        0 0 5px currentColor,
+        0 0 12px currentColor,
+        0 0 25px currentColor;
+
+    animation:
+        warpFly var(--duration) linear infinite;
+
+    animation-delay:
+        var(--delay);
+}
+
+
+/*
+   The bright centre of each ember
+*/
+
+.particle::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 18px;
+    height: 18px;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background:
+        currentColor;
+
+    opacity: 0.25;
+
+    filter: blur(6px);
+}
+
+
+/* =========================================================
+   WARP MOTION
+   ========================================================= */
+
+@keyframes warpFly {
+
+    0% {
+
+        transform:
+            translate(
+                var(--start-x),
+                var(--start-y)
+            )
+            scale(0.1)
+            rotate(0deg);
+
+        opacity: 0;
+    }
+
+
+    8% {
+
+        opacity: 0.9;
+    }
+
+
+    25% {
+
+        transform:
+            translate(
+                var(--mid-x),
+                var(--mid-y)
+            )
+            scale(0.8)
+            rotate(90deg);
+
+        opacity: 1;
+    }
+
+
+    45% {
+
+        transform:
+            translate(
+                var(--curve-x),
+                var(--curve-y)
+            )
+            scale(1.2)
+            rotate(180deg);
+
+        opacity: 0.95;
+    }
+
+
+    65% {
+
+        transform:
+            translate(
+                var(--outer-x),
+                var(--outer-y)
+            )
+            scale(0.9)
+            rotate(280deg);
+
+        opacity: 0.7;
+    }
+
+
+    82% {
+
+        opacity: 0.35;
+    }
+
+
+    100% {
+
+        transform:
+            translate(
+                var(--end-x),
+                var(--end-y)
+            )
+            scale(0.1)
+            rotate(420deg);
+
+        opacity: 0;
+    }
+}
+
+
+/* =========================================================
+   PURPLE EMBERS
+   ========================================================= */
+
+.purple1 {
+
+    color: #c45cff;
+
+    --duration: 12s;
+    --delay: -2s;
+
+    --start-x: -20px;
+    --start-y: 20px;
+
+    --mid-x: -120px;
+    --mid-y: -100px;
+
+    --curve-x: -280px;
+    --curve-y: -190px;
+
+    --outer-x: -420px;
+    --outer-y: -350px;
+
+    --end-x: -650px;
+    --end-y: -600px;
+}
+
+
+.purple2 {
+
+    color: #9b5cff;
+
+    --duration: 16s;
+    --delay: -7s;
+
+    --start-x: 20px;
+    --start-y: 30px;
+
+    --mid-x: 130px;
+    --mid-y: -90px;
+
+    --curve-x: 270px;
+    --curve-y: -220px;
+
+    --outer-x: 430px;
+    --outer-y: -380px;
+
+    --end-x: 680px;
+    --end-y: -650px;
+}
+
+
+.purple3 {
+
+    color: #e879f9;
+
+    --duration: 14s;
+    --delay: -11s;
+
+    --start-x: -30px;
+    --start-y: 40px;
+
+    --mid-x: -150px;
+    --mid-y: -130px;
+
+    --curve-x: -330px;
+    --curve-y: -260px;
+
+    --outer-x: -500px;
+    --outer-y: -430px;
+
+    --end-x: -760px;
+    --end-y: -700px;
+}
+
+
+/* =========================================================
+   RED CHAOS EMBERS
+   ========================================================= */
+
+.red1 {
+
+    color: #ff3030;
+
+    --duration: 13s;
+    --delay: -3s;
+
+    --start-x: 30px;
+    --start-y: 20px;
+
+    --mid-x: 130px;
+    --mid-y: -110px;
+
+    --curve-x: 300px;
+    --curve-y: -200px;
+
+    --outer-x: 470px;
+    --outer-y: -380px;
+
+    --end-x: 720px;
+    --end-y: -650px;
+}
+
+
+.red2 {
+
+    color: #ff5545;
+
+    --duration: 18s;
+    --delay: -9s;
+
+    --start-x: -20px;
+    --start-y: 40px;
+
+    --mid-x: -140px;
+    --mid-y: -140px;
+
+    --curve-x: -300px;
+    --curve-y: -280px;
+
+    --outer-x: -480px;
+    --outer-y: -450px;
+
+    --end-x: -780px;
+    --end-y: -720px;
+}
+
+
+.red3 {
+
+    color: #dc2626;
+
+    --duration: 15s;
+    --delay: -14s;
+
+    --start-x: 40px;
+    --start-y: 50px;
+
+    --mid-x: 180px;
+    --mid-y: -150px;
+
+    --curve-x: 360px;
+    --curve-y: -300px;
+
+    --outer-x: 550px;
+    --outer-y: -500px;
+
+    --end-x: 850px;
+    --end-y: -800px;
+}
+
+
+/* =========================================================
+   BLUE ULTRAMARINE ENERGY
+   ========================================================= */
+
+.blue1 {
+
+    color: #2583ff;
+
+    --duration: 15s;
+    --delay: -5s;
+
+    --start-x: -40px;
+    --start-y: 30px;
+
+    --mid-x: -150px;
+    --mid-y: -100px;
+
+    --curve-x: -320px;
+    --curve-y: -240px;
+
+    --outer-x: -500px;
+    --outer-y: -420px;
+
+    --end-x: -780px;
+    --end-y: -700px;
+}
+
+
+.blue2 {
+
+    color: #38bdf8;
+
+    --duration: 19s;
+    --delay: -12s;
+
+    --start-x: 40px;
+    --start-y: 50px;
+
+    --mid-x: 160px;
+    --mid-y: -120px;
+
+    --curve-x: 340px;
+    --curve-y: -260px;
+
+    --outer-x: 520px;
+    --outer-y: -450px;
+
+    --end-x: 820px;
+    --end-y: -760px;
+}
+
+
+/* =========================================================
+   GREEN WARP ENERGY
+   ========================================================= */
+
+.green1 {
+
+    color: #22ff88;
+
+    --duration: 20s;
+    --delay: -4s;
+
+    --start-x: -50px;
+    --start-y: 50px;
+
+    --mid-x: -180px;
+    --mid-y: -140px;
+
+    --curve-x: -380px;
+    --curve-y: -300px;
+
+    --outer-x: -580px;
+    --outer-y: -500px;
+
+    --end-x: -900px;
+    --end-y: -800px;
+}
+
+
+.green2 {
+
+    color: #4ade80;
+
+    --duration: 18s;
+    --delay: -15s;
+
+    --start-x: 50px;
+    --start-y: 50px;
+
+    --mid-x: 180px;
+    --mid-y: -140px;
+
+    --curve-x: 380px;
+    --curve-y: -300px;
+
+    --outer-x: 580px;
+    --outer-y: -500px;
+
+    --end-x: 900px;
+    --end-y: -820px;
+}
+
+
+/* =========================================================
+   LOGIN LAYER
+   ========================================================= */
 
 .login-container {
+
+    position: relative;
+
+    z-index: 20;
 
     min-height: 100vh;
 
@@ -78,15 +689,16 @@ body {
     justify-content: center;
 
     padding: 20px;
-
 }
 
 
-/* =====================================================
+/* =========================================================
    LOGIN BOX
-   ===================================================== */
+   ========================================================= */
 
 .box {
+
+    position: relative;
 
     width: 90%;
 
@@ -96,18 +708,25 @@ body {
 
     text-align: center;
 
-    background: #151515;
+    background:
+        rgba(12, 12, 15, 0.96);
 
     border:
         1px solid
-        #5a2b24;
+        rgba(201, 168, 76, 0.55);
 
-    border-radius: 12px;
+    border-radius: 10px;
 
     box-shadow:
-        0 0 40px
-        rgba(0, 0, 0, 0.8);
 
+        0 25px 80px
+        rgba(0, 0, 0, 0.9),
+
+        0 0 35px
+        rgba(120, 40, 180, 0.15);
+
+    backdrop-filter:
+        blur(5px);
 }
 
 
@@ -119,6 +738,9 @@ h1 {
 
     letter-spacing: 5px;
 
+    text-shadow:
+        0 0 15px
+        rgba(201, 168, 76, 0.3);
 }
 
 
@@ -128,10 +750,11 @@ h1 {
 
     margin-bottom: 30px;
 
-    color: #888;
+    color: #777;
 
-    letter-spacing: 4px;
+    letter-spacing: 5px;
 
+    font-size: 12px;
 }
 
 
@@ -139,19 +762,23 @@ h2 {
 
     color: #ddd;
 
+    letter-spacing: 2px;
+
 }
 
 
 p {
 
-    color: #aaa;
+    color: #999;
+
+    font-size: 13px;
 
 }
 
 
-/* =====================================================
+/* =========================================================
    INPUTS
-   ===================================================== */
+   ========================================================= */
 
 label {
 
@@ -163,10 +790,13 @@ label {
 
     text-align: left;
 
-    color: #aaa;
+    color: #999;
 
     font-size: 12px;
 
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
 }
 
 
@@ -174,41 +804,44 @@ input {
 
     width: 100%;
 
-    padding: 12px;
+    padding: 13px;
 
     box-sizing: border-box;
 
-    background: #080808;
+    background: #08090b;
 
     color: white;
 
     border:
         1px solid
-        #444;
+        #3b3b40;
 
     border-radius: 6px;
 
     outline: none;
-
 }
 
 
 input:focus {
 
-    border-color: #c9a84c;
+    border-color:
+        #c9a84c;
 
+    box-shadow:
+        0 0 12px
+        rgba(201, 168, 76, 0.15);
 }
 
 
-/* =====================================================
+/* =========================================================
    BUTTONS
-   ===================================================== */
+   ========================================================= */
 
 button {
 
     width: 100%;
 
-    padding: 12px;
+    padding: 13px;
 
     margin-top: 15px;
 
@@ -220,31 +853,41 @@ button {
 
     font-weight: bold;
 
+    letter-spacing: 1px;
 }
 
 
 .primary {
 
-    background: #9b3024;
-
     color: white;
 
+    background:
+        linear-gradient(
+            #a33a2e,
+            #702219
+        );
+
+    border:
+        1px solid
+        #b94b3c;
 }
 
 
 .secondary {
 
-    background: #292929;
+    color: #ddd;
 
-    color: white;
+    background: #1b1b1f;
 
+    border:
+        1px solid
+        #3b3b40;
 }
 
 
 button:hover {
 
     filter: brightness(1.2);
-
 }
 
 
@@ -253,13 +896,12 @@ button:disabled {
     opacity: 0.5;
 
     cursor: wait;
-
 }
 
 
-/* =====================================================
+/* =========================================================
    STATUS
-   ===================================================== */
+   ========================================================= */
 
 #status {
 
@@ -269,27 +911,100 @@ button:disabled {
 
     font-size: 13px;
 
+    color: #777;
 }
 
 
-.error {
+#status.success {
 
-    color: #ff5c5c !important;
-
+    color: #55d879;
 }
 
 
-.success {
+#status.error {
 
-    color: #55d879 !important;
-
+    color: #ff5c5c;
 }
 
 
 .hidden {
 
-    display: none;
+    display: none !important;
+}
 
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .box {
+
+        width: 94%;
+
+        padding:
+            30px
+            20px;
+    }
+
+
+    h1 {
+
+        font-size: 27px;
+
+        letter-spacing: 4px;
+    }
+
+
+    .warp-core {
+
+        width: 320px;
+        height: 320px;
+    }
+
+
+    .ring-purple {
+
+        width: 350px;
+        height: 220px;
+    }
+
+
+    .ring-blue {
+
+        width: 300px;
+        height: 190px;
+    }
+
+
+    .ring-red {
+
+        width: 410px;
+        height: 250px;
+    }
+
+
+    .ring-green {
+
+        width: 450px;
+        height: 270px;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .warp-core,
+    .warp-ring,
+    .particle {
+
+        animation-duration: 30s;
+    }
 }
 
 </style>
@@ -301,20 +1016,41 @@ button:disabled {
 
 
 <!-- =====================================================
-     EFFECT TEST
-     
-     DO NOT REMOVE THIS YET.
+     WARP VORTEX
      ===================================================== -->
 
-<div id="effect-test">
+<div id="warp">
 
-    EFFECT TEST IS WORKING
+    <div class="warp-core"></div>
+
+    <div class="warp-ring ring-purple"></div>
+
+    <div class="warp-ring ring-blue"></div>
+
+    <div class="warp-ring ring-red"></div>
+
+    <div class="warp-ring ring-green"></div>
+
+
+    <div class="particle purple1"></div>
+    <div class="particle purple2"></div>
+    <div class="particle purple3"></div>
+
+    <div class="particle red1"></div>
+    <div class="particle red2"></div>
+    <div class="particle red3"></div>
+
+    <div class="particle blue1"></div>
+    <div class="particle blue2"></div>
+
+    <div class="particle green1"></div>
+    <div class="particle green2"></div>
 
 </div>
 
 
 <!-- =====================================================
-     LOGIN PAGE
+     LOGIN
      ===================================================== -->
 
 <div class="login-container">
@@ -330,7 +1066,7 @@ button:disabled {
     </div>
 
 
-    <!-- ================= LOGIN ================= -->
+    <!-- LOGIN VIEW -->
 
     <div id="loginView">
 
@@ -387,7 +1123,7 @@ button:disabled {
     </div>
 
 
-    <!-- ================= CREATE ACCOUNT ================= -->
+    <!-- CREATE ACCOUNT VIEW -->
 
     <div
         id="createView"
@@ -399,7 +1135,7 @@ button:disabled {
         </h2>
 
         <p>
-            Create your Routine 721 account.
+            Create your Routine 721 War Room account.
         </p>
 
 
@@ -423,7 +1159,7 @@ button:disabled {
             id="createPassword"
             type="password"
             autocomplete="new-password"
-            placeholder="Password"
+            placeholder="Choose a password"
         >
 
 
@@ -447,7 +1183,10 @@ button:disabled {
     </div>
 
 
-    <div id="status">
+    <div
+        id="status"
+        aria-live="polite"
+    >
         Connecting to database...
     </div>
 
@@ -467,7 +1206,7 @@ button:disabled {
 
 /*
 =========================================================
-SUPABASE CONFIGURATION
+SUPABASE CONFIG
 =========================================================
 */
 
@@ -479,12 +1218,12 @@ const SUPABASE_KEY =
 
 
 /*
+=========================================================
+CREATE CLIENT
+
 IMPORTANT:
-
-We use "supabaseClient" instead of "supabase".
-
-This avoids the global-name collision
-you previously encountered.
+Do not rename this to "supabase".
+=========================================================
 */
 
 const supabaseClient =
@@ -536,7 +1275,7 @@ const status =
 
 /*
 =========================================================
-STATUS FUNCTION
+STATUS
 =========================================================
 */
 
@@ -545,9 +1284,11 @@ function setStatus(
     type = ""
 ) {
 
-    status.textContent = message;
+    status.textContent =
+        message;
 
-    status.className = type;
+    status.className =
+        type;
 
 }
 
@@ -562,11 +1303,17 @@ showCreateButton.addEventListener(
     "click",
     function () {
 
-        loginView.classList.add("hidden");
+        loginView.classList.add(
+            "hidden"
+        );
 
-        createView.classList.remove("hidden");
+        createView.classList.remove(
+            "hidden"
+        );
 
         setStatus("");
+
+        createEmail.focus();
 
     }
 );
@@ -582,11 +1329,17 @@ backButton.addEventListener(
     "click",
     function () {
 
-        createView.classList.add("hidden");
+        createView.classList.add(
+            "hidden"
+        );
 
-        loginView.classList.remove("hidden");
+        loginView.classList.remove(
+            "hidden"
+        );
 
         setStatus("");
+
+        loginEmail.focus();
 
     }
 );
@@ -617,11 +1370,11 @@ signInButton.addEventListener(
             );
 
             return;
-
         }
 
 
-        signInButton.disabled = true;
+        signInButton.disabled =
+            true;
 
         signInButton.textContent =
             "SIGNING IN...";
@@ -647,7 +1400,6 @@ signInButton.addEventListener(
                 );
 
                 return;
-
             }
 
 
@@ -670,7 +1422,8 @@ signInButton.addEventListener(
 
         finally {
 
-            signInButton.disabled = false;
+            signInButton.disabled =
+                false;
 
             signInButton.textContent =
                 "SIGN IN";
@@ -701,12 +1454,11 @@ createAccountButton.addEventListener(
         if (!email || !password) {
 
             setStatus(
-                "Please enter your email and password.",
+                "Please enter an email and password.",
                 "error"
             );
 
             return;
-
         }
 
 
@@ -718,11 +1470,11 @@ createAccountButton.addEventListener(
             );
 
             return;
-
         }
 
 
-        createAccountButton.disabled = true;
+        createAccountButton.disabled =
+            true;
 
         createAccountButton.textContent =
             "CREATING...";
@@ -748,7 +1500,6 @@ createAccountButton.addEventListener(
                 );
 
                 return;
-
             }
 
 
@@ -787,7 +1538,8 @@ createAccountButton.addEventListener(
 
         finally {
 
-            createAccountButton.disabled = false;
+            createAccountButton.disabled =
+                false;
 
             createAccountButton.textContent =
                 "CREATE ACCOUNT";
@@ -800,7 +1552,7 @@ createAccountButton.addEventListener(
 
 /*
 =========================================================
-ENTER KEY
+ENTER TO SIGN IN
 =========================================================
 */
 
@@ -817,6 +1569,12 @@ loginPassword.addEventListener(
     }
 );
 
+
+/*
+=========================================================
+ENTER TO CREATE ACCOUNT
+=========================================================
+*/
 
 createPassword.addEventListener(
     "keydown",
