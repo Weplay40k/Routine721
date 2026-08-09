@@ -1,16 +1,12 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Routine 721 — War Room</title>
-
 
 <style>
 
@@ -30,31 +26,21 @@ body {
 
 body {
     min-height: 100vh;
-
     background: #050505;
-
     color: #eee;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 
 /* =========================================================
-   LIGHTWEIGHT BACKGROUND
+   LIGHTWEIGHT WAR BACKGROUND
 ========================================================= */
 
 .war-bg {
     position: fixed;
-
     inset: 0;
-
     z-index: 0;
-
     pointer-events: none;
-
     overflow: hidden;
 
     background:
@@ -71,10 +57,8 @@ body {
 
 .red-glow {
     position: absolute;
-
     left: -15%;
     top: 0;
-
     width: 65%;
     height: 100%;
 
@@ -91,10 +75,8 @@ body {
 
 .blue-glow {
     position: absolute;
-
     right: -15%;
     top: 0;
-
     width: 65%;
     height: 100%;
 
@@ -135,15 +117,12 @@ body {
 
 .center-shadow {
     position: absolute;
-
     left: 50%;
     top: 0;
-
     width: 180px;
     height: 100%;
 
-    transform:
-        translateX(-50%);
+    transform: translateX(-50%);
 
     background:
         linear-gradient(
@@ -165,10 +144,7 @@ body {
 
 .page {
     position: relative;
-
     z-index: 10;
-
-    min-height: 100vh;
 }
 
 
@@ -177,6 +153,8 @@ body {
 ========================================================= */
 
 .login-page {
+
+    min-height: 100vh;
 
     display: flex;
 
@@ -407,6 +385,31 @@ button:disabled {
     color: white;
 }
 
+.delete-btn {
+
+    background: #24100f;
+
+    border:
+        1px solid
+        #71332c;
+
+    color: #e05a50;
+
+    padding:
+        8px 12px;
+
+    font-size: 10px;
+}
+
+.delete-btn:hover {
+
+    background: #421513;
+
+    border-color: #a33d35;
+
+    color: #ff7167;
+}
+
 
 /* =========================================================
    STATUS
@@ -613,7 +616,7 @@ button:disabled {
 
 
 /* =========================================================
-   PANELS
+   CONTENT
 ========================================================= */
 
 .content {
@@ -732,7 +735,7 @@ button:disabled {
 
 
 /* =========================================================
-   GROUP CARDS
+   GROUPS
 ========================================================= */
 
 .group-grid {
@@ -839,7 +842,7 @@ button:disabled {
 
 
 /* =========================================================
-   PLAYER LIST
+   PLAYERS
 ========================================================= */
 
 .player-card {
@@ -1072,6 +1075,23 @@ button:disabled {
     font-size: 10px;
 }
 
+.empty {
+
+    padding: 25px;
+
+    text-align: center;
+
+    color: #555;
+
+    font-size: 11px;
+
+    border:
+        1px dashed
+        #29292e;
+
+    border-radius: 6px;
+}
+
 
 /* =========================================================
    MOBILE
@@ -1144,6 +1164,10 @@ button:disabled {
 <body>
 
 
+<!-- ======================================================
+     BACKGROUND
+====================================================== -->
+
 <div class="war-bg">
 
     <div class="red-glow"></div>
@@ -1156,7 +1180,7 @@ button:disabled {
 
 
 <!-- ======================================================
-     LOGIN
+     LOGIN SCREEN
 ====================================================== -->
 
 <div
@@ -1176,6 +1200,8 @@ button:disabled {
 
         <div class="divider"></div>
 
+
+        <!-- SIGN IN -->
 
         <div id="signInView">
 
@@ -1229,6 +1255,8 @@ button:disabled {
 
         </div>
 
+
+        <!-- CREATE ACCOUNT -->
 
         <div
             id="createView"
@@ -1427,13 +1455,15 @@ button:disabled {
 
 
 <!-- ======================================================
-     CONTENT
+     MAIN CONTENT
 ====================================================== -->
 
 <section class="content">
 
 
-<!-- OVERVIEW -->
+<!-- ======================================================
+     OVERVIEW
+====================================================== -->
 
 <div
     id="overviewPage"
@@ -1635,7 +1665,9 @@ ACTIVE WAR GROUPS
 </div>
 
 
-<!-- GROUPS -->
+<!-- ======================================================
+     GROUPS PAGE
+====================================================== -->
 
 <div
     id="groupsPage"
@@ -1643,6 +1675,7 @@ ACTIVE WAR GROUPS
 >
 
 <div class="panel">
+
 
 <div class="panel-header">
 
@@ -1659,6 +1692,15 @@ WAR GROUP MANAGEMENT
 </div>
 
 
+<div
+    style="
+        display:flex;
+        gap:8px;
+        flex-wrap:wrap;
+    "
+>
+
+
 <button
     id="groupsCreate"
     class="small-btn gold-btn"
@@ -1666,6 +1708,19 @@ WAR GROUP MANAGEMENT
 >
 CREATE GROUP
 </button>
+
+
+<button
+    id="deleteSelectedGroup"
+    class="delete-btn"
+    type="button"
+    style="display:none;"
+>
+DELETE GROUP
+</button>
+
+
+</div>
 
 </div>
 
@@ -1675,12 +1730,15 @@ CREATE GROUP
     class="group-grid"
 ></div>
 
-</div>
 
 </div>
 
+</div>
 
-<!-- PLAYERS -->
+
+<!-- ======================================================
+     PLAYERS PAGE
+====================================================== -->
 
 <div
     id="playersPage"
@@ -1715,7 +1773,9 @@ ALL REGISTERED ROUTINE 721 PLAYERS
 </div>
 
 
-<!-- MATCHES -->
+<!-- ======================================================
+     MATCHES PAGE
+====================================================== -->
 
 <div
     id="matchesPage"
@@ -1791,6 +1851,8 @@ CREATE GROUP
 </h2>
 
 
+<!-- CREATE GROUP -->
+
 <div id="createGroupForm">
 
 <label>
@@ -1805,6 +1867,8 @@ Group Name
 
 </div>
 
+
+<!-- JOIN GROUP -->
 
 <div
     id="joinGroupForm"
@@ -1823,6 +1887,8 @@ Invite Code
 
 </div>
 
+
+<!-- MATCH -->
 
 <div
     id="matchForm"
@@ -1916,7 +1982,7 @@ CONFIRM
 
 /*
 ===========================================================
-SUPABASE
+SUPABASE CONFIGURATION
 ===========================================================
 */
 
@@ -1930,9 +1996,12 @@ const SUPABASE_KEY =
 /*
 IMPORTANT:
 
-Use routineClient.
+We deliberately use "routineClient".
 
-Do NOT call this variable "supabase".
+Do NOT rename this to "supabase".
+
+Your previous website had a global Supabase
+redeclaration problem.
 */
 
 const routineClient =
@@ -1942,9 +2011,11 @@ window.supabase.createClient(
 );
 
 
-/* =========================================================
-   STATE
-========================================================= */
+/*
+===========================================================
+STATE
+===========================================================
+*/
 
 let currentUser = null;
 
@@ -1959,30 +2030,36 @@ let selectedGroup = null;
 let modalMode = null;
 
 
-/* =========================================================
-   HELPER
-========================================================= */
+/*
+===========================================================
+HELPER
+===========================================================
+*/
 
 function $(id) {
+
     return document.getElementById(id);
+
 }
 
 
 function escapeHtml(value) {
 
     return String(value ?? "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
 }
 
 
-/* =========================================================
-   LOGIN MESSAGE
-========================================================= */
+/*
+===========================================================
+LOGIN STATUS
+===========================================================
+*/
 
 function loginMessage(
     message,
@@ -1998,71 +2075,78 @@ function loginMessage(
 }
 
 
-/* =========================================================
-   LOGIN SCREEN SWITCH
-========================================================= */
+/*
+===========================================================
+SIGN IN / CREATE SCREEN
+===========================================================
+*/
 
 $("showCreateButton")
 .addEventListener(
-"click",
-function() {
+    "click",
+    function() {
 
-    $("signInView")
-        .classList
-        .add("hidden");
+        $("signInView")
+            .classList
+            .add("hidden");
 
-    $("createView")
-        .classList
-        .remove("hidden");
+        $("createView")
+            .classList
+            .remove("hidden");
 
-    loginMessage("");
+        loginMessage("");
 
-});
+    }
+);
 
 
 $("backToLoginButton")
 .addEventListener(
-"click",
-function() {
+    "click",
+    function() {
 
-    $("createView")
-        .classList
-        .add("hidden");
+        $("createView")
+            .classList
+            .add("hidden");
 
-    $("signInView")
-        .classList
-        .remove("hidden");
+        $("signInView")
+            .classList
+            .remove("hidden");
 
-    loginMessage("");
+        loginMessage("");
 
-});
+    }
+);
 
 
-/* =========================================================
-   SIGN IN
-========================================================= */
+/*
+===========================================================
+SIGN IN
+===========================================================
+*/
 
 $("signInButton")
 .addEventListener(
-"click",
-signIn
+    "click",
+    signIn
 );
 
 
 $("loginPassword")
 .addEventListener(
-"keydown",
-function(event) {
+    "keydown",
+    function(event) {
 
-    if (
-        event.key === "Enter"
-    ) {
+        if (
+            event.key === "Enter"
+        ) {
 
-        signIn();
+            signIn();
+
+        }
 
     }
-
-});
+);
 
 
 async function signIn() {
@@ -2156,14 +2240,16 @@ async function signIn() {
 }
 
 
-/* =========================================================
-   CREATE ACCOUNT
-========================================================= */
+/*
+===========================================================
+CREATE ACCOUNT
+===========================================================
+*/
 
 $("createAccountButton")
 .addEventListener(
-"click",
-createAccount
+    "click",
+    createAccount
 );
 
 
@@ -2304,9 +2390,11 @@ async function createAccount() {
 }
 
 
-/* =========================================================
-   SHOW WAR ROOM
-========================================================= */
+/*
+===========================================================
+SHOW WAR ROOM
+===========================================================
+*/
 
 async function showWarRoom(user) {
 
@@ -2334,9 +2422,11 @@ async function showWarRoom(user) {
 }
 
 
-/* =========================================================
-   LOAD PLAYERS
-========================================================= */
+/*
+===========================================================
+LOAD PLAYERS
+===========================================================
+*/
 
 async function loadPlayers() {
 
@@ -2376,9 +2466,11 @@ async function loadPlayers() {
 }
 
 
-/* =========================================================
-   LOAD GROUPS
-========================================================= */
+/*
+===========================================================
+LOAD GROUPS
+===========================================================
+*/
 
 async function loadGroups() {
 
@@ -2480,9 +2572,11 @@ async function loadGroups() {
 }
 
 
-/* =========================================================
-   LOAD MATCHES
-========================================================= */
+/*
+===========================================================
+LOAD MATCHES
+===========================================================
+*/
 
 async function loadMatches() {
 
@@ -2504,6 +2598,11 @@ async function loadMatches() {
             result.error
         ) {
 
+            console.error(
+                "Matches error:",
+                result.error
+            );
+
             matches = [];
 
             return;
@@ -2518,6 +2617,8 @@ async function loadMatches() {
 
     catch(error) {
 
+        console.error(error);
+
         matches = [];
 
     }
@@ -2525,9 +2626,11 @@ async function loadMatches() {
 }
 
 
-/* =========================================================
-   REFRESH
-========================================================= */
+/*
+===========================================================
+REFRESH DATA
+===========================================================
+*/
 
 async function refreshData() {
 
@@ -2542,9 +2645,11 @@ async function refreshData() {
 }
 
 
-/* =========================================================
-   RENDER
-========================================================= */
+/*
+===========================================================
+RENDER
+===========================================================
+*/
 
 function render() {
 
@@ -2561,9 +2666,11 @@ function render() {
 }
 
 
-/* =========================================================
-   STATS
-========================================================= */
+/*
+===========================================================
+STATS
+===========================================================
+*/
 
 function renderStats() {
 
@@ -2613,14 +2720,17 @@ function renderStats() {
 }
 
 
-/* =========================================================
-   GROUP CARDS
-========================================================= */
+/*
+===========================================================
+GROUP CARD
+===========================================================
+*/
 
 function makeGroupCard(group) {
 
     const card =
         document.createElement("div");
+
 
     card.className =
         "group-card";
@@ -2647,12 +2757,16 @@ function makeGroupCard(group) {
 
         <div class="group-info">
             ROLE:
-            ${escapeHtml(group.role || "member")}
+            ${escapeHtml(
+                group.role || "member"
+            )}
         </div>
 
         <div class="group-info">
             INVITE:
-            ${escapeHtml(group.invite_code || "—")}
+            ${escapeHtml(
+                group.invite_code || "—"
+            )}
         </div>
 
     `;
@@ -2679,6 +2793,12 @@ function makeGroupCard(group) {
 
 }
 
+
+/*
+===========================================================
+RENDER GROUPS
+===========================================================
+*/
 
 function renderGroups() {
 
@@ -2734,11 +2854,17 @@ function renderGroups() {
 }
 
 
-/* =========================================================
-   SELECTED GROUP
-========================================================= */
+/*
+===========================================================
+SELECTED GROUP + DELETE BUTTON
+===========================================================
+*/
 
 function renderSelectedGroup() {
+
+    const deleteButton =
+        $("deleteSelectedGroup");
+
 
     if (
         selectedGroup
@@ -2748,10 +2874,34 @@ function renderSelectedGroup() {
             .textContent =
             selectedGroup.name;
 
+
         $("selectedGroupCode")
             .textContent =
             selectedGroup.invite_code ||
             "—";
+
+
+        /*
+        Only the owner can see
+        the DELETE GROUP button.
+        */
+
+        if (
+            currentUser &&
+            selectedGroup.created_by ===
+            currentUser.id
+        ) {
+
+            deleteButton.style.display =
+                "inline-block";
+
+        }
+        else {
+
+            deleteButton.style.display =
+                "none";
+
+        }
 
     }
     else {
@@ -2760,18 +2910,25 @@ function renderSelectedGroup() {
             .textContent =
             "NO GROUP SELECTED";
 
+
         $("selectedGroupCode")
             .textContent =
             "—";
+
+
+        deleteButton.style.display =
+            "none";
 
     }
 
 }
 
 
-/* =========================================================
-   PLAYER STATISTICS
-========================================================= */
+/*
+===========================================================
+PLAYER MATCH STATISTICS
+===========================================================
+*/
 
 function playerMatches(
     playerId
@@ -2842,9 +2999,11 @@ function playerStats(
 }
 
 
-/* =========================================================
-   PLAYERS
-========================================================= */
+/*
+===========================================================
+PLAYERS
+===========================================================
+*/
 
 function renderPlayers() {
 
@@ -3009,9 +3168,11 @@ function renderPlayers() {
 }
 
 
-/* =========================================================
-   MATCHES
-========================================================= */
+/*
+===========================================================
+MATCHES
+===========================================================
+*/
 
 function renderMatches() {
 
@@ -3053,12 +3214,12 @@ function renderMatches() {
                 : "Player";
 
 
-            const resultClass =
+            const resultColor =
                 match.result === "win"
-                ? "win"
+                ? "#59c879"
                 : match.result === "loss"
-                ? "loss"
-                : "draw";
+                ? "#d85a50"
+                : "#c9a84c";
 
 
             const row =
@@ -3091,15 +3252,7 @@ function renderMatches() {
 
                 <div
                     style="
-                        color:
-                        ${
-                            resultClass === "win"
-                            ? "#59c879"
-                            : resultClass === "loss"
-                            ? "#d85a50"
-                            : "#c9a84c"
-                        };
-
+                        color:${resultColor};
                         font-weight:bold;
                     "
                 >
@@ -3124,9 +3277,11 @@ function renderMatches() {
 }
 
 
-/* =========================================================
-   NAVIGATION
-========================================================= */
+/*
+===========================================================
+NAVIGATION
+===========================================================
+*/
 
 document
 .querySelectorAll(
@@ -3193,13 +3348,13 @@ function showPage(page) {
 }
 
 
-/* =========================================================
-   MODAL
-========================================================= */
+/*
+===========================================================
+MODAL
+===========================================================
+*/
 
-function openModal(
-    mode
-) {
+function openModal(mode) {
 
     modalMode =
         mode;
@@ -3291,61 +3446,523 @@ function closeModal() {
 
 $("modalCancel")
 .addEventListener(
-"click",
-closeModal
+    "click",
+    closeModal
 );
 
 
-/* =========================================================
-   MODAL CONFIRM
-========================================================= */
+/*
+===========================================================
+CREATE / JOIN / MATCH
+===========================================================
+*/
 
 $("modalConfirm")
 .addEventListener(
-"click",
-async function() {
+    "click",
+    async function() {
 
-    const status =
-        $("modalStatus");
-
-
-    status.textContent =
-        "Processing...";
+        const status =
+            $("modalStatus");
 
 
-    try {
+        status.textContent =
+            "Processing...";
 
 
-        /* CREATE GROUP */
+        try {
 
-        if (
-            modalMode ===
-            "create"
-        ) {
 
-            const name =
+            /*
+            CREATE GROUP
+            */
+
+            if (
+                modalMode ===
+                "create"
+            ) {
+
+                const name =
+                    $("groupName")
+                    .value
+                    .trim();
+
+
+                if (!name) {
+
+                    status.textContent =
+                        "Enter a group name.";
+
+                    return;
+
+                }
+
+
+                const result =
+                    await routineClient
+                    .rpc(
+                        "create_group",
+                        {
+                            p_name:
+                                name
+                        }
+                    );
+
+
+                if (
+                    result.error
+                ) {
+
+                    status.textContent =
+                        result.error.message;
+
+                    return;
+
+                }
+
+
                 $("groupName")
-                .value
-                .trim();
+                    .value =
+                    "";
 
 
-            if (!name) {
+                closeModal();
 
-                status.textContent =
-                    "Enter a group name.";
+                await refreshData();
+
+                showPage(
+                    "groups"
+                );
 
                 return;
 
             }
 
 
+            /*
+            JOIN GROUP
+            */
+
+            if (
+                modalMode ===
+                "join"
+            ) {
+
+                const code =
+                    $("inviteCode")
+                    .value
+                    .trim();
+
+
+                if (!code) {
+
+                    status.textContent =
+                        "Enter an invite code.";
+
+                    return;
+
+                }
+
+
+                const group =
+                    await routineClient
+                    .from("groups")
+                    .select("id")
+                    .eq(
+                        "invite_code",
+                        code
+                    )
+                    .maybeSingle();
+
+
+                if (
+                    group.error
+                ) {
+
+                    status.textContent =
+                        group.error.message;
+
+                    return;
+
+                }
+
+
+                if (
+                    !group.data
+                ) {
+
+                    status.textContent =
+                        "Group not found.";
+
+                    return;
+
+                }
+
+
+                const insert =
+                    await routineClient
+                    .from("group_members")
+                    .insert({
+
+                        group_id:
+                            group.data.id,
+
+                        user_id:
+                            currentUser.id,
+
+                        role:
+                            "member"
+
+                    });
+
+
+                if (
+                    insert.error
+                ) {
+
+                    status.textContent =
+                        insert.error.message;
+
+                    return;
+
+                }
+
+
+                $("inviteCode")
+                    .value =
+                    "";
+
+
+                closeModal();
+
+                await refreshData();
+
+                showPage(
+                    "groups"
+                );
+
+                return;
+
+            }
+
+
+            /*
+            RECORD MATCH
+            */
+
+            if (
+                modalMode ===
+                "match"
+            ) {
+
+                if (
+                    !selectedGroup
+                ) {
+
+                    status.textContent =
+                        "Select a group first.";
+
+                    return;
+
+                }
+
+
+                const opponent =
+                    $("matchOpponent")
+                    .value
+                    .trim();
+
+
+                const result =
+                    await routineClient
+                    .from("matches")
+                    .insert({
+
+                        group_id:
+                            selectedGroup.id,
+
+                        user_id:
+                            currentUser.id,
+
+                        result:
+                            $("matchResult")
+                            .value,
+
+                        opponent:
+                            opponent ||
+                            null,
+
+                        notes:
+                            $("matchNotes")
+                            .value
+                            .trim() ||
+                            null
+
+                    });
+
+
+                if (
+                    result.error
+                ) {
+
+                    status.textContent =
+                        result.error.message;
+
+                    return;
+
+                }
+
+
+                $("matchOpponent")
+                    .value =
+                    "";
+
+                $("matchNotes")
+                    .value =
+                    "";
+
+
+                closeModal();
+
+                await refreshData();
+
+                showPage(
+                    "matches"
+                );
+
+            }
+
+        }
+
+        catch(error) {
+
+            console.error(error);
+
+            status.textContent =
+                error.message;
+
+        }
+
+    }
+);
+
+
+/*
+===========================================================
+CREATE GROUP BUTTONS
+===========================================================
+*/
+
+$("createGroupButton")
+.addEventListener(
+    "click",
+    function() {
+
+        openModal(
+            "create"
+        );
+
+    }
+);
+
+
+$("groupsCreate")
+.addEventListener(
+    "click",
+    function() {
+
+        openModal(
+            "create"
+        );
+
+    }
+);
+
+
+/*
+===========================================================
+JOIN GROUP
+===========================================================
+*/
+
+$("joinGroupButton")
+.addEventListener(
+    "click",
+    function() {
+
+        openModal(
+            "join"
+        );
+
+    }
+);
+
+
+/*
+===========================================================
+QUICK ACTIONS
+===========================================================
+*/
+
+$("quickCreate")
+.addEventListener(
+    "click",
+    function() {
+
+        openModal(
+            "create"
+        );
+
+    }
+);
+
+
+$("quickPlayers")
+.addEventListener(
+    "click",
+    function() {
+
+        showPage(
+            "players"
+        );
+
+    }
+);
+
+
+$("quickMatch")
+.addEventListener(
+    "click",
+    function() {
+
+        openModal(
+            "match"
+        );
+
+    }
+);
+
+
+$("recordMatchButton")
+.addEventListener(
+    "click",
+    function() {
+
+        openModal(
+            "match"
+        );
+
+    }
+);
+
+
+/*
+===========================================================
+DELETE GROUP
+===========================================================
+*/
+
+$("deleteSelectedGroup")
+.addEventListener(
+    "click",
+    async function() {
+
+        /*
+        No group selected.
+        */
+
+        if (
+            !selectedGroup
+        ) {
+
+            alert(
+                "Select a group first."
+            );
+
+            return;
+
+        }
+
+
+        /*
+        Extra client-side owner check.
+        The database function also checks this,
+        so this is NOT the security mechanism.
+        */
+
+        if (
+            !currentUser ||
+            selectedGroup.created_by !==
+            currentUser.id
+        ) {
+
+            alert(
+                "Only the group owner can delete this group."
+            );
+
+            return;
+
+        }
+
+
+        /*
+        Strong confirmation.
+        */
+
+        const confirmed =
+            confirm(
+
+                "DELETE GROUP?\n\n" +
+
+                selectedGroup.name +
+
+                "\n\n" +
+
+                "This will permanently delete:\n" +
+
+                "• The group\n" +
+
+                "• All group members\n" +
+
+                "• All matches belonging to this group\n\n" +
+
+                "THIS CANNOT BE UNDONE.\n\n" +
+
+                "Continue?"
+
+            );
+
+
+        if (
+            !confirmed
+        ) {
+
+            return;
+
+        }
+
+
+        try {
+
+            this.disabled =
+                true;
+
+            this.textContent =
+                "DELETING...";
+
+
+            /*
+            Call the secure Supabase
+            database function.
+            */
+
             const result =
                 await routineClient
                 .rpc(
-                    "create_group",
+                    "delete_group",
                     {
-                        p_name:
-                            name
+                        p_group_id:
+                            selectedGroup.id
                     }
                 );
 
@@ -3354,363 +3971,146 @@ async function() {
                 result.error
             ) {
 
-                status.textContent =
-                    result.error.message;
+                console.error(
+                    "Delete group error:",
+                    result.error
+                );
+
+
+                alert(
+                    "Could not delete group:\n\n" +
+                    result.error.message
+                );
 
                 return;
 
             }
 
 
-            closeModal();
+            /*
+            Clear selected group.
+            */
+
+            selectedGroup =
+                null;
+
+
+            /*
+            Reload everything.
+            */
 
             await refreshData();
+
+
+            /*
+            Return to Groups page.
+            */
 
             showPage(
                 "groups"
             );
 
-            return;
 
         }
 
+        catch(error) {
 
-        /* JOIN GROUP */
-
-        if (
-            modalMode ===
-            "join"
-        ) {
-
-            const code =
-                $("inviteCode")
-                .value
-                .trim();
-
-
-            if (!code) {
-
-                status.textContent =
-                    "Enter an invite code.";
-
-                return;
-
-            }
-
-
-            const group =
-                await routineClient
-                .from("groups")
-                .select(
-                    "id"
-                )
-                .eq(
-                    "invite_code",
-                    code
-                )
-                .maybeSingle();
-
-
-            if (
-                group.error
-            ) {
-
-                status.textContent =
-                    group.error.message;
-
-                return;
-
-            }
-
-
-            if (
-                !group.data
-            ) {
-
-                status.textContent =
-                    "Group not found.";
-
-                return;
-
-            }
-
-
-            const insert =
-                await routineClient
-                .from("group_members")
-                .insert({
-
-                    group_id:
-                        group.data.id,
-
-                    user_id:
-                        currentUser.id,
-
-                    role:
-                        "member"
-
-                });
-
-
-            if (
-                insert.error
-            ) {
-
-                status.textContent =
-                    insert.error.message;
-
-                return;
-
-            }
-
-
-            closeModal();
-
-            await refreshData();
-
-            showPage(
-                "groups"
+            console.error(
+                error
             );
 
-            return;
 
-        }
-
-
-        /* MATCH */
-
-        if (
-            modalMode ===
-            "match"
-        ) {
-
-            if (
-                !selectedGroup
-            ) {
-
-                status.textContent =
-                    "Select a group first.";
-
-                return;
-
-            }
-
-
-            const opponent =
-                $("matchOpponent")
-                .value
-                .trim();
-
-
-            const result =
-                await routineClient
-                .from("matches")
-                .insert({
-
-                    group_id:
-                        selectedGroup.id,
-
-                    user_id:
-                        currentUser.id,
-
-                    result:
-                        $("matchResult")
-                        .value,
-
-                    opponent:
-                        opponent || null,
-
-                    notes:
-                        $("matchNotes")
-                        .value
-                        .trim() || null
-
-                });
-
-
-            if (
-                result.error
-            ) {
-
-                status.textContent =
-                    result.error.message;
-
-                return;
-
-            }
-
-
-            closeModal();
-
-            await refreshData();
-
-            showPage(
-                "matches"
+            alert(
+                "Delete error:\n\n" +
+                error.message
             );
 
         }
 
+        finally {
+
+            this.disabled =
+                false;
+
+            this.textContent =
+                "DELETE GROUP";
+
+        }
+
     }
-
-    catch(error) {
-
-        console.error(error);
-
-        status.textContent =
-            error.message;
-
-    }
-
-});
+);
 
 
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-$("createGroupButton")
-.addEventListener(
-"click",
-function() {
-
-    openModal(
-        "create"
-    );
-
-});
-
-
-$("groupsCreate")
-.addEventListener(
-"click",
-function() {
-
-    openModal(
-        "create"
-    );
-
-});
-
-
-$("joinGroupButton")
-.addEventListener(
-"click",
-function() {
-
-    openModal(
-        "join"
-    );
-
-});
-
-
-$("quickCreate")
-.addEventListener(
-"click",
-function() {
-
-    openModal(
-        "create"
-    );
-
-});
-
-
-$("quickPlayers")
-.addEventListener(
-"click",
-function() {
-
-    showPage(
-        "players"
-    );
-
-});
-
-
-$("quickMatch")
-.addEventListener(
-"click",
-function() {
-
-    openModal(
-        "match"
-    );
-
-});
-
-
-$("recordMatchButton")
-.addEventListener(
-"click",
-function() {
-
-    openModal(
-        "match"
-    );
-
-});
-
-
-/* =========================================================
-   SIGN OUT
-========================================================= */
+/*
+===========================================================
+SIGN OUT
+===========================================================
+*/
 
 $("signOutButton")
 .addEventListener(
-"click",
-async function() {
+    "click",
+    async function() {
 
-    await routineClient
-    .auth
-    .signOut();
+        await routineClient
+            .auth
+            .signOut();
 
-});
+    }
+);
 
 
-/* =========================================================
-   AUTH STATE
-========================================================= */
+/*
+===========================================================
+AUTH STATE
+===========================================================
+*/
 
 routineClient
 .auth
 .onAuthStateChange(
-function(
-    event,
-    session
-) {
-
-    if (
-        session &&
-        session.user
+    function(
+        event,
+        session
     ) {
 
-        showWarRoom(
+        if (
+            session &&
             session.user
-        );
+        ) {
+
+            showWarRoom(
+                session.user
+            );
+
+        }
+        else {
+
+            currentUser =
+                null;
+
+            selectedGroup =
+                null;
+
+            $("warRoom")
+                .classList
+                .add("hidden");
+
+            $("loginScreen")
+                .classList
+                .remove("hidden");
+
+        }
 
     }
-    else {
-
-        currentUser =
-            null;
-
-        $("warRoom")
-            .classList
-            .add("hidden");
-
-        $("loginScreen")
-            .classList
-            .remove("hidden");
-
-    }
-
-});
+);
 
 
-/* =========================================================
-   INITIALISE
-========================================================= */
+/*
+===========================================================
+INITIALISE
+===========================================================
+*/
 
 async function initialise() {
 
@@ -3758,6 +4158,8 @@ async function initialise() {
 
     catch(error) {
 
+        console.error(error);
+
         loginMessage(
             error.message,
             "error"
@@ -3774,3 +4176,4 @@ initialise();
 
 </body>
 </html>
+```
