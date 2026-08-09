@@ -1,106 +1,428 @@
-```css
+```css id="3n4kq8"
 /* =========================================================
    ROUTINE 721
-   WAR ROOM PARTICLE EFFECTS
-   Purple / Red / Blue / Green flowing embers
+   WAR ROOM
+   CHAOS / ULTRAMARINES INSPIRED WARP VORTEX
    ========================================================= */
 
-
-/* ---------------------------------------------------------
-   BASIC PAGE
-   --------------------------------------------------------- */
-
-html,
-body {
-    margin: 0;
-    padding: 0;
-
-    width: 100%;
-    min-height: 100%;
-
-    background: #050505;
+* {
+    box-sizing: border-box;
 }
 
+
+html {
+    min-height: 100%;
+}
+
+
 body {
-    position: relative;
+    margin: 0;
 
     min-height: 100vh;
 
     overflow: hidden;
 
-    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 18% 50%,
+            rgba(35, 80, 170, 0.22),
+            transparent 35%
+        ),
+
+        radial-gradient(
+            circle at 82% 50%,
+            rgba(170, 30, 25, 0.22),
+            transparent 35%
+        ),
+
+        linear-gradient(
+            115deg,
+            #02060d,
+            #08090b 45%,
+            #100404
+        );
 }
 
 
-/* ---------------------------------------------------------
-   KEEP THE EXISTING LOGIN MENU ABOVE THE PARTICLES
-   --------------------------------------------------------- */
+/* =========================================================
+   LOGIN CONTAINER
+   ========================================================= */
+
+.login-container {
+    position: relative;
+
+    z-index: 10;
+
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+}
+
+
+/* =========================================================
+   LOGIN BOX
+   ========================================================= */
 
 .box {
     position: relative;
 
     z-index: 10;
+
+    width: 90%;
+    max-width: 500px;
+
+    padding: 40px;
+
+    text-align: center;
+
+    background:
+        rgba(15, 15, 17, 0.94);
+
+    border:
+        1px solid
+        rgba(201, 168, 76, 0.45);
+
+    border-radius: 6px;
+
+    box-shadow:
+        0 25px 80px
+        rgba(0, 0, 0, 0.85),
+
+        0 0 60px
+        rgba(0, 0, 0, 0.7);
+
+    backdrop-filter: blur(8px);
 }
 
 
 /* =========================================================
-   PARTICLE CONTAINER
+   TITLE
    ========================================================= */
 
-.login-particles {
+h1 {
+    margin:
+        0
+        0
+        8px;
+
+    color: #c9a84c;
+
+    letter-spacing: 5px;
+
+    font-size: 32px;
+
+    text-shadow:
+        0 0 10px
+        rgba(201, 168, 76, 0.25);
+}
+
+
+.subtitle {
+    margin-bottom: 28px;
+
+    color: #777;
+
+    font-size: 12px;
+
+    letter-spacing: 5px;
+}
+
+
+h2 {
+    margin:
+        0
+        0
+        12px;
+
+    color: #ddd;
+
+    font-size: 18px;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+.intro {
+    color: #888;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    margin-bottom: 22px;
+}
+
+
+/* =========================================================
+   LABELS
+   ========================================================= */
+
+label {
+    display: block;
+
+    margin:
+        14px
+        0
+        6px;
+
+    text-align: left;
+
+    color: #999;
+
+    font-size: 12px;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+input {
+    width: 100%;
+
+    padding: 13px;
+
+    color: white;
+
+    background:
+        #08090a;
+
+    border:
+        1px solid
+        #36393d;
+
+    border-radius: 4px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+
+input::placeholder {
+    color: #555;
+}
+
+
+input:focus {
+    border-color:
+        #c9a84c;
+
+    box-shadow:
+        0 0 12px
+        rgba(201, 168, 76, 0.15);
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+button {
+    width: 100%;
+
+    margin-top: 14px;
+
+    padding: 13px;
+
+    border-radius: 4px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+    letter-spacing: 1.5px;
+
+    transition:
+        transform 0.15s,
+        box-shadow 0.2s,
+        background 0.2s;
+}
+
+
+button:hover {
+    transform:
+        translateY(-1px);
+}
+
+
+button:active {
+    transform:
+        translateY(1px);
+}
+
+
+button:disabled {
+    opacity: 0.5;
+
+    cursor: wait;
+}
+
+
+.primary-button {
+    color: white;
+
+    background:
+        linear-gradient(
+            180deg,
+            #a83a2c,
+            #71231c
+        );
+
+    border:
+        1px solid
+        #b74334;
+
+    box-shadow:
+        0 5px 20px
+        rgba(150, 35, 25, 0.2);
+}
+
+
+.primary-button:hover {
+    background:
+        linear-gradient(
+            180deg,
+            #c94a38,
+            #8a2b21
+        );
+
+    box-shadow:
+        0 7px 25px
+        rgba(180, 40, 25, 0.3);
+}
+
+
+.secondary-button {
+    color: #ccc;
+
+    background:
+        #1b1d20;
+
+    border:
+        1px solid
+        #3a3d40;
+}
+
+
+.secondary-button:hover {
+    background:
+        #282b2f;
+
+    border-color:
+        #555;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.status {
+    min-height: 22px;
+
+    margin-top: 18px;
+
+    color: #777;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+.status.success {
+    color: #63c982;
+}
+
+
+.status.error {
+    color: #e05a4f;
+}
+
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =========================================================
+   WARP EFFECT
+   ========================================================= */
+
+#warp-effects {
     position: fixed;
 
     inset: 0;
 
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
 
     overflow: hidden;
 
     pointer-events: none;
 
-    z-index: 2;
+    z-index: 1;
 }
 
 
 /* =========================================================
-   INDIVIDUAL EMBER
+   VORTEX PARTICLES
    ========================================================= */
 
-.login-particles span {
+.warp-particle {
     position: absolute;
 
-    bottom: -30px;
+    left: 50%;
+    top: 50%;
 
-    width: 3px;
-    height: 3px;
+    width: 4px;
+    height: 4px;
 
     border-radius: 50%;
 
-    background: #ffffff;
+    background: currentColor;
+
+    color: #a855f7;
 
     opacity: 0;
 
-    filter: blur(0.2px);
+    box-shadow:
+        0 0 5px currentColor,
+        0 0 12px currentColor,
+        0 0 25px currentColor;
 
     animation:
-        emberFlow
-        linear
-        infinite;
+        warpMove var(--speed)
+        linear infinite,
 
-    /*
-       Colour changes continuously while moving upward.
-    */
+        warpColour var(--colour-speed)
+        linear infinite;
 
-    animation-name: emberFlow, emberColour;
-
-    animation-timing-function:
-        ease-in-out,
-        linear;
-
-    animation-iteration-count:
-        infinite,
-        infinite;
+    animation-delay:
+        var(--delay),
+        var(--delay);
 }
 
 
@@ -108,13 +430,13 @@ body {
    PARTICLE GLOW
    ========================================================= */
 
-.login-particles span::after {
+.warp-particle::after {
     content: "";
 
     position: absolute;
 
-    width: 14px;
-    height: 14px;
+    width: 18px;
+    height: 18px;
 
     left: 50%;
     top: 50%;
@@ -124,156 +446,91 @@ body {
 
     border-radius: 50%;
 
-    background: inherit;
+    background: currentColor;
 
-    opacity: 0.22;
+    opacity: 0.18;
 
-    filter: blur(5px);
+    filter: blur(6px);
 }
 
 
 /* =========================================================
-   PURPLE PARTICLES
+   WARP MOVEMENT
    ========================================================= */
 
-.login-particles .purple {
-    background: #a855f7;
-
-    box-shadow:
-        0 0 5px #a855f7,
-        0 0 12px #7e22ce,
-        0 0 22px rgba(168, 85, 247, 0.65);
-}
-
-
-/* =========================================================
-   RED PARTICLES
-   ========================================================= */
-
-.login-particles .red {
-    background: #ef3b2d;
-
-    box-shadow:
-        0 0 5px #ef3b2d,
-        0 0 12px #b91c1c,
-        0 0 22px rgba(239, 59, 45, 0.65);
-}
-
-
-/* =========================================================
-   BLUE PARTICLES
-   ========================================================= */
-
-.login-particles .blue {
-    background: #3b82f6;
-
-    box-shadow:
-        0 0 5px #3b82f6,
-        0 0 12px #1d4ed8,
-        0 0 22px rgba(59, 130, 246, 0.65);
-}
-
-
-/* =========================================================
-   GREEN PARTICLES
-   ========================================================= */
-
-.login-particles .green {
-    background: #39ff88;
-
-    box-shadow:
-        0 0 5px #39ff88,
-        0 0 12px #16a34a,
-        0 0 22px rgba(57, 255, 136, 0.65);
-}
-
-
-/* =========================================================
-   LARGE EMBERS
-   ========================================================= */
-
-.login-particles .large {
-    width: 5px;
-    height: 5px;
-}
-
-
-/* =========================================================
-   SMALL EMBERS
-   ========================================================= */
-
-.login-particles .small {
-    width: 2px;
-    height: 2px;
-}
-
-
-/* =========================================================
-   MAIN FLOWING MOTION
-   ========================================================= */
-
-@keyframes emberFlow {
+@keyframes warpMove {
 
     0% {
+
         transform:
-            translate3d(
-                0,
-                30px,
-                0
+            translate(
+                var(--start-x),
+                var(--start-y)
             )
-            scale(0.35);
+            rotate(0deg)
+            scale(0.15);
 
         opacity: 0;
     }
 
+
     8% {
-        opacity: 0.8;
+
+        opacity: 0.9;
     }
+
 
     25% {
+
         transform:
-            translate3d(
-                18px,
-                -25vh,
-                0
+            translate(
+                var(--mid-x),
+                var(--mid-y)
             )
+            rotate(120deg)
             scale(0.8);
+
+        opacity: 0.85;
     }
+
 
     50% {
+
         transform:
-            translate3d(
-                -25px,
-                -55vh,
-                0
+            translate(
+                var(--curve-x),
+                var(--curve-y)
             )
-            scale(1);
+            rotate(240deg)
+            scale(1.15);
+
+        opacity: 0.7;
     }
 
-    70% {
+
+    75% {
+
         transform:
-            translate3d(
-                30px,
-                -75vh,
-                0
+            translate(
+                var(--outer-x),
+                var(--outer-y)
             )
-            scale(0.85);
+            rotate(360deg)
+            scale(0.8);
 
-        opacity: 0.65;
+        opacity: 0.45;
     }
 
-    90% {
-        opacity: 0.25;
-    }
 
     100% {
+
         transform:
-            translate3d(
-                -15px,
-                -115vh,
-                0
+            translate(
+                var(--end-x),
+                var(--end-y)
             )
-            scale(0.25);
+            rotate(520deg)
+            scale(0.1);
 
         opacity: 0;
     }
@@ -282,334 +539,544 @@ body {
 
 /* =========================================================
    COLOUR SHIFT
-   Purple
-   → Blue
-   → Green
-   → Red
-   → Purple
    ========================================================= */
 
-@keyframes emberColour {
+@keyframes warpColour {
 
     0% {
         filter:
             hue-rotate(0deg)
-            blur(0.2px);
+            brightness(0.9);
     }
 
     25% {
         filter:
-            hue-rotate(65deg)
-            blur(0.2px);
+            hue-rotate(90deg)
+            brightness(1.35);
     }
 
     50% {
         filter:
-            hue-rotate(140deg)
-            blur(0.2px);
+            hue-rotate(180deg)
+            brightness(1.15);
     }
 
     75% {
         filter:
-            hue-rotate(230deg)
-            blur(0.2px);
+            hue-rotate(270deg)
+            brightness(1.4);
     }
 
     100% {
         filter:
             hue-rotate(360deg)
-            blur(0.2px);
+            brightness(0.9);
     }
 }
 
 
 /* =========================================================
-   PARTICLE POSITIONS
+   PARTICLE PATHS
    ========================================================= */
 
-.login-particles span:nth-child(1) {
-    left: 3%;
+.p1 {
+    color: #a855f7;
 
-    animation-duration:
-        17s,
-        17s;
+    --speed: 18s;
+    --colour-speed: 13s;
+    --delay: -2s;
+
+    --start-x: -15px;
+    --start-y: 40px;
+
+    --mid-x: -170px;
+    --mid-y: -100px;
+
+    --curve-x: -270px;
+    --curve-y: -300px;
+
+    --outer-x: -190px;
+    --outer-y: -500px;
+
+    --end-x: 50px;
+    --end-y: -720px;
 }
 
-.login-particles span:nth-child(2) {
-    left: 8%;
 
-    animation-duration:
-        21s,
-        21s;
+.p2 {
+    color: #ef3b2d;
 
-    animation-delay:
-        3s,
-        3s;
+    --speed: 21s;
+    --colour-speed: 15s;
+    --delay: -7s;
+
+    --start-x: 20px;
+    --start-y: 40px;
+
+    --mid-x: 170px;
+    --mid-y: -100px;
+
+    --curve-x: 270px;
+    --curve-y: -300px;
+
+    --outer-x: 190px;
+    --outer-y: -500px;
+
+    --end-x: -50px;
+    --end-y: -720px;
 }
 
-.login-particles span:nth-child(3) {
-    left: 14%;
 
-    animation-duration:
-        19s,
-        19s;
+.p3 {
+    color: #3b82f6;
 
-    animation-delay:
-        7s,
-        7s;
+    --speed: 19s;
+    --colour-speed: 14s;
+    --delay: -11s;
+
+    --start-x: -40px;
+    --start-y: 30px;
+
+    --mid-x: -250px;
+    --mid-y: -100px;
+
+    --curve-x: -370px;
+    --curve-y: -300px;
+
+    --outer-x: -300px;
+    --outer-y: -500px;
+
+    --end-x: -100px;
+    --end-y: -730px;
 }
 
-.login-particles span:nth-child(4) {
-    left: 21%;
 
-    animation-duration:
-        24s,
-        24s;
+.p4 {
+    color: #39ff88;
 
-    animation-delay:
-        1s,
-        1s;
+    --speed: 23s;
+    --colour-speed: 17s;
+    --delay: -4s;
+
+    --start-x: 40px;
+    --start-y: 30px;
+
+    --mid-x: 250px;
+    --mid-y: -100px;
+
+    --curve-x: 370px;
+    --curve-y: -300px;
+
+    --outer-x: 300px;
+    --outer-y: -500px;
+
+    --end-x: 100px;
+    --end-y: -730px;
 }
 
-.login-particles span:nth-child(5) {
-    left: 28%;
 
-    animation-duration:
-        18s,
-        18s;
+.p5 {
+    color: #c084fc;
 
-    animation-delay:
-        5s,
-        5s;
+    --speed: 20s;
+    --colour-speed: 16s;
+    --delay: -9s;
+
+    --start-x: -30px;
+    --start-y: 60px;
+
+    --mid-x: -220px;
+    --mid-y: -180px;
+
+    --curve-x: -400px;
+    --curve-y: -370px;
+
+    --outer-x: -500px;
+    --outer-y: -560px;
+
+    --end-x: -600px;
+    --end-y: -800px;
 }
 
-.login-particles span:nth-child(6) {
-    left: 35%;
 
-    animation-duration:
-        22s,
-        22s;
+.p6 {
+    color: #ff453a;
 
-    animation-delay:
-        10s,
-        10s;
+    --speed: 22s;
+    --colour-speed: 15s;
+    --delay: -13s;
+
+    --start-x: 30px;
+    --start-y: 60px;
+
+    --mid-x: 220px;
+    --mid-y: -180px;
+
+    --curve-x: 400px;
+    --curve-y: -370px;
+
+    --outer-x: 500px;
+    --outer-y: -560px;
+
+    --end-x: 600px;
+    --end-y: -800px;
 }
 
-.login-particles span:nth-child(7) {
-    left: 42%;
 
-    animation-duration:
-        20s,
-        20s;
+.p7 {
+    color: #60a5fa;
 
-    animation-delay:
-        4s,
-        4s;
+    --speed: 24s;
+    --colour-speed: 18s;
+    --delay: -6s;
+
+    --start-x: -50px;
+    --start-y: 80px;
+
+    --mid-x: -300px;
+    --mid-y: -200px;
+
+    --curve-x: -470px;
+    --curve-y: -400px;
+
+    --outer-x: -600px;
+    --outer-y: -600px;
+
+    --end-x: -800px;
+    --end-y: -850px;
 }
 
-.login-particles span:nth-child(8) {
-    left: 49%;
 
-    animation-duration:
-        25s,
-        25s;
+.p8 {
+    color: #4ade80;
 
-    animation-delay:
-        8s,
-        8s;
-}
+    --speed: 25s;
+    --colour-speed: 19s;
+    --delay: -15s;
 
-.login-particles span:nth-child(9) {
-    left: 56%;
+    --start-x: 50px;
+    --start-y: 80px;
 
-    animation-duration:
-        19s,
-        19s;
+    --mid-x: 300px;
+    --mid-y: -200px;
 
-    animation-delay:
-        2s,
-        2s;
-}
+    --curve-x: 470px;
+    --curve-y: -400px;
 
-.login-particles span:nth-child(10) {
-    left: 63%;
+    --outer-x: 600px;
+    --outer-y: -600px;
 
-    animation-duration:
-        23s,
-        23s;
-
-    animation-delay:
-        6s,
-        6s;
-}
-
-.login-particles span:nth-child(11) {
-    left: 70%;
-
-    animation-duration:
-        18s,
-        18s;
-
-    animation-delay:
-        11s,
-        11s;
-}
-
-.login-particles span:nth-child(12) {
-    left: 77%;
-
-    animation-duration:
-        26s,
-        26s;
-
-    animation-delay:
-        3s,
-        3s;
-}
-
-.login-particles span:nth-child(13) {
-    left: 84%;
-
-    animation-duration:
-        20s,
-        20s;
-
-    animation-delay:
-        9s,
-        9s;
-}
-
-.login-particles span:nth-child(14) {
-    left: 91%;
-
-    animation-duration:
-        22s,
-        22s;
-
-    animation-delay:
-        5s,
-        5s;
-}
-
-.login-particles span:nth-child(15) {
-    left: 97%;
-
-    animation-duration:
-        18s,
-        18s;
-
-    animation-delay:
-        12s,
-        12s;
+    --end-x: 800px;
+    --end-y: -850px;
 }
 
 
 /* =========================================================
-   RANDOM PARTICLE SIZES
+   EXTRA PARTICLES
    ========================================================= */
 
-.login-particles span:nth-child(3n) {
-    width: 4px;
-    height: 4px;
-}
-
-.login-particles span:nth-child(5n) {
+.p9,
+.p10,
+.p11,
+.p12,
+.p13,
+.p14,
+.p15,
+.p16,
+.p17,
+.p18,
+.p19,
+.p20 {
     width: 2px;
     height: 2px;
 }
 
-.login-particles span:nth-child(7n) {
-    width: 5px;
-    height: 5px;
+
+.p9 {
+    color: #d946ef;
+
+    --speed: 26s;
+    --colour-speed: 18s;
+    --delay: -4s;
+
+    --start-x: -20px;
+    --start-y: 50px;
+
+    --mid-x: -140px;
+    --mid-y: -250px;
+
+    --curve-x: -330px;
+    --curve-y: -450px;
+
+    --outer-x: -550px;
+    --outer-y: -650px;
+
+    --end-x: -750px;
+    --end-y: -900px;
 }
 
 
-/* =========================================================
-   RANDOM SIDEWAYS FLOW
-   ========================================================= */
+.p10 {
+    color: #f87171;
 
-.login-particles span:nth-child(2n) {
-    animation-name:
-        emberFlowReverse,
-        emberColour;
-}
+    --speed: 27s;
+    --colour-speed: 19s;
+    --delay: -10s;
 
-@keyframes emberFlowReverse {
+    --start-x: 20px;
+    --start-y: 50px;
 
-    0% {
-        transform:
-            translate3d(
-                0,
-                30px,
-                0
-            )
-            scale(0.4);
+    --mid-x: 140px;
+    --mid-y: -250px;
 
-        opacity: 0;
-    }
+    --curve-x: 330px;
+    --curve-y: -450px;
 
-    10% {
-        opacity: 0.8;
-    }
+    --outer-x: 550px;
+    --outer-y: -650px;
 
-    30% {
-        transform:
-            translate3d(
-                -25px,
-                -30vh,
-                0
-            )
-            scale(0.8);
-    }
-
-    55% {
-        transform:
-            translate3d(
-                30px,
-                -60vh,
-                0
-            )
-            scale(1);
-    }
-
-    80% {
-        transform:
-            translate3d(
-                -20px,
-                -85vh,
-                0
-            )
-            scale(0.7);
-
-        opacity: 0.4;
-    }
-
-    100% {
-        transform:
-            translate3d(
-                25px,
-                -115vh,
-                0
-            )
-            scale(0.2);
-
-        opacity: 0;
-    }
+    --end-x: 750px;
+    --end-y: -900px;
 }
 
 
-/* =========================================================
-   KEEP LOGIN MENU ABOVE PARTICLES
-   ========================================================= */
+.p11 {
+    color: #38bdf8;
 
-.box,
-.login-box,
-.login,
-.auth-card,
-#authScreen {
-    position: relative;
+    --speed: 28s;
+    --colour-speed: 20s;
+    --delay: -17s;
 
-    z-index: 10;
+    --start-x: -70px;
+    --start-y: 30px;
+
+    --mid-x: -300px;
+    --mid-y: -300px;
+
+    --curve-x: -550px;
+    --curve-y: -500px;
+
+    --outer-x: -750px;
+    --outer-y: -700px;
+
+    --end-x: -900px;
+    --end-y: -950px;
+}
+
+
+.p12 {
+    color: #22c55e;
+
+    --speed: 29s;
+    --colour-speed: 21s;
+    --delay: -14s;
+
+    --start-x: 70px;
+    --start-y: 30px;
+
+    --mid-x: 300px;
+    --mid-y: -300px;
+
+    --curve-x: 550px;
+    --curve-y: -500px;
+
+    --outer-x: 750px;
+    --outer-y: -700px;
+
+    --end-x: 900px;
+    --end-y: -950px;
+}
+
+
+.p13 {
+    color: #a855f7;
+
+    --speed: 16s;
+    --colour-speed: 11s;
+    --delay: -3s;
+
+    --start-x: -80px;
+    --start-y: 70px;
+
+    --mid-x: -180px;
+    --mid-y: -150px;
+
+    --curve-x: -280px;
+    --curve-y: -300px;
+
+    --outer-x: -350px;
+    --outer-y: -480px;
+
+    --end-x: -250px;
+    --end-y: -700px;
+}
+
+
+.p14 {
+    color: #ef3b2d;
+
+    --speed: 17s;
+    --colour-speed: 12s;
+    --delay: -8s;
+
+    --start-x: 80px;
+    --start-y: 70px;
+
+    --mid-x: 180px;
+    --mid-y: -150px;
+
+    --curve-x: 280px;
+    --curve-y: -300px;
+
+    --outer-x: 350px;
+    --outer-y: -480px;
+
+    --end-x: 250px;
+    --end-y: -700px;
+}
+
+
+.p15 {
+    color: #3b82f6;
+
+    --speed: 18s;
+    --colour-speed: 13s;
+    --delay: -12s;
+
+    --start-x: -90px;
+    --start-y: 100px;
+
+    --mid-x: -260px;
+    --mid-y: -180px;
+
+    --curve-x: -420px;
+    --curve-y: -360px;
+
+    --outer-x: -520px;
+    --outer-y: -550px;
+
+    --end-x: -400px;
+    --end-y: -750px;
+}
+
+
+.p16 {
+    color: #39ff88;
+
+    --speed: 19s;
+    --colour-speed: 14s;
+    --delay: -16s;
+
+    --start-x: 90px;
+    --start-y: 100px;
+
+    --mid-x: 260px;
+    --mid-y: -180px;
+
+    --curve-x: 420px;
+    --curve-y: -360px;
+
+    --outer-x: 520px;
+    --outer-y: -550px;
+
+    --end-x: 400px;
+    --end-y: -750px;
+}
+
+
+.p17 {
+    color: #9333ea;
+
+    --speed: 22s;
+    --colour-speed: 16s;
+    --delay: -5s;
+
+    --start-x: -120px;
+    --start-y: 40px;
+
+    --mid-x: -350px;
+    --mid-y: -220px;
+
+    --curve-x: -600px;
+    --curve-y: -420px;
+
+    --outer-x: -800px;
+    --outer-y: -650px;
+
+    --end-x: -1000px;
+    --end-y: -850px;
+}
+
+
+.p18 {
+    color: #dc2626;
+
+    --speed: 23s;
+    --colour-speed: 17s;
+    --delay: -11s;
+
+    --start-x: 120px;
+    --start-y: 40px;
+
+    --mid-x: 350px;
+    --mid-y: -220px;
+
+    --curve-x: 600px;
+    --curve-y: -420px;
+
+    --outer-x: 800px;
+    --outer-y: -650px;
+
+    --end-x: 1000px;
+    --end-y: -850px;
+}
+
+
+.p19 {
+    color: #2563eb;
+
+    --speed: 24s;
+    --colour-speed: 18s;
+    --delay: -18s;
+
+    --start-x: -100px;
+    --start-y: 100px;
+
+    --mid-x: -400px;
+    --mid-y: -250px;
+
+    --curve-x: -650px;
+    --curve-y: -500px;
+
+    --outer-x: -850px;
+    --outer-y: -700px;
+
+    --end-x: -1100px;
+    --end-y: -950px;
+}
+
+
+.p20 {
+    color: #16a34a;
+
+    --speed: 25s;
+    --colour-speed: 19s;
+    --delay: -20s;
+
+    --start-x: 100px;
+    --start-y: 100px;
+
+    --mid-x: 400px;
+    --mid-y: -250px;
+
+    --curve-x: 650px;
+    --curve-y: -500px;
+
+    --outer-x: 850px;
+    --outer-y: -700px;
+
+    --end-x: 1100px;
+    --end-y: -950px;
 }
 
 
@@ -619,12 +1086,25 @@ body {
 
 @media (max-width: 600px) {
 
-    .login-particles span {
-        animation-duration:
-            20s,
-            20s;
+    .box {
+        width: 94%;
+
+        padding:
+            32px
+            22px;
     }
 
+
+    h1 {
+        font-size: 27px;
+
+        letter-spacing: 4px;
+    }
+
+
+    .warp-particle {
+        transform-origin: center;
+    }
 }
 
 
@@ -634,8 +1114,8 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
 
-    .login-particles span {
-        animation: none;
+    .warp-particle {
+        animation: none !important;
 
         opacity: 0.25;
     }
