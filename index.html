@@ -1,17 +1,17 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#050507">
 
 <title>Routine 721 — War Room</title>
 
 <style>
 
 /* =========================================================
-   BASE
+   RESET
    ========================================================= */
 
 * {
@@ -27,634 +27,170 @@ body {
 
 body {
     min-height: 100vh;
-    background: #050507;
-    color: #eee;
-    font-family: Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
+
+    background: #050505;
+
+    color: #eeeeee;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 }
 
 
 /* =========================================================
-   LIGHTWEIGHT WARP BACKGROUND
+   WAR ROOM BACKGROUND
+   VERY LIGHTWEIGHT
    ========================================================= */
 
-body::before {
-    content: "";
+.war-background {
     position: fixed;
+
     inset: 0;
+
     z-index: 0;
-    pointer-events: none;
-
-    background:
-        radial-gradient(
-            ellipse at 18% 50%,
-            rgba(90, 30, 150, 0.16),
-            transparent 38%
-        ),
-
-        radial-gradient(
-            ellipse at 82% 48%,
-            rgba(150, 25, 30, 0.12),
-            transparent 38%
-        ),
-
-        radial-gradient(
-            ellipse at 50% 100%,
-            rgba(20, 70, 150, 0.10),
-            transparent 45%
-        );
-}
-
-
-/* Subtle moving Warp glow */
-
-.warp-glow {
-    position: fixed;
-    left: 50%;
-    top: 50%;
-
-    width: 620px;
-    height: 360px;
-
-    transform:
-        translate(-50%, -50%);
-
-    z-index: 1;
-    pointer-events: none;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            ellipse,
-            rgba(125, 35, 180, 0.13),
-            rgba(40, 30, 100, 0.05) 45%,
-            transparent 72%
-        );
-
-    animation:
-        slowWarp 12s ease-in-out infinite alternate;
-}
-
-@keyframes slowWarp {
-
-    0% {
-        transform:
-            translate(-50%, -50%)
-            rotate(-3deg)
-            scale(0.96);
-        opacity: 0.55;
-    }
-
-    100% {
-        transform:
-            translate(-50%, -50%)
-            rotate(3deg)
-            scale(1.05);
-        opacity: 0.9;
-    }
-}
-
-
-/* =========================================================
-   SUBTLE WARP RINGS
-   ========================================================= */
-
-.warp-ring {
-    position: fixed;
-
-    left: 50%;
-    top: 50%;
-
-    z-index: 1;
 
     pointer-events: none;
 
-    border-radius: 50%;
-
-    transform:
-        translate(-50%, -50%);
-}
-
-.ring-purple {
-    width: 580px;
-    height: 300px;
-
-    border:
-        1px solid
-        rgba(160, 70, 220, 0.16);
-
-    box-shadow:
-        0 0 22px
-        rgba(130, 50, 200, 0.08);
-
-    animation:
-        ringOne 24s linear infinite;
-}
-
-.ring-blue {
-    width: 480px;
-    height: 250px;
-
-    border:
-        1px solid
-        rgba(50, 110, 220, 0.12);
-
-    animation:
-        ringTwo 31s linear infinite;
-}
-
-.ring-red {
-    width: 700px;
-    height: 360px;
-
-    border:
-        1px solid
-        rgba(190, 40, 40, 0.09);
-
-    animation:
-        ringOne 38s linear infinite reverse;
-}
-
-@keyframes ringOne {
-
-    from {
-        transform:
-            translate(-50%, -50%)
-            rotate(0deg);
-    }
-
-    to {
-        transform:
-            translate(-50%, -50%)
-            rotate(360deg);
-    }
-}
-
-@keyframes ringTwo {
-
-    from {
-        transform:
-            translate(-50%, -50%)
-            rotate(360deg);
-    }
-
-    to {
-        transform:
-            translate(-50%, -50%)
-            rotate(0deg);
-    }
-}
-
-
-/* =========================================================
-   EMBERS
-   ========================================================= */
-
-.ember {
-    position: fixed;
-
-    z-index: 2;
-
-    width: 3px;
-    height: 3px;
-
-    border-radius: 50%;
-
-    pointer-events: none;
-
-    opacity: 0.55;
-
-    animation:
-        emberFloat 10s linear infinite;
-}
-
-.ember.purple {
-    background: #b85cff;
-    box-shadow:
-        0 0 7px #8f35d8;
-}
-
-.ember.red {
-    background: #ff4b4b;
-    box-shadow:
-        0 0 7px #b82020;
-}
-
-.ember.blue {
-    background: #4f9dff;
-    box-shadow:
-        0 0 7px #286dcc;
-}
-
-.ember.green {
-    background: #55d88a;
-    box-shadow:
-        0 0 7px #20844b;
-}
-
-.ember:nth-child(1) {
-    left: 12%;
-    top: 78%;
-    animation-delay: -2s;
-}
-
-.ember:nth-child(2) {
-    left: 20%;
-    top: 65%;
-    animation-delay: -6s;
-}
-
-.ember:nth-child(3) {
-    left: 31%;
-    top: 88%;
-    animation-delay: -4s;
-}
-
-.ember:nth-child(4) {
-    left: 68%;
-    top: 82%;
-    animation-delay: -7s;
-}
-
-.ember:nth-child(5) {
-    left: 77%;
-    top: 70%;
-    animation-delay: -1s;
-}
-
-.ember:nth-child(6) {
-    left: 88%;
-    top: 84%;
-    animation-delay: -5s;
-}
-
-.ember:nth-child(7) {
-    left: 9%;
-    top: 35%;
-    animation-delay: -8s;
-}
-
-.ember:nth-child(8) {
-    left: 92%;
-    top: 42%;
-    animation-delay: -3s;
-}
-
-@keyframes emberFloat {
-
-    0% {
-        transform:
-            translate(0, 30px);
-        opacity: 0;
-    }
-
-    15% {
-        opacity: 0.5;
-    }
-
-    50% {
-        transform:
-            translate(
-                15px,
-                -90px
-            );
-        opacity: 0.65;
-    }
-
-    85% {
-        opacity: 0.25;
-    }
-
-    100% {
-        transform:
-            translate(
-                -10px,
-                -180px
-            );
-        opacity: 0;
-    }
-}
-
-
-/* =========================================================
-   MAIN APPLICATION LAYER
-   ========================================================= */
-
-.app {
-    position: relative;
-
-    z-index: 10;
-
-    min-height: 100vh;
-
-    padding: 22px;
-}
-
-
-/* =========================================================
-   TOP BAR
-   ========================================================= */
-
-.topbar {
-    width: 100%;
-    max-width: 1200px;
-
-    margin:
-        0 auto
-        22px;
-
-    padding:
-        15px 20px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    background:
-        rgba(9, 9, 12, 0.94);
-
-    border:
-        1px solid
-        rgba(201, 168, 76, 0.30);
-
-    border-radius: 7px;
-
-    box-shadow:
-        0 12px 35px
-        rgba(0, 0, 0, 0.5);
-}
-
-.brand {
-    color: #c9a84c;
-
-    font-size: 20px;
-
-    font-weight: bold;
-
-    letter-spacing: 4px;
-}
-
-.brand span {
-    display: block;
-
-    margin-top: 3px;
-
-    color: #666;
-
-    font-size: 8px;
-
-    letter-spacing: 3px;
-}
-
-.user-area {
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-    color: #888;
-
-    font-size: 12px;
-}
-
-
-/* =========================================================
-   BUTTONS
-   ========================================================= */
-
-button {
-    border-radius: 5px;
-
-    cursor: pointer;
-
-    font-weight: bold;
-
-    letter-spacing: 1px;
-
-    transition:
-        filter 0.15s,
-        transform 0.15s;
-}
-
-button:hover {
-    filter: brightness(1.15);
-}
-
-button:active {
-    transform:
-        translateY(1px);
-}
-
-button:disabled {
-    opacity: 0.5;
-    cursor: wait;
-}
-
-.primary {
-    padding:
-        12px 18px;
-
-    border:
-        1px solid
-        #b94b3c;
+    overflow: hidden;
 
     background:
         linear-gradient(
-            #a33a2e,
-            #702219
+            90deg,
+
+            #030303 0%,
+
+            #070303 24%,
+
+            #100508 42%,
+
+            #110814 50%,
+
+            #160b1e 58%,
+
+            #120820 76%,
+
+            #08050c 100%
+        );
+}
+
+
+/* =========================================================
+   LEFT CHAOS SIDE
+   ========================================================= */
+
+.red-side {
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    width: 52%;
+
+    background:
+        radial-gradient(
+            ellipse at 20% 50%,
+            rgba(130, 12, 12, 0.28),
+            transparent 62%
         );
 
-    color: white;
+    animation:
+        redPulse 7s ease-in-out infinite alternate;
 }
 
-.secondary {
-    padding:
-        12px 18px;
 
-    border:
-        1px solid
-        #444;
+@keyframes redPulse {
 
-    background:
-        #18181c;
+    0% {
+        opacity: 0.45;
+    }
 
-    color: #ccc;
-}
+    100% {
+        opacity: 0.85;
+    }
 
-.small-button {
-    padding:
-        8px 12px;
-
-    border:
-        1px solid
-        #444;
-
-    background:
-        #151519;
-
-    color: #aaa;
-
-    font-size: 11px;
 }
 
 
 /* =========================================================
-   DASHBOARD
+   RIGHT WARP / ULTRAMARINE SIDE
    ========================================================= */
 
-.dashboard {
-    width: 100%;
-    max-width: 1200px;
+.blue-side {
 
-    margin:
-        0 auto;
-}
+    position: absolute;
 
-.dashboard-title {
-    margin:
-        10px
-        0
-        20px;
+    right: 0;
+    top: 0;
+    bottom: 0;
 
-    color: #ddd;
+    width: 52%;
 
-    font-size: 24px;
-
-    letter-spacing: 3px;
-}
-
-.dashboard-subtitle {
-    margin-top: -13px;
-    margin-bottom: 25px;
-
-    color: #666;
-
-    font-size: 12px;
-}
-
-
-/* =========================================================
-   DASHBOARD GRID
-   ========================================================= */
-
-.grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            3,
-            minmax(0, 1fr)
+    background:
+        radial-gradient(
+            ellipse at 80% 50%,
+            rgba(65, 25, 150, 0.28),
+            transparent 62%
         );
 
-    gap: 16px;
+    animation:
+        bluePulse 9s ease-in-out infinite alternate;
+}
+
+
+@keyframes bluePulse {
+
+    0% {
+        opacity: 0.45;
+    }
+
+    100% {
+        opacity: 0.82;
+    }
+
 }
 
 
 /* =========================================================
-   CARDS
+   VERY SUBTLE CENTRE DIVIDE
    ========================================================= */
 
-.card {
-    min-height: 170px;
+.centre-glow {
 
-    padding: 22px;
+    position: absolute;
+
+    left: 50%;
+    top: 0;
+    bottom: 0;
+
+    width: 160px;
+
+    transform:
+        translateX(-50%);
 
     background:
-        rgba(10, 10, 13, 0.94);
-
-    border:
-        1px solid
-        #28282d;
-
-    border-radius: 7px;
-
-    box-shadow:
-        0 12px 30px
-        rgba(0, 0, 0, 0.35);
-}
-
-.card:hover {
-    border-color:
-        rgba(201, 168, 76, 0.32);
-}
-
-.card h3 {
-    margin:
-        0
-        0
-        8px;
-
-    color: #c9a84c;
-
-    font-size: 14px;
-
-    letter-spacing: 2px;
-}
-
-.card p {
-    color: #777;
-
-    font-size: 12px;
-
-    line-height: 1.6;
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(70, 25, 90, 0.08),
+            transparent
+        );
 }
 
 
 /* =========================================================
-   GROUP LIST
+   CONTENT
    ========================================================= */
 
-.group-list {
-    margin-top: 15px;
-}
+.page {
 
-.group-item {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    padding:
-        12px 0;
-
-    border-bottom:
-        1px solid
-        #222227;
-}
-
-.group-item:last-child {
-    border-bottom: none;
-}
-
-.group-name {
-    color: #ddd;
-
-    font-size: 13px;
-}
-
-.group-role {
-    color: #666;
-
-    font-size: 10px;
-
-    text-transform: uppercase;
-
-    letter-spacing: 1px;
-}
-
-
-/* =========================================================
-   LOGIN BOX
-   ========================================================= */
-
-.login-container {
     position: relative;
 
-    z-index: 20;
+    z-index: 5;
 
     min-height: 100vh;
 
@@ -667,30 +203,41 @@ button:disabled {
     padding: 20px;
 }
 
-.login-box {
+
+/* =========================================================
+   LOGIN PANEL
+   ========================================================= */
+
+.login-panel {
+
     width: 100%;
+
     max-width: 430px;
 
-    padding: 35px;
+    padding: 36px;
 
     background:
-        rgba(9, 9, 12, 0.97);
+        rgba(7, 7, 9, 0.96);
 
     border:
         1px solid
-        rgba(201, 168, 76, 0.45);
+        rgba(150, 150, 150, 0.18);
 
     border-radius: 8px;
 
     box-shadow:
-        0 25px 70px
-        rgba(0, 0, 0, 0.85),
+        0 20px 50px
+        rgba(0, 0, 0, 0.75);
 
-        0 0 25px
-        rgba(100, 40, 150, 0.08);
 }
 
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
 .logo {
+
     margin: 0;
 
     text-align: center;
@@ -699,53 +246,74 @@ button:disabled {
 
     font-size: 29px;
 
+    font-weight: bold;
+
     letter-spacing: 6px;
+
 }
 
+
 .subtitle {
-    margin:
-        8px
-        0
-        25px;
+
+    margin-top: 8px;
 
     text-align: center;
 
-    color: #666;
+    color: #777;
 
     font-size: 10px;
 
     letter-spacing: 5px;
+
 }
 
+
+/* =========================================================
+   DIVIDER
+   ========================================================= */
+
 .divider {
+
     height: 1px;
 
-    margin-bottom: 24px;
+    margin:
+        25px 0;
 
     background:
         linear-gradient(
             90deg,
             transparent,
-            rgba(201,168,76,0.45),
+            rgba(201, 168, 76, 0.45),
             transparent
         );
+
 }
 
-.login-box h2 {
+
+/* =========================================================
+   HEADINGS
+   ========================================================= */
+
+h2 {
+
     margin:
-        0
-        0
-        8px;
+        0 0 8px;
 
     text-align: center;
 
-    color: #ddd;
+    color: #dddddd;
+
+    font-size: 17px;
 
     letter-spacing: 2px;
+
 }
 
-.login-box p {
-    margin-bottom: 22px;
+
+.description {
+
+    margin:
+        0 0 22px;
 
     text-align: center;
 
@@ -754,15 +322,20 @@ button:disabled {
     font-size: 12px;
 
     line-height: 1.5;
+
 }
 
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
 label {
+
     display: block;
 
     margin:
-        15px
-        0
-        6px;
+        15px 0 6px;
 
     color: #999;
 
@@ -771,13 +344,15 @@ label {
     letter-spacing: 1px;
 
     text-transform: uppercase;
+
 }
 
+
 input {
+
     width: 100%;
 
-    padding:
-        12px;
+    padding: 12px;
 
     background:
         #08080a;
@@ -786,167 +361,405 @@ input {
 
     border:
         1px solid
-        #35353b;
+        #34343a;
 
     border-radius: 5px;
 
     outline: none;
 
     font-size: 14px;
+
 }
+
 
 input:focus {
-    border-color:
-        #8c6bce;
 
-    box-shadow:
-        0 0 8px
-        rgba(120, 70, 200, 0.12);
+    border-color:
+        #7550a8;
+
 }
 
-.login-box button {
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+button {
+
     width: 100%;
 
     margin-top: 14px;
+
+    padding: 12px;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
 }
 
+
+.primary {
+
+    background:
+        #8e2b25;
+
+    border:
+        1px solid
+        #b13c32;
+
+    color: white;
+
+}
+
+
+.primary:hover {
+
+    background:
+        #a7352c;
+
+}
+
+
+.secondary {
+
+    background:
+        #161619;
+
+    border:
+        1px solid
+        #38383e;
+
+    color: #bbbbbb;
+
+}
+
+
+.secondary:hover {
+
+    background:
+        #202025;
+
+}
+
+
+button:disabled {
+
+    opacity: 0.5;
+
+    cursor: wait;
+
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
 #status {
+
     min-height: 18px;
 
     margin-top: 18px;
 
     text-align: center;
 
-    color: #666;
+    color: #777;
 
     font-size: 11px;
 
     line-height: 1.5;
+
 }
+
 
 #status.success {
-    color: #55d879;
+
+    color:
+        #55c878;
+
 }
+
 
 #status.error {
-    color: #ff5c5c;
-}
 
-.hidden {
-    display: none !important;
+    color:
+        #ff5757;
+
 }
 
 
 /* =========================================================
-   MOBILE
+   CREATE ACCOUNT
    ========================================================= */
 
-@media (max-width: 800px) {
+.hidden {
 
-    .grid {
+    display: none !important;
+
+}
+
+
+/* =========================================================
+   WAR ROOM
+   ========================================================= */
+
+#warRoom {
+
+    position: relative;
+
+    z-index: 10;
+
+    min-height: 100vh;
+
+    padding: 20px;
+
+}
+
+
+.topbar {
+
+    max-width: 1200px;
+
+    margin:
+        0 auto 25px;
+
+    padding:
+        15px 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    background:
+        rgba(7, 7, 9, 0.96);
+
+    border:
+        1px solid
+        rgba(201, 168, 76, 0.3);
+
+    border-radius: 7px;
+
+}
+
+
+.brand {
+
+    color:
+        #c9a84c;
+
+    font-weight: bold;
+
+    letter-spacing: 4px;
+
+}
+
+
+.brand small {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: #666;
+
+    font-size: 8px;
+
+    letter-spacing: 3px;
+
+}
+
+
+.user {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    color: #888;
+
+    font-size: 11px;
+
+}
+
+
+.logout {
+
+    width: auto;
+
+    margin: 0;
+
+    padding:
+        7px 12px;
+
+    background:
+        #151519;
+
+    border:
+        1px solid #333;
+
+    color: #aaa;
+
+}
+
+
+.dashboard {
+
+    max-width: 1200px;
+
+    margin:
+        0 auto;
+
+}
+
+
+.dashboard h1 {
+
+    color: #ddd;
+
+    letter-spacing: 3px;
+
+}
+
+
+.cards {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            1fr
+        );
+
+    gap: 15px;
+
+}
+
+
+.card {
+
+    min-height: 180px;
+
+    padding: 20px;
+
+    background:
+        rgba(7, 7, 9, 0.95);
+
+    border:
+        1px solid #29292e;
+
+    border-radius: 7px;
+
+}
+
+
+.card h3 {
+
+    margin-top: 0;
+
+    color: #c9a84c;
+
+    letter-spacing: 2px;
+
+}
+
+
+.card p {
+
+    color: #777;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+
+}
+
+
+@media (
+    max-width: 750px
+) {
+
+    .cards {
+
         grid-template-columns:
             1fr;
+
     }
 
     .topbar {
-        align-items: flex-start;
+
+        flex-direction:
+            column;
+
+        align-items:
+            flex-start;
 
         gap: 12px;
+
     }
 
-    .user-area {
-        flex-direction: column;
-
-        align-items: flex-end;
-    }
-
-}
-
-@media (max-width: 600px) {
-
-    .app {
-        padding: 12px;
-    }
-
-    .login-box {
-        padding:
-            28px 20px;
-    }
-
-    .logo {
-        font-size: 25px;
-    }
-
-    .warp-ring.ring-purple {
-        width: 430px;
-        height: 240px;
-    }
-
-    .warp-ring.ring-blue {
-        width: 360px;
-        height: 200px;
-    }
-
-    .warp-ring.ring-red {
-        width: 520px;
-        height: 280px;
-    }
-
-    .warp-glow {
-        width: 430px;
-        height: 280px;
-    }
 }
 
 
 /* =========================================================
-   REDUCED MOTION
+   REDUCE MOTION
    ========================================================= */
 
-@media (prefers-reduced-motion: reduce) {
+@media (
+    prefers-reduced-motion: reduce
+) {
 
-    .warp-glow,
-    .warp-ring,
-    .ember {
+    .red-side,
+    .blue-side {
+
         animation: none;
+
     }
+
 }
 
 </style>
+
 </head>
 
 
 <body>
 
 
-<!-- LIGHT WARP -->
+<!-- =====================================================
+     BACKGROUND
+     ===================================================== -->
 
-<div class="warp-glow"></div>
+<div class="war-background">
 
-<div class="warp-ring ring-purple"></div>
-<div class="warp-ring ring-blue"></div>
-<div class="warp-ring ring-red"></div>
+    <div class="red-side"></div>
 
-<div class="ember purple"></div>
-<div class="ember red"></div>
-<div class="ember blue"></div>
-<div class="ember green"></div>
-<div class="ember purple"></div>
-<div class="ember red"></div>
-<div class="ember blue"></div>
-<div class="ember green"></div>
+    <div class="blue-side"></div>
+
+    <div class="centre-glow"></div>
+
+</div>
 
 
-<!-- =======================================================
+<!-- =====================================================
      LOGIN
-     ======================================================= -->
+     ===================================================== -->
 
 <div
     id="loginScreen"
-    class="login-container"
+    class="page"
 >
 
-    <div class="login-box">
+    <div class="login-panel">
 
         <h1 class="logo">
             ROUTINE 721
@@ -964,12 +777,13 @@ input:focus {
         <div id="loginView">
 
             <h2>
-                WELCOME BACK
+                WELCOME
             </h2>
 
-            <p>
-                Enter your credentials to enter the War Room.
+            <p class="description">
+                Enter the War Room.
             </p>
+
 
             <label for="loginEmail">
                 Email
@@ -982,6 +796,7 @@ input:focus {
                 placeholder="your@email.com"
             >
 
+
             <label for="loginPassword">
                 Password
             </label>
@@ -993,6 +808,7 @@ input:focus {
                 placeholder="Password"
             >
 
+
             <button
                 id="signInButton"
                 class="primary"
@@ -1000,6 +816,7 @@ input:focus {
             >
                 SIGN IN
             </button>
+
 
             <button
                 id="showCreateButton"
@@ -1023,9 +840,10 @@ input:focus {
                 CREATE ACCOUNT
             </h2>
 
-            <p>
+            <p class="description">
                 Create your Routine 721 account.
             </p>
+
 
             <label for="createEmail">
                 Email
@@ -1038,6 +856,7 @@ input:focus {
                 placeholder="your@email.com"
             >
 
+
             <label for="createPassword">
                 Password
             </label>
@@ -1046,8 +865,9 @@ input:focus {
                 id="createPassword"
                 type="password"
                 autocomplete="new-password"
-                placeholder="Choose a password"
+                placeholder="Password"
             >
+
 
             <button
                 id="createAccountButton"
@@ -1056,6 +876,7 @@ input:focus {
             >
                 CREATE ACCOUNT
             </button>
+
 
             <button
                 id="backButton"
@@ -1080,13 +901,13 @@ input:focus {
 </div>
 
 
-<!-- =======================================================
+<!-- =====================================================
      WAR ROOM
-     ======================================================= -->
+     ===================================================== -->
 
 <div
     id="warRoom"
-    class="app hidden"
+    class="hidden"
 >
 
     <header class="topbar">
@@ -1095,14 +916,14 @@ input:focus {
 
             ROUTINE 721
 
-            <span>
+            <small>
                 WAR ROOM
-            </span>
+            </small>
 
         </div>
 
 
-        <div class="user-area">
+        <div class="user">
 
             <span id="userEmail">
                 -
@@ -1110,7 +931,7 @@ input:focus {
 
             <button
                 id="logoutButton"
-                class="small-button"
+                class="logout"
                 type="button"
             >
                 SIGN OUT
@@ -1123,19 +944,13 @@ input:focus {
 
     <main class="dashboard">
 
-        <h1 class="dashboard-title">
+        <h1>
             WAR ROOM
         </h1>
 
-        <div class="dashboard-subtitle">
-            COMMAND CENTRE
-        </div>
 
+        <div class="cards">
 
-        <section class="grid">
-
-
-            <!-- GROUPS -->
 
             <div class="card">
 
@@ -1144,36 +959,11 @@ input:focus {
                 </h3>
 
                 <p>
-                    Your Warhammer groups and campaigns.
+                    Your Warhammer groups and campaigns will appear here.
                 </p>
-
-                <div
-                    id="groupsList"
-                    class="group-list"
-                >
-
-                    <div class="group-item">
-
-                        <span class="group-name">
-                            Loading groups...
-                        </span>
-
-                    </div>
-
-                </div>
-
-                <button
-                    id="createGroupButton"
-                    class="primary"
-                    type="button"
-                >
-                    CREATE GROUP
-                </button>
 
             </div>
 
-
-            <!-- PLAYERS -->
 
             <div class="card">
 
@@ -1182,28 +972,11 @@ input:focus {
                 </h3>
 
                 <p>
-                    Players belonging to your groups will appear here.
+                    Group members and player profiles will appear here.
                 </p>
-
-                <div
-                    id="playersList"
-                    class="group-list"
-                >
-
-                    <div class="group-item">
-
-                        <span class="group-name">
-                            Select a group to view players.
-                        </span>
-
-                    </div>
-
-                </div>
 
             </div>
 
-
-            <!-- GAMES -->
 
             <div class="card">
 
@@ -1212,44 +985,30 @@ input:focus {
                 </h3>
 
                 <p>
-                    Record and review your battles.
+                    Your recorded battles and results will appear here.
                 </p>
-
-                <div
-                    id="gamesList"
-                    class="group-list"
-                >
-
-                    <div class="group-item">
-
-                        <span class="group-name">
-                            No games loaded yet.
-                        </span>
-
-                    </div>
-
-                </div>
 
             </div>
 
 
-        </section>
+        </div>
 
     </main>
 
 </div>
 
 
-<!-- =======================================================
+<!-- =====================================================
      SUPABASE
-     ======================================================= -->
+     ===================================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
 <script>
 
 /* =========================================================
-   SUPABASE
+   SUPABASE CONFIGURATION
    ========================================================= */
 
 const SUPABASE_URL =
@@ -1259,7 +1018,18 @@ const SUPABASE_KEY =
     "sb_publishable_Wt8h6fNelT6zrzf-Dm8FXw_cdSGylaz";
 
 
-const supabaseClient =
+/*
+IMPORTANT:
+
+Use a differently named variable.
+
+Do NOT call this "supabase".
+
+That avoids the redeclaration error
+you previously encountered.
+*/
+
+const routineSupabase =
     window.supabase.createClient(
         SUPABASE_URL,
         SUPABASE_KEY
@@ -1290,6 +1060,11 @@ const createView =
         "createView"
     );
 
+const status =
+    document.getElementById(
+        "status"
+    );
+
 const loginEmail =
     document.getElementById(
         "loginEmail"
@@ -1310,44 +1085,9 @@ const createPassword =
         "createPassword"
     );
 
-const signInButton =
-    document.getElementById(
-        "signInButton"
-    );
-
-const showCreateButton =
-    document.getElementById(
-        "showCreateButton"
-    );
-
-const createAccountButton =
-    document.getElementById(
-        "createAccountButton"
-    );
-
-const backButton =
-    document.getElementById(
-        "backButton"
-    );
-
-const logoutButton =
-    document.getElementById(
-        "logoutButton"
-    );
-
-const status =
-    document.getElementById(
-        "status"
-    );
-
 const userEmail =
     document.getElementById(
         "userEmail"
-    );
-
-const groupsList =
-    document.getElementById(
-        "groupsList"
     );
 
 
@@ -1370,10 +1110,10 @@ function setStatus(
 
 
 /* =========================================================
-   LOGIN / WAR ROOM
+   SHOW WAR ROOM
    ========================================================= */
 
-function showWarRoom(
+function enterWarRoom(
     user
 ) {
 
@@ -1388,11 +1128,12 @@ function showWarRoom(
     userEmail.textContent =
         user.email || "";
 
-    loadGroups(
-        user.id
-    );
 }
 
+
+/* =========================================================
+   SHOW LOGIN
+   ========================================================= */
 
 function showLogin() {
 
@@ -1408,258 +1149,290 @@ function showLogin() {
 
 
 /* =========================================================
-   SHOW CREATE ACCOUNT
+   CREATE ACCOUNT SCREEN
    ========================================================= */
 
-showCreateButton.addEventListener(
-    "click",
-    function () {
+document
+    .getElementById(
+        "showCreateButton"
+    )
+    .addEventListener(
+        "click",
+        function () {
 
-        loginView.classList.add(
-            "hidden"
-        );
+            loginView.classList.add(
+                "hidden"
+            );
 
-        createView.classList.remove(
-            "hidden"
-        );
+            createView.classList.remove(
+                "hidden"
+            );
 
-        setStatus("");
+            setStatus("");
 
-        createEmail.focus();
-
-    }
-);
+        }
+    );
 
 
 /* =========================================================
    BACK TO LOGIN
    ========================================================= */
 
-backButton.addEventListener(
-    "click",
-    function () {
+document
+    .getElementById(
+        "backButton"
+    )
+    .addEventListener(
+        "click",
+        function () {
 
-        createView.classList.add(
-            "hidden"
-        );
+            createView.classList.add(
+                "hidden"
+            );
 
-        loginView.classList.remove(
-            "hidden"
-        );
+            loginView.classList.remove(
+                "hidden"
+            );
 
-        setStatus("");
+            setStatus("");
 
-        loginEmail.focus();
-
-    }
-);
+        }
+    );
 
 
 /* =========================================================
    SIGN IN
    ========================================================= */
 
-signInButton.addEventListener(
-    "click",
-    async function () {
+document
+    .getElementById(
+        "signInButton"
+    )
+    .addEventListener(
+        "click",
+        async function () {
 
-        const email =
-            loginEmail.value.trim();
+            const email =
+                loginEmail.value.trim();
 
-        const password =
-            loginPassword.value;
-
-
-        if (
-            !email ||
-            !password
-        ) {
-
-            setStatus(
-                "Please enter your email and password.",
-                "error"
-            );
-
-            return;
-        }
+            const password =
+                loginPassword.value;
 
 
-        signInButton.disabled =
-            true;
-
-        signInButton.textContent =
-            "SIGNING IN...";
-
-
-        try {
-
-            const result =
-                await supabaseClient.auth.signInWithPassword({
-
-                    email,
-                    password
-
-                });
-
-
-            if (result.error) {
+            if (
+                !email ||
+                !password
+            ) {
 
                 setStatus(
-                    result.error.message,
+                    "Enter your email and password.",
                     "error"
                 );
 
                 return;
+
             }
 
 
-            showWarRoom(
-                result.data.user
-            );
+            const button =
+                this;
+
+            button.disabled =
+                true;
+
+            button.textContent =
+                "SIGNING IN...";
+
+
+            try {
+
+                const result =
+                    await routineSupabase
+                        .auth
+                        .signInWithPassword({
+
+                            email:
+                                email,
+
+                            password:
+                                password
+
+                        });
+
+
+                if (
+                    result.error
+                ) {
+
+                    setStatus(
+                        result.error.message,
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                enterWarRoom(
+                    result.data.user
+                );
+
+
+            }
+            catch (
+                error
+            ) {
+
+                setStatus(
+                    error.message,
+                    "error"
+                );
+
+            }
+            finally {
+
+                button.disabled =
+                    false;
+
+                button.textContent =
+                    "SIGN IN";
+
+            }
 
         }
-
-        catch (error) {
-
-            setStatus(
-                "Login error: " +
-                error.message,
-                "error"
-            );
-
-        }
-
-        finally {
-
-            signInButton.disabled =
-                false;
-
-            signInButton.textContent =
-                "SIGN IN";
-
-        }
-
-    }
-);
+    );
 
 
 /* =========================================================
    CREATE ACCOUNT
    ========================================================= */
 
-createAccountButton.addEventListener(
-    "click",
-    async function () {
+document
+    .getElementById(
+        "createAccountButton"
+    )
+    .addEventListener(
+        "click",
+        async function () {
 
-        const email =
-            createEmail.value.trim();
+            const email =
+                createEmail.value.trim();
 
-        const password =
-            createPassword.value;
-
-
-        if (
-            !email ||
-            !password
-        ) {
-
-            setStatus(
-                "Please enter an email and password.",
-                "error"
-            );
-
-            return;
-        }
+            const password =
+                createPassword.value;
 
 
-        if (
-            password.length < 6
-        ) {
-
-            setStatus(
-                "Password must be at least 6 characters.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        createAccountButton.disabled =
-            true;
-
-        createAccountButton.textContent =
-            "CREATING...";
-
-
-        try {
-
-            const result =
-                await supabaseClient.auth.signUp({
-
-                    email,
-                    password
-
-                });
-
-
-            if (result.error) {
+            if (
+                !email ||
+                !password
+            ) {
 
                 setStatus(
-                    result.error.message,
+                    "Enter an email and password.",
                     "error"
                 );
 
                 return;
+
             }
 
 
             if (
-                result.data.user &&
-                !result.data.session
+                password.length < 6
             ) {
 
                 setStatus(
-                    "Account created. Check your email to confirm your account.",
-                    "success"
+                    "Password must contain at least 6 characters.",
+                    "error"
                 );
+
+                return;
 
             }
 
-            else if (
-                result.data.user
+
+            const button =
+                this;
+
+            button.disabled =
+                true;
+
+            button.textContent =
+                "CREATING...";
+
+
+            try {
+
+                const result =
+                    await routineSupabase
+                        .auth
+                        .signUp({
+
+                            email:
+                                email,
+
+                            password:
+                                password
+
+                        });
+
+
+                if (
+                    result.error
+                ) {
+
+                    setStatus(
+                        result.error.message,
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    result.data.session
+                ) {
+
+                    enterWarRoom(
+                        result.data.user
+                    );
+
+                }
+                else {
+
+                    setStatus(
+                        "Account created. Check your email to confirm your account.",
+                        "success"
+                    );
+
+                }
+
+            }
+            catch (
+                error
             ) {
 
-                showWarRoom(
-                    result.data.user
+                setStatus(
+                    error.message,
+                    "error"
                 );
+
+            }
+            finally {
+
+                button.disabled =
+                    false;
+
+                button.textContent =
+                    "CREATE ACCOUNT";
 
             }
 
         }
-
-        catch (error) {
-
-            setStatus(
-                "Account error: " +
-                error.message,
-                "error"
-            );
-
-        }
-
-        finally {
-
-            createAccountButton.disabled =
-                false;
-
-            createAccountButton.textContent =
-                "CREATE ACCOUNT";
-
-        }
-
-    }
-);
+    );
 
 
 /* =========================================================
@@ -1668,13 +1441,19 @@ createAccountButton.addEventListener(
 
 loginPassword.addEventListener(
     "keydown",
-    function (event) {
+    function (
+        event
+    ) {
 
         if (
             event.key === "Enter"
         ) {
 
-            signInButton.click();
+            document
+                .getElementById(
+                    "signInButton"
+                )
+                .click();
 
         }
 
@@ -1684,13 +1463,19 @@ loginPassword.addEventListener(
 
 createPassword.addEventListener(
     "keydown",
-    function (event) {
+    function (
+        event
+    ) {
 
         if (
             event.key === "Enter"
         ) {
 
-            createAccountButton.click();
+            document
+                .getElementById(
+                    "createAccountButton"
+                )
+                .click();
 
         }
 
@@ -1702,16 +1487,17 @@ createPassword.addEventListener(
    SIGN OUT
    ========================================================= */
 
-logoutButton.addEventListener(
-    "click",
-    async function () {
+document
+    .getElementById(
+        "logoutButton"
+    )
+    .addEventListener(
+        "click",
+        async function () {
 
-        logoutButton.disabled =
-            true;
-
-        try {
-
-            await supabaseClient.auth.signOut();
+            await routineSupabase
+                .auth
+                .signOut();
 
             showLogin();
 
@@ -1721,238 +1507,39 @@ logoutButton.addEventListener(
             );
 
         }
-
-        finally {
-
-            logoutButton.disabled =
-                false;
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   LOAD GROUPS
-   ========================================================= */
-
-async function loadGroups(
-    userId
-) {
-
-    groupsList.innerHTML = `
-        <div class="group-item">
-            <span class="group-name">
-                Loading groups...
-            </span>
-        </div>
-    `;
-
-
-    try {
-
-        /*
-        Get memberships belonging
-        to the logged-in user.
-        */
-
-        const result =
-            await supabaseClient
-                .from("group_members")
-                .select(`
-                    group_id,
-                    role,
-                    groups (
-                        id,
-                        name,
-                        invite_code
-                    )
-                `)
-                .eq(
-                    "user_id",
-                    userId
-                );
-
-
-        if (result.error) {
-
-            console.error(
-                result.error
-            );
-
-            groupsList.innerHTML = `
-                <div class="group-item">
-                    <span class="group-name">
-                        Could not load groups.
-                    </span>
-                </div>
-            `;
-
-            return;
-        }
-
-
-        if (
-            !result.data ||
-            result.data.length === 0
-        ) {
-
-            groupsList.innerHTML = `
-                <div class="group-item">
-                    <span class="group-name">
-                        You are not in any groups yet.
-                    </span>
-                </div>
-            `;
-
-            return;
-        }
-
-
-        groupsList.innerHTML = "";
-
-
-        result.data.forEach(
-            function (membership) {
-
-                const group =
-                    membership.groups;
-
-
-                if (!group) {
-                    return;
-                }
-
-
-                const item =
-                    document.createElement(
-                        "div"
-                    );
-
-                item.className =
-                    "group-item";
-
-
-                item.innerHTML = `
-
-                    <div>
-
-                        <div class="group-name">
-                            ${escapeHtml(
-                                group.name
-                            )}
-                        </div>
-
-                        <div class="group-role">
-                            ${escapeHtml(
-                                membership.role || "member"
-                            )}
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="small-button"
-                        type="button"
-                        data-group-id="${group.id}"
-                    >
-                        OPEN
-                    </button>
-
-                `;
-
-
-                groupsList.appendChild(
-                    item
-                );
-
-            }
-        );
-
-    }
-
-    catch (error) {
-
-        console.error(
-            error
-        );
-
-        groupsList.innerHTML = `
-            <div class="group-item">
-                <span class="group-name">
-                    Could not load groups.
-                </span>
-            </div>
-        `;
-
-    }
-
-}
-
-
-/* =========================================================
-   HTML SAFETY
-   ========================================================= */
-
-function escapeHtml(
-    value
-) {
-
-    return String(value)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
-}
+    );
 
 
 /* =========================================================
    AUTH STATE
    ========================================================= */
 
-supabaseClient.auth.onAuthStateChange(
-    function (
-        event,
-        session
-    ) {
-
-        if (
-            session &&
-            session.user
+routineSupabase
+    .auth
+    .onAuthStateChange(
+        function (
+            event,
+            session
         ) {
 
-            showWarRoom(
+            if (
+                session &&
                 session.user
-            );
+            ) {
+
+                enterWarRoom(
+                    session.user
+                );
+
+            }
+            else {
+
+                showLogin();
+
+            }
 
         }
-
-        else {
-
-            showLogin();
-
-        }
-
-    }
-);
+    );
 
 
 /* =========================================================
@@ -1964,18 +1551,22 @@ async function initialise() {
     try {
 
         const result =
-            await supabaseClient.auth.getSession();
+            await routineSupabase
+                .auth
+                .getSession();
 
 
-        if (result.error) {
+        if (
+            result.error
+        ) {
 
             setStatus(
-                "Supabase error: " +
                 result.error.message,
                 "error"
             );
 
             return;
+
         }
 
 
@@ -1983,12 +1574,11 @@ async function initialise() {
             result.data.session
         ) {
 
-            showWarRoom(
+            enterWarRoom(
                 result.data.session.user
             );
 
         }
-
         else {
 
             setStatus(
@@ -1999,8 +1589,9 @@ async function initialise() {
         }
 
     }
-
-    catch (error) {
+    catch (
+        error
+    ) {
 
         setStatus(
             "Connection error: " +
@@ -2019,3 +1610,4 @@ initialise();
 
 </body>
 </html>
+```
