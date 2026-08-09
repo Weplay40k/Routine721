@@ -4,43 +4,61 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Routine 721</title>
 
 <style>
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #080808;
+    background:
+        radial-gradient(circle at center, #24100d 0%, #080808 65%);
     color: white;
     font-family: Arial, sans-serif;
 }
 
 .box {
     width: 90%;
-    max-width: 500px;
-    padding: 40px;
+    max-width: 520px;
+    padding: 45px;
     text-align: center;
     border: 1px solid #5a2b24;
-    border-radius: 12px;
+    border-radius: 14px;
     background: #151515;
+    box-shadow: 0 20px 60px rgba(0,0,0,.6);
 }
 
 h1 {
+    margin-top: 0;
     color: #c9a84c;
-    letter-spacing: 5px;
+    letter-spacing: 6px;
+    font-size: 38px;
+}
+
+.status {
+    margin: 25px 0;
+    color: #ccc;
 }
 
 button {
-    padding: 12px 20px;
+    padding: 13px 24px;
     background: #9b3024;
     color: white;
     border: 0;
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
+}
+
+button:hover {
+    background: #bd3a2b;
 }
 </style>
 </head>
@@ -51,29 +69,30 @@ button {
 
 <h1>ROUTINE 721</h1>
 
-<p id="status">Connecting to database...</p>
+<p id="status" class="status">
+Connecting to database...
+</p>
 
-<button id="test" style="display:none">
+<button id="test" style="display:none;">
 CREATE ACCOUNT
 </button>
 
 </div>
 
-<!-- Supabase library -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-const SUPABASE_URL =
+const ROUTINE_SUPABASE_URL =
 "https://jbgwdxavydhtvoqpbfmj.supabase.co";
 
-const SUPABASE_KEY =
+const ROUTINE_SUPABASE_KEY =
 "sb_publishable_Wt8h6fNelT6zrzf-Dm8FXw_cdSGylaz";
 
-const supabase =
+const routineClient =
 window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
+    ROUTINE_SUPABASE_URL,
+    ROUTINE_SUPABASE_KEY
 );
 
 async function testConnection() {
@@ -84,7 +103,7 @@ async function testConnection() {
     try {
 
         const result =
-        await supabase.auth.getSession();
+        await routineClient.auth.getSession();
 
         if (result.error) {
 
@@ -101,7 +120,7 @@ async function testConnection() {
         document.getElementById("test").style.display =
         "inline-block";
 
-    } catch(error) {
+    } catch (error) {
 
         status.textContent =
         "Connection error: " +
