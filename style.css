@@ -1,390 +1,1278 @@
 ```css
+/* =========================================================
+   ROUTINE 721
+   WAR ROOM THEME
+   Dark Gothic Sci-Fi / 40K-inspired
+   ========================================================= */
+
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #050607;
+    --bg2: #0b0d10;
+
+    --panel: rgba(15, 17, 20, 0.94);
+    --panel-light: rgba(24, 26, 30, 0.94);
+
+    --border: #34383d;
+    --border-gold: rgba(197, 161, 65, 0.45);
+
+    --gold: #c9a84c;
+    --gold-light: #e0c36a;
+
+    --red: #9b3024;
+    --red-bright: #d04432;
+
+    --blue: #2459a8;
+    --blue-bright: #4284dc;
+
+    --green: #63c982;
+    --danger: #dc5a4d;
+
+    --text: #eeeeee;
+    --muted: #8b8f94;
+
+    --shadow: rgba(0, 0, 0, 0.75);
+}
+
+
+/* =========================================================
+   BASE
+   ========================================================= */
+
+html {
+    min-height: 100%;
+    background: var(--bg);
 }
 
 body {
-  margin: 0;
-  min-height: 100vh;
-  background: #080808;
-  color: #eeeeee;
-  font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+
+    color: var(--text);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 50% -20%,
+            #20252b 0,
+            #0b0d10 38%,
+            #050607 80%
+        );
+
+    overflow-x: hidden;
 }
+
+
+/* =========================================================
+   GENERAL
+   ========================================================= */
 
 button,
 input,
 select,
 textarea {
-  font: inherit;
+    font: inherit;
 }
 
 button {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .hidden {
-  display: none !important;
+    display: none !important;
+}
+
+h1,
+h2,
+h3 {
+    font-weight: 700;
+}
+
+::selection {
+    background: rgba(201, 168, 76, 0.3);
+    color: white;
 }
 
 
-/* HEADER */
+/* =========================================================
+   AUTH / LOGIN SCREEN
+   ========================================================= */
 
-.topbar {
-  min-height: 75px;
-  padding: 15px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #111111;
-  border-bottom: 1px solid #382019;
+#authScreen {
+    position: relative;
+
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px;
+
+    overflow: hidden;
+
+    isolation: isolate;
+
+    background:
+        radial-gradient(
+            ellipse at 10% 50%,
+            rgba(24, 74, 160, 0.20),
+            transparent 35%
+        ),
+
+        radial-gradient(
+            ellipse at 90% 50%,
+            rgba(160, 25, 15, 0.22),
+            transparent 35%
+        ),
+
+        #050607;
 }
 
-.logo {
-  color: #c9a84c;
-  font-size: 30px;
-  font-weight: 900;
-  letter-spacing: 6px;
+
+/* =========================================================
+   LOGIN BLUE / RED PULSE
+   ========================================================= */
+
+#authScreen::before {
+    content: "";
+
+    position: absolute;
+
+    inset: -25%;
+
+    z-index: -4;
+
+    background:
+        radial-gradient(
+            ellipse at 15% 50%,
+            rgba(25, 80, 190, 0.30),
+            transparent 30%
+        ),
+
+        radial-gradient(
+            ellipse at 85% 50%,
+            rgba(190, 30, 20, 0.30),
+            transparent 30%
+        );
+
+    animation:
+        battlefieldPulse
+        8s
+        ease-in-out
+        infinite
+        alternate;
 }
 
-.logo.small {
-  font-size: 20px;
-  letter-spacing: 4px;
+
+/* =========================================================
+   LOGIN SMOKE
+   ========================================================= */
+
+#authScreen::after {
+    content: "";
+
+    position: absolute;
+
+    inset: -35%;
+
+    z-index: -3;
+
+    background:
+        radial-gradient(
+            ellipse at 15% 70%,
+            rgba(140, 140, 140, 0.08),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            ellipse at 75% 30%,
+            rgba(120, 120, 120, 0.08),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            ellipse at 50% 50%,
+            rgba(255, 255, 255, 0.025),
+            transparent 40%
+        );
+
+    filter: blur(40px);
+
+    animation:
+        smokeDrift
+        18s
+        ease-in-out
+        infinite
+        alternate;
 }
 
-.group-title {
-  margin-top: 4px;
-  color: #999;
-  font-size: 12px;
-  letter-spacing: 2px;
+
+/* =========================================================
+   LOGIN EMBERS
+   ========================================================= */
+
+#authScreen .embers {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: -1;
+
+    overflow: hidden;
+
+    pointer-events: none;
+}
+
+.ember {
+    position: absolute;
+
+    bottom: -10px;
+
+    width: 3px;
+    height: 3px;
+
+    border-radius: 50%;
+
+    background: #e3a149;
+
+    box-shadow:
+        0 0 5px #e3a149,
+        0 0 12px rgba(255, 90, 20, 0.65);
+
+    opacity: 0;
+
+    animation:
+        emberRise
+        linear
+        infinite;
+}
+
+.ember.small {
+    width: 2px;
+    height: 2px;
+}
+
+.ember.large {
+    width: 4px;
+    height: 4px;
 }
 
 
-/* AUTH */
-
-.screen {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
+/* =========================================================
+   LOGIN CARD
+   ========================================================= */
 
 .auth-card {
-  width: 100%;
-  max-width: 450px;
-  text-align: center;
+    position: relative;
+
+    z-index: 5;
+
+    width: 100%;
+    max-width: 460px;
+
+    padding: 36px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(25, 27, 30, 0.97),
+            rgba(7, 8, 9, 0.97)
+        );
+
+    border:
+        1px solid
+        var(--border-gold);
+
+    border-radius: 3px;
+
+    box-shadow:
+        0 25px 80px rgba(0, 0, 0, 0.9),
+        0 0 60px rgba(0, 0, 0, 0.7),
+        inset 0 0 40px rgba(255, 255, 255, 0.015);
+
+    backdrop-filter: blur(12px);
 }
 
 
-/* CARDS */
+/* Gothic corner accents */
 
-.card {
-  background: #141414;
-  border: 1px solid #39201a;
-  border-radius: 10px;
-  padding: 24px;
-  margin-bottom: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+.auth-card::before,
+.auth-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 35px;
+    height: 35px;
+
+    border-color: var(--gold);
+
+    opacity: 0.55;
+}
+
+.auth-card::before {
+    top: 8px;
+    left: 8px;
+
+    border-top: 1px solid;
+    border-left: 1px solid;
+}
+
+.auth-card::after {
+    right: 8px;
+    bottom: 8px;
+
+    border-right: 1px solid;
+    border-bottom: 1px solid;
 }
 
 
-/* AUTH INPUTS */
+/* =========================================================
+   LOGO
+   ========================================================= */
 
-.auth-card input {
-  width: 100%;
-  margin-top: 12px;
+.logo {
+    text-align: center;
+
+    margin-bottom: 30px;
+}
+
+.logo h1 {
+    margin: 0;
+
+    color: var(--gold);
+
+    font-size: 32px;
+
+    letter-spacing: 7px;
+
+    text-shadow:
+        0 0 8px rgba(201, 168, 76, 0.25),
+        0 0 25px rgba(201, 168, 76, 0.10);
+}
+
+.logo p {
+    margin: 10px 0 0;
+
+    color: #777;
+
+    font-size: 11px;
+
+    letter-spacing: 6px;
 }
 
 
-/* INPUTS */
+/* =========================================================
+   LOGIN FORM
+   ========================================================= */
+
+.auth-card h2 {
+    color: #ddd;
+
+    font-size: 18px;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+
+    margin: 16px 0 7px;
+
+    color: #aaa;
+
+    font-size: 13px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+}
+
 
 input,
 select,
 textarea {
-  width: 100%;
-  padding: 13px;
-  margin: 6px 0 16px;
-  background: #0b0b0b;
-  border: 1px solid #44302a;
-  border-radius: 6px;
-  color: white;
-  outline: none;
+    width: 100%;
+
+    padding: 12px 13px;
+
+    color: white;
+
+    background:
+        rgba(3, 4, 5, 0.9);
+
+    border:
+        1px solid
+        #3a3d40;
+
+    border-radius: 3px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s,
+        background 0.2s;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #555;
 }
 
 input:focus,
 select:focus,
 textarea:focus {
-  border-color: #c9a84c;
+    border-color: var(--gold);
+
+    background: #090a0b;
+
+    box-shadow:
+        0 0 0 1px
+        rgba(201, 168, 76, 0.15),
+        0 0 15px
+        rgba(201, 168, 76, 0.08);
 }
 
 textarea {
-  min-height: 100px;
-  resize: vertical;
+    min-height: 100px;
+
+    resize: vertical;
 }
 
 
-/* BUTTONS */
+/* =========================================================
+   BUTTONS
+   ========================================================= */
 
 button {
-  border: 0;
-  border-radius: 6px;
-  padding: 12px 18px;
-  font-weight: bold;
+    border: 0;
+
+    border-radius: 3px;
+
+    padding: 12px 17px;
+
+    color: white;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    transition:
+        transform 0.15s,
+        background 0.2s,
+        box-shadow 0.2s;
 }
 
-.primary {
-  background: #9b3024;
-  color: white;
+button:hover {
+    transform: translateY(-1px);
 }
 
-.primary:hover {
-  background: #b43a2b;
+button:active {
+    transform: translateY(1px);
 }
 
-.secondary {
-  background: #292929;
-  color: #ddd;
-  margin-top: 10px;
+button:disabled {
+    opacity: 0.45;
+
+    cursor: not-allowed;
+
+    transform: none;
 }
+
+
+button:not(.secondary):not(.gold):not(.danger) {
+    background:
+        linear-gradient(
+            180deg,
+            #ad392a,
+            #79251d
+        );
+
+    box-shadow:
+        0 4px 15px rgba(130, 30, 20, 0.25);
+}
+
+button:not(.secondary):not(.gold):not(.danger):hover {
+    background:
+        linear-gradient(
+            180deg,
+            #d04735,
+            #922b21
+        );
+}
+
+
+button.secondary {
+    background:
+        linear-gradient(
+            180deg,
+            #35383b,
+            #222426
+        );
+
+    border:
+        1px solid #444;
+}
+
+button.secondary:hover {
+    background: #41454a;
+}
+
+
+button.gold {
+    background:
+        linear-gradient(
+            180deg,
+            #a88938,
+            #705a24
+        );
+}
+
+button.danger {
+    background:
+        linear-gradient(
+            180deg,
+            #8b2b22,
+            #5c1d18
+        );
+}
+
 
 .full {
-  width: 100%;
-}
+    width: 100%;
 
-.logout {
-  background: #282828;
-  color: #aaa;
-  padding: 9px 12px;
+    margin-top: 14px;
 }
 
 
-/* NAVIGATION */
-
-.tabs {
-  display: flex;
-  overflow-x: auto;
-  background: #101010;
-  border-bottom: 1px solid #30201b;
-}
-
-.tab {
-  flex: 1;
-  min-width: 125px;
-  border-radius: 0;
-  background: transparent;
-  color: #888;
-  padding: 15px 10px;
-  border-bottom: 3px solid transparent;
-}
-
-.tab.active {
-  color: #c9a84c;
-  border-bottom-color: #c9a84c;
-}
-
-
-/* MAIN */
-
-main {
-  width: 100%;
-  max-width: 1100px;
-  margin: auto;
-  padding: 25px 18px 60px;
-}
-
-.page-title {
-  margin-bottom: 22px;
-}
-
-.page-title h1 {
-  margin: 0;
-  color: #c9a84c;
-  letter-spacing: 3px;
-}
-
-.page-title p {
-  color: #888;
-}
-
-
-/* STATISTICS */
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.stat-card {
-  background: #141414;
-  border: 1px solid #38231d;
-  border-radius: 8px;
-  padding: 18px;
-  text-align: center;
-}
-
-.stat-card span,
-.profile-stats span {
-  display: block;
-  color: #777;
-  font-size: 11px;
-  letter-spacing: 1px;
-}
-
-.stat-card strong {
-  display: block;
-  margin-top: 8px;
-  font-size: 28px;
-}
-
-.stat-card.highlight {
-  border-color: #8f7429;
-}
-
-
-/* TABLE-LIKE ITEMS */
-
-.player-row,
-.faction-row,
-.game-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  padding: 15px 0;
-  border-bottom: 1px solid #292929;
-}
-
-.player-row:last-child,
-.faction-row:last-child,
-.game-row:last-child {
-  border-bottom: 0;
-}
-
-.name {
-  font-weight: bold;
-}
-
-.muted {
-  color: #777;
-  font-size: 13px;
-}
-
-.win {
-  color: #61c46a;
-}
-
-.loss {
-  color: #d95b50;
-}
-
-.draw {
-  color: #c9a84c;
-}
-
-
-/* PROFILE */
-
-.profile-card {
-  text-align: center;
-}
-
-#profile-name {
-  font-size: 26px;
-  color: #c9a84c;
-  font-weight: bold;
-  margin-bottom: 25px;
-}
-
-.profile-stats {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-}
-
-.profile-stats div {
-  padding: 15px;
-  background: #0d0d0d;
-  border-radius: 6px;
-}
-
-.profile-stats strong {
-  display: block;
-  font-size: 22px;
-  margin-top: 7px;
-}
-
-
-/* FORM */
-
-label {
-  display: block;
-  color: #bbb;
-  font-size: 13px;
-  font-weight: bold;
-  margin-top: 4px;
-}
-
-.two-column {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-}
-
-
-/* MESSAGE */
+/* =========================================================
+   AUTH MESSAGE
+   ========================================================= */
 
 .message {
-  margin: 12px 0;
-  color: #d95b50;
-  font-size: 14px;
+    min-height: 25px;
+
+    margin-top: 16px;
+
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    line-height: 1.5;
 }
 
 .message.success {
-  color: #61c46a;
+    color: var(--green);
+}
+
+.message.error {
+    color: var(--danger);
 }
 
 
-/* MOBILE */
+/* =========================================================
+   MAIN APPLICATION
+   ========================================================= */
 
-@media (max-width: 700px) {
+#appScreen {
+    min-height: 100vh;
 
-  .logo {
-    font-size: 22px;
+    background:
+        radial-gradient(
+            circle at 50% 0,
+            rgba(120, 90, 35, 0.08),
+            transparent 30%
+        );
+}
+
+
+/* =========================================================
+   TOP BAR
+   ========================================================= */
+
+.topbar {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 20;
+
+    background:
+        rgba(5, 6, 7, 0.96);
+
+    border-bottom:
+        1px solid
+        #292c30;
+
+    backdrop-filter: blur(14px);
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+.topbar-inner {
+    max-width: 1200px;
+
+    margin: auto;
+
+    padding: 14px 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+.brand {
+    color: var(--gold);
+
+    font-weight: bold;
+
     letter-spacing: 4px;
-  }
 
-  .logo.small {
-    font-size: 17px;
-  }
+    text-shadow:
+        0 0 10px
+        rgba(201, 168, 76, 0.15);
+}
 
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.user-area {
+    display: flex;
 
-  .stats-grid .highlight {
-    grid-column: span 2;
-  }
+    align-items: center;
 
-  .profile-stats {
-    grid-template-columns: repeat(2, 1fr);
-  }
+    gap: 10px;
+}
 
-  .two-column {
-    grid-template-columns: 1fr;
-  }
+.user-email {
+    color: #999;
 
-  .topbar {
-    padding: 12px;
-  }
+    font-size: 12px;
+}
 
-  main {
-    padding: 20px 12px 50px;
-  }
+.logout {
+    padding: 8px 12px;
 
-  .card {
-    padding: 18px;
-  }
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.nav {
+    max-width: 1200px;
+
+    margin: auto;
+
+    padding: 9px 20px;
+
+    display: flex;
+
+    gap: 7px;
+
+    overflow-x: auto;
+
+    scrollbar-width: thin;
+}
+
+.nav button {
+    white-space: nowrap;
+
+    padding: 9px 13px;
+
+    background: #181a1d;
+
+    color: #888;
+
+    border:
+        1px solid
+        #303338;
+
+    font-size: 11px;
+
+    letter-spacing: 1px;
+}
+
+.nav button:hover {
+    color: white;
+
+    border-color:
+        #555;
+}
+
+.nav button.active {
+    color: white;
+
+    background:
+        linear-gradient(
+            180deg,
+            #a3382b,
+            #71231c
+        );
+
+    border-color:
+        #a33a2c;
+
+    box-shadow:
+        0 0 15px
+        rgba(155, 48, 36, 0.18);
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
+
+.main {
+    width: 100%;
+
+    max-width: 1200px;
+
+    margin: auto;
+
+    padding:
+        28px
+        20px
+        70px;
+}
+
+.page-title {
+    margin-bottom: 22px;
+}
+
+.page-title h2 {
+    margin: 0;
+
+    color: var(--gold);
+
+    font-size: 24px;
+
+    letter-spacing: 3px;
+
+    text-shadow:
+        0 0 12px
+        rgba(201, 168, 76, 0.12);
+}
+
+.page-title p {
+    margin: 8px 0 0;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 14px;
+}
+
+.card {
+    position: relative;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(24, 26, 29, 0.96),
+            rgba(12, 13, 15, 0.96)
+        );
+
+    border:
+        1px solid
+        #2d3034;
+
+    border-radius: 4px;
+
+    padding: 20px;
+
+    box-shadow:
+        0 10px 35px
+        rgba(0, 0, 0, 0.25);
+}
+
+.card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 15px;
+    right: 15px;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(201, 168, 76, 0.25),
+            transparent
+        );
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    color: var(--gold);
+
+    font-size: 31px;
+
+    font-weight: bold;
+
+    text-shadow:
+        0 0 12px
+        rgba(201, 168, 76, 0.15);
+}
+
+.stat-label {
+    color: #777;
+
+    margin-top: 6px;
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+}
+
+.section {
+    margin-top: 20px;
+}
+
+.section h3 {
+    margin-top: 0;
+
+    color: var(--gold);
+
+    font-size: 15px;
+
+    letter-spacing: 2px;
+}
+
+
+/* =========================================================
+   FORMS
+   ========================================================= */
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 5px 18px;
+}
+
+.form-full {
+    grid-column: 1 / -1;
+}
+
+.form-actions {
+    display: flex;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+    margin-top: 20px;
+}
+
+.form-actions button {
+    min-width: 150px;
+}
+
+
+/* =========================================================
+   LISTS / BATTLE ROWS
+   ========================================================= */
+
+.list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 9px;
+}
+
+.row {
+    background:
+        rgba(21, 23, 25, 0.92);
+
+    border:
+        1px solid
+        #2b2e32;
+
+    border-radius: 3px;
+
+    padding: 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    transition:
+        border-color 0.2s,
+        background 0.2s;
+}
+
+.row:hover {
+    background: #1b1d20;
+
+    border-color:
+        #45494e;
+}
+
+.row-main {
+    min-width: 0;
+}
+
+.row-title {
+    color: #eee;
+
+    font-weight: bold;
+}
+
+.row-sub {
+    color: #777;
+
+    font-size: 12px;
+
+    margin-top: 5px;
+}
+
+.result-win {
+    color: var(--green);
+
+    font-weight: bold;
+}
+
+.result-loss {
+    color: var(--danger);
+
+    font-weight: bold;
+}
+
+.result-draw {
+    color: var(--gold);
+
+    font-weight: bold;
+}
+
+.empty {
+    color: #666;
+
+    text-align: center;
+
+    padding: 28px;
+}
+
+
+/* =========================================================
+   GROUP
+   ========================================================= */
+
+.group-code {
+    margin: 12px 0;
+
+    color: var(--gold);
+
+    font-size: 25px;
+
+    letter-spacing: 6px;
+
+    font-weight: bold;
+
+    text-shadow:
+        0 0 12px
+        rgba(201, 168, 76, 0.15);
+}
+
+.group-name {
+    color: white;
+
+    font-size: 22px;
+
+    font-weight: bold;
+}
+
+.small {
+    color: #777;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   SCROLLBARS
+   ========================================================= */
+
+::-webkit-scrollbar {
+    width: 8px;
+
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #08090a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #34383d;
+
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4c5157;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes emberRise {
+
+    0% {
+        transform:
+            translate3d(
+                0,
+                20vh,
+                0
+            );
+
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.8;
+    }
+
+    50% {
+        transform:
+            translate3d(
+                35px,
+                -45vh,
+                0
+            );
+
+        opacity: 0.65;
+    }
+
+    85% {
+        opacity: 0.25;
+    }
+
+    100% {
+        transform:
+            translate3d(
+                -20px,
+                -115vh,
+                0
+            );
+
+        opacity: 0;
+    }
+}
+
+
+@keyframes smokeDrift {
+
+    0% {
+        transform:
+            translate3d(
+                -5%,
+                3%,
+                0
+            )
+            scale(1);
+    }
+
+    50% {
+        transform:
+            translate3d(
+                5%,
+                -3%,
+                0
+            )
+            scale(1.08);
+    }
+
+    100% {
+        transform:
+            translate3d(
+                -3%,
+                5%,
+                0
+            )
+            scale(1.15);
+    }
+}
+
+
+@keyframes battlefieldPulse {
+
+    0% {
+        transform: scale(1);
+
+        opacity: 0.60;
+    }
+
+    45% {
+        opacity: 0.85;
+    }
+
+    70% {
+        opacity: 0.70;
+    }
+
+    100% {
+        transform: scale(1.08);
+
+        opacity: 0.95;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-full {
+        grid-column: auto;
+    }
+
+    .topbar-inner {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .user-area {
+        width: 100%;
+
+        justify-content: space-between;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    #authScreen {
+        padding: 14px;
+    }
+
+    .auth-card {
+        padding: 25px 20px;
+    }
+
+    .logo h1 {
+        font-size: 26px;
+
+        letter-spacing: 5px;
+    }
+
+    .main {
+        padding:
+            18px
+            12px
+            50px;
+    }
+
+    .nav {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 8px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .stat-number {
+        font-size: 24px;
+    }
+
+    .row {
+        align-items: flex-start;
+    }
+
+    .user-email {
+        max-width: 220px;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+        white-space: nowrap;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    #authScreen::before,
+    #authScreen::after,
+    .ember {
+        animation: none !important;
+    }
+
+    * {
+        scroll-behavior: auto !important;
+    }
 }
 ```
