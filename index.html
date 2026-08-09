@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Routine 721</title>
 
 <style>
@@ -21,10 +19,12 @@ color:#eee;
 font-family:Arial,Helvetica,sans-serif
 }
 
+button,input,select,textarea{font:inherit}
+
 header{
-padding:25px 6%;
+padding:20px 6%;
 border-bottom:1px solid #333;
-background:rgba(5,5,5,.95);
+background:#080808;
 display:flex;
 justify-content:space-between;
 align-items:center
@@ -32,35 +32,31 @@ align-items:center
 
 .logo{
 color:#c9a84c;
-font-size:30px;
+font-size:28px;
 font-weight:bold;
 letter-spacing:5px
 }
 
 .edition{
 color:#777;
-font-size:11px;
-letter-spacing:2px
-}
-
-.status{
-font-size:12px;
-color:#68c17a
+font-size:10px;
+letter-spacing:2px;
+margin-top:4px
 }
 
 main{
 width:92%;
 max-width:1200px;
 margin:auto;
-padding:35px 0 60px
+padding:30px 0 60px
 }
 
 .hero{
-padding:55px 35px;
+padding:45px 30px;
 border:1px solid #3d2926;
 border-radius:12px;
-background:linear-gradient(135deg,rgba(105,30,22,.8),rgba(15,15,15,.95));
-margin-bottom:20px
+background:linear-gradient(135deg,rgba(105,30,22,.8),rgba(15,15,15,.96));
+margin-bottom:18px
 }
 
 .hero small{
@@ -69,21 +65,11 @@ letter-spacing:3px
 }
 
 .hero h1{
-font-size:52px;
-margin:10px 0;
-letter-spacing:3px
+font-size:46px;
+margin:10px 0
 }
 
-.hero p{
-color:#aaa
-}
-
-.stats{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:14px;
-margin-bottom:15px
-}
+.muted{color:#888}
 
 .card{
 background:#151515;
@@ -92,56 +78,57 @@ border-radius:10px;
 padding:22px
 }
 
-.stat-label{
-color:#777;
-font-size:11px;
-letter-spacing:1px
+.stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px;
+margin-bottom:15px
 }
 
-.stat-number{
-margin-top:8px;
-font-size:32px
+.stat-label{
+font-size:10px;
+color:#777;
+letter-spacing:2px
+}
+
+.stat{
+font-size:32px;
+margin-top:8px
 }
 
 .green{color:#68c17a}
 .red{color:#d75b4a}
 .gold{color:#c9a84c}
 
-.columns{
+.grid{
 display:grid;
-grid-template-columns:1.2fr .8fr;
+grid-template-columns:1fr 1fr;
 gap:15px
-}
-
-h2{
-margin-top:0;
-letter-spacing:1px
 }
 
 form{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:14px
+gap:13px
 }
 
 label{
-color:#999;
-font-size:12px
+font-size:12px;
+color:#999
 }
 
 input,select,textarea{
 width:100%;
-margin-top:7px;
-padding:12px;
-background:#090909;
-color:white;
+margin-top:6px;
+padding:11px;
 border:1px solid #3a3a3a;
-border-radius:6px
+border-radius:6px;
+background:#090909;
+color:white
 }
 
 textarea{
-min-height:90px;
-resize:vertical
+min-height:90px
 }
 
 .full{
@@ -149,9 +136,9 @@ grid-column:1/-1
 }
 
 button{
+padding:11px 16px;
 border:0;
 border-radius:6px;
-padding:13px 18px;
 background:#9b3024;
 color:white;
 font-weight:bold;
@@ -159,11 +146,85 @@ cursor:pointer
 }
 
 button:hover{
-background:#c33b2c
+background:#c13b2e
 }
 
-.submit{
-grid-column:1/-1
+button.secondary{
+background:#292929
+}
+
+button.danger{
+background:#4a1d19
+}
+
+.actions{
+display:flex;
+gap:8px;
+flex-wrap:wrap
+}
+
+.message{
+display:none;
+margin-top:12px;
+padding:12px;
+border-radius:6px
+}
+
+.message.show{display:block}
+
+.message.error{
+background:#351613;
+color:#ff9c91
+}
+
+.message.success{
+background:#17301d;
+color:#9be4a7
+}
+
+.table-wrap{
+overflow:auto
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+min-width:750px
+}
+
+th{
+text-align:left;
+font-size:10px;
+color:#777;
+padding:12px;
+border-bottom:1px solid #333
+}
+
+td{
+padding:12px;
+border-bottom:1px solid #252525
+}
+
+.pill{
+padding:5px 9px;
+border-radius:20px;
+font-size:10px;
+font-weight:bold
+}
+
+.win{
+color:#68c17a;
+background:#17301d
+}
+
+.loss{
+color:#d75b4a;
+background:#351613
+}
+
+.draw{
+color:#c9a84c;
+background:#332b13
 }
 
 .player{
@@ -178,439 +239,877 @@ border-bottom:1px solid #292929
 border-bottom:0
 }
 
-.player-name{
-font-weight:bold
-}
-
-.player-record{
-color:#777;
-font-size:12px;
-margin-top:4px
-}
-
 .player-rate{
-color:#68c17a;
 font-size:20px;
-font-weight:bold
-}
-
-.history{
-margin-top:15px
-}
-
-.table-wrap{
-overflow-x:auto
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-min-width:800px
-}
-
-th{
-text-align:left;
-color:#777;
-font-size:11px;
-padding:12px;
-border-bottom:1px solid #333
-}
-
-td{
-padding:13px 12px;
-border-bottom:1px solid #252525
-}
-
-.result{
-padding:5px 9px;
-border-radius:20px;
-font-size:11px;
-font-weight:bold
-}
-
-.result.win{
-color:#68c17a;
-background:#17301d
-}
-
-.result.loss{
-color:#d75b4a;
-background:#351613
-}
-
-.result.draw{
-color:#c9a84c;
-background:#332b13
-}
-
-.delete{
-padding:6px 9px;
-background:transparent;
-border:1px solid #58241e;
-color:#d75b4a
+font-weight:bold;
+color:#68c17a
 }
 
 .empty{
-color:#666;
+padding:25px;
 text-align:center;
+color:#666
+}
+
+.auth{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px
+}
+
+.auth-box{
+width:100%;
+max-width:500px;
+background:#151515;
+border:1px solid #3d2926;
+border-radius:12px;
+overflow:hidden
+}
+
+.auth-top{
+padding:35px;
+background:linear-gradient(135deg,#501a14,#111)
+}
+
+.auth-top h1{
+margin:10px 0;
+font-size:38px
+}
+
+.auth-body{
 padding:30px
 }
 
-.message{
-margin-top:15px;
-padding:12px;
-border-radius:6px;
-display:none;
-font-size:13px
+.nav{
+display:flex;
+gap:7px;
+flex-wrap:wrap;
+margin-bottom:15px
 }
 
-.message.show{
-display:block
+.nav button.active{
+background:#c9a84c;
+color:#111
 }
 
-.message.error{
-background:#351613;
-color:#ff9c91
-}
-
-.message.success{
-background:#17301d;
-color:#9be4a7
-}
-
-footer{
-text-align:center;
-padding:25px;
-color:#555;
-font-size:10px;
-letter-spacing:2px
+.hidden{
+display:none!important
 }
 
 @media(max-width:800px){
 .stats{grid-template-columns:1fr 1fr}
-.columns{grid-template-columns:1fr}
+.grid{grid-template-columns:1fr}
 }
 
 @media(max-width:550px){
 header{
-flex-direction:column;
 align-items:flex-start;
-gap:8px
+gap:10px;
+flex-direction:column
 }
 
-.hero h1{font-size:36px}
+.hero h1{font-size:34px}
+
 .stats{grid-template-columns:1fr}
+
 form{grid-template-columns:1fr}
-.full,.submit{grid-column:auto}
+
+.full{grid-column:auto}
 }
 </style>
-
 </head>
 
 <body>
 
-<header>
-
-<div>
-<div class="logo">ROUTINE 721</div>
-<div class="edition">
-WARHAMMER 40,000 · 11TH EDITION
-</div>
-</div>
-
-<div>
-<div class="status" id="connectionStatus">
-Connecting to database...
-</div>
-</div>
-
-</header>
-
-<main>
-
-<section class="hero">
-
-<small>CAMPAIGN COMMAND</small>
-
-<h1>WAR ROOM</h1>
-
-<p>
-Shared battle records for your gaming group.
-</p>
-
-</section>
-
-<section class="stats">
-
-<div class="card">
-<div class="stat-label">BATTLES</div>
-<div id="total" class="stat-number">0</div>
-</div>
-
-<div class="card">
-<div class="stat-label">WINS</div>
-<div id="wins" class="stat-number green">0</div>
-</div>
-
-<div class="card">
-<div class="stat-label">LOSSES</div>
-<div id="losses" class="stat-number red">0</div>
-</div>
-
-<div class="card">
-<div class="stat-label">GROUP WIN RATE</div>
-<div id="rate" class="stat-number gold">0%</div>
-</div>
-
-</section>
-
-<section class="columns">
-
-<div class="card">
-
-<h2>RECORD BATTLE</h2>
-
-<form id="battleForm">
-
-<label>
-Player
-
-<input id="player" required placeholder="Your name">
-
-</label>
-
-<label>
-Your Army
-
-<input id="army" required placeholder="Space Marines">
-
-</label>
-
-<label>
-Opponent
-
-<input id="opponent" placeholder="Opponent name">
-
-</label>
-
-<label>
-Opponent Army
-
-<input id="enemyArmy" required placeholder="Orks">
-
-</label>
-
-<label>
-Result
-
-<select id="result">
-<option>Win</option>
-<option>Loss</option>
-<option>Draw</option>
-</select>
-
-</label>
-
-<label>
-Date
-
-<input id="date" type="date" required>
-
-</label>
-
-<label class="full">
-Mission
-
-<input id="mission" placeholder="Take and Hold">
-
-</label>
-
-<label class="full">
-Notes
-
-<textarea id="notes"></textarea>
-
-</label>
-
-<button class="submit">
-RECORD BATTLE
-</button>
-
-</form>
-
-<div id="message" class="message"></div>
-
-</div>
-
-<div class="card">
-
-<h2>PLAYERS</h2>
-
-<div id="players">
-
-<div class="empty">
-No battles recorded yet.
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<section class="card history">
-
-<h2>BATTLE HISTORY</h2>
-
-<div id="history">
-
-<div class="empty">
-Loading battles...
-</div>
-
-</div>
-
-</section>
-
-</main>
-
-<footer>
-ROUTINE 721 · WAR ROOM
-</footer>
-
-<!-- SUPABASE -->
+<div id="app"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
+/* =========================================================
+   SUPABASE
+   ========================================================= */
+
 const SUPABASE_URL =
 "https://jbgwdxavydhtvoqpbfmj.supabase.co";
 
-
-/*
- IMPORTANT:
-
- Replace the text below with your Supabase
- PUBLISHABLE key.
-
- Do NOT use your service_role / secret key.
-*/
-
 const SUPABASE_KEY =
-"PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
+"sb_publishable_Wt8h6fNelT6zrzf-Dm8FXw_cdSGylaz";
 
-
-const supabase =
+const db =
 window.supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
 );
 
 
-let games=[];
+/* =========================================================
+   STATE
+   ========================================================= */
+
+let state={
+user:null,
+profile:null,
+group:null,
+members:[],
+games:[],
+view:"dashboard"
+};
 
 
-function showMessage(text,type){
+/* =========================================================
+   HELPERS
+   ========================================================= */
 
-const box=
-document.getElementById("message");
-
-box.textContent=text;
-
-box.className=
-"message show "+type;
-
-setTimeout(()=>{
-box.className="message";
-},5000);
-
+function $(id){
+return document.getElementById(id);
 }
 
+function escapeHTML(value){
+return String(value ?? "")
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
+}
 
-function stats(list){
+function stats(games){
 
 const wins=
-list.filter(g=>g.result==="Win").length;
+games.filter(g=>g.result==="Win").length;
 
 const losses=
-list.filter(g=>g.result==="Loss").length;
+games.filter(g=>g.result==="Loss").length;
 
 const draws=
-list.filter(g=>g.result==="Draw").length;
+games.filter(g=>g.result==="Draw").length;
 
-const total=list.length;
+const total=games.length;
 
 const rate=
 total
 ?((wins+draws*.5)/total)*100
 :0;
 
-return{
-wins,
-losses,
-draws,
-total,
-rate
+return{wins,losses,draws,total,rate};
+}
+
+function showMessage(text,type="success"){
+
+const el=$("message");
+
+if(!el)return;
+
+el.textContent=text;
+el.className="message show "+type;
+
+setTimeout(()=>{
+el.className="message";
+},5000);
+
+}
+
+
+/* =========================================================
+   AUTH
+   ========================================================= */
+
+function renderLogin(){
+
+document.body.innerHTML=`
+
+<div class="auth">
+
+<div class="auth-box">
+
+<div class="auth-top">
+
+<div class="edition">
+WARHAMMER 40,000 · 11TH EDITION
+</div>
+
+<h1>ROUTINE 721</h1>
+
+<div class="muted">
+Gaming group battle command.
+</div>
+
+</div>
+
+<div class="auth-body">
+
+<div class="nav">
+
+<button id="loginTab" class="active">
+SIGN IN
+</button>
+
+<button id="signupTab" class="secondary">
+CREATE ACCOUNT
+</button>
+
+</div>
+
+<form id="authForm">
+
+<label class="full">
+Email
+<input id="email" type="email" required>
+</label>
+
+<label class="full">
+Password
+<input id="password" type="password" minlength="6" required>
+</label>
+
+<label id="displayWrap" class="full hidden">
+Display name
+<input id="displayName">
+</label>
+
+<button class="full">
+ENTER WAR ROOM
+</button>
+
+</form>
+
+<div id="authMessage" class="message"></div>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+let mode="login";
+
+$("loginTab").onclick=()=>{
+mode="login";
+$("loginTab").classList.add("active");
+$("signupTab").classList.remove("active");
+$("displayWrap").classList.add("hidden");
+};
+
+$("signupTab").onclick=()=>{
+mode="signup";
+$("signupTab").classList.remove("active");
+$("loginTab").classList.remove("active");
+$("displayWrap").classList.remove("hidden");
+};
+
+$("authForm").onsubmit=async e=>{
+
+e.preventDefault();
+
+const email=$("email").value.trim();
+const password=$("password").value;
+
+let result;
+
+if(mode==="login"){
+
+result=
+await db.auth.signInWithPassword({
+email,
+password
+});
+
+}else{
+
+const displayName=
+$("displayName").value.trim();
+
+result=
+await db.auth.signUp({
+email,
+password,
+options:{
+data:{
+display_name:displayName
+}
+}
+});
+
+}
+
+if(result.error){
+
+$("authMessage").textContent=
+result.error.message;
+
+$("authMessage").className=
+"message show error";
+
+return;
+}
+
+if(mode==="signup"){
+
+$("authMessage").textContent=
+"Account created. Check your email if confirmation is enabled.";
+
+$("authMessage").className=
+"message show success";
+
+}else{
+
+await startApp();
+
+}
+
 };
 
 }
 
 
-function renderStats(){
+/* =========================================================
+   PROFILE
+   ========================================================= */
 
-const s=stats(games);
+async function ensureProfile(){
 
-document.getElementById("total").textContent=
-s.total;
+const user=state.user;
 
-document.getElementById("wins").textContent=
-s.wins;
+const {data,error}=
+await db
+.from("profiles")
+.select("*")
+.eq("id",user.id)
+.maybeSingle();
 
-document.getElementById("losses").textContent=
-s.losses;
+if(error){
 
-document.getElementById("rate").textContent=
-s.rate.toFixed(1)+"%";
+console.error(error);
+return null;
+
+}
+
+if(data)return data;
+
+const displayName=
+user.user_metadata?.display_name ||
+user.email?.split("@")[0] ||
+"Player";
+
+const result=
+await db
+.from("profiles")
+.insert({
+id:user.id,
+display_name:displayName
+})
+.select()
+.single();
+
+if(result.error){
+
+console.error(result.error);
+return null;
+
+}
+
+return result.data;
 
 }
 
 
-function renderPlayers(){
+/* =========================================================
+   GROUP
+   ========================================================= */
 
-const container=
-document.getElementById("players");
+async function loadGroup(){
 
-const names=[
-...new Set(
-games
-.map(g=>g.player)
-.filter(Boolean)
+const {data,error}=
+await db
+.from("group_members")
+.select(`
+group_id,
+user_id,
+role,
+joined_at,
+groups(
+id,
+name,
+invite_code,
+created_by,
+created_at
 )
-];
+`)
+.eq("user_id",state.user.id);
+
+if(error){
+
+console.error(error);
+
+return null;
+
+}
+
+if(!data || !data.length)
+return null;
+
+return data[0].groups;
+
+}
 
 
-if(!names.length){
+function renderGroupSetup(){
 
-container.innerHTML=
-`<div class="empty">
-No battles recorded yet.
-</div>`;
+document.body.innerHTML=`
+
+<div class="auth">
+
+<div class="auth-box">
+
+<div class="auth-top">
+
+<div class="edition">
+ROUTINE 721 · WAR ROOM
+</div>
+
+<h1>DEPLOYMENT</h1>
+
+<div class="muted">
+Create a gaming group or join one with an invite code.
+</div>
+
+</div>
+
+<div class="auth-body">
+
+<h2>Create Group</h2>
+
+<form id="createForm">
+
+<label class="full">
+Group name
+
+<input
+id="groupName"
+placeholder="The Emperor's Chosen"
+required
+>
+
+</label>
+
+<button class="full">
+CREATE GROUP
+</button>
+
+</form>
+
+
+<div style="height:25px"></div>
+
+<h2>Join Group</h2>
+
+<form id="joinForm">
+
+<label class="full">
+Invite code
+
+<input
+id="inviteCode"
+placeholder="AB12CD"
+maxlength="8"
+required
+>
+
+</label>
+
+<button class="full">
+JOIN GROUP
+</button>
+
+</form>
+
+<div id="groupMessage" class="message"></div>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+
+$("createForm").onsubmit=
+async e=>{
+
+e.preventDefault();
+
+const name=
+$("groupName").value.trim();
+
+const {data,error}=
+await db.rpc(
+"create_group",
+{
+p_name:name
+}
+);
+
+if(error){
+
+$("groupMessage").textContent=
+error.message;
+
+$("groupMessage").className=
+"message show error";
 
 return;
 
 }
 
+await startApp();
 
-container.innerHTML=
-names.map(name=>{
+};
 
-const playerGames=
-games.filter(
-g=>g.player===name
+
+$("joinForm").onsubmit=
+async e=>{
+
+e.preventDefault();
+
+const code=
+$("inviteCode")
+.value
+.trim()
+.toUpperCase();
+
+const {error}=
+await db.rpc(
+"join_group",
+{
+p_invite_code:code
+}
 );
 
-const s=stats(playerGames);
+if(error){
+
+$("groupMessage").textContent=
+error.message;
+
+$("groupMessage").className=
+"message show error";
+
+return;
+
+}
+
+await startApp();
+
+};
+
+}
+
+
+/* =========================================================
+   LOAD DATA
+   ========================================================= */
+
+async function loadData(){
+
+const {data:members,error:memberError}=
+await db
+.from("group_members")
+.select(`
+group_id,
+user_id,
+role,
+joined_at,
+profiles(
+id,
+display_name,
+avatar_url
+)
+`)
+.eq("group_id",state.group.id);
+
+if(memberError){
+
+console.error(memberError);
+return memberError;
+
+}
+
+state.members=members || [];
+
+
+const {data:games,error:gameError}=
+await db
+.from("games")
+.select("*")
+.eq("group_id",state.group.id)
+.order("played_at",{ascending:false});
+
+if(gameError){
+
+console.error(gameError);
+return gameError;
+
+}
+
+state.games=games || [];
+
+return null;
+
+}
+
+
+/* =========================================================
+   MAIN APP
+   ========================================================= */
+
+function renderApp(){
+
+document.body.innerHTML=`
+
+<header>
+
+<div>
+
+<div class="logo">
+ROUTINE 721
+</div>
+
+<div class="edition">
+WARHAMMER 40,000 · 11TH EDITION
+</div>
+
+</div>
+
+<div class="actions">
+
+<button id="dashboardBtn">
+WAR ROOM
+</button>
+
+<button id="gamesBtn">
+BATTLES
+</button>
+
+<button id="playersBtn">
+PLAYERS
+</button>
+
+<button id="logoutBtn" class="secondary">
+SIGN OUT
+</button>
+
+</div>
+
+</header>
+
+<main>
+
+<div id="content"></div>
+
+</main>
+
+`;
+
+$("dashboardBtn").onclick=()=>{
+state.view="dashboard";
+renderView();
+};
+
+$("gamesBtn").onclick=()=>{
+state.view="games";
+renderView();
+};
+
+$("playersBtn").onclick=()=>{
+state.view="players";
+renderView();
+};
+
+$("logoutBtn").onclick=
+async()=>{
+await db.auth.signOut();
+location.reload();
+};
+
+renderView();
+
+}
+
+
+function renderView(){
+
+if(state.view==="dashboard")
+renderDashboard();
+
+if(state.view==="games")
+renderGames();
+
+if(state.view==="players")
+renderPlayers();
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+
+function renderDashboard(){
+
+const s=stats(state.games);
+
+$("content").innerHTML=`
+
+<section class="hero">
+
+<small>
+${escapeHTML(state.group.name)}
+</small>
+
+<h1>
+WAR ROOM
+</h1>
+
+<p>
+Shared battlefield records for your gaming group.
+</p>
+
+</section>
+
+
+<section class="stats">
+
+<div class="card">
+<div class="stat-label">BATTLES</div>
+<div class="stat">${s.total}</div>
+</div>
+
+<div class="card">
+<div class="stat-label">WINS</div>
+<div class="stat green">${s.wins}</div>
+</div>
+
+<div class="card">
+<div class="stat-label">LOSSES</div>
+<div class="stat red">${s.losses}</div>
+</div>
+
+<div class="card">
+<div class="stat-label">WIN RATE</div>
+<div class="stat gold">${s.rate.toFixed(1)}%</div>
+</div>
+
+</section>
+
+
+<div class="grid">
+
+<div class="card">
+
+<h2>
+RECENT BATTLES
+</h2>
+
+${renderRecent()}
+
+</div>
+
+
+<div class="card">
+
+<h2>
+LEADERBOARD
+</h2>
+
+${renderLeaderboard()}
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+function renderRecent(){
+
+if(!state.games.length)
+return `<div class="empty">No battles yet.</div>`;
+
+return`
+
+<div class="table-wrap">
+
+<table>
+
+<tr>
+<th>DATE</th>
+<th>PLAYER</th>
+<th>MATCHUP</th>
+<th>RESULT</th>
+</tr>
+
+${state.games
+.slice(0,8)
+.map(g=>`
+
+<tr>
+
+<td>
+${escapeHTML(g.played_at)}
+</td>
+
+<td>
+${escapeHTML(nameFor(g.player_id))}
+</td>
+
+<td>
+${escapeHTML(g.player_faction)}
+vs
+${escapeHTML(g.opponent_faction)}
+</td>
+
+<td>
+<span class="pill ${String(g.result).toLowerCase()}">
+${escapeHTML(g.result)}
+</span>
+</td>
+
+</tr>
+
+`)
+.join("")}
+
+</table>
+
+</div>
+
+`;
+
+}
+
+
+function renderLeaderboard(){
+
+if(!state.members.length)
+return `<div class="empty">No players.</div>`;
+
+return state.members
+.map(member=>{
+
+const games=
+state.games.filter(
+g=>g.player_id===member.user_id
+);
+
+const s=stats(games);
 
 return`
 
@@ -618,14 +1117,15 @@ return`
 
 <div>
 
-<div class="player-name">
-${escapeHtml(name)}
-</div>
+<strong>
+${escapeHTML(
+member.profiles?.display_name ||
+"Player"
+)}
+</strong>
 
-<div class="player-record">
-${s.wins}W ·
-${s.losses}L ·
-${s.draws}D
+<div class="muted">
+${s.wins}W · ${s.losses}L · ${s.draws}D
 </div>
 
 </div>
@@ -638,90 +1138,260 @@ ${s.rate.toFixed(1)}%
 
 `;
 
-}).join("");
+})
+.join("");
 
 }
 
 
-function renderHistory(){
+/* =========================================================
+   GAMES
+   ========================================================= */
 
-const container=
-document.getElementById("history");
+function renderGames(){
+
+const options=
+state.members
+.map(m=>`
+
+<option value="${m.user_id}">
+${escapeHTML(
+m.profiles?.display_name ||
+"Player"
+)}
+</option>
+
+`)
+.join("");
+
+$("content").innerHTML=`
+
+<section class="hero">
+
+<small>
+BATTLE LOG
+</small>
+
+<h1>
+RECORD BATTLE
+</h1>
+
+<p>
+Every victory, defeat and hard-fought draw.
+</p>
+
+</section>
 
 
-if(!games.length){
+<div class="card">
 
-container.innerHTML=
-`<div class="empty">
-No battles recorded yet.
-</div>`;
+<form id="gameForm">
 
-return;
+<label>
+Date
+<input id="playedAt" type="date" required>
+</label>
+
+
+<label>
+Player
+
+<select id="playerId" required>
+${options}
+</select>
+
+</label>
+
+
+<label>
+Your faction
+
+<input
+id="playerFaction"
+placeholder="Space Marines"
+required
+>
+
+</label>
+
+
+<label>
+Opponent
+
+<input
+id="opponentName"
+placeholder="Opponent name"
+>
+
+</label>
+
+
+<label>
+Opponent faction
+
+<input
+id="opponentFaction"
+placeholder="Orks"
+required
+>
+
+</label>
+
+
+<label>
+Result
+
+<select id="result">
+<option>Win</option>
+<option>Loss</option>
+<option>Draw</option>
+</select>
+
+</label>
+
+
+<label>
+Your VP
+
+<input
+id="playerVP"
+type="number"
+min="0"
+>
+
+</label>
+
+
+<label>
+Opponent VP
+
+<input
+id="opponentVP"
+type="number"
+min="0"
+>
+
+</label>
+
+
+<label>
+Mission
+
+<input
+id="mission"
+placeholder="Take and Hold"
+>
+
+</label>
+
+
+<label>
+Event / League
+
+<input
+id="eventName"
+placeholder="Club Night"
+>
+
+</label>
+
+
+<label class="full">
+Notes
+
+<textarea id="notes"></textarea>
+
+</label>
+
+
+<button class="full">
+RECORD ENGAGEMENT
+</button>
+
+</form>
+
+<div id="message" class="message"></div>
+
+</div>
+
+
+<div class="card" style="margin-top:15px">
+
+<h2>
+BATTLE HISTORY
+</h2>
+
+${renderGameTable()}
+
+</div>
+
+`;
+
+
+$("playedAt").value=
+new Date()
+.toISOString()
+.slice(0,10);
+
+
+$("gameForm").onsubmit=
+saveGame;
 
 }
 
 
-container.innerHTML=`
+function renderGameTable(){
+
+if(!state.games.length)
+return `<div class="empty">No battles recorded.</div>`;
+
+return`
 
 <div class="table-wrap">
 
 <table>
 
-<thead>
-
 <tr>
+
 <th>DATE</th>
 <th>PLAYER</th>
-<th>ARMY</th>
+<th>FACTION</th>
 <th>OPPONENT</th>
-<th>ENEMY ARMY</th>
 <th>RESULT</th>
-<th></th>
+<th>VP</th>
+
 </tr>
 
-</thead>
-
-<tbody>
-
-${games.map(game=>`
+${state.games.map(g=>`
 
 <tr>
 
-<td>
-${escapeHtml(game.played_at || game.date || "-")}
-</td>
+<td>${escapeHTML(g.played_at)}</td>
+
+<td>${escapeHTML(nameFor(g.player_id))}</td>
+
+<td>${escapeHTML(g.player_faction)}</td>
 
 <td>
-${escapeHtml(game.player || "-")}
-</td>
-
-<td>
-${escapeHtml(game.army || game.player_faction || "-")}
-</td>
-
-<td>
-${escapeHtml(game.opponent || game.opponent_name || "-")}
-</td>
-
-<td>
-${escapeHtml(game.enemyArmy || game.opponent_faction || "-")}
+${escapeHTML(g.opponent_faction)}
 </td>
 
 <td>
 
-<span class="result ${String(game.result || "").toLowerCase()}">
-${escapeHtml(game.result || "-")}
+<span class="pill ${String(g.result).toLowerCase()}">
+${escapeHTML(g.result)}
 </span>
 
 </td>
 
-<td></td>
+<td>
+${g.player_vp ?? "—"} -
+${g.opponent_vp ?? "—"}
+</td>
 
 </tr>
 
 `).join("")}
-
-</tbody>
 
 </table>
 
@@ -732,135 +1402,57 @@ ${escapeHtml(game.result || "-")}
 }
 
 
-function escapeHtml(value){
+async function saveGame(e){
 
-return String(value ?? "")
-.replaceAll("&","&amp;")
-.replaceAll("<","&lt;")
-.replaceAll(">","&gt;")
-.replaceAll('"',"&quot;")
-.replaceAll("'","&#039;");
+e.preventDefault();
 
-}
+const game={
 
+group_id:state.group.id,
 
-async function loadGames(){
+played_at:$("playedAt").value,
 
-const status=
-document.getElementById("connectionStatus");
+player_id:$("playerId").value,
 
-status.textContent=
-"Connecting to Supabase...";
+player_faction:$("playerFaction").value.trim(),
 
+opponent_name:$("opponentName").value.trim(),
 
-const {data,error}=
-await supabase
-.from("games")
-.select("*")
-.order("played_at",{ascending:false});
+opponent_faction:$("opponentFaction").value.trim(),
 
+result:$("result").value,
 
-if(error){
+player_vp:$("playerVP").value
+?Number($("playerVP").value)
+:null,
 
-console.error(error);
+opponent_vp:$("opponentVP").value
+?Number($("opponentVP").value)
+:null,
 
-status.textContent=
-"Database connection error";
+mission:$("mission").value.trim(),
 
-document.getElementById("history").innerHTML=
-`<div class="empty">
-<strong>Supabase error</strong>
-<br><br>
-${escapeHtml(error.message)}
-<br><br>
-Check your Supabase table and Row Level Security settings.
-</div>`;
+event_name:$("eventName").value.trim(),
 
-return;
-
-}
-
-
-games=data || [];
-
-status.textContent=
-"● DATABASE CONNECTED";
-
-
-renderStats();
-renderPlayers();
-renderHistory();
-
-}
-
-
-document
-.getElementById("battleForm")
-.addEventListener(
-"submit",
-async function(event){
-
-event.preventDefault();
-
-
-const button=
-this.querySelector("button");
-
-button.disabled=true;
-
-button.textContent=
-"RECORDING...";
-
-
-const battle={
-
-played_at:
-document.getElementById("date").value,
-
-player:
-document.getElementById("player").value.trim(),
-
-player_faction:
-document.getElementById("army").value.trim(),
-
-opponent_name:
-document.getElementById("opponent").value.trim(),
-
-opponent_faction:
-document.getElementById("enemyArmy").value.trim(),
-
-result:
-document.getElementById("result").value,
-
-mission:
-document.getElementById("mission").value.trim(),
-
-notes:
-document.getElementById("notes").value.trim()
+notes:$("notes").value.trim()
 
 };
 
 
 const {error}=
-await supabase
+await db
 .from("games")
-.insert(battle);
-
-
-button.disabled=false;
-
-button.textContent=
-"RECORD BATTLE";
+.insert(game);
 
 
 if(error){
 
-console.error(error);
-
 showMessage(
-"Could not save battle: "+error.message,
+error.message,
 "error"
 );
+
+console.error(error);
 
 return;
 
@@ -872,27 +1464,197 @@ showMessage(
 "success"
 );
 
+await loadData();
 
-this.reset();
+setTimeout(()=>{
+renderGames();
+},500);
 
-document.getElementById("date").value=
-new Date()
-.toISOString()
-.slice(0,10);
-
-
-await loadGames();
-
-});
+}
 
 
-document.getElementById("date").value=
-new Date()
-.toISOString()
-.slice(0,10);
+/* =========================================================
+   PLAYERS
+   ========================================================= */
+
+function renderPlayers(){
+
+$("content").innerHTML=`
+
+<section class="hero">
+
+<small>
+ROSTER
+</small>
+
+<h1>
+PLAYERS
+</h1>
+
+<p>
+Performance records for your gaming group.
+</p>
+
+</section>
+
+<div class="grid">
+
+${state.members
+.map(m=>{
+
+const games=
+state.games.filter(
+g=>g.player_id===m.user_id
+);
+
+const s=stats(games);
+
+return`
+
+<div class="card">
+
+<h2>
+${escapeHTML(
+m.profiles?.display_name ||
+"Player"
+)}
+</h2>
+
+<div class="stats">
+
+<div>
+<div class="stat-label">WIN RATE</div>
+<div class="stat green">
+${s.rate.toFixed(1)}%
+</div>
+</div>
+
+<div>
+<div class="stat-label">GAMES</div>
+<div class="stat">
+${s.total}
+</div>
+</div>
+
+</div>
+
+<p class="muted">
+${s.wins} Wins ·
+${s.losses} Losses ·
+${s.draws} Draws
+</p>
+
+</div>
+
+`;
+
+})
+.join("")}
+
+</div>
+
+`;
+
+}
 
 
-loadGames();
+/* =========================================================
+   NAME LOOKUP
+   ========================================================= */
+
+function nameFor(id){
+
+const member=
+state.members.find(
+m=>m.user_id===id
+);
+
+return(
+member?.profiles?.display_name ||
+"Player"
+);
+
+}
+
+
+/* =========================================================
+   STARTUP
+   ========================================================= */
+
+async function startApp(){
+
+const {data,error}=
+await db.auth.getUser();
+
+if(error || !data.user){
+
+renderLogin();
+return;
+
+}
+
+state.user=data.user;
+
+state.profile=
+await ensureProfile();
+
+state.group=
+await loadGroup();
+
+if(!state.group){
+
+renderGroupSetup();
+return;
+
+}
+
+const loadError=
+await loadData();
+
+if(loadError){
+
+document.body.innerHTML=`
+
+<div class="auth">
+
+<div class="auth-box">
+
+<div class="auth-top">
+
+<h1>ROUTINE 721</h1>
+
+</div>
+
+<div class="auth-body">
+
+<h2>Database Error</h2>
+
+<p class="muted">
+${escapeHTML(loadError.message)}
+</p>
+
+<p class="muted">
+Check your Supabase Row Level Security policies.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+return;
+
+}
+
+renderApp();
+
+}
+
+
+startApp();
 
 </script>
 
