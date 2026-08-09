@@ -5,34 +5,69 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Routine 721</title>
+<title>Routine 721 - War Room</title>
 
 <style>
 * {
     box-sizing: border-box;
 }
 
+:root {
+    --bg: #080808;
+    --panel: #121212;
+    --panel2: #181818;
+    --border: #3b2521;
+    --gold: #c9a84c;
+    --red: #9b3024;
+    --red2: #b83a2c;
+    --text: #f1f1f1;
+    --muted: #999;
+    --green: #65c982;
+    --danger: #df6557;
+}
+
 body {
     margin: 0;
     min-height: 100vh;
-    background: #080808;
-    color: #ffffff;
+    background:
+        radial-gradient(circle at top, #1b1110 0%, #080808 45%);
+    color: var(--text);
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.container {
-    width: 92%;
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 60px 0;
+button,
+input,
+select,
+textarea {
+    font: inherit;
 }
 
-.card {
-    background: #151515;
-    border: 1px solid #4d2924;
-    border-radius: 14px;
-    padding: 30px;
-    box-shadow: 0 10px 40px rgba(0,0,0,.4);
+button {
+    cursor: pointer;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* AUTH */
+
+#authScreen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 460px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.55);
 }
 
 .logo {
@@ -42,126 +77,403 @@ body {
 
 .logo h1 {
     margin: 0;
-    color: #c9a84c;
-    letter-spacing: 5px;
-    font-size: 30px;
+    color: var(--gold);
+    font-size: 31px;
+    letter-spacing: 6px;
 }
 
 .logo p {
-    color: #888;
-    margin-top: 8px;
-    letter-spacing: 2px;
-}
-
-h2 {
-    margin-top: 0;
+    margin: 9px 0 0;
+    color: #777;
+    letter-spacing: 4px;
+    font-size: 12px;
 }
 
 label {
     display: block;
-    margin-top: 18px;
-    margin-bottom: 7px;
     color: #bbb;
+    margin: 16px 0 7px;
     font-size: 14px;
 }
 
-input {
+input,
+select,
+textarea {
     width: 100%;
-    padding: 13px;
-    border-radius: 7px;
-    border: 1px solid #444;
-    background: #090909;
+    padding: 12px;
     color: white;
-    font-size: 16px;
+    background: #090909;
+    border: 1px solid #3d3d3d;
+    border-radius: 7px;
     outline: none;
 }
 
-input:focus {
-    border-color: #c9a84c;
+textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--gold);
 }
 
 button {
-    width: 100%;
-    padding: 14px;
-    margin-top: 15px;
     border: 0;
     border-radius: 7px;
-    background: #9b3024;
-    color: white;
-    font-size: 15px;
+    padding: 12px 16px;
     font-weight: bold;
-    cursor: pointer;
+    color: white;
+    background: var(--red);
 }
 
 button:hover {
-    background: #b63a2b;
+    background: var(--red2);
 }
 
 button.secondary {
-    background: #333;
+    background: #303030;
 }
 
 button.secondary:hover {
-    background: #444;
+    background: #414141;
 }
 
-.status {
-    min-height: 24px;
-    margin-top: 18px;
+button.gold {
+    background: #8b712e;
+}
+
+button.danger {
+    background: #72241d;
+}
+
+button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.full {
+    width: 100%;
+    margin-top: 14px;
+}
+
+.message {
+    min-height: 25px;
+    margin-top: 16px;
     text-align: center;
-    color: #aaa;
     line-height: 1.5;
+    color: var(--muted);
 }
 
-.success {
-    color: #78c98b;
+.message.success {
+    color: var(--green);
 }
 
-.error {
-    color: #e97868;
+.message.error {
+    color: var(--danger);
 }
 
-.hidden {
-    display: none !important;
+/* APP */
+
+#appScreen {
+    min-height: 100vh;
 }
 
-.war-room {
-    text-align: center;
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(8,8,8,.96);
+    border-bottom: 1px solid #292929;
+    backdrop-filter: blur(10px);
 }
 
-.war-room h2 {
-    color: #c9a84c;
+.topbar-inner {
+    max-width: 1200px;
+    margin: auto;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.brand {
+    color: var(--gold);
+    font-weight: bold;
     letter-spacing: 3px;
 }
 
-.panel {
-    background: #101010;
+.user-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-email {
+    color: #aaa;
+    font-size: 13px;
+}
+
+.logout {
+    padding: 8px 12px;
+    font-size: 12px;
+}
+
+.nav {
+    max-width: 1200px;
+    margin: auto;
+    padding: 10px 20px;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+}
+
+.nav button {
+    white-space: nowrap;
+    background: #202020;
+    color: #aaa;
     border: 1px solid #333;
-    border-radius: 10px;
+}
+
+.nav button.active {
+    color: white;
+    background: var(--red);
+    border-color: var(--red);
+}
+
+.main {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 25px 20px 70px;
+}
+
+.page-title {
+    margin-bottom: 22px;
+}
+
+.page-title h2 {
+    margin: 0;
+    color: var(--gold);
+    letter-spacing: 2px;
+}
+
+.page-title p {
+    margin: 7px 0 0;
+    color: var(--muted);
+}
+
+/* CARDS */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.card {
+    background: var(--panel);
+    border: 1px solid #292929;
+    border-radius: 12px;
     padding: 20px;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 30px;
+    color: var(--gold);
+    font-weight: bold;
+}
+
+.stat-label {
+    color: #888;
+    margin-top: 5px;
+    font-size: 13px;
+}
+
+.section {
     margin-top: 20px;
 }
 
-.small {
+.section h3 {
+    margin-top: 0;
+    color: var(--gold);
+    letter-spacing: 1px;
+}
+
+/* FORMS */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px 18px;
+}
+
+.form-full {
+    grid-column: 1 / -1;
+}
+
+.form-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.form-actions button {
+    min-width: 150px;
+}
+
+/* TABLE-LIKE ROWS */
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.row {
+    background: #171717;
+    border: 1px solid #292929;
+    border-radius: 9px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.row-main {
+    min-width: 0;
+}
+
+.row-title {
+    font-weight: bold;
+    color: white;
+}
+
+.row-sub {
     color: #888;
     font-size: 13px;
+    margin-top: 5px;
+}
+
+.result-win {
+    color: var(--green);
+    font-weight: bold;
+}
+
+.result-loss {
+    color: var(--danger);
+    font-weight: bold;
+}
+
+.result-draw {
+    color: var(--gold);
+    font-weight: bold;
+}
+
+.empty {
+    color: #777;
+    text-align: center;
+    padding: 25px;
+}
+
+/* GROUP */
+
+.group-code {
+    font-size: 25px;
+    color: var(--gold);
+    letter-spacing: 5px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.group-name {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-full {
+        grid-column: auto;
+    }
+
+    .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .user-area {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .main {
+        padding: 18px 12px 50px;
+    }
+
+    .nav {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .stat-number {
+        font-size: 24px;
+    }
+
+    .row {
+        align-items: flex-start;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
 
-    <!-- AUTH SCREEN -->
-    <div id="authScreen" class="card">
+<!-- =====================================================
+     AUTHENTICATION
+     ===================================================== -->
+
+<div id="authScreen">
+
+    <div class="auth-card">
 
         <div class="logo">
             <h1>ROUTINE 721</h1>
             <p>WAR ROOM</p>
         </div>
 
-        <h2>Sign In</h2>
+        <h2>Command Access</h2>
 
         <label for="email">Email</label>
 
@@ -181,54 +493,24 @@ button.secondary:hover {
             placeholder="Password"
         >
 
-        <button id="signInButton" type="button">
+        <button
+            id="signInButton"
+            class="full"
+            type="button">
             SIGN IN
         </button>
 
-        <button id="createAccountButton"
-                class="secondary"
-                type="button">
+        <button
+            id="createAccountButton"
+            class="full secondary"
+            type="button">
             CREATE ACCOUNT
         </button>
 
-        <div id="authStatus" class="status">
+        <div
+            id="authMessage"
+            class="message">
             Ready.
-        </div>
-
-    </div>
-
-
-    <!-- WAR ROOM -->
-    <div id="warRoom" class="card hidden">
-
-        <div class="war-room">
-
-            <div class="logo">
-                <h1>ROUTINE 721</h1>
-                <p>WAR ROOM</p>
-            </div>
-
-            <div class="panel">
-
-                <h2>Welcome</h2>
-
-                <p id="userEmail"></p>
-
-                <p class="small">
-                    Supabase authentication is working.
-                </p>
-
-            </div>
-
-            <button
-                id="signOutButton"
-                class="secondary"
-                type="button">
-                SIGN OUT
-            </button>
-
-            <div id="warStatus" class="status"></div>
-
         </div>
 
     </div>
@@ -236,169 +518,786 @@ button.secondary:hover {
 </div>
 
 
-<!-- SUPABASE LIBRARY -->
+<!-- =====================================================
+     MAIN APP
+     ===================================================== -->
+
+<div id="appScreen" class="hidden">
+
+    <header class="topbar">
+
+        <div class="topbar-inner">
+
+            <div class="brand">
+                ROUTINE 721
+            </div>
+
+            <div class="user-area">
+
+                <span
+                    id="userEmail"
+                    class="user-email">
+                </span>
+
+                <button
+                    id="logoutButton"
+                    class="logout secondary"
+                    type="button">
+                    SIGN OUT
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <nav class="nav">
+
+            <button
+                class="navButton active"
+                data-page="dashboard"
+                type="button">
+                WAR ROOM
+            </button>
+
+            <button
+                class="navButton"
+                data-page="battle"
+                type="button">
+                RECORD BATTLE
+            </button>
+
+            <button
+                class="navButton"
+                data-page="history"
+                type="button">
+                BATTLE HISTORY
+            </button>
+
+            <button
+                class="navButton"
+                data-page="players"
+                type="button">
+                PLAYERS
+            </button>
+
+            <button
+                class="navButton"
+                data-page="factions"
+                type="button">
+                FACTIONS
+            </button>
+
+            <button
+                class="navButton"
+                data-page="group"
+                type="button">
+                GROUP
+            </button>
+
+        </nav>
+
+    </header>
+
+
+    <main class="main">
+
+
+        <!-- =================================================
+             DASHBOARD
+             ================================================= -->
+
+        <section
+            id="dashboardPage"
+            class="page">
+
+            <div class="page-title">
+
+                <h2>WAR ROOM</h2>
+
+                <p id="dashboardGroup">
+                    Loading your command group...
+                </p>
+
+            </div>
+
+
+            <div class="grid">
+
+                <div class="card stat">
+                    <div
+                        id="statGames"
+                        class="stat-number">
+                        0
+                    </div>
+                    <div class="stat-label">
+                        GAMES
+                    </div>
+                </div>
+
+                <div class="card stat">
+                    <div
+                        id="statWins"
+                        class="stat-number">
+                        0
+                    </div>
+                    <div class="stat-label">
+                        WINS
+                    </div>
+                </div>
+
+                <div class="card stat">
+                    <div
+                        id="statLosses"
+                        class="stat-number">
+                        0
+                    </div>
+                    <div class="stat-label">
+                        LOSSES
+                    </div>
+                </div>
+
+                <div class="card stat">
+                    <div
+                        id="statWinRate"
+                        class="stat-number">
+                        0%
+                    </div>
+                    <div class="stat-label">
+                        WIN RATE
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="card">
+
+                    <h3>LEADERBOARD</h3>
+
+                    <div
+                        id="leaderboard"
+                        class="list">
+
+                        <div class="empty">
+                            Loading leaderboard...
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="card">
+
+                    <h3>RECENT BATTLES</h3>
+
+                    <div
+                        id="recentGames"
+                        class="list">
+
+                        <div class="empty">
+                            No battles yet.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             RECORD BATTLE
+             ================================================= -->
+
+        <section
+            id="battlePage"
+            class="page hidden">
+
+            <div class="page-title">
+
+                <h2>RECORD BATTLE</h2>
+
+                <p>
+                    Log a game into your Routine 721 war records.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="form-grid">
+
+                    <div>
+
+                        <label for="playedAt">
+                            Date
+                        </label>
+
+                        <input
+                            id="playedAt"
+                            type="date">
+
+                    </div>
+
+
+                    <div>
+
+                        <label for="result">
+                            Result
+                        </label>
+
+                        <select id="result">
+
+                            <option value="win">
+                                WIN
+                            </option>
+
+                            <option value="loss">
+                                LOSS
+                            </option>
+
+                            <option value="draw">
+                                DRAW
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div>
+
+                        <label for="playerFaction">
+                            Your Faction
+                        </label>
+
+                        <input
+                            id="playerFaction"
+                            placeholder="e.g. Space Marines">
+
+                    </div>
+
+
+                    <div>
+
+                        <label for="opponentName">
+                            Opponent
+                        </label>
+
+                        <input
+                            id="opponentName"
+                            placeholder="Opponent name">
+
+                    </div>
+
+
+                    <div>
+
+                        <label for="opponentFaction">
+                            Opponent Faction
+                        </label>
+
+                        <input
+                            id="opponentFaction"
+                            placeholder="Opponent faction">
+
+                    </div>
+
+
+                    <div>
+
+                        <label for="mission">
+                            Mission
+                        </label>
+
+                        <input
+                            id="mission"
+                            placeholder="Mission name">
+
+                    </div>
+
+
+                    <div>
+
+                        <label for="playerVP">
+                            Your VP
+                        </label>
+
+                        <input
+                            id="playerVP"
+                            type="number"
+                            min="0"
+                            placeholder="0">
+
+                    </div>
+
+
+                    <div>
+
+                        <label for="opponentVP">
+                            Opponent VP
+                        </label>
+
+                        <input
+                            id="opponentVP"
+                            type="number"
+                            min="0"
+                            placeholder="0">
+
+                    </div>
+
+
+                    <div class="form-full">
+
+                        <label for="eventName">
+                            Event / League
+                        </label>
+
+                        <input
+                            id="eventName"
+                            placeholder="Optional">
+
+                    </div>
+
+
+                    <div class="form-full">
+
+                        <label for="notes">
+                            Battle Notes
+                        </label>
+
+                        <textarea
+                            id="notes"
+                            placeholder="What happened?"></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                        id="saveBattleButton"
+                        type="button">
+                        SAVE BATTLE
+                    </button>
+
+                    <button
+                        id="clearBattleButton"
+                        class="secondary"
+                        type="button">
+                        CLEAR
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="battleMessage"
+                    class="message">
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             HISTORY
+             ================================================= -->
+
+        <section
+            id="historyPage"
+            class="page hidden">
+
+            <div class="page-title">
+
+                <h2>BATTLE HISTORY</h2>
+
+                <p>
+                    Every recorded battle in your group.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div
+                    id="historyList"
+                    class="list">
+
+                    <div class="empty">
+                        Loading battles...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PLAYERS
+             ================================================= -->
+
+        <section
+            id="playersPage"
+            class="page hidden">
+
+            <div class="page-title">
+
+                <h2>PLAYERS</h2>
+
+                <p>
+                    Commanders in your group.
+                </p>
+
+            </div>
+
+
+            <div
+                id="playersList"
+                class="list">
+
+                <div class="empty">
+                    Loading players...
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             FACTIONS
+             ================================================= -->
+
+        <section
+            id="factionsPage"
+            class="page hidden">
+
+            <div class="page-title">
+
+                <h2>FACTIONS</h2>
+
+                <p>
+                    Faction performance across recorded battles.
+                </p>
+
+            </div>
+
+
+            <div
+                id="factionsList"
+                class="list">
+
+                <div class="empty">
+                    Loading factions...
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             GROUP
+             ================================================= -->
+
+        <section
+            id="groupPage"
+            class="page hidden">
+
+            <div class="page-title">
+
+                <h2>GROUP COMMAND</h2>
+
+                <p>
+                    Manage your Routine 721 group.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>CURRENT GROUP</h3>
+
+                <div
+                    id="groupName"
+                    class="group-name">
+                    No group
+                </div>
+
+                <div
+                    id="groupCode"
+                    class="group-code">
+                    ------
+                </div>
+
+                <p class="small">
+                    Share the invite code with your players.
+                </p>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="card">
+
+                    <h3>CREATE GROUP</h3>
+
+                    <label for="newGroupName">
+                        Group Name
+                    </label>
+
+                    <input
+                        id="newGroupName"
+                        placeholder="e.g. Sunday War League">
+
+                    <button
+                        id="createGroupButton"
+                        class="full"
+                        type="button">
+                        CREATE GROUP
+                    </button>
+
+                    <div
+                        id="createGroupMessage"
+                        class="message">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="card">
+
+                    <h3>JOIN GROUP</h3>
+
+                    <label for="inviteCode">
+                        Invite Code
+                    </label>
+
+                    <input
+                        id="inviteCode"
+                        placeholder="Enter invite code">
+
+                    <button
+                        id="joinGroupButton"
+                        class="full"
+                        type="button">
+                        JOIN GROUP
+                    </button>
+
+                    <div
+                        id="joinGroupMessage"
+                        class="message">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="card">
+
+                    <h3>GROUP MEMBERS</h3>
+
+                    <div
+                        id="groupMembers"
+                        class="list">
+
+                        <div class="empty">
+                            Loading members...
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     SUPABASE
+     ===================================================== -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <script>
-/*
-=====================================================
-ROUTINE 721 AUTHENTICATION
-=====================================================
-*/
 
 /*
-IMPORTANT:
-
-We use "routineClient".
-
-We DO NOT create a variable called "supabase".
-This avoids the browser error:
-
-Uncaught SyntaxError:
-redeclaration of non-configurable global property supabase
+==========================================================
+ROUTINE 721
+SUPABASE CONFIGURATION
+==========================================================
 */
 
-const ROUTINE_URL =
+const ROUTINE_SUPABASE_URL =
     "https://jbgwdxavydhtvoqpbfmj.supabase.co";
 
-const ROUTINE_KEY =
+const ROUTINE_SUPABASE_KEY =
     "sb_publishable_Wt8h6fNelT6zrzf-Dm8FXw_cdSGylaz";
 
 
 const routineClient =
     window.supabase.createClient(
-        ROUTINE_URL,
-        ROUTINE_KEY
+        ROUTINE_SUPABASE_URL,
+        ROUTINE_SUPABASE_KEY
     );
 
 
 /*
-=====================================================
-ELEMENTS
-=====================================================
+==========================================================
+STATE
+==========================================================
 */
 
-const authScreen =
-    document.getElementById("authScreen");
-
-const warRoom =
-    document.getElementById("warRoom");
-
-const signInButton =
-    document.getElementById("signInButton");
-
-const createAccountButton =
-    document.getElementById("createAccountButton");
-
-const signOutButton =
-    document.getElementById("signOutButton");
-
-const authStatus =
-    document.getElementById("authStatus");
-
-const warStatus =
-    document.getElementById("warStatus");
-
-const emailInput =
-    document.getElementById("email");
-
-const passwordInput =
-    document.getElementById("password");
-
-const userEmail =
-    document.getElementById("userEmail");
+let currentUser = null;
+let currentGroup = null;
+let currentGames = [];
+let currentMembers = [];
 
 
 /*
-=====================================================
-STATUS
-=====================================================
+==========================================================
+SHORTCUT
+==========================================================
 */
 
-function authMessage(message, type) {
-
-    authStatus.textContent = message;
-
-    authStatus.className =
-        "status";
-
-    if (type) {
-        authStatus.classList.add(type);
-    }
-}
-
-
-function warMessage(message, type) {
-
-    warStatus.textContent = message;
-
-    warStatus.className =
-        "status";
-
-    if (type) {
-        warStatus.classList.add(type);
-    }
+function el(id) {
+    return document.getElementById(id);
 }
 
 
 /*
-=====================================================
-SHOW AUTH
-=====================================================
+==========================================================
+ESCAPE HTML
+==========================================================
+*/
+
+function safe(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+        return "";
+    }
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+/*
+==========================================================
+MESSAGES
+==========================================================
+*/
+
+function message(id, text, type) {
+
+    const box = el(id);
+
+    if (!box) {
+        return;
+    }
+
+    box.textContent = text;
+
+    box.className = "message";
+
+    if (type) {
+        box.classList.add(type);
+    }
+}
+
+
+/*
+==========================================================
+AUTH SCREEN
+==========================================================
 */
 
 function showAuth() {
 
-    authScreen.classList.remove("hidden");
+    el("authScreen")
+        .classList.remove("hidden");
 
-    warRoom.classList.add("hidden");
+    el("appScreen")
+        .classList.add("hidden");
 }
 
 
 /*
-=====================================================
-SHOW WAR ROOM
-=====================================================
+==========================================================
+APP SCREEN
+==========================================================
 */
 
-function showWarRoom(user) {
+function showApp() {
 
-    authScreen.classList.add("hidden");
+    el("authScreen")
+        .classList.add("hidden");
 
-    warRoom.classList.remove("hidden");
-
-    if (user && user.email) {
-
-        userEmail.textContent =
-            user.email;
-
-    } else {
-
-        userEmail.textContent =
-            "";
-    }
+    el("appScreen")
+        .classList.remove("hidden");
 }
 
 
 /*
-=====================================================
+==========================================================
 SIGN IN
-=====================================================
+==========================================================
 */
 
 async function signIn() {
 
     const email =
-        emailInput.value.trim();
+        el("email").value.trim();
 
     const password =
-        passwordInput.value;
+        el("password").value;
 
 
     if (!email) {
 
-        authMessage(
+        message(
+            "authMessage",
             "Please enter your email.",
             "error"
         );
@@ -409,7 +1308,8 @@ async function signIn() {
 
     if (!password) {
 
-        authMessage(
+        message(
+            "authMessage",
             "Please enter your password.",
             "error"
         );
@@ -418,103 +1318,77 @@ async function signIn() {
     }
 
 
-    authMessage(
-        "Signing in...",
-        ""
+    message(
+        "authMessage",
+        "Signing in..."
     );
 
 
-    signInButton.disabled =
+    el("signInButton").disabled =
         true;
 
 
-    try {
+    const response =
+        await routineClient.auth.signInWithPassword({
 
-        const response =
-            await routineClient.auth.signInWithPassword({
-                email: email,
-                password: password
-            });
+            email: email,
 
+            password: password
 
-        if (response.error) {
-
-            console.error(
-                "Supabase sign in error:",
-                response.error
-            );
-
-            authMessage(
-                response.error.message,
-                "error"
-            );
-
-            signInButton.disabled =
-                false;
-
-            return;
-        }
+        });
 
 
-        authMessage(
-            "Signed in successfully.",
-            "success"
+    if (response.error) {
+
+        console.error(
+            response.error
         );
 
-
-        showWarRoom(
-            response.data.user
-        );
-
-
-    } catch (error) {
-
-        console.error(error);
-
-        authMessage(
-            "Sign in failed: " +
-            error.message,
+        message(
+            "authMessage",
+            response.error.message,
             "error"
         );
 
-    }
-
-
-    signInButton.disabled =
-        false;
-}
-
-
-/*
-=====================================================
-CREATE ACCOUNT
-=====================================================
-*/
-
-async function createAccount() {
-
-    const email =
-        emailInput.value.trim();
-
-    const password =
-        passwordInput.value;
-
-
-    if (!email) {
-
-        authMessage(
-            "Please enter your email.",
-            "error"
-        );
+        el("signInButton").disabled =
+            false;
 
         return;
     }
 
 
-    if (!password) {
+    currentUser =
+        response.data.user;
 
-        authMessage(
-            "Please enter a password.",
+
+    await enterApplication();
+
+
+    el("signInButton").disabled =
+        false;
+}
+
+
+/*
+==========================================================
+CREATE ACCOUNT
+==========================================================
+*/
+
+async function createAccount() {
+
+    const email =
+        el("email").value.trim();
+
+    const password =
+        el("password").value;
+
+
+    if (!email) {
+
+        message(
+            "authMessage",
+            "Please enter your email.",
             "error"
         );
 
@@ -524,7 +1398,8 @@ async function createAccount() {
 
     if (password.length < 6) {
 
-        authMessage(
+        message(
+            "authMessage",
             "Password must be at least 6 characters.",
             "error"
         );
@@ -533,109 +1408,1373 @@ async function createAccount() {
     }
 
 
-    authMessage(
-        "Creating account...",
-        ""
+    message(
+        "authMessage",
+        "Creating account..."
     );
 
 
-    createAccountButton.disabled =
+    el("createAccountButton").disabled =
         true;
 
 
-    try {
+    const response =
+        await routineClient.auth.signUp({
 
-        const response =
-            await routineClient.auth.signUp({
-                email: email,
-                password: password
-            });
+            email: email,
 
+            password: password
 
-        if (response.error) {
-
-            console.error(
-                "Supabase account error:",
-                response.error
-            );
-
-            authMessage(
-                response.error.message,
-                "error"
-            );
-
-            createAccountButton.disabled =
-                false;
-
-            return;
-        }
+        });
 
 
-        /*
-        If email confirmation is enabled,
-        Supabase will not immediately create
-        a logged-in session.
-        */
+    if (response.error) {
 
-        if (!response.data.session) {
+        console.error(
+            response.error
+        );
 
-            authMessage(
-                "Account created! Check your email and confirm your account, then sign in.",
-                "success"
-            );
-
-        } else {
-
-            authMessage(
-                "Account created successfully.",
-                "success"
-            );
-
-            showWarRoom(
-                response.data.user
-            );
-        }
-
-
-    } catch (error) {
-
-        console.error(error);
-
-        authMessage(
-            "Account creation failed: " +
-            error.message,
+        message(
+            "authMessage",
+            response.error.message,
             "error"
         );
 
+        el("createAccountButton").disabled =
+            false;
+
+        return;
     }
 
 
-    createAccountButton.disabled =
+    if (!response.data.session) {
+
+        message(
+            "authMessage",
+            "Account created. Check your email to confirm it, then sign in.",
+            "success"
+        );
+
+    } else {
+
+        currentUser =
+            response.data.user;
+
+        await enterApplication();
+    }
+
+
+    el("createAccountButton").disabled =
         false;
 }
 
 
 /*
-=====================================================
+==========================================================
 SIGN OUT
-=====================================================
+==========================================================
 */
 
 async function signOut() {
 
-    warMessage(
-        "Signing out...",
-        ""
+    await routineClient.auth.signOut();
+
+    currentUser = null;
+    currentGroup = null;
+    currentGames = [];
+    currentMembers = [];
+
+    showAuth();
+
+    message(
+        "authMessage",
+        "Signed out.",
+        "success"
     );
+}
+
+
+/*
+==========================================================
+ENTER APP
+==========================================================
+*/
+
+async function enterApplication() {
+
+    showApp();
+
+
+    el("userEmail").textContent =
+        currentUser.email || "";
+
+
+    setDefaultDate();
+
+
+    await ensureProfile();
+
+    await loadGroup();
+
+    await refreshAll();
+}
+
+
+/*
+==========================================================
+PROFILE
+==========================================================
+*/
+
+async function ensureProfile() {
+
+    if (!currentUser) {
+        return;
+    }
+
+
+    const existing =
+        await routineClient
+            .from("profiles")
+            .select("id")
+            .eq(
+                "id",
+                currentUser.id
+            )
+            .maybeSingle();
+
+
+    if (
+        existing.error &&
+        !String(existing.error.message)
+            .toLowerCase()
+            .includes("0 rows")
+    ) {
+
+        console.warn(
+            "Profile lookup:",
+            existing.error
+        );
+
+        return;
+    }
+
+
+    if (!existing.data) {
+
+        const emailName =
+            currentUser.email
+                ? currentUser.email
+                    .split("@")[0]
+                : "Player";
+
+
+        const insert =
+            await routineClient
+                .from("profiles")
+                .insert({
+
+                    id:
+                        currentUser.id,
+
+                    display_name:
+                        emailName
+
+                });
+
+
+        if (insert.error) {
+
+            console.warn(
+                "Could not create profile:",
+                insert.error
+            );
+        }
+    }
+}
+
+
+/*
+==========================================================
+LOAD GROUP
+==========================================================
+*/
+
+async function loadGroup() {
+
+    if (!currentUser) {
+        return;
+    }
 
 
     const response =
-        await routineClient.auth.signOut();
+        await routineClient
+            .from("group_members")
+            .select(`
+                group_id,
+                role,
+                groups (
+                    id,
+                    name,
+                    invite_code
+                )
+            `)
+            .eq(
+                "user_id",
+                currentUser.id
+            );
 
 
     if (response.error) {
 
-        warMessage(
+        console.error(
+            "Group loading error:",
+            response.error
+        );
+
+        currentGroup = null;
+
+        el("dashboardGroup").textContent =
+            "Database error loading group.";
+
+        return;
+    }
+
+
+    if (
+        !response.data ||
+        response.data.length === 0
+    ) {
+
+        currentGroup = null;
+
+        el("dashboardGroup").textContent =
+            "You are not in a group yet.";
+
+        return;
+    }
+
+
+    currentGroup =
+        response.data[0].groups;
+
+
+    if (currentGroup) {
+
+        el("dashboardGroup").textContent =
+            currentGroup.name;
+
+        el("groupName").textContent =
+            currentGroup.name;
+
+        el("groupCode").textContent =
+            currentGroup.invite_code ||
+            "------";
+    }
+
+
+    await loadGames();
+
+    await loadMembers();
+}
+
+
+/*
+==========================================================
+LOAD GAMES
+==========================================================
+*/
+
+async function loadGames() {
+
+    if (!currentGroup) {
+
+        currentGames = [];
+
+        return;
+    }
+
+
+    const response =
+        await routineClient
+            .from("games")
+            .select("*")
+            .eq(
+                "group_id",
+                currentGroup.id
+            )
+            .order(
+                "played_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (response.error) {
+
+        console.error(
+            "Games error:",
+            response.error
+        );
+
+        currentGames = [];
+
+        return;
+    }
+
+
+    currentGames =
+        response.data || [];
+}
+
+
+/*
+==========================================================
+LOAD MEMBERS
+==========================================================
+*/
+
+async function loadMembers() {
+
+    if (!currentGroup) {
+
+        currentMembers = [];
+
+        return;
+    }
+
+
+    const response =
+        await routineClient
+            .from("group_members")
+            .select(`
+                user_id,
+                role,
+                profiles (
+                    id,
+                    display_name,
+                    avatar_url
+                )
+            `)
+            .eq(
+                "group_id",
+                currentGroup.id
+            );
+
+
+    if (response.error) {
+
+        console.error(
+            "Members error:",
+            response.error
+        );
+
+        currentMembers = [];
+
+        return;
+    }
+
+
+    currentMembers =
+        response.data || [];
+}
+
+
+/*
+==========================================================
+SAVE BATTLE
+==========================================================
+*/
+
+async function saveBattle() {
+
+    if (!currentUser) {
+
+        message(
+            "battleMessage",
+            "You must be signed in.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (!currentGroup) {
+
+        message(
+            "battleMessage",
+            "Join or create a group first.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const battle = {
+
+        group_id:
+            currentGroup.id,
+
+        player_id:
+            currentUser.id,
+
+        player_faction:
+            el("playerFaction").value.trim(),
+
+        opponent_name:
+            el("opponentName").value.trim(),
+
+        opponent_faction:
+            el("opponentFaction").value.trim(),
+
+        result:
+            el("result").value,
+
+        player_vp:
+            Number(
+                el("playerVP").value || 0
+            ),
+
+        opponent_vp:
+            Number(
+                el("opponentVP").value || 0
+            ),
+
+        mission:
+            el("mission").value.trim(),
+
+        event_name:
+            el("eventName").value.trim(),
+
+        notes:
+            el("notes").value.trim(),
+
+        played_at:
+            el("playedAt").value || null
+
+    };
+
+
+    if (!battle.player_faction) {
+
+        message(
+            "battleMessage",
+            "Enter your faction.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (!battle.opponent_name) {
+
+        message(
+            "battleMessage",
+            "Enter the opponent name.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    message(
+        "battleMessage",
+        "Saving battle..."
+    );
+
+
+    el("saveBattleButton").disabled =
+        true;
+
+
+    const response =
+        await routineClient
+            .from("games")
+            .insert(battle);
+
+
+    if (response.error) {
+
+        console.error(
+            "Battle save error:",
+            response.error
+        );
+
+        message(
+            "battleMessage",
+            response.error.message,
+            "error"
+        );
+
+        el("saveBattleButton").disabled =
+            false;
+
+        return;
+    }
+
+
+    message(
+        "battleMessage",
+        "BATTLE SAVED ✓",
+        "success"
+    );
+
+
+    clearBattle();
+
+
+    await loadGames();
+
+    await refreshAll();
+
+
+    el("saveBattleButton").disabled =
+        false;
+}
+
+
+/*
+==========================================================
+CLEAR BATTLE
+==========================================================
+*/
+
+function clearBattle() {
+
+    el("playerFaction").value = "";
+    el("opponentName").value = "";
+    el("opponentFaction").value = "";
+    el("playerVP").value = "";
+    el("opponentVP").value = "";
+    el("mission").value = "";
+    el("eventName").value = "";
+    el("notes").value = "";
+
+    setDefaultDate();
+}
+
+
+/*
+==========================================================
+DASHBOARD
+==========================================================
+*/
+
+function renderDashboard() {
+
+    const mine =
+        currentGames.filter(
+            game =>
+                game.player_id ===
+                currentUser.id
+        );
+
+
+    const wins =
+        mine.filter(
+            game =>
+                String(game.result)
+                    .toLowerCase() === "win"
+        ).length;
+
+
+    const losses =
+        mine.filter(
+            game =>
+                String(game.result)
+                    .toLowerCase() === "loss"
+        ).length;
+
+
+    const total =
+        mine.length;
+
+
+    const rate =
+        total
+            ? Math.round(
+                wins / total * 100
+            )
+            : 0;
+
+
+    el("statGames").textContent =
+        total;
+
+    el("statWins").textContent =
+        wins;
+
+    el("statLosses").textContent =
+        losses;
+
+    el("statWinRate").textContent =
+        rate + "%";
+
+
+    renderLeaderboard();
+
+    renderRecentGames();
+}
+
+
+/*
+==========================================================
+LEADERBOARD
+==========================================================
+*/
+
+function renderLeaderboard() {
+
+    const container =
+        el("leaderboard");
+
+
+    if (!currentMembers.length) {
+
+        container.innerHTML =
+            `<div class="empty">
+                No players found.
+            </div>`;
+
+        return;
+    }
+
+
+    const rows =
+        currentMembers.map(member => {
+
+            const profile =
+                member.profiles;
+
+
+            const games =
+                currentGames.filter(
+                    game =>
+                        game.player_id ===
+                        member.user_id
+                );
+
+
+            const wins =
+                games.filter(
+                    game =>
+                        String(game.result)
+                            .toLowerCase() === "win"
+                ).length;
+
+
+            const losses =
+                games.filter(
+                    game =>
+                        String(game.result)
+                            .toLowerCase() === "loss"
+                ).length;
+
+
+            const rate =
+                games.length
+                    ? Math.round(
+                        wins / games.length * 100
+                    )
+                    : 0;
+
+
+            return {
+
+                name:
+                    profile?.display_name ||
+                    "Player",
+
+                games:
+                    games.length,
+
+                wins:
+                    wins,
+
+                losses:
+                    losses,
+
+                rate:
+                    rate
+            };
+
+        });
+
+
+    rows.sort(
+        (a, b) =>
+            b.rate - a.rate
+    );
+
+
+    container.innerHTML =
+        rows.map(
+            (player, index) => `
+
+                <div class="row">
+
+                    <div class="row-main">
+
+                        <div class="row-title">
+                            #${index + 1}
+                            ${safe(player.name)}
+                        </div>
+
+                        <div class="row-sub">
+                            ${player.games}
+                            games ·
+                            ${player.wins}W /
+                            ${player.losses}L
+                        </div>
+
+                    </div>
+
+                    <strong>
+                        ${player.rate}%
+                    </strong>
+
+                </div>
+
+            `
+        ).join("");
+}
+
+
+/*
+==========================================================
+RECENT GAMES
+==========================================================
+*/
+
+function renderRecentGames() {
+
+    const container =
+        el("recentGames");
+
+
+    if (!currentGames.length) {
+
+        container.innerHTML =
+            `<div class="empty">
+                No battles recorded yet.
+            </div>`;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        currentGames
+            .slice(0, 10)
+            .map(game => {
+
+                const profile =
+                    currentMembers.find(
+                        member =>
+                            member.user_id ===
+                            game.player_id
+                    )?.profiles;
+
+
+                const result =
+                    String(
+                        game.result || ""
+                    ).toLowerCase();
+
+
+                const resultClass =
+                    result === "win"
+                        ? "result-win"
+                        : result === "loss"
+                            ? "result-loss"
+                            : "result-draw";
+
+
+                return `
+
+                    <div class="row">
+
+                        <div class="row-main">
+
+                            <div class="row-title">
+
+                                ${safe(
+                                    profile?.display_name ||
+                                    "Player"
+                                )}
+
+                                vs
+
+                                ${safe(
+                                    game.opponent_name ||
+                                    "Opponent"
+                                )}
+
+                            </div>
+
+                            <div class="row-sub">
+
+                                ${safe(
+                                    game.player_faction ||
+                                    ""
+                                )}
+
+                                ·
+
+                                ${safe(
+                                    game.opponent_faction ||
+                                    ""
+                                )}
+
+                                ·
+
+                                ${game.player_vp ?? 0}
+                                -
+                                ${game.opponent_vp ?? 0}
+
+                            </div>
+
+                        </div>
+
+                        <div class="${resultClass}">
+
+                            ${safe(
+                                String(
+                                    game.result ||
+                                    ""
+                                ).toUpperCase()
+                            )}
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            })
+            .join("");
+}
+
+
+/*
+==========================================================
+HISTORY
+==========================================================
+*/
+
+function renderHistory() {
+
+    const container =
+        el("historyList");
+
+
+    if (!currentGames.length) {
+
+        container.innerHTML =
+            `<div class="empty">
+                No battles recorded yet.
+            </div>`;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        currentGames.map(game => {
+
+            const profile =
+                currentMembers.find(
+                    member =>
+                        member.user_id ===
+                        game.player_id
+                )?.profiles;
+
+
+            const result =
+                String(
+                    game.result || ""
+                ).toLowerCase();
+
+
+            const resultClass =
+                result === "win"
+                    ? "result-win"
+                    : result === "loss"
+                        ? "result-loss"
+                        : "result-draw";
+
+
+            return `
+
+                <div class="row">
+
+                    <div class="row-main">
+
+                        <div class="row-title">
+
+                            ${safe(
+                                profile?.display_name ||
+                                "Player"
+                            )}
+
+                            vs
+
+                            ${safe(
+                                game.opponent_name ||
+                                "Opponent"
+                            )}
+
+                        </div>
+
+                        <div class="row-sub">
+
+                            ${safe(
+                                game.played_at ||
+                                ""
+                            )}
+
+                            ·
+
+                            ${safe(
+                                game.mission ||
+                                "No mission"
+                            )}
+
+                            ·
+
+                            ${game.player_vp ?? 0}
+                            -
+                            ${game.opponent_vp ?? 0}
+
+                        </div>
+
+                        <div class="row-sub">
+
+                            ${safe(
+                                game.event_name ||
+                                ""
+                            )}
+
+                        </div>
+
+                    </div>
+
+                    <div class="${resultClass}">
+
+                        ${safe(
+                            String(
+                                game.result ||
+                                ""
+                            ).toUpperCase()
+                        )}
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+}
+
+
+/*
+==========================================================
+PLAYERS
+==========================================================
+*/
+
+function renderPlayers() {
+
+    const container =
+        el("playersList");
+
+
+    if (!currentMembers.length) {
+
+        container.innerHTML =
+            `<div class="empty">
+                No players found.
+            </div>`;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        currentMembers.map(member => {
+
+            const profile =
+                member.profiles;
+
+
+            const games =
+                currentGames.filter(
+                    game =>
+                        game.player_id ===
+                        member.user_id
+                );
+
+
+            const wins =
+                games.filter(
+                    game =>
+                        String(game.result)
+                            .toLowerCase() === "win"
+                ).length;
+
+
+            const losses =
+                games.filter(
+                    game =>
+                        String(game.result)
+                            .toLowerCase() === "loss"
+                ).length;
+
+
+            const draws =
+                games.filter(
+                    game =>
+                        String(game.result)
+                            .toLowerCase() === "draw"
+                ).length;
+
+
+            return `
+
+                <div class="card">
+
+                    <div class="row">
+
+                        <div class="row-main">
+
+                            <div class="row-title">
+                                ${safe(
+                                    profile?.display_name ||
+                                    "Player"
+                                )}
+                            </div>
+
+                            <div class="row-sub">
+                                ${games.length}
+                                games ·
+                                ${wins}W /
+                                ${losses}L /
+                                ${draws}D
+                            </div>
+
+                        </div>
+
+                        <strong>
+                            ${
+                                games.length
+                                    ? Math.round(
+                                        wins /
+                                        games.length *
+                                        100
+                                    )
+                                    : 0
+                            }%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+}
+
+
+/*
+==========================================================
+FACTIONS
+==========================================================
+*/
+
+function renderFactions() {
+
+    const container =
+        el("factionsList");
+
+
+    const factions = {};
+
+
+    currentGames.forEach(game => {
+
+        const faction =
+            game.player_faction;
+
+
+        if (!faction) {
+            return;
+        }
+
+
+        if (!factions[faction]) {
+
+            factions[faction] = {
+
+                games: 0,
+
+                wins: 0,
+
+                losses: 0
+
+            };
+        }
+
+
+        factions[faction].games++;
+
+
+        if (
+            String(game.result)
+                .toLowerCase() === "win"
+        ) {
+
+            factions[faction].wins++;
+        }
+
+
+        if (
+            String(game.result)
+                .toLowerCase() === "loss"
+        ) {
+
+            factions[faction].losses++;
+        }
+
+    });
+
+
+    const names =
+        Object.keys(factions)
+            .sort(
+                (a, b) =>
+                    factions[b].games -
+                    factions[a].games
+            );
+
+
+    if (!names.length) {
+
+        container.innerHTML =
+            `<div class="empty">
+                No faction data yet.
+            </div>`;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        names.map(name => {
+
+            const data =
+                factions[name];
+
+
+            const rate =
+                data.games
+                    ? Math.round(
+                        data.wins /
+                        data.games *
+                        100
+                    )
+                    : 0;
+
+
+            return `
+
+                <div class="card">
+
+                    <div class="row">
+
+                        <div class="row-main">
+
+                            <div class="row-title">
+                                ${safe(name)}
+                            </div>
+
+                            <div class="row-sub">
+                                ${data.games}
+                                games ·
+                                ${data.wins}W /
+                                ${data.losses}L
+                            </div>
+
+                        </div>
+
+                        <strong>
+                            ${rate}%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+}
+
+
+/*
+==========================================================
+GROUP MEMBERS
+==========================================================
+*/
+
+function renderMembers() {
+
+    const container =
+        el("groupMembers");
+
+
+    if (!currentGroup) {
+
+        container.innerHTML =
+            `<div class="empty">
+                Join or create a group first.
+            </div>`;
+
+        return;
+    }
+
+
+    if (!currentMembers.length) {
+
+        container.innerHTML =
+            `<div class="empty">
+                No members found.
+            </div>`;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        currentMembers.map(member => {
+
+            const profile =
+                member.profiles;
+
+
+            return `
+
+                <div class="row">
+
+                    <div class="row-main">
+
+                        <div class="row-title">
+                            ${safe(
+                                profile?.display_name ||
+                                "Player"
+                            )}
+                        </div>
+
+                        <div class="row-sub">
+                            ${safe(
+                                member.role ||
+                                "member"
+                            )}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+}
+
+
+/*
+==========================================================
+REFRESH
+==========================================================
+*/
+
+async function refreshAll() {
+
+    await loadGroup();
+
+    renderDashboard();
+
+    renderHistory();
+
+    renderPlayers();
+
+    renderFactions();
+
+    renderMembers();
+}
+
+
+/*
+==========================================================
+CREATE GROUP
+==========================================================
+*/
+
+async function createGroup() {
+
+    const name =
+        el("newGroupName")
+            .value
+            .trim();
+
+
+    if (!name) {
+
+        message(
+            "createGroupMessage",
+            "Enter a group name.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    message(
+        "createGroupMessage",
+        "Creating group..."
+    );
+
+
+    /*
+      This uses the create_group function
+      you created in Supabase.
+    */
+
+    const response =
+        await routineClient.rpc(
+            "create_group",
+            {
+                p_name: name
+            }
+        );
+
+
+    if (response.error) {
+
+        console.error(
+            "Create group error:",
+            response.error
+        );
+
+        message(
+            "createGroupMessage",
             response.error.message,
             "error"
         );
@@ -644,52 +2783,378 @@ async function signOut() {
     }
 
 
-    showAuth();
-
-    authMessage(
-        "You have been signed out.",
+    message(
+        "createGroupMessage",
+        "GROUP CREATED ✓",
         "success"
     );
+
+
+    el("newGroupName").value = "";
+
+
+    await loadGroup();
+
+    await refreshAll();
 }
 
 
 /*
-=====================================================
-BUTTONS
-=====================================================
+==========================================================
+JOIN GROUP
+==========================================================
 */
 
-signInButton.addEventListener(
-    "click",
-    signIn
-);
+async function joinGroup() {
+
+    const code =
+        el("inviteCode")
+            .value
+            .trim();
 
 
-createAccountButton.addEventListener(
-    "click",
-    createAccount
-);
+    if (!code) {
+
+        message(
+            "joinGroupMessage",
+            "Enter an invite code.",
+            "error"
+        );
+
+        return;
+    }
 
 
-signOutButton.addEventListener(
-    "click",
-    signOut
-);
+    message(
+        "joinGroupMessage",
+        "Looking for group..."
+    );
+
+
+    const lookup =
+        await routineClient
+            .from("groups")
+            .select(
+                "id,name,invite_code"
+            )
+            .eq(
+                "invite_code",
+                code
+            )
+            .maybeSingle();
+
+
+    if (lookup.error) {
+
+        console.error(
+            lookup.error
+        );
+
+        message(
+            "joinGroupMessage",
+            lookup.error.message,
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (!lookup.data) {
+
+        message(
+            "joinGroupMessage",
+            "No group found with that invite code.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const existing =
+        await routineClient
+            .from("group_members")
+            .select("group_id")
+            .eq(
+                "group_id",
+                lookup.data.id
+            )
+            .eq(
+                "user_id",
+                currentUser.id
+            )
+            .maybeSingle();
+
+
+    if (existing.data) {
+
+        message(
+            "joinGroupMessage",
+            "You are already a member of this group.",
+            "success"
+        );
+
+        await loadGroup();
+
+        await refreshAll();
+
+        return;
+    }
+
+
+    const insert =
+        await routineClient
+            .from("group_members")
+            .insert({
+
+                group_id:
+                    lookup.data.id,
+
+                user_id:
+                    currentUser.id,
+
+                role:
+                    "member"
+
+            });
+
+
+    if (insert.error) {
+
+        console.error(
+            insert.error
+        );
+
+        message(
+            "joinGroupMessage",
+            insert.error.message,
+            "error"
+        );
+
+        return;
+    }
+
+
+    message(
+        "joinGroupMessage",
+        "JOINED GROUP ✓",
+        "success"
+    );
+
+
+    el("inviteCode").value = "";
+
+
+    await loadGroup();
+
+    await refreshAll();
+}
 
 
 /*
-=====================================================
-ENTER KEY
-=====================================================
+==========================================================
+NAVIGATION
+==========================================================
 */
 
-passwordInput.addEventListener(
-    "keydown",
-    function(event) {
+function openPage(name) {
 
-        if (event.key === "Enter") {
+    document
+        .querySelectorAll(".page")
+        .forEach(page => {
 
-            signIn();
+            page.classList.add(
+                "hidden"
+            );
+
+        });
+
+
+    const selected =
+        el(
+            name + "Page"
+        );
+
+
+    if (selected) {
+
+        selected.classList.remove(
+            "hidden"
+        );
+    }
+
+
+    document
+        .querySelectorAll(".navButton")
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.page === name
+            );
+
+        });
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/*
+==========================================================
+DATE
+==========================================================
+*/
+
+function setDefaultDate() {
+
+    const input =
+        el("playedAt");
+
+
+    if (!input) {
+        return;
+    }
+
+
+    const now =
+        new Date();
+
+
+    const local =
+        new Date(
+            now.getTime() -
+            now.getTimezoneOffset() *
+            60000
+        );
+
+
+    input.value =
+        local
+            .toISOString()
+            .split("T")[0];
+}
+
+
+/*
+==========================================================
+BUTTONS
+==========================================================
+*/
+
+el("signInButton")
+    .addEventListener(
+        "click",
+        signIn
+    );
+
+
+el("createAccountButton")
+    .addEventListener(
+        "click",
+        createAccount
+    );
+
+
+el("logoutButton")
+    .addEventListener(
+        "click",
+        signOut
+    );
+
+
+el("saveBattleButton")
+    .addEventListener(
+        "click",
+        saveBattle
+    );
+
+
+el("clearBattleButton")
+    .addEventListener(
+        "click",
+        clearBattle
+    );
+
+
+el("createGroupButton")
+    .addEventListener(
+        "click",
+        createGroup
+    );
+
+
+el("joinGroupButton")
+    .addEventListener(
+        "click",
+        joinGroup
+    );
+
+
+document
+    .querySelectorAll(".navButton")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+                openPage(
+                    this.dataset.page
+                );
+
+            }
+        );
+
+    });
+
+
+/*
+==========================================================
+ENTER WITH ENTER KEY
+==========================================================
+*/
+
+el("password")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Enter") {
+
+                signIn();
+
+            }
+
+        }
+    );
+
+
+/*
+==========================================================
+AUTH SESSION
+==========================================================
+*/
+
+routineClient.auth.onAuthStateChange(
+    function(event, session) {
+
+        console.log(
+            "Routine 721 auth:",
+            event
+        );
+
+        if (
+            event === "SIGNED_OUT"
+        ) {
+
+            currentUser = null;
+
+            showAuth();
 
         }
 
@@ -698,12 +3163,17 @@ passwordInput.addEventListener(
 
 
 /*
-=====================================================
-CHECK EXISTING SESSION
-=====================================================
+==========================================================
+STARTUP
+==========================================================
 */
 
-async function checkSession() {
+async function startup() {
+
+    console.log(
+        "ROUTINE 721 WAR ROOM STARTING..."
+    );
+
 
     try {
 
@@ -716,9 +3186,10 @@ async function checkSession() {
             response.data.session
         ) {
 
-            showWarRoom(
-                response.data.session.user
-            );
+            currentUser =
+                response.data.session.user;
+
+            await enterApplication();
 
         } else {
 
@@ -726,63 +3197,26 @@ async function checkSession() {
 
         }
 
-
     } catch (error) {
 
         console.error(
-            "Session error:",
+            "Startup error:",
             error
         );
 
         showAuth();
 
-        authMessage(
-            "Unable to check your session.",
+        message(
+            "authMessage",
+            "Could not start Routine 721: " +
+            error.message,
             "error"
         );
     }
 }
 
 
-/*
-=====================================================
-AUTH STATE
-=====================================================
-*/
-
-routineClient.auth.onAuthStateChange(
-    function(event, session) {
-
-        console.log(
-            "Auth event:",
-            event
-        );
-
-
-        if (session && session.user) {
-
-            showWarRoom(
-                session.user
-            );
-
-        }
-
-    }
-);
-
-
-/*
-=====================================================
-START
-=====================================================
-*/
-
-console.log(
-    "ROUTINE 721 authentication loaded."
-);
-
-
-checkSession();
+startup();
 
 </script>
 
