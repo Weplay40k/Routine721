@@ -1,19 +1,12 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Routine 721 — War Room</title>
 
 <style>
-
-/* =========================================================
-   BASE
-========================================================= */
-
 * {
     box-sizing: border-box;
 }
@@ -31,9 +24,8 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-
 /* =========================================================
-   LIGHTWEIGHT WAR BACKGROUND
+   BACKGROUND
 ========================================================= */
 
 .war-bg {
@@ -65,12 +57,11 @@ body {
     background:
         radial-gradient(
             ellipse at 20% 50%,
-            rgba(150,15,15,.20),
+            rgba(150,15,15,.18),
             transparent 68%
         );
 
-    animation:
-        redPulse 9s ease-in-out infinite alternate;
+    animation: redPulse 9s ease-in-out infinite alternate;
 }
 
 .blue-glow {
@@ -83,16 +74,14 @@ body {
     background:
         radial-gradient(
             ellipse at 80% 50%,
-            rgba(65,25,155,.18),
+            rgba(65,25,155,.16),
             transparent 68%
         );
 
-    animation:
-        bluePulse 11s ease-in-out infinite alternate;
+    animation: bluePulse 11s ease-in-out infinite alternate;
 }
 
 @keyframes redPulse {
-
     from {
         opacity: .45;
     }
@@ -100,11 +89,9 @@ body {
     to {
         opacity: .85;
     }
-
 }
 
 @keyframes bluePulse {
-
     from {
         opacity: .45;
     }
@@ -112,7 +99,6 @@ body {
     to {
         opacity: .85;
     }
-
 }
 
 .center-shadow {
@@ -133,7 +119,6 @@ body {
         );
 }
 
-
 /* =========================================================
    GENERAL
 ========================================================= */
@@ -147,34 +132,27 @@ body {
     z-index: 10;
 }
 
-
 /* =========================================================
    LOGIN
 ========================================================= */
 
 .login-page {
-
     min-height: 100vh;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     padding: 20px;
 }
 
 .login-box {
-
     width: 100%;
-
     max-width: 430px;
 
     padding: 35px;
 
-    background:
-        rgba(6,6,8,.97);
+    background: rgba(6,6,8,.97);
 
     border:
         1px solid
@@ -188,7 +166,6 @@ body {
 }
 
 .logo {
-
     margin: 0;
 
     text-align: center;
@@ -201,7 +178,6 @@ body {
 }
 
 .logo-sub {
-
     margin-top: 7px;
 
     text-align: center;
@@ -214,7 +190,6 @@ body {
 }
 
 .divider {
-
     height: 1px;
 
     margin: 24px 0;
@@ -229,9 +204,7 @@ body {
 }
 
 .login-box h2 {
-
-    margin:
-        0 0 7px;
+    margin: 0 0 7px;
 
     text-align: center;
 
@@ -243,9 +216,7 @@ body {
 }
 
 .login-description {
-
-    margin:
-        0 0 20px;
+    margin: 0 0 20px;
 
     color: #777;
 
@@ -254,17 +225,14 @@ body {
     font-size: 12px;
 }
 
-
 /* =========================================================
    INPUTS
 ========================================================= */
 
 label {
-
     display: block;
 
-    margin:
-        15px 0 6px;
+    margin: 15px 0 6px;
 
     color: #888;
 
@@ -277,7 +245,6 @@ label {
 
 input,
 select {
-
     width: 100%;
 
     padding: 11px;
@@ -297,18 +264,14 @@ select {
 
 input:focus,
 select:focus {
-
-    border-color:
-        #7651a9;
+    border-color: #7651a9;
 }
-
 
 /* =========================================================
    BUTTONS
 ========================================================= */
 
 button {
-
     cursor: pointer;
 
     font-weight: bold;
@@ -319,14 +282,12 @@ button {
 }
 
 button:disabled {
-
     cursor: wait;
 
     opacity: .5;
 }
 
 .primary {
-
     width: 100%;
 
     margin-top: 15px;
@@ -343,7 +304,6 @@ button:disabled {
 }
 
 .secondary {
-
     width: 100%;
 
     margin-top: 10px;
@@ -360,9 +320,7 @@ button:disabled {
 }
 
 .small-btn {
-
-    padding:
-        8px 12px;
+    padding: 8px 12px;
 
     background: #151519;
 
@@ -376,47 +334,44 @@ button:disabled {
 }
 
 .gold-btn {
-
     background: #806b2e;
 
-    border-color:
-        #b79a42;
+    border-color: #b79a42;
 
     color: white;
 }
 
 .delete-btn {
+    display: inline-block !important;
 
-    background: #24100f;
+    padding: 9px 14px;
+
+    background: #35100e;
+
+    color: #ff6257;
 
     border:
         1px solid
-        #71332c;
-
-    color: #e05a50;
-
-    padding:
-        8px 12px;
+        #96382f;
 
     font-size: 10px;
+
+    font-weight: bold;
 }
 
 .delete-btn:hover {
+    background: #541713;
 
-    background: #421513;
+    border-color: #d24a3e;
 
-    border-color: #a33d35;
-
-    color: #ff7167;
+    color: #fff;
 }
-
 
 /* =========================================================
    STATUS
 ========================================================= */
 
 .status {
-
     min-height: 18px;
 
     margin-top: 16px;
@@ -436,13 +391,11 @@ button:disabled {
     color: #ff5959;
 }
 
-
 /* =========================================================
    WAR ROOM
 ========================================================= */
 
 .war-room {
-
     position: relative;
 
     z-index: 10;
@@ -452,20 +405,16 @@ button:disabled {
     padding: 15px;
 }
 
-
 /* =========================================================
    TOP BAR
 ========================================================= */
 
 .topbar {
-
     max-width: 1450px;
 
-    margin:
-        0 auto 15px;
+    margin: 0 auto 15px;
 
-    padding:
-        13px 18px;
+    padding: 13px 18px;
 
     display: flex;
 
@@ -473,8 +422,7 @@ button:disabled {
 
     justify-content: space-between;
 
-    background:
-        rgba(6,6,8,.97);
+    background: rgba(6,6,8,.97);
 
     border:
         1px solid
@@ -484,7 +432,6 @@ button:disabled {
 }
 
 .brand {
-
     color: #c9a84c;
 
     font-size: 19px;
@@ -495,7 +442,6 @@ button:disabled {
 }
 
 .brand-sub {
-
     margin-top: 3px;
 
     color: #666;
@@ -506,7 +452,6 @@ button:disabled {
 }
 
 .user-area {
-
     display: flex;
 
     align-items: center;
@@ -518,39 +463,32 @@ button:disabled {
     font-size: 11px;
 }
 
-
 /* =========================================================
    DASHBOARD
 ========================================================= */
 
 .dashboard {
-
     max-width: 1450px;
 
     margin: auto;
 
     display: grid;
 
-    grid-template-columns:
-        235px
-        1fr;
+    grid-template-columns: 235px 1fr;
 
     gap: 15px;
 }
-
 
 /* =========================================================
    SIDEBAR
 ========================================================= */
 
 .sidebar {
-
     min-height: 720px;
 
     padding: 15px;
 
-    background:
-        rgba(6,6,8,.97);
+    background: rgba(6,6,8,.97);
 
     border:
         1px solid
@@ -560,7 +498,6 @@ button:disabled {
 }
 
 .sidebar-title {
-
     margin-bottom: 14px;
 
     color: #666;
@@ -571,7 +508,6 @@ button:disabled {
 }
 
 .nav-btn {
-
     width: 100%;
 
     margin-bottom: 7px;
@@ -592,12 +528,10 @@ button:disabled {
 }
 
 .nav-btn:hover {
-
     color: #ddd;
 }
 
 .nav-btn.active {
-
     background: #251416;
 
     border-color: #71332c;
@@ -606,7 +540,6 @@ button:disabled {
 }
 
 .sidebar-separator {
-
     height: 1px;
 
     margin: 15px 0;
@@ -614,24 +547,20 @@ button:disabled {
     background: #242429;
 }
 
-
 /* =========================================================
    CONTENT
 ========================================================= */
 
 .content {
-
     min-width: 0;
 }
 
 .panel {
-
     margin-bottom: 15px;
 
     padding: 20px;
 
-    background:
-        rgba(6,6,8,.97);
+    background: rgba(6,6,8,.97);
 
     border:
         1px solid
@@ -641,7 +570,6 @@ button:disabled {
 }
 
 .panel-header {
-
     display: flex;
 
     align-items: center;
@@ -654,7 +582,6 @@ button:disabled {
 }
 
 .panel-title {
-
     margin: 0;
 
     color: #ddd;
@@ -665,7 +592,6 @@ button:disabled {
 }
 
 .panel-subtitle {
-
     margin-top: 4px;
 
     color: #666;
@@ -675,13 +601,11 @@ button:disabled {
     letter-spacing: 1px;
 }
 
-
 /* =========================================================
    STATS
 ========================================================= */
 
 .stat-grid {
-
     display: grid;
 
     grid-template-columns:
@@ -693,7 +617,6 @@ button:disabled {
 }
 
 .stat-card {
-
     padding: 15px;
 
     background: #0d0d10;
@@ -706,7 +629,6 @@ button:disabled {
 }
 
 .stat-label {
-
     color: #666;
 
     font-size: 9px;
@@ -715,7 +637,6 @@ button:disabled {
 }
 
 .stat-number {
-
     margin-top: 7px;
 
     color: #ddd;
@@ -733,13 +654,11 @@ button:disabled {
     color: #59c879;
 }
 
-
 /* =========================================================
    GROUPS
 ========================================================= */
 
 .group-grid {
-
     display: grid;
 
     grid-template-columns:
@@ -749,7 +668,6 @@ button:disabled {
 }
 
 .group-card {
-
     padding: 15px;
 
     background: #0d0d10;
@@ -764,21 +682,16 @@ button:disabled {
 }
 
 .group-card:hover {
-
-    border-color:
-        #806b2e;
+    border-color: #806b2e;
 }
 
 .group-card.selected {
-
-    border-color:
-        #c9a84c;
+    border-color: #c9a84c;
 
     background: #13120e;
 }
 
 .group-name {
-
     color: #ddd;
 
     font-size: 14px;
@@ -787,7 +700,6 @@ button:disabled {
 }
 
 .group-info {
-
     margin-top: 7px;
 
     color: #666;
@@ -795,13 +707,11 @@ button:disabled {
     font-size: 10px;
 }
 
-
 /* =========================================================
    SELECTED GROUP
 ========================================================= */
 
 .selected-group {
-
     padding: 15px;
 
     margin-bottom: 15px;
@@ -821,7 +731,6 @@ button:disabled {
 }
 
 .selected-group-name {
-
     color: #c9a84c;
 
     font-size: 18px;
@@ -832,7 +741,6 @@ button:disabled {
 }
 
 .selected-group-code {
-
     margin-top: 6px;
 
     color: #777;
@@ -840,13 +748,11 @@ button:disabled {
     font-size: 10px;
 }
 
-
 /* =========================================================
    PLAYERS
 ========================================================= */
 
 .player-card {
-
     display: flex;
 
     align-items: center;
@@ -869,12 +775,10 @@ button:disabled {
 }
 
 .player-left {
-
     min-width: 0;
 }
 
 .player-name {
-
     color: #ddd;
 
     font-size: 14px;
@@ -883,7 +787,6 @@ button:disabled {
 }
 
 .player-email {
-
     margin-top: 4px;
 
     color: #555;
@@ -892,7 +795,6 @@ button:disabled {
 }
 
 .player-role {
-
     margin-top: 4px;
 
     color: #806b2e;
@@ -905,7 +807,6 @@ button:disabled {
 }
 
 .player-stats {
-
     display: flex;
 
     gap: 14px;
@@ -914,7 +815,6 @@ button:disabled {
 }
 
 .player-stat-number {
-
     color: #ddd;
 
     font-size: 14px;
@@ -923,7 +823,6 @@ button:disabled {
 }
 
 .player-stat-label {
-
     margin-top: 3px;
 
     color: #555;
@@ -931,13 +830,11 @@ button:disabled {
     font-size: 7px;
 }
 
-
 /* =========================================================
    QUICK ACTIONS
 ========================================================= */
 
 .quick-actions {
-
     display: grid;
 
     grid-template-columns:
@@ -947,7 +844,6 @@ button:disabled {
 }
 
 .quick-action {
-
     padding: 16px;
 
     background: #0d0d10;
@@ -966,15 +862,12 @@ button:disabled {
 }
 
 .quick-action:hover {
-
-    border-color:
-        #806b2e;
+    border-color: #806b2e;
 
     color: #eee;
 }
 
 .quick-action-title {
-
     color: #ddd;
 
     font-size: 12px;
@@ -983,7 +876,6 @@ button:disabled {
 }
 
 .quick-action-text {
-
     margin-top: 6px;
 
     color: #666;
@@ -993,13 +885,11 @@ button:disabled {
     line-height: 1.5;
 }
 
-
 /* =========================================================
    MODAL
 ========================================================= */
 
 .modal {
-
     position: fixed;
 
     inset: 0;
@@ -1014,12 +904,10 @@ button:disabled {
 
     padding: 20px;
 
-    background:
-        rgba(0,0,0,.76);
+    background: rgba(0,0,0,.76);
 }
 
 .modal-box {
-
     width: 100%;
 
     max-width: 460px;
@@ -1036,7 +924,6 @@ button:disabled {
 }
 
 .modal-title {
-
     margin: 0;
 
     color: #ddd;
@@ -1047,7 +934,6 @@ button:disabled {
 }
 
 .modal-buttons {
-
     display: flex;
 
     gap: 10px;
@@ -1056,14 +942,12 @@ button:disabled {
 }
 
 .modal-buttons button {
-
     flex: 1;
 
     margin: 0;
 }
 
 .modal-status {
-
     min-height: 17px;
 
     margin-top: 12px;
@@ -1076,7 +960,6 @@ button:disabled {
 }
 
 .empty {
-
     padding: 25px;
 
     text-align: center;
@@ -1092,6 +975,51 @@ button:disabled {
     border-radius: 6px;
 }
 
+/* =========================================================
+   DELETE AREA
+========================================================= */
+
+.group-management-bar {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+
+    padding: 14px;
+
+    background: #0b0b0e;
+
+    border:
+        1px solid
+        #29292e;
+
+    border-radius: 6px;
+}
+
+.group-management-info {
+    color: #666;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+}
+
+.group-management-info strong {
+    color: #aaa;
+}
+
+.group-management-actions {
+    display: flex;
+
+    gap: 8px;
+
+    flex-wrap: wrap;
+}
 
 /* =========================================================
    MOBILE
@@ -1100,17 +1028,14 @@ button:disabled {
 @media(max-width:900px) {
 
     .dashboard {
-
         grid-template-columns: 1fr;
     }
 
     .sidebar {
-
         min-height: auto;
     }
 
     .stat-grid {
-
         grid-template-columns:
             repeat(2,1fr);
     }
@@ -1120,7 +1045,6 @@ button:disabled {
 @media(max-width:650px) {
 
     .topbar {
-
         flex-direction: column;
 
         align-items: flex-start;
@@ -1129,20 +1053,31 @@ button:disabled {
     }
 
     .group-grid {
-
         grid-template-columns: 1fr;
     }
 
     .quick-actions {
-
         grid-template-columns: 1fr;
     }
 
     .player-card {
-
         flex-direction: column;
 
         align-items: flex-start;
+    }
+
+    .group-management-bar {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .group-management-actions {
+        width: 100%;
+    }
+
+    .group-management-actions button {
+        flex: 1;
     }
 
 }
@@ -1151,18 +1086,14 @@ button:disabled {
 
     .red-glow,
     .blue-glow {
-
         animation: none;
     }
 
 }
-
 </style>
 </head>
 
-
 <body>
-
 
 <!-- ======================================================
      BACKGROUND
@@ -1180,7 +1111,7 @@ button:disabled {
 
 
 <!-- ======================================================
-     LOGIN SCREEN
+     LOGIN
 ====================================================== -->
 
 <div
@@ -1200,7 +1131,6 @@ button:disabled {
 
         <div class="divider"></div>
 
-
         <!-- SIGN IN -->
 
         <div id="signInView">
@@ -1213,7 +1143,6 @@ button:disabled {
                 Enter the War Room command network.
             </p>
 
-
             <label>
                 Email
             </label>
@@ -1223,7 +1152,6 @@ button:disabled {
                 type="email"
                 placeholder="your@email.com"
             >
-
 
             <label>
                 Password
@@ -1235,7 +1163,6 @@ button:disabled {
                 placeholder="Password"
             >
 
-
             <button
                 id="signInButton"
                 class="primary"
@@ -1243,7 +1170,6 @@ button:disabled {
             >
                 SIGN IN
             </button>
-
 
             <button
                 id="showCreateButton"
@@ -1271,7 +1197,6 @@ button:disabled {
                 Create your Routine 721 player account.
             </p>
 
-
             <label>
                 Display Name
             </label>
@@ -1281,7 +1206,6 @@ button:disabled {
                 type="text"
                 placeholder="Your player name"
             >
-
 
             <label>
                 Email
@@ -1293,7 +1217,6 @@ button:disabled {
                 placeholder="your@email.com"
             >
 
-
             <label>
                 Password
             </label>
@@ -1304,7 +1227,6 @@ button:disabled {
                 placeholder="Minimum 6 characters"
             >
 
-
             <button
                 id="createAccountButton"
                 class="primary"
@@ -1312,7 +1234,6 @@ button:disabled {
             >
                 CREATE PLAYER ACCOUNT
             </button>
-
 
             <button
                 id="backToLoginButton"
@@ -1346,7 +1267,6 @@ button:disabled {
     class="war-room hidden"
 >
 
-
 <header class="topbar">
 
     <div>
@@ -1360,7 +1280,6 @@ button:disabled {
         </div>
 
     </div>
-
 
     <div class="user-area">
 
@@ -1383,7 +1302,6 @@ button:disabled {
 
 <main class="dashboard">
 
-
 <!-- ======================================================
      SIDEBAR
 ====================================================== -->
@@ -1394,7 +1312,6 @@ button:disabled {
         COMMAND
     </div>
 
-
     <button
         class="nav-btn active"
         data-page="overview"
@@ -1402,7 +1319,6 @@ button:disabled {
     >
         WAR ROOM
     </button>
-
 
     <button
         class="nav-btn"
@@ -1412,7 +1328,6 @@ button:disabled {
         GROUPS
     </button>
 
-
     <button
         class="nav-btn"
         data-page="players"
@@ -1420,7 +1335,6 @@ button:disabled {
     >
         PLAYERS
     </button>
-
 
     <button
         class="nav-btn"
@@ -1430,9 +1344,7 @@ button:disabled {
         MATCHES
     </button>
 
-
     <div class="sidebar-separator"></div>
-
 
     <button
         id="createGroupButton"
@@ -1441,7 +1353,6 @@ button:disabled {
     >
         + CREATE GROUP
     </button>
-
 
     <button
         id="joinGroupButton"
@@ -1455,7 +1366,7 @@ button:disabled {
 
 
 <!-- ======================================================
-     MAIN CONTENT
+     MAIN
 ====================================================== -->
 
 <section class="content">
@@ -1582,7 +1493,6 @@ Invite code:
 
 <div class="quick-actions">
 
-
 <div
     id="quickCreate"
     class="quick-action"
@@ -1630,7 +1540,6 @@ Record victories, defeats and draws.
 
 </div>
 
-
 </div>
 
 </div>
@@ -1654,7 +1563,6 @@ ACTIVE WAR GROUPS
 
 </div>
 
-
 <div
     id="overviewGroups"
     class="group-grid"
@@ -1676,30 +1584,41 @@ ACTIVE WAR GROUPS
 
 <div class="panel">
 
-
 <div class="panel-header">
 
 <div>
 
 <h2 class="panel-title">
-GROUPS
+GROUP MANAGEMENT
 </h2>
 
 <div class="panel-subtitle">
-WAR GROUP MANAGEMENT
+CREATE, JOIN AND MANAGE YOUR WAR GROUPS
 </div>
 
 </div>
 
+</div>
 
-<div
-    style="
-        display:flex;
-        gap:8px;
-        flex-wrap:wrap;
-    "
->
 
+<!-- PERMANENT DELETE AREA -->
+
+<div class="group-management-bar">
+
+<div class="group-management-info">
+
+<strong>Group administration</strong><br>
+
+Select a group below before using
+<strong>DELETE GROUP</strong>.
+
+The database will verify that you are
+allowed to delete it.
+
+</div>
+
+
+<div class="group-management-actions">
 
 <button
     id="groupsCreate"
@@ -1711,14 +1630,21 @@ CREATE GROUP
 
 
 <button
+    id="groupsJoin"
+    class="small-btn"
+    type="button"
+>
+JOIN GROUP
+</button>
+
+
+<button
     id="deleteSelectedGroup"
     class="delete-btn"
     type="button"
-    style="display:none;"
 >
 DELETE GROUP
 </button>
-
 
 </div>
 
@@ -1730,14 +1656,13 @@ DELETE GROUP
     class="group-grid"
 ></div>
 
-
 </div>
 
 </div>
 
 
 <!-- ======================================================
-     PLAYERS PAGE
+     PLAYERS
 ====================================================== -->
 
 <div
@@ -1763,10 +1688,7 @@ ALL REGISTERED ROUTINE 721 PLAYERS
 
 </div>
 
-
-<div
-    id="playersList"
-></div>
+<div id="playersList"></div>
 
 </div>
 
@@ -1774,7 +1696,7 @@ ALL REGISTERED ROUTINE 721 PLAYERS
 
 
 <!-- ======================================================
-     MATCHES PAGE
+     MATCHES
 ====================================================== -->
 
 <div
@@ -1798,7 +1720,6 @@ BATTLE RECORDS
 
 </div>
 
-
 <button
     id="recordMatchButton"
     class="small-btn gold-btn"
@@ -1809,10 +1730,7 @@ RECORD MATCH
 
 </div>
 
-
-<div
-    id="matchesList"
->
+<div id="matchesList">
 
 <div class="empty">
 No matches recorded yet.
@@ -1851,8 +1769,6 @@ CREATE GROUP
 </h2>
 
 
-<!-- CREATE GROUP -->
-
 <div id="createGroupForm">
 
 <label>
@@ -1867,8 +1783,6 @@ Group Name
 
 </div>
 
-
-<!-- JOIN GROUP -->
 
 <div
     id="joinGroupForm"
@@ -1888,8 +1802,6 @@ Invite Code
 </div>
 
 
-<!-- MATCH -->
-
 <div
     id="matchForm"
     class="hidden"
@@ -1904,7 +1816,6 @@ Opponent
     type="text"
     placeholder="Opponent"
 >
-
 
 <label>
 Result
@@ -1925,7 +1836,6 @@ DRAW
 </option>
 
 </select>
-
 
 <label>
 Notes
@@ -1977,12 +1887,11 @@ CONFIRM
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
 <script>
 
 /*
 ===========================================================
-SUPABASE CONFIGURATION
+SUPABASE
 ===========================================================
 */
 
@@ -1995,13 +1904,13 @@ const SUPABASE_KEY =
 
 /*
 IMPORTANT:
+Use a unique variable name.
 
-We deliberately use "routineClient".
+Do NOT use:
+const supabase = ...
 
-Do NOT rename this to "supabase".
-
-Your previous website had a global Supabase
-redeclaration problem.
+because that caused the global redeclaration
+problem in the earlier versions.
 */
 
 const routineClient =
@@ -2032,14 +1941,12 @@ let modalMode = null;
 
 /*
 ===========================================================
-HELPER
+HELPERS
 ===========================================================
 */
 
 function $(id) {
-
     return document.getElementById(id);
-
 }
 
 
@@ -2054,12 +1961,6 @@ function escapeHtml(value) {
 
 }
 
-
-/*
-===========================================================
-LOGIN STATUS
-===========================================================
-*/
 
 function loginMessage(
     message,
@@ -2077,7 +1978,7 @@ function loginMessage(
 
 /*
 ===========================================================
-SIGN IN / CREATE SCREEN
+LOGIN
 ===========================================================
 */
 
@@ -2118,12 +2019,6 @@ $("backToLoginButton")
     }
 );
 
-
-/*
-===========================================================
-SIGN IN
-===========================================================
-*/
 
 $("signInButton")
 .addEventListener(
@@ -2424,50 +2319,6 @@ async function showWarRoom(user) {
 
 /*
 ===========================================================
-LOAD PLAYERS
-===========================================================
-*/
-
-async function loadPlayers() {
-
-    const result =
-        await routineClient
-        .from("profiles")
-        .select(
-            "id,display_name,avatar_url,created_at"
-        )
-        .order(
-            "display_name",
-            {
-                ascending: true
-            }
-        );
-
-
-    if (
-        result.error
-    ) {
-
-        console.error(
-            "Players error:",
-            result.error
-        );
-
-        allPlayers = [];
-
-        return;
-
-    }
-
-
-    allPlayers =
-        result.data || [];
-
-}
-
-
-/*
-===========================================================
 LOAD GROUPS
 ===========================================================
 */
@@ -2541,6 +2392,11 @@ async function loadGroups() {
         );
 
 
+    /*
+    Keep selected group if it
+    still exists.
+    */
+
     if (
         selectedGroup
     ) {
@@ -2559,6 +2415,11 @@ async function loadGroups() {
     }
 
 
+    /*
+    Automatically select the
+    first group if necessary.
+    */
+
     if (
         !selectedGroup &&
         groups.length
@@ -2574,69 +2435,101 @@ async function loadGroups() {
 
 /*
 ===========================================================
-LOAD MATCHES
+LOAD PLAYERS
 ===========================================================
 */
 
-async function loadMatches() {
+async function loadPlayers() {
 
-    try {
+    const result =
+        await routineClient
+        .from("profiles")
+        .select(
+            "id,display_name,avatar_url,created_at"
+        )
+        .order(
+            "display_name",
+            {
+                ascending: true
+            }
+        );
 
-        const result =
-            await routineClient
-            .from("matches")
-            .select("*")
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
-            );
 
+    if (
+        result.error
+    ) {
 
-        if (
+        console.error(
+            "Players error:",
             result.error
-        ) {
+        );
 
-            console.error(
-                "Matches error:",
-                result.error
-            );
+        allPlayers = [];
 
-            matches = [];
-
-            return;
-
-        }
-
-
-        matches =
-            result.data || [];
+        return;
 
     }
 
-    catch(error) {
 
-        console.error(error);
-
-        matches = [];
-
-    }
+    allPlayers =
+        result.data || [];
 
 }
 
 
 /*
 ===========================================================
-REFRESH DATA
+LOAD MATCHES
+===========================================================
+*/
+
+async function loadMatches() {
+
+    const result =
+        await routineClient
+        .from("matches")
+        .select("*")
+        .order(
+            "created_at",
+            {
+                ascending: false
+            }
+        );
+
+
+    if (
+        result.error
+    ) {
+
+        console.error(
+            "Matches error:",
+            result.error
+        );
+
+        matches = [];
+
+        return;
+
+    }
+
+
+    matches =
+        result.data || [];
+
+}
+
+
+/*
+===========================================================
+REFRESH
 ===========================================================
 */
 
 async function refreshData() {
 
     await Promise.all([
-        loadPlayers(),
         loadGroups(),
+        loadPlayers(),
         loadMatches()
     ]);
 
@@ -2691,21 +2584,21 @@ function renderStats() {
 
     const wins =
         matches.filter(
-            m =>
-                m.result === "win"
+            match =>
+                match.result === "win"
         ).length;
 
 
     const total =
         matches.filter(
-            m =>
-                m.result === "win" ||
-                m.result === "loss" ||
-                m.result === "draw"
+            match =>
+                match.result === "win" ||
+                match.result === "loss" ||
+                match.result === "draw"
         ).length;
 
 
-    const rate =
+    const winRate =
         total
         ? Math.round(
             wins / total * 100
@@ -2715,7 +2608,7 @@ function renderStats() {
 
     $("winRateStat")
         .textContent =
-        rate + "%";
+        winRate + "%";
 
 }
 
@@ -2729,7 +2622,9 @@ GROUP CARD
 function makeGroupCard(group) {
 
     const card =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     card.className =
@@ -2781,10 +2676,6 @@ function makeGroupCard(group) {
 
             render();
 
-            showPage(
-                "groups"
-            );
-
         }
     );
 
@@ -2796,7 +2687,7 @@ function makeGroupCard(group) {
 
 /*
 ===========================================================
-RENDER GROUPS
+GROUPS
 ===========================================================
 */
 
@@ -2819,14 +2710,19 @@ function renderGroups() {
     ) {
 
         list.innerHTML =
-            `<div class="empty">
+            `
+            <div class="empty">
                 You are not in any groups yet.
-            </div>`;
+            </div>
+            `;
+
 
         overview.innerHTML =
-            `<div class="empty">
+            `
+            <div class="empty">
                 Create or join your first group.
-            </div>`;
+            </div>
+            `;
 
         return;
 
@@ -2842,6 +2738,7 @@ function renderGroups() {
                 )
             );
 
+
             overview.appendChild(
                 makeGroupCard(
                     group
@@ -2856,15 +2753,11 @@ function renderGroups() {
 
 /*
 ===========================================================
-SELECTED GROUP + DELETE BUTTON
+SELECTED GROUP
 ===========================================================
 */
 
 function renderSelectedGroup() {
-
-    const deleteButton =
-        $("deleteSelectedGroup");
-
 
     if (
         selectedGroup
@@ -2872,36 +2765,14 @@ function renderSelectedGroup() {
 
         $("selectedGroupName")
             .textContent =
-            selectedGroup.name;
+            selectedGroup.name ||
+            "UNKNOWN GROUP";
 
 
         $("selectedGroupCode")
             .textContent =
             selectedGroup.invite_code ||
             "—";
-
-
-        /*
-        Only the owner can see
-        the DELETE GROUP button.
-        */
-
-        if (
-            currentUser &&
-            selectedGroup.created_by ===
-            currentUser.id
-        ) {
-
-            deleteButton.style.display =
-                "inline-block";
-
-        }
-        else {
-
-            deleteButton.style.display =
-                "none";
-
-        }
 
     }
     else {
@@ -2915,10 +2786,6 @@ function renderSelectedGroup() {
             .textContent =
             "—";
 
-
-        deleteButton.style.display =
-            "none";
-
     }
 
 }
@@ -2926,51 +2793,38 @@ function renderSelectedGroup() {
 
 /*
 ===========================================================
-PLAYER MATCH STATISTICS
+PLAYERS
 ===========================================================
 */
 
-function playerMatches(
-    playerId
-) {
+function playerStats(playerId) {
 
-    return matches.filter(
-        match =>
-            match.user_id ===
-            playerId
-    );
-
-}
-
-
-function playerStats(
-    playerId
-) {
-
-    const games =
-        playerMatches(
-            playerId
+    const playerMatches =
+        matches.filter(
+            match =>
+                match.user_id ===
+                playerId
         );
 
 
     const wins =
-        games.filter(
-            g =>
-                g.result === "win"
+        playerMatches.filter(
+            match =>
+                match.result === "win"
         ).length;
 
 
     const losses =
-        games.filter(
-            g =>
-                g.result === "loss"
+        playerMatches.filter(
+            match =>
+                match.result === "loss"
         ).length;
 
 
     const draws =
-        games.filter(
-            g =>
-                g.result === "draw"
+        playerMatches.filter(
+            match =>
+                match.result === "draw"
         ).length;
 
 
@@ -2992,18 +2846,11 @@ function playerStats(
         wins,
         losses,
         draws,
-        total,
         rate
     };
 
 }
 
-
-/*
-===========================================================
-PLAYERS
-===========================================================
-*/
 
 function renderPlayers() {
 
@@ -3011,21 +2858,23 @@ function renderPlayers() {
         $("playersList");
 
 
+    container.innerHTML = "";
+
+
     if (
         !allPlayers.length
     ) {
 
         container.innerHTML =
-            `<div class="empty">
+            `
+            <div class="empty">
                 No players found.
-            </div>`;
+            </div>
+            `;
 
         return;
 
     }
-
-
-    container.innerHTML = "";
 
 
     allPlayers.forEach(
@@ -3085,13 +2934,11 @@ function renderPlayers() {
                     </div>
 
                     <div class="player-role">
-
                         ${
                             isYou
                             ? "ACTIVE PLAYER"
                             : "PLAYER"
                         }
-
                     </div>
 
                 </div>
@@ -3100,7 +2947,6 @@ function renderPlayers() {
                 <div class="player-stats">
 
                     <div>
-
                         <div class="player-stat-number">
                             ${stats.wins}
                         </div>
@@ -3108,12 +2954,10 @@ function renderPlayers() {
                         <div class="player-stat-label">
                             WINS
                         </div>
-
                     </div>
 
 
                     <div>
-
                         <div class="player-stat-number">
                             ${stats.losses}
                         </div>
@@ -3121,12 +2965,10 @@ function renderPlayers() {
                         <div class="player-stat-label">
                             LOSSES
                         </div>
-
                     </div>
 
 
                     <div>
-
                         <div class="player-stat-number">
                             ${stats.draws}
                         </div>
@@ -3134,12 +2976,10 @@ function renderPlayers() {
                         <div class="player-stat-label">
                             DRAWS
                         </div>
-
                     </div>
 
 
                     <div>
-
                         <div
                             class="player-stat-number"
                             style="color:#59c879"
@@ -3150,7 +2990,6 @@ function renderPlayers() {
                         <div class="player-stat-label">
                             WIN RATE
                         </div>
-
                     </div>
 
                 </div>
@@ -3180,21 +3019,23 @@ function renderMatches() {
         $("matchesList");
 
 
+    container.innerHTML = "";
+
+
     if (
         !matches.length
     ) {
 
         container.innerHTML =
-            `<div class="empty">
+            `
+            <div class="empty">
                 No matches recorded yet.
-            </div>`;
+            </div>
+            `;
 
         return;
 
     }
-
-
-    container.innerHTML = "";
 
 
     matches.forEach(
@@ -3202,24 +3043,10 @@ function renderMatches() {
 
             const player =
                 allPlayers.find(
-                    p =>
-                        p.id ===
+                    player =>
+                        player.id ===
                         match.user_id
                 );
-
-
-            const name =
-                player
-                ? player.display_name
-                : "Player";
-
-
-            const resultColor =
-                match.result === "win"
-                ? "#59c879"
-                : match.result === "loss"
-                ? "#d85a50"
-                : "#c9a84c";
 
 
             const row =
@@ -3232,12 +3059,24 @@ function renderMatches() {
                 "player-card";
 
 
+            const resultColor =
+                match.result === "win"
+                ? "#59c879"
+                : match.result === "loss"
+                ? "#d85a50"
+                : "#c9a84c";
+
+
             row.innerHTML = `
 
                 <div class="player-left">
 
                     <div class="player-name">
-                        ${escapeHtml(name)}
+                        ${escapeHtml(
+                            player
+                            ? player.display_name
+                            : "Player"
+                        )}
                     </div>
 
                     <div class="player-email">
@@ -3307,15 +3146,13 @@ document
 
 function showPage(page) {
 
-    const pages = [
+    [
         "overview",
         "groups",
         "players",
         "matches"
-    ];
-
-
-    pages.forEach(
+    ]
+    .forEach(
         name => {
 
             $(name + "Page")
@@ -3369,11 +3206,9 @@ function openModal(mode) {
         .classList
         .add("hidden");
 
-
     $("joinGroupForm")
         .classList
         .add("hidden");
-
 
     $("matchForm")
         .classList
@@ -3381,8 +3216,7 @@ function openModal(mode) {
 
 
     $("modalStatus")
-        .textContent =
-        "";
+        .textContent = "";
 
 
     if (
@@ -3453,7 +3287,7 @@ $("modalCancel")
 
 /*
 ===========================================================
-CREATE / JOIN / MATCH
+MODAL CONFIRM
 ===========================================================
 */
 
@@ -3473,9 +3307,7 @@ $("modalConfirm")
         try {
 
 
-            /*
-            CREATE GROUP
-            */
+            /* CREATE GROUP */
 
             if (
                 modalMode ===
@@ -3522,8 +3354,7 @@ $("modalConfirm")
 
 
                 $("groupName")
-                    .value =
-                    "";
+                    .value = "";
 
 
                 closeModal();
@@ -3539,9 +3370,7 @@ $("modalConfirm")
             }
 
 
-            /*
-            JOIN GROUP
-            */
+            /* JOIN GROUP */
 
             if (
                 modalMode ===
@@ -3564,7 +3393,7 @@ $("modalConfirm")
                 }
 
 
-                const group =
+                const groupResult =
                     await routineClient
                     .from("groups")
                     .select("id")
@@ -3576,11 +3405,11 @@ $("modalConfirm")
 
 
                 if (
-                    group.error
+                    groupResult.error
                 ) {
 
                     status.textContent =
-                        group.error.message;
+                        groupResult.error.message;
 
                     return;
 
@@ -3588,7 +3417,7 @@ $("modalConfirm")
 
 
                 if (
-                    !group.data
+                    !groupResult.data
                 ) {
 
                     status.textContent =
@@ -3605,7 +3434,7 @@ $("modalConfirm")
                     .insert({
 
                         group_id:
-                            group.data.id,
+                            groupResult.data.id,
 
                         user_id:
                             currentUser.id,
@@ -3629,8 +3458,7 @@ $("modalConfirm")
 
 
                 $("inviteCode")
-                    .value =
-                    "";
+                    .value = "";
 
 
                 closeModal();
@@ -3646,9 +3474,7 @@ $("modalConfirm")
             }
 
 
-            /*
-            RECORD MATCH
-            */
+            /* MATCH */
 
             if (
                 modalMode ===
@@ -3667,12 +3493,6 @@ $("modalConfirm")
                 }
 
 
-                const opponent =
-                    $("matchOpponent")
-                    .value
-                    .trim();
-
-
                 const result =
                     await routineClient
                     .from("matches")
@@ -3689,7 +3509,9 @@ $("modalConfirm")
                             .value,
 
                         opponent:
-                            opponent ||
+                            $("matchOpponent")
+                            .value
+                            .trim() ||
                             null,
 
                         notes:
@@ -3714,12 +3536,10 @@ $("modalConfirm")
 
 
                 $("matchOpponent")
-                    .value =
-                    "";
+                    .value = "";
 
                 $("matchNotes")
-                    .value =
-                    "";
+                    .value = "";
 
 
                 closeModal();
@@ -3749,7 +3569,7 @@ $("modalConfirm")
 
 /*
 ===========================================================
-CREATE GROUP BUTTONS
+CREATE GROUP
 ===========================================================
 */
 
@@ -3758,9 +3578,7 @@ $("createGroupButton")
     "click",
     function() {
 
-        openModal(
-            "create"
-        );
+        openModal("create");
 
     }
 );
@@ -3771,9 +3589,7 @@ $("groupsCreate")
     "click",
     function() {
 
-        openModal(
-            "create"
-        );
+        openModal("create");
 
     }
 );
@@ -3790,9 +3606,18 @@ $("joinGroupButton")
     "click",
     function() {
 
-        openModal(
-            "join"
-        );
+        openModal("join");
+
+    }
+);
+
+
+$("groupsJoin")
+.addEventListener(
+    "click",
+    function() {
+
+        openModal("join");
 
     }
 );
@@ -3809,9 +3634,7 @@ $("quickCreate")
     "click",
     function() {
 
-        openModal(
-            "create"
-        );
+        openModal("create");
 
     }
 );
@@ -3822,9 +3645,7 @@ $("quickPlayers")
     "click",
     function() {
 
-        showPage(
-            "players"
-        );
+        showPage("players");
 
     }
 );
@@ -3835,9 +3656,7 @@ $("quickMatch")
     "click",
     function() {
 
-        openModal(
-            "match"
-        );
+        openModal("match");
 
     }
 );
@@ -3848,9 +3667,7 @@ $("recordMatchButton")
     "click",
     function() {
 
-        openModal(
-            "match"
-        );
+        openModal("match");
 
     }
 );
@@ -3868,7 +3685,7 @@ $("deleteSelectedGroup")
     async function() {
 
         /*
-        No group selected.
+        A group must be selected.
         */
 
         if (
@@ -3876,7 +3693,8 @@ $("deleteSelectedGroup")
         ) {
 
             alert(
-                "Select a group first."
+                "SELECT A GROUP FIRST.\n\n" +
+                "Click the group you want to delete."
             );
 
             return;
@@ -3885,28 +3703,16 @@ $("deleteSelectedGroup")
 
 
         /*
-        Extra client-side owner check.
-        The database function also checks this,
-        so this is NOT the security mechanism.
+        Show the group that will be deleted.
         */
 
-        if (
-            !currentUser ||
-            selectedGroup.created_by !==
-            currentUser.id
-        ) {
-
-            alert(
-                "Only the group owner can delete this group."
-            );
-
-            return;
-
-        }
+        const groupName =
+            selectedGroup.name ||
+            "UNKNOWN GROUP";
 
 
         /*
-        Strong confirmation.
+        Confirmation.
         */
 
         const confirmed =
@@ -3914,21 +3720,17 @@ $("deleteSelectedGroup")
 
                 "DELETE GROUP?\n\n" +
 
-                selectedGroup.name +
+                "GROUP: " +
+                groupName +
 
                 "\n\n" +
 
-                "This will permanently delete:\n" +
+                "This action is permanent.\n\n" +
 
-                "• The group\n" +
+                "The group and its associated " +
+                "membership data may be removed.\n\n" +
 
-                "• All group members\n" +
-
-                "• All matches belonging to this group\n\n" +
-
-                "THIS CANNOT BE UNDONE.\n\n" +
-
-                "Continue?"
+                "Are you absolutely sure?"
 
             );
 
@@ -3949,6 +3751,12 @@ $("deleteSelectedGroup")
 
             this.textContent =
                 "DELETING...";
+
+
+            console.log(
+                "Deleting group:",
+                selectedGroup.id
+            );
 
 
             /*
@@ -3972,13 +3780,13 @@ $("deleteSelectedGroup")
             ) {
 
                 console.error(
-                    "Delete group error:",
+                    "Supabase delete_group error:",
                     result.error
                 );
 
 
                 alert(
-                    "Could not delete group:\n\n" +
+                    "DELETE FAILED\n\n" +
                     result.error.message
                 );
 
@@ -3996,14 +3804,14 @@ $("deleteSelectedGroup")
 
 
             /*
-            Reload everything.
+            Reload data.
             */
 
             await refreshData();
 
 
             /*
-            Return to Groups page.
+            Stay on Groups.
             */
 
             showPage(
@@ -4011,17 +3819,22 @@ $("deleteSelectedGroup")
             );
 
 
+            alert(
+                "GROUP DELETED SUCCESSFULLY."
+            );
+
         }
 
         catch(error) {
 
             console.error(
+                "Delete error:",
                 error
             );
 
 
             alert(
-                "Delete error:\n\n" +
+                "DELETE FAILED\n\n" +
                 error.message
             );
 
@@ -4176,4 +3989,3 @@ initialise();
 
 </body>
 </html>
-```
