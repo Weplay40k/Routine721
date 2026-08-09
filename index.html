@@ -1,7 +1,6 @@
 ```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
     <meta charset="UTF-8">
@@ -13,26 +12,21 @@
 
     <title>Routine 721 — War Room</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 </head>
 
-
 <body>
-
-
-<!-- =========================================================
-     BACKGROUND
-========================================================= -->
 
 <div class="background-effects">
     <div class="red-glow"></div>
     <div class="blue-glow"></div>
-    <div class="center-shadow"></div>
 </div>
-
 
 
 <!-- =========================================================
@@ -113,7 +107,7 @@
 
             <button
                 id="showCreateButton"
-                class="secondary-button full-button"
+                class="secondary-button"
                 type="button"
             >
                 CREATE ACCOUNT
@@ -197,7 +191,7 @@
 
             <button
                 id="backToLoginButton"
-                class="secondary-button full-button"
+                class="secondary-button"
                 type="button"
             >
                 BACK TO SIGN IN
@@ -604,11 +598,21 @@
 
                         </div>
 
+                    </div>
+
+
+                    <div class="group-management-bar">
+
+                        <div>
+                            Select a group to manage it.
+                        </div>
+
 
                         <div class="group-management-actions">
 
+
                             <button
-                                id="groupsCreate"
+                                id="groupsCreateButton"
                                 class="small-button gold-button"
                                 type="button"
                             >
@@ -617,11 +621,21 @@
 
 
                             <button
-                                id="groupsJoin"
+                                id="groupsJoinButton"
                                 class="small-button"
                                 type="button"
                             >
                                 JOIN GROUP
+                            </button>
+
+
+                            <button
+                                id="deleteSelectedGroup"
+                                class="delete-button"
+                                type="button"
+                                disabled
+                            >
+                                DELETE GROUP
                             </button>
 
                         </div>
@@ -743,11 +757,11 @@
 
 
 <!-- =========================================================
-     MAIN MODAL
+     ACTION MODAL
 ========================================================= -->
 
 <div
-    id="mainModal"
+    id="actionModal"
     class="modal hidden"
 >
 
@@ -965,7 +979,7 @@
 
 
 <!-- =========================================================
-     MATCH DETAILS MODAL
+     MATCH DETAILS
 ========================================================= -->
 
 <div
@@ -984,15 +998,6 @@
 
 
         <div class="modal-buttons">
-
-            <button
-                id="deleteMatchButton"
-                class="delete-button"
-                type="button"
-            >
-                DELETE MATCH
-            </button>
-
 
             <button
                 id="matchDetailsClose"
@@ -1039,22 +1044,30 @@ let currentPlayer = null;
 
 let selectedGroup = null;
 
-let currentMatch = null;
+let currentModalMode = null;
 
 let allGroups = [];
 
-let allPlayers = [];
-
 let allMatches = [];
+
 
 
 /* =========================================================
    HELPERS
 ========================================================= */
 
+function $(id) {
+    return document.getElementById(id);
+}
+
+
 function escapeHtml(value) {
 
-    return String(value ?? "")
+    if (value === null || value === undefined) {
+        return "";
+    }
+
+    return String(value)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -1063,367 +1076,134 @@ function escapeHtml(value) {
 }
 
 
-function setLoginStatus(message, error = false) {
+function show(element) {
 
-    const element =
-        document.getElementById("loginStatus");
+    if (element) {
+        element.classList.remove("hidden");
+    }
 
-    if (!element) return;
+}
 
-    element.textContent = message;
 
-    element.classList.toggle(
-        "error",
-        error
-    );
+function hide(element) {
+
+    if (element) {
+        element.classList.add("hidden");
+    }
+
+}
+
+
+function setStatus(message, error = false) {
+
+    const status = $("loginStatus");
+
+    if (!status) return;
+
+    status.textContent = message;
+
+    status.classList.toggle("error", error);
+
 }
 
 
 function setModalStatus(message, error = false) {
 
-    const element =
-        document.getElementById("modalStatus");
+    const status = $("modalStatus");
 
-    if (!element) return;
+    if (!status) return;
 
-    element.textContent = message;
+    status.textContent = message;
 
-    element.classList.toggle(
-        "error",
-        error
+    status.classList.toggle("error", error);
+
+}
+
+
+function formatDate(date) {
+
+    if (!date) {
+        return "Unknown date";
+    }
+
+    const d = new Date(date);
+
+    if (Number.isNaN(d.getTime())) {
+        return date;
+    }
+
+    return d.toLocaleDateString(
+        undefined,
+        {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+        }
     );
-}
-
-
-function openModal() {
-
-    document
-        .getElementById("mainModal")
-        .classList.remove("hidden");
-
-}
-
-
-function closeModal() {
-
-    document
-        .getElementById("mainModal")
-        .classList.add("hidden");
-
-    setModalStatus("");
-
-}
-
-
-function closeMatchDetails() {
-
-    document
-        .getElementById("matchDetailsModal")
-        .classList.add("hidden");
-
-    currentMatch = null;
-
-}
-
-
-function switchPage(pageName) {
-
-    document
-        .querySelectorAll(".page")
-        .forEach(page => {
-
-            page.classList.add("hidden");
-
-        });
-
-
-    const page =
-        document.getElementById(
-            pageName + "Page"
-        );
-
-    if (page) {
-
-        page.classList.remove("hidden");
-
-    }
-
-
-    document
-        .querySelectorAll(".nav-button[data-page]")
-        .forEach(button => {
-
-            button.classList.toggle(
-                "active",
-                button.dataset.page === pageName
-            );
-
-        });
-
-
-    if (pageName === "players") {
-
-        loadPlayers();
-
-    }
-
-    if (pageName === "groups") {
-
-        loadGroups();
-
-    }
-
-    if (pageName === "matches") {
-
-        loadMatches();
-
-    }
 
 }
 
 
 /* =========================================================
-   AUTH VIEW
+   LOGIN / ACCOUNT
 ========================================================= */
 
-function showLoginView() {
+$("showCreateButton").addEventListener(
+    "click",
+    function () {
 
-    document
-        .getElementById("loginView")
-        .classList.remove("hidden");
+        hide($("loginView"));
+        show($("createView"));
 
-    document
-        .getElementById("createView")
-        .classList.add("hidden");
+        setStatus("");
 
-    setLoginStatus("");
-
-}
+    }
+);
 
 
-function showCreateView() {
+$("backToLoginButton").addEventListener(
+    "click",
+    function () {
 
-    document
-        .getElementById("loginView")
-        .classList.add("hidden");
+        hide($("createView"));
+        show($("loginView"));
 
-    document
-        .getElementById("createView")
-        .classList.remove("hidden");
+        setStatus("");
 
-    setLoginStatus("");
-
-}
+    }
+);
 
 
-/* =========================================================
-   PLAYER PROFILE
-========================================================= */
-
-async function getPlayerProfile(user) {
-
-    if (!user) return null;
+$("signInButton").addEventListener(
+    "click",
+    signIn
+);
 
 
-    /*
-     * First try the most common structure:
-     * players.id = auth.users.id
-     */
+$("loginPassword").addEventListener(
+    "keydown",
+    function (event) {
 
-    try {
-
-        const result =
-            await supabaseClient
-                .from("players")
-                .select("*")
-                .eq("id", user.id)
-                .maybeSingle();
-
-        if (!result.error && result.data) {
-
-            return result.data;
-
+        if (event.key === "Enter") {
+            signIn();
         }
 
-    } catch (error) {
-
-        console.warn(
-            "Player id lookup failed:",
-            error
-        );
-
     }
+);
 
-
-    /*
-     * Some schemas use user_id instead.
-     */
-
-    try {
-
-        const result =
-            await supabaseClient
-                .from("players")
-                .select("*")
-                .eq("user_id", user.id)
-                .maybeSingle();
-
-        if (!result.error && result.data) {
-
-            return result.data;
-
-        }
-
-    } catch (error) {
-
-        console.warn(
-            "Player user_id lookup failed:",
-            error
-        );
-
-    }
-
-
-    return null;
-
-}
-
-
-async function ensurePlayerProfile(user) {
-
-    if (!user) return null;
-
-
-    let player =
-        await getPlayerProfile(user);
-
-
-    if (player) {
-
-        currentPlayer = player;
-
-        return player;
-
-    }
-
-
-    const displayName =
-        user.user_metadata?.display_name ||
-        user.user_metadata?.name ||
-        user.email?.split("@")[0] ||
-        "Player";
-
-
-    /*
-     * First attempt:
-     * id = auth user id
-     */
-
-    try {
-
-        const result =
-            await supabaseClient
-                .from("players")
-                .insert({
-                    id: user.id,
-                    display_name: displayName,
-                    email: user.email || null
-                })
-                .select()
-                .single();
-
-
-        if (!result.error && result.data) {
-
-            currentPlayer = result.data;
-
-            return result.data;
-
-        }
-
-        console.warn(
-            "Could not create player with id:",
-            result.error
-        );
-
-    } catch (error) {
-
-        console.warn(
-            "Player creation failed:",
-            error
-        );
-
-    }
-
-
-    /*
-     * Second attempt:
-     * user_id = auth user id
-     */
-
-    try {
-
-        const result =
-            await supabaseClient
-                .from("players")
-                .insert({
-                    user_id: user.id,
-                    display_name: displayName,
-                    email: user.email || null
-                })
-                .select()
-                .single();
-
-
-        if (!result.error && result.data) {
-
-            currentPlayer = result.data;
-
-            return result.data;
-
-        }
-
-        console.warn(
-            "Could not create player with user_id:",
-            result.error
-        );
-
-    } catch (error) {
-
-        console.warn(
-            "Alternative player creation failed:",
-            error
-        );
-
-    }
-
-
-    return null;
-
-}
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
 
 async function signIn() {
 
     const email =
-        document
-            .getElementById("loginEmail")
-            .value
-            .trim();
+        $("loginEmail").value.trim();
 
     const password =
-        document
-            .getElementById("loginPassword")
-            .value;
+        $("loginPassword").value;
 
 
     if (!email || !password) {
 
-        setLoginStatus(
+        setStatus(
             "Enter your email and password.",
             true
         );
@@ -1433,23 +1213,28 @@ async function signIn() {
     }
 
 
-    setLoginStatus(
-        "Authenticating..."
-    );
+    $("signInButton").disabled = true;
+
+    setStatus("Authenticating...");
 
 
     const {
         error
     } =
-        await supabaseClient.auth.signInWithPassword({
-            email,
-            password
-        });
+        await supabaseClient.auth.signInWithPassword(
+            {
+                email,
+                password
+            }
+        );
+
+
+    $("signInButton").disabled = false;
 
 
     if (error) {
 
-        setLoginStatus(
+        setStatus(
             error.message,
             true
         );
@@ -1459,36 +1244,32 @@ async function signIn() {
     }
 
 
-    setLoginStatus(
-        "Access granted."
-    );
+    setStatus("Access granted.");
 
 }
+
+
+$("createAccountButton").addEventListener(
+    "click",
+    createAccount
+);
 
 
 async function createAccount() {
 
     const name =
-        document
-            .getElementById("createName")
-            .value
-            .trim();
+        $("createName").value.trim();
 
     const email =
-        document
-            .getElementById("createEmail")
-            .value
-            .trim();
+        $("createEmail").value.trim();
 
     const password =
-        document
-            .getElementById("createPassword")
-            .value;
+        $("createPassword").value;
 
 
     if (!name || !email || !password) {
 
-        setLoginStatus(
+        setStatus(
             "Complete all fields.",
             true
         );
@@ -1500,7 +1281,7 @@ async function createAccount() {
 
     if (password.length < 6) {
 
-        setLoginStatus(
+        setStatus(
             "Password must contain at least 6 characters.",
             true
         );
@@ -1510,37 +1291,28 @@ async function createAccount() {
     }
 
 
-    setLoginStatus(
-        "Creating player..."
-    );
+    $("createAccountButton").disabled = true;
+
+    setStatus("Creating player account...");
 
 
     const {
         data,
         error
     } =
-        await supabaseClient.auth.signUp({
-
-            email,
-
-            password,
-
-            options: {
-
-                data: {
-
-                    display_name: name
-
-                }
-
+        await supabaseClient.auth.signUp(
+            {
+                email,
+                password
             }
-
-        });
+        );
 
 
     if (error) {
 
-        setLoginStatus(
+        $("createAccountButton").disabled = false;
+
+        setStatus(
             error.message,
             true
         );
@@ -1550,15 +1322,211 @@ async function createAccount() {
     }
 
 
-    /*
-     * If email confirmation is disabled,
-     * Supabase may immediately return a session.
-     */
+    if (data.user) {
 
-    if (data.session) {
+        const result =
+            await ensurePlayerProfile(
+                data.user,
+                name
+            );
 
-        setLoginStatus(
-            "Player created."
+
+        if (!result.success) {
+
+            $("createAccountButton").disabled = false;
+
+            setStatus(
+                "Account created, but player profile could not be created: " +
+                result.error,
+                true
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    $("createAccountButton").disabled = false;
+
+
+    setStatus(
+        "Account created. You can now sign in."
+    );
+
+
+    hide($("createView"));
+    show($("loginView"));
+
+}
+
+
+$("signOutButton").addEventListener(
+    "click",
+    async function () {
+
+        await supabaseClient.auth.signOut();
+
+    }
+);
+
+
+
+/* =========================================================
+   PLAYER PROFILE
+========================================================= */
+
+async function ensurePlayerProfile(
+    user,
+    displayName = null
+) {
+
+    if (!user) {
+        return {
+            success: false,
+            error: "No authenticated user."
+        };
+    }
+
+
+    let {
+        data: existing,
+        error: lookupError
+    } =
+        await supabaseClient
+            .from("players")
+            .select("*")
+            .eq("id", user.id)
+            .maybeSingle();
+
+
+    if (lookupError) {
+
+        return {
+            success: false,
+            error: lookupError.message
+        };
+
+    }
+
+
+    if (existing) {
+
+        currentPlayer = existing;
+
+        return {
+            success: true,
+            player: existing
+        };
+
+    }
+
+
+    const name =
+        displayName ||
+        user.user_metadata?.display_name ||
+        user.email?.split("@")[0] ||
+        "Player";
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("players")
+            .insert(
+                {
+                    id: user.id,
+                    display_name: name,
+                    email: user.email
+                }
+            )
+            .select()
+            .single();
+
+
+    if (error) {
+
+        return {
+            success: false,
+            error: error.message
+        };
+
+    }
+
+
+    currentPlayer = data;
+
+
+    return {
+        success: true,
+        player: data
+    };
+
+}
+
+
+
+/* =========================================================
+   APPLICATION START
+========================================================= */
+
+supabaseClient.auth.onAuthStateChange(
+    async function (
+        event,
+        session
+    ) {
+
+        if (session?.user) {
+
+            currentUser =
+                session.user;
+
+            await openApplication();
+
+        } else {
+
+            currentUser = null;
+            currentPlayer = null;
+            selectedGroup = null;
+
+            show($("loginScreen"));
+            hide($("appScreen"));
+
+        }
+
+    }
+);
+
+
+async function openApplication() {
+
+    hide($("loginScreen"));
+    show($("appScreen"));
+
+
+    $("currentUserEmail").textContent =
+        currentUser.email || "-";
+
+
+    const profile =
+        await ensurePlayerProfile(
+            currentUser
+        );
+
+
+    if (!profile.success) {
+
+        console.error(
+            "Player profile error:",
+            profile.error
+        );
+
+        alert(
+            "Could not load player profile: " +
+            profile.error
         );
 
         return;
@@ -1566,88 +1534,33 @@ async function createAccount() {
     }
 
 
-    setLoginStatus(
-        "Account created. Check your email if confirmation is required."
+    await refreshApplication();
+
+}
+
+
+
+/* =========================================================
+   REFRESH
+========================================================= */
+
+async function refreshApplication() {
+
+    await Promise.all(
+        [
+            loadGroups(),
+            loadMatches(),
+            loadPlayers()
+        ]
     );
 
-}
 
-
-/* =========================================================
-   SHOW APPLICATION
-========================================================= */
-
-async function showApplication(user) {
-
-    currentUser = user;
-
-
-    document
-        .getElementById("loginScreen")
-        .classList.add("hidden");
-
-
-    document
-        .getElementById("appScreen")
-        .classList.remove("hidden");
-
-
-    document
-        .getElementById("currentUserEmail")
-        .textContent =
-        user.email || "-";
-
-
-    /*
-     * Player creation must never prevent
-     * the rest of the application from loading.
-     */
-
-    try {
-
-        await ensurePlayerProfile(user);
-
-    } catch (error) {
-
-        console.warn(
-            "Player profile unavailable:",
-            error
-        );
-
-    }
-
-
-    await refreshDashboard();
+    renderGroups();
+    renderMatches();
+    renderOverview();
 
 }
 
-
-/* =========================================================
-   HIDE APPLICATION
-========================================================= */
-
-function hideApplication() {
-
-    currentUser = null;
-
-    currentPlayer = null;
-
-    selectedGroup = null;
-
-
-    document
-        .getElementById("appScreen")
-        .classList.add("hidden");
-
-
-    document
-        .getElementById("loginScreen")
-        .classList.remove("hidden");
-
-
-    showLoginView();
-
-}
 
 
 /* =========================================================
@@ -1656,159 +1569,105 @@ function hideApplication() {
 
 async function loadGroups() {
 
-    const overview =
-        document.getElementById(
-            "overviewGroups"
-        );
-
-    const list =
-        document.getElementById(
-            "groupsList"
-        );
+    if (!currentUser) return;
 
 
-    if (overview) {
-
-        overview.innerHTML =
-            `<div class="empty">
-                Loading groups...
-             </div>`;
-
-    }
-
-
-    if (list) {
-
-        list.innerHTML =
-            `<div class="empty">
-                Loading groups...
-             </div>`;
-
-    }
-
-
-    let groups = [];
-
-
-    try {
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from("groups")
-                .select("*")
-                .order(
-                    "created_at",
-                    {
-                        ascending: false
-                    }
-                );
-
-
-        if (error) {
-
-            console.warn(
-                "Groups could not be loaded:",
-                error
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("groups")
+            .select("*")
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
             );
 
-        } else {
 
-            groups =
-                Array.isArray(data)
-                    ? data
-                    : [];
+    if (error) {
 
-        }
-
-    } catch (error) {
-
-        console.warn(
-            "Group loading failed:",
+        console.error(
+            "Could not load groups:",
             error
         );
 
-    }
+        allGroups = [];
 
-
-    allGroups = groups;
-
-
-    if (document.getElementById("groupsStat")) {
-
-        document
-            .getElementById("groupsStat")
-            .textContent =
-            groups.length;
+        return;
 
     }
 
+
+    allGroups = data || [];
+
+
+    if (
+        selectedGroup &&
+        !allGroups.some(
+            g => g.id === selectedGroup.id
+        )
+    ) {
+
+        selectedGroup = null;
+
+    }
+
+}
+
+
+function userOwnsGroup(group) {
+
+    if (!currentUser || !group) {
+        return false;
+    }
+
+    return (
+        group.created_by === currentUser.id
+    );
+
+}
+
+
+function selectGroup(group) {
+
+    selectedGroup = group;
 
     renderGroups();
-
-
-    loadAvailableGroups();
-
-}
-
-
-function groupName(group) {
-
-    return (
-        group.name ||
-        group.group_name ||
-        group.title ||
-        "Unnamed Group"
-    );
-
-}
-
-
-function groupId(group) {
-
-    return (
-        group.id ||
-        group.group_id
-    );
-
-}
-
-
-function groupInviteCode(group) {
-
-    return (
-        group.invite_code ||
-        "—"
-    );
+    renderOverview();
 
 }
 
 
 function renderGroups() {
 
-    const overview =
-        document.getElementById(
-            "overviewGroups"
-        );
-
     const list =
-        document.getElementById(
-            "groupsList"
-        );
+        $("groupsList");
+
+    const overview =
+        $("overviewGroups");
 
 
-    if (allGroups.length === 0) {
+    if (!list || !overview) {
+        return;
+    }
 
-        const empty =
+
+    if (!allGroups.length) {
+
+        list.innerHTML =
             `<div class="empty">
-                No groups available yet.
-             </div>`;
+                You are not in any groups yet.
+            </div>`;
 
-        if (overview) overview.innerHTML = empty;
+        overview.innerHTML =
+            `<div class="empty">
+                No groups yet.
+            </div>`;
 
-        if (list) list.innerHTML = empty;
+        updateDeleteButton();
 
         return;
 
@@ -1816,39 +1675,40 @@ function renderGroups() {
 
 
     const html =
-        allGroups
-            .map(group => {
-
-                const id =
-                    groupId(group);
+        allGroups.map(
+            function (group) {
 
                 const selected =
                     selectedGroup &&
-                    groupId(selectedGroup) === id;
+                    selectedGroup.id === group.id;
+
+
+                const owner =
+                    userOwnsGroup(group);
 
 
                 return `
                     <div
                         class="group-card ${selected ? "selected" : ""}"
+                        data-group-id="${escapeHtml(group.id)}"
                     >
 
                         <div class="group-card-title">
-                            ${escapeHtml(groupName(group))}
+                            ${escapeHtml(group.name || "Unnamed Group")}
                         </div>
 
                         <div class="group-card-meta">
-                            INVITE CODE:
-                            ${escapeHtml(groupInviteCode(group))}
+                            ${owner ? "GROUP OWNER" : "MEMBER"}
                         </div>
 
                         <div class="group-card-actions">
 
                             <button
-                                class="small-button"
+                                class="small-button group-select-button"
                                 type="button"
-                                onclick="selectGroup('${escapeHtml(String(id))}')"
+                                data-group-id="${escapeHtml(group.id)}"
                             >
-                                SELECT
+                                ${selected ? "SELECTED" : "SELECT"}
                             </button>
 
                         </div>
@@ -1856,239 +1716,100 @@ function renderGroups() {
                     </div>
                 `;
 
-            })
-            .join("");
+            }
+        ).join("");
 
 
-    if (overview) {
+    list.innerHTML = html;
 
-        overview.innerHTML = html;
-
-    }
+    overview.innerHTML = html;
 
 
-    if (list) {
+    document
+        .querySelectorAll(".group-select-button")
+        .forEach(
+            function (button) {
 
-        list.innerHTML = html;
+                button.addEventListener(
+                    "click",
+                    function (event) {
 
-    }
+                        event.stopPropagation();
 
-}
+                        const id =
+                            button.dataset.groupId;
 
+                        const group =
+                            allGroups.find(
+                                g => String(g.id) === String(id)
+                            );
 
-window.selectGroup =
-async function(id) {
+                        if (group) {
+                            selectGroup(group);
+                        }
 
-    const group =
-        allGroups.find(
-            item =>
-                String(groupId(item)) ===
-                String(id)
-        );
-
-
-    if (!group) return;
-
-
-    selectedGroup = group;
-
-
-    const name =
-        document.getElementById(
-            "selectedGroupName"
-        );
-
-    const code =
-        document.getElementById(
-            "selectedGroupCode"
-        );
-
-
-    if (name) {
-
-        name.textContent =
-            groupName(group);
-
-    }
-
-
-    if (code) {
-
-        code.textContent =
-            groupInviteCode(group);
-
-    }
-
-
-    renderGroups();
-
-};
-
-
-/* =========================================================
-   AVAILABLE GROUPS
-========================================================= */
-
-async function loadAvailableGroups() {
-
-    const container =
-        document.getElementById(
-            "availableGroups"
-        );
-
-
-    if (!container) return;
-
-
-    container.innerHTML =
-        `<div class="empty">
-            Loading available groups...
-         </div>`;
-
-
-    try {
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from("groups")
-                .select("*")
-                .order(
-                    "created_at",
-                    {
-                        ascending: false
                     }
                 );
 
-
-        if (error) {
-
-            console.warn(
-                "Available groups error:",
-                error
-            );
-
-
-            container.innerHTML =
-                `<div class="empty">
-                    Groups could not be loaded.
-                 </div>`;
-
-            return;
-
-        }
-
-
-        const groups =
-            Array.isArray(data)
-                ? data
-                : [];
-
-
-        if (groups.length === 0) {
-
-            container.innerHTML =
-                `<div class="empty">
-                    No groups have been created yet.
-                 </div>`;
-
-            return;
-
-        }
-
-
-        container.innerHTML =
-            groups
-                .map(group => {
-
-                    const id =
-                        groupId(group);
-
-
-                    return `
-                        <div class="group-card">
-
-                            <div class="group-card-title">
-                                ${escapeHtml(groupName(group))}
-                            </div>
-
-                            <div class="group-card-meta">
-                                OPEN GROUP
-                            </div>
-
-                            <div class="group-card-actions">
-
-                                <button
-                                    class="small-button gold-button"
-                                    type="button"
-                                    onclick="joinGroup('${escapeHtml(String(id))}')"
-                                >
-                                    JOIN GROUP
-                                </button>
-
-                            </div>
-
-                        </div>
-                    `;
-
-                })
-                .join("");
-
-    } catch (error) {
-
-        console.warn(
-            "Available group loading failed:",
-            error
+            }
         );
 
 
-        container.innerHTML =
-            `<div class="empty">
-                Groups could not be loaded.
-             </div>`;
-
-    }
+    updateDeleteButton();
 
 }
+
+
+
+function updateDeleteButton() {
+
+    const button =
+        $("deleteSelectedGroup");
+
+    if (!button) return;
+
+
+    button.disabled =
+        !selectedGroup ||
+        !userOwnsGroup(selectedGroup);
+
+}
+
 
 
 /* =========================================================
    CREATE GROUP
 ========================================================= */
 
-function randomInviteCode() {
+function openCreateGroup() {
 
-    return (
-        Math.random()
-            .toString(36)
-            .substring(2, 8)
-            .toUpperCase()
-    );
+    currentModalMode = "create-group";
+
+    $("modalTitle").textContent =
+        "CREATE GROUP";
+
+
+    hide($("joinGroupForm"));
+    hide($("matchForm"));
+    show($("createGroupForm"));
+
+
+    $("groupName").value = "";
+
+    $("modalConfirm").classList.remove("hidden");
+
+    setModalStatus("");
+
+
+    show($("actionModal"));
 
 }
 
 
 async function createGroup() {
 
-    if (!currentUser) {
-
-        setModalStatus(
-            "You must be signed in.",
-            true
-        );
-
-        return;
-
-    }
-
-
     const name =
-        document
-            .getElementById("groupName")
-            .value
-            .trim();
+        $("groupName").value.trim();
 
 
     if (!name) {
@@ -2103,848 +1824,6 @@ async function createGroup() {
     }
 
 
-    setModalStatus(
-        "Creating group..."
-    );
-
-
-    /*
-     * Keep invite_code populated because your
-     * current database column is NOT NULL.
-     *
-     * The UI does not require this code for joining.
-     */
-
-    const inviteCode =
-        randomInviteCode();
-
-
-    const payload = {
-
-        name,
-
-        created_by: currentUser.id,
-
-        invite_code: inviteCode
-
-    };
-
-
-    try {
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from("groups")
-                .insert(payload)
-                .select()
-                .single();
-
-
-        if (error) {
-
-            console.error(
-                "Create group error:",
-                error
-            );
-
-
-            setModalStatus(
-                "Could not create group: " +
-                error.message,
-                true
-            );
-
-            return;
-
-        }
-
-
-        selectedGroup = data;
-
-
-        closeModal();
-
-
-        await refreshDashboard();
-
-
-        switchPage("overview");
-
-    } catch (error) {
-
-        console.error(
-            error
-        );
-
-
-        setModalStatus(
-            "Could not create group.",
-            true
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   JOIN GROUP
-========================================================= */
-
-window.joinGroup =
-async function(groupIdValue) {
-
-    if (!currentUser) return;
-
-
-    setModalStatus(
-        "Joining group..."
-    );
-
-
-    /*
-     * Try group_members.user_id first.
-     */
-
-    try {
-
-        const {
-            error
-        } =
-            await supabaseClient
-                .from("group_members")
-                .insert({
-
-                    group_id:
-                        groupIdValue,
-
-                    user_id:
-                        currentUser.id
-
-                });
-
-
-        if (!error) {
-
-            closeModal();
-
-            await refreshDashboard();
-
-            return;
-
-        }
-
-
-        console.warn(
-            "user_id membership insert failed:",
-            error
-        );
-
-    } catch (error) {
-
-        console.warn(
-            error
-        );
-
-    }
-
-
-    /*
-     * Some installations use player_id.
-     */
-
-    if (currentPlayer) {
-
-        const playerId =
-            currentPlayer.id;
-
-
-        try {
-
-            const {
-                error
-            } =
-                await supabaseClient
-                    .from("group_members")
-                    .insert({
-
-                        group_id:
-                            groupIdValue,
-
-                        player_id:
-                            playerId
-
-                    });
-
-
-            if (!error) {
-
-                closeModal();
-
-                await refreshDashboard();
-
-                return;
-
-            }
-
-
-            console.warn(
-                "player_id membership insert failed:",
-                error
-            );
-
-        } catch (error) {
-
-            console.warn(
-                error
-            );
-
-        }
-
-    }
-
-
-    /*
-     * Some schemas use member_id.
-     */
-
-    try {
-
-        const {
-            error
-        } =
-            await supabaseClient
-                .from("group_members")
-                .insert({
-
-                    group_id:
-                        groupIdValue,
-
-                    member_id:
-                        currentUser.id
-
-                });
-
-
-        if (!error) {
-
-            closeModal();
-
-            await refreshDashboard();
-
-            return;
-
-        }
-
-
-        setModalStatus(
-            "Could not join group: " +
-            error.message,
-            true
-        );
-
-    } catch (error) {
-
-        setModalStatus(
-            "Could not join group.",
-            true
-        );
-
-    }
-
-};
-
-
-/* =========================================================
-   PLAYERS
-========================================================= */
-
-async function loadPlayers() {
-
-    const container =
-        document.getElementById(
-            "playersList"
-        );
-
-    const stat =
-        document.getElementById(
-            "playersStat"
-        );
-
-
-    if (!container) return;
-
-
-    container.innerHTML =
-        `<div class="empty">
-            Loading players...
-         </div>`;
-
-
-    let players = [];
-
-
-    try {
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from("players")
-                .select("*");
-
-
-        if (error) {
-
-            /*
-             * IMPORTANT:
-             * Player loading failure no longer
-             * breaks the whole application.
-             */
-
-            console.warn(
-                "Players could not be loaded:",
-                error
-            );
-
-
-            container.innerHTML =
-                `<div class="empty">
-                    No player profiles available yet.
-                 </div>`;
-
-
-            if (stat) {
-
-                stat.textContent = "0";
-
-            }
-
-
-            return;
-
-        }
-
-
-        players =
-            Array.isArray(data)
-                ? data
-                : [];
-
-
-    } catch (error) {
-
-        console.warn(
-            "Player query failed:",
-            error
-        );
-
-
-        container.innerHTML =
-            `<div class="empty">
-                No player profiles available yet.
-             </div>`;
-
-
-        if (stat) {
-
-            stat.textContent = "0";
-
-        }
-
-
-        return;
-
-    }
-
-
-    allPlayers = players;
-
-
-    if (stat) {
-
-        stat.textContent =
-            players.length;
-
-    }
-
-
-    if (players.length === 0) {
-
-        container.innerHTML =
-            `<div class="empty">
-                No player profiles found yet.
-             </div>`;
-
-        return;
-
-    }
-
-
-    container.innerHTML =
-        players
-            .map(player => {
-
-                const name =
-                    player.display_name ||
-                    player.name ||
-                    player.username ||
-                    "Unknown Player";
-
-
-                const email =
-                    player.email ||
-                    "";
-
-
-                return `
-                    <div class="player-row">
-
-                        <div>
-
-                            <div class="player-name">
-                                ${escapeHtml(name)}
-                            </div>
-
-                            ${
-                                email
-                                    ? `
-                                        <div class="player-email">
-                                            ${escapeHtml(email)}
-                                        </div>
-                                      `
-                                    : ""
-                            }
-
-                        </div>
-
-                    </div>
-                `;
-
-            })
-            .join("");
-
-}
-
-
-/* =========================================================
-   MATCHES
-========================================================= */
-
-async function loadMatches() {
-
-    const container =
-        document.getElementById(
-            "matchesList"
-        );
-
-    const recent =
-        document.getElementById(
-            "recentMatchesList"
-        );
-
-    const stat =
-        document.getElementById(
-            "matchesStat"
-        );
-
-
-    if (container) {
-
-        container.innerHTML =
-            `<div class="empty">
-                Loading battle records...
-             </div>`;
-
-    }
-
-
-    let matches = [];
-
-
-    try {
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from("matches")
-                .select("*")
-                .order(
-                    "created_at",
-                    {
-                        ascending: false
-                    }
-                );
-
-
-        if (error) {
-
-            console.warn(
-                "Matches could not be loaded:",
-                error
-            );
-
-
-            if (container) {
-
-                container.innerHTML =
-                    `<div class="empty">
-                        No battle records available.
-                     </div>`;
-
-            }
-
-
-            if (recent) {
-
-                recent.innerHTML =
-                    `<div class="empty">
-                        No battles recorded yet.
-                     </div>`;
-
-            }
-
-
-            if (stat) {
-
-                stat.textContent = "0";
-
-            }
-
-
-            return;
-
-        }
-
-
-        matches =
-            Array.isArray(data)
-                ? data
-                : [];
-
-
-    } catch (error) {
-
-        console.warn(
-            "Match query failed:",
-            error
-        );
-
-        return;
-
-    }
-
-
-    allMatches = matches;
-
-
-    if (stat) {
-
-        stat.textContent =
-            matches.length;
-
-    }
-
-
-    renderMatches(
-        matches,
-        container
-    );
-
-
-    renderMatches(
-        matches.slice(0, 5),
-        recent
-    );
-
-}
-
-
-function renderMatches(matches, container) {
-
-    if (!container) return;
-
-
-    if (!matches.length) {
-
-        container.innerHTML =
-            `<div class="empty">
-                No battles recorded yet.
-             </div>`;
-
-        return;
-
-    }
-
-
-    container.innerHTML =
-        matches
-            .map(match => {
-
-                const id =
-                    match.id;
-
-
-                const playerFaction =
-                    match.player_faction ||
-                    match.your_faction ||
-                    "Your faction";
-
-
-                const opponentFaction =
-                    match.opponent_faction ||
-                    "Opponent";
-
-
-                const opponent =
-                    match.opponent ||
-                    match.opponent_name ||
-                    "Unknown opponent";
-
-
-                const playerVP =
-                    match.player_vp ??
-                    match.your_vp ??
-                    0;
-
-
-                const opponentVP =
-                    match.opponent_vp ??
-                    0;
-
-
-                const result =
-                    match.result ||
-                    "draw";
-
-
-                return `
-                    <div
-                        class="match-row"
-                        tabindex="0"
-                        role="button"
-                        onclick="openMatchDetails('${escapeHtml(String(id))}')"
-                        onkeydown="if(event.key==='Enter') openMatchDetails('${escapeHtml(String(id))}')"
-                    >
-
-                        <div class="match-main">
-
-                            <div class="match-factions">
-
-                                ${escapeHtml(playerFaction)}
-
-                                <span>
-                                    VS
-                                </span>
-
-                                ${escapeHtml(opponentFaction)}
-
-                            </div>
-
-                            <div class="match-opponent">
-                                ${escapeHtml(opponent)}
-                            </div>
-
-                        </div>
-
-
-                        <div class="match-vp">
-                            ${escapeHtml(playerVP)}
-                            -
-                            ${escapeHtml(opponentVP)}
-                        </div>
-
-
-                        <div class="match-result">
-                            ${escapeHtml(
-                                String(result).toUpperCase()
-                            )}
-                        </div>
-
-                    </div>
-                `;
-
-            })
-            .join("");
-
-}
-
-
-/* =========================================================
-   MATCH DETAILS
-========================================================= */
-
-window.openMatchDetails =
-function(id) {
-
-    const match =
-        allMatches.find(
-            item =>
-                String(item.id) ===
-                String(id)
-        );
-
-
-    if (!match) return;
-
-
-    currentMatch = match;
-
-
-    const container =
-        document.getElementById(
-            "matchDetailsContent"
-        );
-
-
-    if (!container) return;
-
-
-    const rows = [
-
-        [
-            "Your Faction",
-            match.player_faction ||
-            match.your_faction ||
-            "—"
-        ],
-
-        [
-            "Opponent Faction",
-            match.opponent_faction ||
-            "—"
-        ],
-
-        [
-            "Opponent",
-            match.opponent ||
-            match.opponent_name ||
-            "—"
-        ],
-
-        [
-            "Your Victory Points",
-            match.player_vp ??
-            match.your_vp ??
-            "—"
-        ],
-
-        [
-            "Opponent Victory Points",
-            match.opponent_vp ??
-            "—"
-        ],
-
-        [
-            "Result",
-            String(
-                match.result ||
-                "draw"
-            ).toUpperCase()
-        ],
-
-        [
-            "Notes",
-            match.notes ||
-            "—"
-        ]
-
-    ];
-
-
-    container.innerHTML =
-        rows
-            .map(row => {
-
-                return `
-                    <div class="detail-row">
-
-                        <strong>
-                            ${escapeHtml(row[0])}
-                        </strong>
-
-                        <span>
-                            ${escapeHtml(row[1])}
-                        </span>
-
-                    </div>
-                `;
-
-            })
-            .join("");
-
-
-    document
-        .getElementById(
-            "matchDetailsModal"
-        )
-        .classList.remove("hidden");
-
-};
-
-
-/* =========================================================
-   DELETE MATCH
-========================================================= */
-
-async function deleteMatch() {
-
-    if (!currentMatch) return;
-
-
-    const confirmed =
-        window.confirm(
-            "Delete this battle record?"
-        );
-
-
-    if (!confirmed) return;
-
-
-    const {
-        error
-    } =
-        await supabaseClient
-            .from("matches")
-            .delete()
-            .eq(
-                "id",
-                currentMatch.id
-            );
-
-
-    if (error) {
-
-        window.alert(
-            "Could not delete match: " +
-            error.message
-        );
-
-        return;
-
-    }
-
-
-    closeMatchDetails();
-
-
-    await loadMatches();
-
-}
-
-
-/* =========================================================
-   RECORD MATCH
-========================================================= */
-
-async function recordMatch() {
-
     if (!currentUser) {
 
         setModalStatus(
@@ -2957,62 +1836,1125 @@ async function recordMatch() {
     }
 
 
-    const playerFaction =
-        document
-            .getElementById(
-                "matchPlayerFaction"
+    $("modalConfirm").disabled = true;
+
+    setModalStatus(
+        "Creating group..."
+    );
+
+
+    /*
+       We generate the invite code client-side because
+       your groups table requires invite_code to be non-null.
+       The group can still be joined through the UI without
+       using this code.
+    */
+
+    const inviteCode =
+        generateInviteCode();
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("groups")
+            .insert(
+                {
+                    name,
+                    created_by: currentUser.id,
+                    invite_code: inviteCode
+                }
             )
-            .value
-            .trim();
+            .select()
+            .single();
 
 
-    const opponentFaction =
-        document
-            .getElementById(
-                "matchOpponentFaction"
+    if (error) {
+
+        $("modalConfirm").disabled = false;
+
+        setModalStatus(
+            "Could not create group: " +
+            error.message,
+            true
+        );
+
+        return;
+
+    }
+
+
+    /*
+       Add creator as a group member.
+    */
+
+    const {
+        error: memberError
+    } =
+        await supabaseClient
+            .from("group_members")
+            .insert(
+                {
+                    group_id: data.id,
+                    user_id: currentUser.id
+                }
+            );
+
+
+    if (memberError) {
+
+        console.warn(
+            "Group created but membership insert failed:",
+            memberError
+        );
+
+    }
+
+
+    selectedGroup = data;
+
+
+    $("modalConfirm").disabled = false;
+
+    closeModal();
+
+    await refreshApplication();
+
+}
+
+
+function generateInviteCode() {
+
+    const chars =
+        "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+    let result = "";
+
+    for (
+        let i = 0;
+        i < 8;
+        i++
+    ) {
+
+        result +=
+            chars[
+                Math.floor(
+                    Math.random() *
+                    chars.length
+                )
+            ];
+
+    }
+
+    return result;
+
+}
+
+
+
+/* =========================================================
+   DELETE GROUP
+========================================================= */
+
+$("deleteSelectedGroup").addEventListener(
+    "click",
+    deleteSelectedGroup
+);
+
+
+async function deleteSelectedGroup() {
+
+    if (!selectedGroup) {
+
+        alert(
+            "Select a group first."
+        );
+
+        return;
+
+    }
+
+
+    if (!userOwnsGroup(selectedGroup)) {
+
+        alert(
+            "Only the group owner can delete this group."
+        );
+
+        return;
+
+    }
+
+
+    const groupName =
+        selectedGroup.name ||
+        "this group";
+
+
+    const confirmed =
+        window.confirm(
+            `Delete "${groupName}"?\n\n` +
+            "This will remove the group and its " +
+            "associated matches and memberships."
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    const groupId =
+        selectedGroup.id;
+
+
+    const button =
+        $("deleteSelectedGroup");
+
+
+    button.disabled = true;
+
+
+    try {
+
+        /*
+           First remove matches belonging to the group.
+           This prevents foreign-key/RLS problems where
+           the matches table references groups.
+        */
+
+        let {
+            error: matchesError
+        } =
+            await supabaseClient
+                .from("matches")
+                .delete()
+                .eq(
+                    "group_id",
+                    groupId
+                );
+
+
+        if (matchesError) {
+
+            throw new Error(
+                "Could not remove group matches: " +
+                matchesError.message
+            );
+
+        }
+
+
+        /*
+           Remove group members.
+        */
+
+        const {
+            error: membersError
+        } =
+            await supabaseClient
+                .from("group_members")
+                .delete()
+                .eq(
+                    "group_id",
+                    groupId
+                );
+
+
+        if (membersError) {
+
+            throw new Error(
+                "Could not remove group members: " +
+                membersError.message
+            );
+
+        }
+
+
+        /*
+           Finally remove the group.
+        */
+
+        const {
+            error: groupError
+        } =
+            await supabaseClient
+                .from("groups")
+                .delete()
+                .eq(
+                    "id",
+                    groupId
+                )
+                .eq(
+                    "created_by",
+                    currentUser.id
+                );
+
+
+        if (groupError) {
+
+            throw new Error(
+                "Could not delete group: " +
+                groupError.message
+            );
+
+        }
+
+
+        selectedGroup = null;
+
+
+        await refreshApplication();
+
+
+        alert(
+            "Group deleted successfully."
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Group deletion error:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Could not delete group."
+        );
+
+
+        updateDeleteButton();
+
+    }
+
+}
+
+
+
+/* =========================================================
+   JOIN GROUP — NO CODE REQUIRED
+========================================================= */
+
+function openJoinGroup() {
+
+    currentModalMode = "join-group";
+
+
+    $("modalTitle").textContent =
+        "JOIN GROUP";
+
+
+    hide($("createGroupForm"));
+    hide($("matchForm"));
+    show($("joinGroupForm"));
+
+
+    $("modalConfirm").classList.add("hidden");
+
+
+    renderAvailableGroups();
+
+
+    show($("actionModal"));
+
+}
+
+
+function renderAvailableGroups() {
+
+    const container =
+        $("availableGroups");
+
+
+    if (!container) return;
+
+
+    if (!allGroups.length) {
+
+        container.innerHTML =
+            `<div class="empty">
+                No groups are available yet.
+            </div>`;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        allGroups.map(
+            function (group) {
+
+                const isMember =
+                    selectedGroup &&
+                    selectedGroup.id === group.id;
+
+
+                return `
+                    <div class="group-card">
+
+                        <div class="group-card-title">
+                            ${escapeHtml(group.name || "Unnamed Group")}
+                        </div>
+
+                        <div class="group-card-meta">
+                            ${group.created_at
+                                ? formatDate(group.created_at)
+                                : "ACTIVE GROUP"}
+                        </div>
+
+                        <div class="group-card-actions">
+
+                            <button
+                                class="small-button join-this-group"
+                                type="button"
+                                data-group-id="${escapeHtml(group.id)}"
+                            >
+                                JOIN GROUP
+                            </button>
+
+                        </div>
+
+                    </div>
+                `;
+
+            }
+        ).join("");
+
+
+    container
+        .querySelectorAll(".join-this-group")
+        .forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        joinGroup(
+                            button.dataset.groupId
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+}
+
+
+async function joinGroup(groupId) {
+
+    if (!currentUser) {
+        return;
+    }
+
+
+    setModalStatus(
+        "Joining group..."
+    );
+
+
+    /*
+       Check if membership already exists.
+    */
+
+    const {
+        data: existing
+    } =
+        await supabaseClient
+            .from("group_members")
+            .select("*")
+            .eq(
+                "group_id",
+                groupId
             )
-            .value
-            .trim();
-
-
-    const opponent =
-        document
-            .getElementById(
-                "matchOpponent"
+            .eq(
+                "user_id",
+                currentUser.id
             )
-            .value
-            .trim();
+            .maybeSingle();
 
 
-    const playerVP =
-        document
-            .getElementById(
-                "matchPlayerVP"
+    if (existing) {
+
+        setModalStatus(
+            "You are already a member of this group."
+        );
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .from("group_members")
+            .insert(
+                {
+                    group_id: groupId,
+                    user_id: currentUser.id
+                }
+            );
+
+
+    if (error) {
+
+        setModalStatus(
+            "Could not join group: " +
+            error.message,
+            true
+        );
+
+        return;
+
+    }
+
+
+    const group =
+        allGroups.find(
+            g => String(g.id) === String(groupId)
+        );
+
+
+    if (group) {
+        selectedGroup = group;
+    }
+
+
+    closeModal();
+
+    await refreshApplication();
+
+}
+
+
+
+/* =========================================================
+   PLAYERS
+========================================================= */
+
+async function loadPlayers() {
+
+    const list =
+        $("playersList");
+
+
+    if (!list) return;
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("players")
+            .select("*")
+            .order(
+                "display_name",
+                {
+                    ascending: true
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Could not load players:",
+            error
+        );
+
+
+        list.innerHTML =
+            `<div class="empty">
+                Could not load players.
+            </div>`;
+
+        return;
+
+    }
+
+
+    if (!data || !data.length) {
+
+        list.innerHTML =
+            `<div class="empty">
+                No players found.
+            </div>`;
+
+        return;
+
+    }
+
+
+    list.innerHTML =
+        data.map(
+            function (player) {
+
+                return `
+                    <div class="player-row">
+
+                        <div>
+
+                            <div class="player-name">
+                                ${escapeHtml(
+                                    player.display_name ||
+                                    "Unknown Player"
+                                )}
+                            </div>
+
+                            <div class="player-email">
+                                ${escapeHtml(
+                                    player.email || ""
+                                )}
+                            </div>
+
+                        </div>
+
+                    </div>
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+
+/* =========================================================
+   MATCHES
+========================================================= */
+
+async function loadMatches() {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("matches")
+            .select("*")
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Could not load matches:",
+            error
+        );
+
+        allMatches = [];
+
+        return;
+
+    }
+
+
+    allMatches =
+        data || [];
+
+}
+
+
+function renderMatches() {
+
+    const list =
+        $("matchesList");
+
+    const recent =
+        $("recentMatchesList");
+
+
+    if (!list || !recent) {
+        return;
+    }
+
+
+    if (!allMatches.length) {
+
+        const empty =
+            `<div class="empty">
+                No battles recorded yet.
+            </div>`;
+
+        list.innerHTML = empty;
+        recent.innerHTML = empty;
+
+        return;
+
+    }
+
+
+    list.innerHTML =
+        allMatches
+            .map(
+                match => matchHtml(match)
             )
-            .value;
+            .join("");
 
 
-    const opponentVP =
-        document
-            .getElementById(
-                "matchOpponentVP"
+    recent.innerHTML =
+        allMatches
+            .slice(0, 5)
+            .map(
+                match => matchHtml(match)
             )
-            .value;
+            .join("");
+
+
+    attachMatchEvents();
+
+}
+
+
+function matchHtml(match) {
+
+    const result =
+        String(
+            match.result || ""
+        ).toLowerCase();
+
+
+    const resultLabel =
+        result === "win"
+            ? "VICTORY"
+            : result === "loss"
+                ? "DEFEAT"
+                : "DRAW";
+
+
+    return `
+        <div
+            class="match-row"
+            tabindex="0"
+            data-match-id="${escapeHtml(match.id)}"
+        >
+
+            <div class="match-main">
+
+                <div class="match-factions">
+
+                    ${escapeHtml(
+                        match.player_faction ||
+                        match.your_faction ||
+                        "Your faction"
+                    )}
+
+                    <span>VS</span>
+
+                    ${escapeHtml(
+                        match.opponent_faction ||
+                        "Opponent faction"
+                    )}
+
+                </div>
+
+                <div class="match-opponent">
+                    Opponent:
+                    ${escapeHtml(
+                        match.opponent ||
+                        "Unknown"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="match-vp">
+
+                ${escapeHtml(
+                    match.player_vp ??
+                    "0"
+                )}
+
+                -
+
+                ${escapeHtml(
+                    match.opponent_vp ??
+                    "0"
+                )}
+
+            </div>
+
+
+            <div class="match-result">
+                ${resultLabel}
+            </div>
+
+
+            <button
+                class="small-button delete-match-button"
+                type="button"
+                data-match-id="${escapeHtml(match.id)}"
+            >
+                DELETE
+            </button>
+
+        </div>
+    `;
+
+}
+
+
+function attachMatchEvents() {
+
+    document
+        .querySelectorAll(".match-row")
+        .forEach(
+            function (row) {
+
+                row.addEventListener(
+                    "click",
+                    function (event) {
+
+                        if (
+                            event.target.closest(
+                                ".delete-match-button"
+                            )
+                        ) {
+                            return;
+                        }
+
+                        openMatchDetails(
+                            row.dataset.matchId
+                        );
+
+                    }
+                );
+
+
+                row.addEventListener(
+                    "keydown",
+                    function (event) {
+
+                        if (
+                            event.key === "Enter" ||
+                            event.key === " "
+                        ) {
+
+                            event.preventDefault();
+
+                            openMatchDetails(
+                                row.dataset.matchId
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+    document
+        .querySelectorAll(".delete-match-button")
+        .forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function (event) {
+
+                        event.stopPropagation();
+
+                        deleteMatch(
+                            button.dataset.matchId
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+}
+
+
+async function deleteMatch(matchId) {
+
+    const match =
+        allMatches.find(
+            m => String(m.id) === String(matchId)
+        );
+
+
+    if (!match) {
+        return;
+    }
+
+
+    const confirmed =
+        window.confirm(
+            "Delete this battle record?\n\n" +
+            "This cannot be undone."
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .from("matches")
+            .delete()
+            .eq(
+                "id",
+                matchId
+            );
+
+
+    if (error) {
+
+        alert(
+            "Could not delete match: " +
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    await refreshApplication();
+
+}
+
+
+function openMatchDetails(matchId) {
+
+    const match =
+        allMatches.find(
+            m => String(m.id) === String(matchId)
+        );
+
+
+    if (!match) {
+        return;
+    }
 
 
     const result =
-        document
-            .getElementById(
-                "matchResult"
-            )
+        String(
+            match.result || ""
+        ).toLowerCase();
+
+
+    const resultLabel =
+        result === "win"
+            ? "VICTORY"
+            : result === "loss"
+                ? "DEFEAT"
+                : "DRAW";
+
+
+    $("matchDetailsContent").innerHTML = `
+
+        <div class="detail-row">
+            <strong>YOUR FACTION</strong>
+            <span>
+                ${escapeHtml(
+                    match.player_faction ||
+                    match.your_faction ||
+                    "-"
+                )}
+            </span>
+        </div>
+
+        <div class="detail-row">
+            <strong>OPPONENT FACTION</strong>
+            <span>
+                ${escapeHtml(
+                    match.opponent_faction ||
+                    "-"
+                )}
+            </span>
+        </div>
+
+        <div class="detail-row">
+            <strong>OPPONENT</strong>
+            <span>
+                ${escapeHtml(
+                    match.opponent ||
+                    "-"
+                )}
+            </span>
+        </div>
+
+        <div class="detail-row">
+            <strong>VICTORY POINTS</strong>
+            <span>
+                ${escapeHtml(
+                    match.player_vp ??
+                    "0"
+                )}
+                -
+                ${escapeHtml(
+                    match.opponent_vp ??
+                    "0"
+                )}
+            </span>
+        </div>
+
+        <div class="detail-row">
+            <strong>RESULT</strong>
+            <span>
+                ${resultLabel}
+            </span>
+        </div>
+
+        <div class="detail-row">
+            <strong>DATE</strong>
+            <span>
+                ${escapeHtml(
+                    formatDate(
+                        match.created_at
+                    )
+                )}
+            </span>
+        </div>
+
+        <div class="detail-row">
+            <strong>NOTES</strong>
+            <span>
+                ${escapeHtml(
+                    match.notes ||
+                    "-"
+                )}
+            </span>
+        </div>
+
+    `;
+
+
+    show(
+        $("matchDetailsModal")
+    );
+
+}
+
+
+
+/* =========================================================
+   RECORD MATCH
+========================================================= */
+
+function openMatchForm() {
+
+    if (!selectedGroup) {
+
+        alert(
+            "Select a group before recording a match."
+        );
+
+        return;
+
+    }
+
+
+    currentModalMode = "record-match";
+
+
+    $("modalTitle").textContent =
+        "RECORD MATCH";
+
+
+    hide($("createGroupForm"));
+    hide($("joinGroupForm"));
+    show($("matchForm"));
+
+
+    $("modalConfirm").classList.remove(
+        "hidden"
+    );
+
+
+    $("matchPlayerFaction").value = "";
+    $("matchOpponentFaction").value = "";
+    $("matchOpponent").value = "";
+    $("matchPlayerVP").value = "";
+    $("matchOpponentVP").value = "";
+    $("matchResult").value = "win";
+    $("matchNotes").value = "";
+
+
+    setModalStatus("");
+
+
+    show(
+        $("actionModal")
+    );
+
+}
+
+
+async function createMatch() {
+
+    if (!currentUser) {
+        return;
+    }
+
+
+    if (!selectedGroup) {
+
+        setModalStatus(
+            "Select a group first.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    const playerFaction =
+        $("matchPlayerFaction")
+            .value
+            .trim();
+
+    const opponentFaction =
+        $("matchOpponentFaction")
+            .value
+            .trim();
+
+    const opponent =
+        $("matchOpponent")
+            .value
+            .trim();
+
+    const playerVP =
+        $("matchPlayerVP")
             .value;
 
+    const opponentVP =
+        $("matchOpponentVP")
+            .value;
+
+    const result =
+        $("matchResult")
+            .value;
 
     const notes =
-        document
-            .getElementById(
-                "matchNotes"
-            )
+        $("matchNotes")
             .value
             .trim();
 
@@ -3033,60 +2975,7 @@ async function recordMatch() {
     }
 
 
-    setModalStatus(
-        "Recording battle..."
-    );
-
-
-    /*
-     * Uses the column names from your
-     * existing match form.
-     */
-
-    const payload = {
-
-        player_id:
-            currentPlayer?.id ||
-            currentUser.id,
-
-        opponent:
-
-            opponent,
-
-        player_faction:
-            playerFaction,
-
-        opponent_faction:
-            opponentFaction,
-
-        player_vp:
-            Number(playerVP || 0),
-
-        opponent_vp:
-            Number(opponentVP || 0),
-
-        result:
-
-            result,
-
-        notes:
-
-            notes || null
-
-    };
-
-
-    /*
-     * If the database requires group_id,
-     * add the selected group automatically.
-     */
-
-    if (selectedGroup?.id) {
-
-        payload.group_id =
-            selectedGroup.id;
-
-    }
+    $("modalConfirm").disabled = true;
 
 
     const {
@@ -3094,16 +2983,31 @@ async function recordMatch() {
     } =
         await supabaseClient
             .from("matches")
-            .insert(payload);
+            .insert(
+                {
+                    group_id: selectedGroup.id,
+                    player_id: currentUser.id,
+                    player_faction: playerFaction,
+                    opponent_faction: opponentFaction,
+                    opponent,
+                    player_vp:
+                        playerVP === ""
+                            ? 0
+                            : Number(playerVP),
+                    opponent_vp:
+                        opponentVP === ""
+                            ? 0
+                            : Number(opponentVP),
+                    result,
+                    notes
+                }
+            );
+
+
+    $("modalConfirm").disabled = false;
 
 
     if (error) {
-
-        console.error(
-            "Match insert error:",
-            error
-        );
-
 
         setModalStatus(
             "Could not record match: " +
@@ -3116,581 +3020,243 @@ async function recordMatch() {
     }
 
 
-    clearMatchForm();
-
-
     closeModal();
 
-
-    await loadMatches();
-
-
-    switchPage("matches");
+    await refreshApplication();
 
 }
 
 
-function clearMatchForm() {
 
-    const ids = [
+/* =========================================================
+   OVERVIEW
+========================================================= */
 
-        "matchPlayerFaction",
-        "matchOpponentFaction",
-        "matchOpponent",
-        "matchPlayerVP",
-        "matchOpponentVP",
-        "matchNotes"
+function renderOverview() {
 
-    ];
+    $("groupsStat").textContent =
+        allGroups.length;
 
 
-    ids.forEach(id => {
-
-        const element =
-            document.getElementById(id);
-
-        if (element) {
-
-            element.value = "";
-
-        }
-
-    });
+    $("matchesStat").textContent =
+        allMatches.length;
 
 
-    const result =
-        document.getElementById(
-            "matchResult"
-        );
+    /*
+       The players count is loaded separately.
+       We leave the current value if loading fails.
+    */
 
-    if (result) {
 
-        result.value = "win";
+    if (selectedGroup) {
+
+        $("selectedGroupName").textContent =
+            selectedGroup.name ||
+            "Unnamed Group";
+
+
+        $("selectedGroupCode").textContent =
+            selectedGroup.invite_code ||
+            "—";
+
+    } else {
+
+        $("selectedGroupName").textContent =
+            "NO GROUP SELECTED";
+
+
+        $("selectedGroupCode").textContent =
+            "—";
 
     }
 
 }
 
 
-/* =========================================================
-   MODAL MODES
-========================================================= */
-
-function showCreateGroupModal() {
-
-    document
-        .getElementById(
-            "modalTitle"
-        )
-        .textContent =
-        "CREATE GROUP";
-
-
-    document
-        .getElementById(
-            "createGroupForm"
-        )
-        .classList.remove("hidden");
-
-
-    document
-        .getElementById(
-            "joinGroupForm"
-        )
-        .classList.add("hidden");
-
-
-    document
-        .getElementById(
-            "matchForm"
-        )
-        .classList.add("hidden");
-
-
-    document
-        .getElementById(
-            "modalConfirm"
-        )
-        .classList.remove("hidden");
-
-
-    openModal();
-
-}
-
-
-function showJoinGroupModal() {
-
-    document
-        .getElementById(
-            "modalTitle"
-        )
-        .textContent =
-        "JOIN GROUP";
-
-
-    document
-        .getElementById(
-            "createGroupForm"
-        )
-        .classList.add("hidden");
-
-
-    document
-        .getElementById(
-            "joinGroupForm"
-        )
-        .classList.remove("hidden");
-
-
-    document
-        .getElementById(
-            "matchForm"
-        )
-        .classList.add("hidden");
-
-
-    document
-        .getElementById(
-            "modalConfirm"
-        )
-        .classList.add("hidden");
-
-
-    openModal();
-
-
-    loadAvailableGroups();
-
-}
-
-
-function showMatchModal() {
-
-    document
-        .getElementById(
-            "modalTitle"
-        )
-        .textContent =
-        "RECORD MATCH";
-
-
-    document
-        .getElementById(
-            "createGroupForm"
-        )
-        .classList.add("hidden");
-
-
-    document
-        .getElementById(
-            "joinGroupForm"
-        )
-        .classList.add("hidden");
-
-
-    document
-        .getElementById(
-            "matchForm"
-        )
-        .classList.remove("hidden");
-
-
-    document
-        .getElementById(
-            "modalConfirm"
-        )
-        .classList.remove("hidden");
-
-
-    openModal();
-
-}
-
 
 /* =========================================================
-   DASHBOARD REFRESH
-========================================================= */
-
-async function refreshDashboard() {
-
-    /*
-     * Run independently.
-     * One failing table should not prevent
-     * the other parts of the War Room loading.
-     */
-
-    await Promise.allSettled([
-
-        loadGroups(),
-
-        loadPlayers(),
-
-        loadMatches()
-
-    ]);
-
-}
-
-
-/* =========================================================
-   EVENTS
+   NAVIGATION
 ========================================================= */
 
 document
-    .getElementById(
-        "signInButton"
-    )
-    .addEventListener(
-        "click",
-        signIn
-    );
+    .querySelectorAll(".nav-button[data-page]")
+    .forEach(
+        function (button) {
 
+            button.addEventListener(
+                "click",
+                function () {
 
-document
-    .getElementById(
-        "showCreateButton"
-    )
-    .addEventListener(
-        "click",
-        showCreateView
-    );
+                    showPage(
+                        button.dataset.page
+                    );
 
-
-document
-    .getElementById(
-        "backToLoginButton"
-    )
-    .addEventListener(
-        "click",
-        showLoginView
-    );
-
-
-document
-    .getElementById(
-        "createAccountButton"
-    )
-    .addEventListener(
-        "click",
-        createAccount
-    );
-
-
-document
-    .getElementById(
-        "signOutButton"
-    )
-    .addEventListener(
-        "click",
-        async () => {
-
-            await supabaseClient.auth.signOut();
+                }
+            );
 
         }
     );
 
 
-document
-    .getElementById(
-        "createGroupButton"
-    )
-    .addEventListener(
-        "click",
-        showCreateGroupModal
-    );
+function showPage(page) {
 
+    document
+        .querySelectorAll(".page")
+        .forEach(
+            function (section) {
 
-document
-    .getElementById(
-        "groupsCreate"
-    )
-    .addEventListener(
-        "click",
-        showCreateGroupModal
-    );
-
-
-document
-    .getElementById(
-        "joinGroupButton"
-    )
-    .addEventListener(
-        "click",
-        showJoinGroupModal
-    );
-
-
-document
-    .getElementById(
-        "groupsJoin"
-    )
-    .addEventListener(
-        "click",
-        showJoinGroupModal
-    );
-
-
-document
-    .getElementById(
-        "quickCreate"
-    )
-    .addEventListener(
-        "click",
-        showCreateGroupModal
-    );
-
-
-document
-    .getElementById(
-        "quickPlayers"
-    )
-    .addEventListener(
-        "click",
-        () => switchPage("players")
-    );
-
-
-document
-    .getElementById(
-        "quickMatch"
-    )
-    .addEventListener(
-        "click",
-        showMatchModal
-    );
-
-
-document
-    .getElementById(
-        "recordMatchButton"
-    )
-    .addEventListener(
-        "click",
-        showMatchModal
-    );
-
-
-document
-    .getElementById(
-        "viewAllMatchesButton"
-    )
-    .addEventListener(
-        "click",
-        () => switchPage("matches")
-    );
-
-
-document
-    .getElementById(
-        "modalCancel"
-    )
-    .addEventListener(
-        "click",
-        closeModal
-    );
-
-
-document
-    .getElementById(
-        "modalConfirm"
-    )
-    .addEventListener(
-        "click",
-        async () => {
-
-            const title =
-                document
-                    .getElementById(
-                        "modalTitle"
-                    )
-                    .textContent;
-
-
-            if (
-                title === "CREATE GROUP"
-            ) {
-
-                await createGroup();
-
-                return;
-
-            }
-
-
-            if (
-                title === "RECORD MATCH"
-            ) {
-
-                await recordMatch();
-
-            }
-
-        }
-    );
-
-
-document
-    .getElementById(
-        "matchDetailsClose"
-    )
-    .addEventListener(
-        "click",
-        closeMatchDetails
-    );
-
-
-document
-    .getElementById(
-        "deleteMatchButton"
-    )
-    .addEventListener(
-        "click",
-        deleteMatch
-    );
-
-
-document
-    .querySelectorAll(
-        ".nav-button[data-page]"
-    )
-    .forEach(button => {
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                switchPage(
-                    button.dataset.page
+                section.classList.add(
+                    "hidden"
                 );
 
             }
         );
 
-    });
+
+    const target =
+        $(page + "Page");
+
+
+    if (target) {
+
+        target.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    document
+        .querySelectorAll(
+            ".nav-button[data-page]"
+        )
+        .forEach(
+            function (button) {
+
+                button.classList.toggle(
+                    "active",
+                    button.dataset.page === page
+                );
+
+            }
+        );
+
+
+    if (page === "groups") {
+        renderGroups();
+    }
+
+
+    if (page === "players") {
+        loadPlayers();
+    }
+
+
+    if (page === "matches") {
+        loadMatches().then(
+            renderMatches
+        );
+    }
+
+}
+
 
 
 /* =========================================================
-   KEYBOARD LOGIN
+   BUTTON CONNECTIONS
 ========================================================= */
 
-document
-    .getElementById(
-        "loginPassword"
-    )
-    .addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key === "Enter"
-            ) {
-
-                signIn();
-
-            }
-
-        }
-    );
+$("createGroupButton").addEventListener(
+    "click",
+    openCreateGroup
+);
 
 
-document
-    .getElementById(
-        "createPassword"
-    )
-    .addEventListener(
-        "keydown",
-        event => {
+$("joinGroupButton").addEventListener(
+    "click",
+    openJoinGroup
+);
 
-            if (
-                event.key === "Enter"
-            ) {
 
-                createAccount();
+$("groupsCreateButton").addEventListener(
+    "click",
+    openCreateGroup
+);
 
-            }
 
-        }
-    );
+$("groupsJoinButton").addEventListener(
+    "click",
+    openJoinGroup
+);
+
+
+$("quickCreate").addEventListener(
+    "click",
+    openCreateGroup
+);
+
+
+$("quickPlayers").addEventListener(
+    "click",
+    function () {
+        showPage("players");
+    }
+);
+
+
+$("quickMatch").addEventListener(
+    "click",
+    openMatchForm
+);
+
+
+$("recordMatchButton").addEventListener(
+    "click",
+    openMatchForm
+);
+
+
+$("viewAllMatchesButton").addEventListener(
+    "click",
+    function () {
+        showPage("matches");
+    }
+);
+
 
 
 /* =========================================================
-   MODAL BACKGROUND
+   MODALS
 ========================================================= */
 
-document
-    .getElementById(
-        "mainModal"
-    )
-    .addEventListener(
-        "click",
-        event => {
-
-            if (
-                event.target.id ===
-                "mainModal"
-            ) {
-
-                closeModal();
-
-            }
-
-        }
-    );
+$("modalCancel").addEventListener(
+    "click",
+    closeModal
+);
 
 
-document
-    .getElementById(
-        "matchDetailsModal"
-    )
-    .addEventListener(
-        "click",
-        event => {
+$("matchDetailsClose").addEventListener(
+    "click",
+    function () {
 
-            if (
-                event.target.id ===
-                "matchDetailsModal"
-            ) {
+        hide(
+            $("matchDetailsModal")
+        );
 
-                closeMatchDetails();
-
-            }
-
-        }
-    );
+    }
+);
 
 
-/* =========================================================
-   AUTH STATE
-========================================================= */
+$("actionModal").addEventListener(
+    "click",
+    function (event) {
 
-supabaseClient.auth.onAuthStateChange(
-    async (
-        event,
-        session
-    ) => {
+        if (
+            event.target ===
+            $("actionModal")
+        ) {
 
-        if (session?.user) {
-
-            /*
-             * Delay slightly so Supabase has
-             * finished updating its auth state.
-             */
-
-            setTimeout(
-                () => {
-
-                    showApplication(
-                        session.user
-                    );
-
-                },
-                0
-            );
-
-        } else {
-
-            hideApplication();
+            closeModal();
 
         }
 
@@ -3698,77 +3264,110 @@ supabaseClient.auth.onAuthStateChange(
 );
 
 
-/* =========================================================
-   INITIAL AUTH CHECK
-========================================================= */
+$("matchDetailsModal").addEventListener(
+    "click",
+    function (event) {
 
-async function initialize() {
+        if (
+            event.target ===
+            $("matchDetailsModal")
+        ) {
 
-    setLoginStatus(
-        "Connecting to War Room..."
+            hide(
+                $("matchDetailsModal")
+            );
+
+        }
+
+    }
+);
+
+
+function closeModal() {
+
+    hide(
+        $("actionModal")
     );
 
 
-    try {
+    currentModalMode = null;
 
-        const {
-            data,
-            error
-        } =
-            await supabaseClient.auth.getSession();
+    $("modalConfirm").disabled = false;
 
-
-        if (error) {
-
-            console.warn(
-                "Session check:",
-                error
-            );
-
-            setLoginStatus(
-                "Ready.",
-                false
-            );
-
-            return;
-
-        }
-
-
-        if (data.session?.user) {
-
-            await showApplication(
-                data.session.user
-            );
-
-            return;
-
-        }
-
-
-        setLoginStatus(
-            "Ready."
-        );
-
-
-    } catch (error) {
-
-        console.warn(
-            "Initialization error:",
-            error
-        );
-
-
-        setLoginStatus(
-            "Ready."
-        );
-
-    }
+    setModalStatus("");
 
 }
 
 
-initialize();
+
+/* =========================================================
+   MODAL CONFIRM
+========================================================= */
+
+$("modalConfirm").addEventListener(
+    "click",
+    async function () {
+
+        if (
+            currentModalMode ===
+            "create-group"
+        ) {
+
+            await createGroup();
+
+            return;
+
+        }
+
+
+        if (
+            currentModalMode ===
+            "record-match"
+        ) {
+
+            await createMatch();
+
+            return;
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   INITIAL SESSION CHECK
+========================================================= */
+
+(async function () {
+
+    const {
+        data
+    } =
+        await supabaseClient.auth.getSession();
+
+
+    if (data?.session?.user) {
+
+        currentUser =
+            data.session.user;
+
+        await openApplication();
+
+    } else {
+
+        show(
+            $("loginScreen")
+        );
+
+        hide(
+            $("appScreen")
+        );
+
+    }
+
+})();
 
 </script>
 
