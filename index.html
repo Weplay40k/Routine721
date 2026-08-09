@@ -2,135 +2,189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080808">
+    <title>Routine 721</title>
 
-<title>Routine 721</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-<style>
-* {
-    box-sizing: border-box;
-}
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+        }
 
-body {
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background:
-        radial-gradient(circle at center, #24100d 0%, #080808 65%);
-    color: white;
-    font-family: Arial, sans-serif;
-}
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(circle at 50% 20%, #35130f 0%, #120908 35%, #050505 75%);
+            color: #f4f1e8;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-.box {
-    width: 90%;
-    max-width: 520px;
-    padding: 45px;
-    text-align: center;
-    border: 1px solid #5a2b24;
-    border-radius: 14px;
-    background: #151515;
-    box-shadow: 0 20px 60px rgba(0,0,0,.6);
-}
+        .box {
+            width: min(90%, 560px);
+            padding: 45px 35px;
+            text-align: center;
+            background: rgba(18, 18, 18, 0.96);
+            border: 1px solid #654034;
+            border-radius: 14px;
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.7),
+                inset 0 0 30px rgba(180, 50, 30, 0.04);
+        }
 
-h1 {
-    margin-top: 0;
-    color: #c9a84c;
-    letter-spacing: 6px;
-    font-size: 38px;
-}
+        h1 {
+            margin: 0 0 12px;
+            color: #c9a84c;
+            font-size: clamp(32px, 8vw, 52px);
+            letter-spacing: 7px;
+            font-weight: 800;
+        }
 
-.status {
-    margin: 25px 0;
-    color: #ccc;
-}
+        .subtitle {
+            color: #999;
+            margin-bottom: 28px;
+        }
 
-button {
-    padding: 13px 24px;
-    background: #9b3024;
-    color: white;
-    border: 0;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-}
+        #status {
+            margin: 20px 0;
+            color: #d6d0c3;
+        }
 
-button:hover {
-    background: #bd3a2b;
-}
-</style>
+        #error {
+            display: none;
+            margin-top: 20px;
+            padding: 14px;
+            border-radius: 8px;
+            background: #351513;
+            border: 1px solid #87372d;
+            color: #ffb3a9;
+            text-align: left;
+            word-break: break-word;
+        }
+
+        button {
+            display: none;
+            padding: 13px 25px;
+            border: 0;
+            border-radius: 7px;
+            background: #9b3024;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #bd3a2b;
+        }
+
+        .success {
+            color: #8fcf83 !important;
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="box">
+    <main class="box">
 
-<h1>ROUTINE 721</h1>
+        <h1>ROUTINE 721</h1>
 
-<p id="status" class="status">
-Connecting to database...
-</p>
+        <div class="subtitle">
+            Warhammer 40,000 Battle Tracker
+        </div>
 
-<button id="test" style="display:none;">
-CREATE ACCOUNT
-</button>
+        <p id="status">
+            Connecting to database...
+        </p>
 
-</div>
+        <div id="error"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <button id="test">
+            CONNECTION WORKING
+        </button>
 
-<script>
+    </main>
 
-const ROUTINE_SUPABASE_URL =
-"https://jbgwdxavydhtvoqpbfmj.supabase.co";
+    <!-- Load Supabase ONCE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-const ROUTINE_SUPABASE_KEY =
-"sb_publishable_Wt8h6fNelT6zrzf-Dm8FXw_cdSGylaz";
+    <script>
+        const ROUTINE_SUPABASE_URL =
+            "https://jbgwdxavydhtvoqpbfmj.supabase.co";
 
-const routineClient =
-window.supabase.createClient(
-    ROUTINE_SUPABASE_URL,
-    ROUTINE_SUPABASE_KEY
-);
+        const ROUTINE_SUPABASE_KEY =
+            "sb_publishable_Wt8h6fNelT6zrzf-Dm8FXw_cdSGylaz";
 
-async function testConnection() {
+        const statusElement =
+            document.getElementById("status");
 
-    const status =
-    document.getElementById("status");
+        const errorElement =
+            document.getElementById("error");
 
-    try {
+        const testButton =
+            document.getElementById("test");
 
-        const result =
-        await routineClient.auth.getSession();
+        async function connectToSupabase() {
 
-        if (result.error) {
+            try {
 
-            status.textContent =
-            "Supabase error: " +
-            result.error.message;
+                if (!window.supabase) {
+                    throw new Error(
+                        "The Supabase library did not load."
+                    );
+                }
 
-            return;
+                const client =
+                    window.supabase.createClient(
+                        ROUTINE_SUPABASE_URL,
+                        ROUTINE_SUPABASE_KEY
+                    );
+
+                const result =
+                    await client.auth.getSession();
+
+                if (result.error) {
+                    throw result.error;
+                }
+
+                statusElement.textContent =
+                    "SUPABASE CONNECTED ✓";
+
+                statusElement.classList.add("success");
+
+                testButton.style.display =
+                    "inline-block";
+
+            } catch (error) {
+
+                console.error(
+                    "Routine 721 Supabase error:",
+                    error
+                );
+
+                statusElement.textContent =
+                    "Database connection failed.";
+
+                errorElement.style.display =
+                    "block";
+
+                errorElement.textContent =
+                    error.message ||
+                    String(error);
+            }
         }
 
-        status.textContent =
-        "SUPABASE CONNECTED ✓";
-
-        document.getElementById("test").style.display =
-        "inline-block";
-
-    } catch (error) {
-
-        status.textContent =
-        "Connection error: " +
-        error.message;
-    }
-}
-
-testConnection();
-
-</script>
+        connectToSupabase();
+    </script>
 
 </body>
 </html>
