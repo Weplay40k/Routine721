@@ -1,13 +1,23 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>Routine 721 — War Room</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
+
+/* =========================================================
+   RESET
+========================================================= */
 
 *{
     box-sizing:border-box;
@@ -16,15 +26,34 @@
 html,
 body{
     margin:0;
+    padding:0;
     min-height:100%;
 }
 
 body{
     min-height:100vh;
+
     background:#050505;
+
     color:#eee;
-    font-family:Arial,Helvetica,sans-serif;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 }
+
+button,
+input,
+select,
+textarea{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
 
 /* =========================================================
    BACKGROUND
@@ -32,27 +61,33 @@ body{
 
 .war-bg{
     position:fixed;
+
     inset:0;
+
     z-index:0;
+
     pointer-events:none;
+
     overflow:hidden;
 
     background:
         linear-gradient(
             90deg,
             #020202 0%,
-            #090303 32%,
-            #0a0508 49%,
-            #100714 51%,
-            #16091d 70%,
-            #08050c 100%
+            #090303 34%,
+            #080508 49%,
+            #100814 51%,
+            #16091d 72%,
+            #07050b 100%
         );
 }
 
 .red-glow{
     position:absolute;
+
     left:-15%;
     top:0;
+
     width:65%;
     height:100%;
 
@@ -63,13 +98,16 @@ body{
             transparent 68%
         );
 
-    animation:redPulse 9s ease-in-out infinite alternate;
+    animation:
+        redPulse 9s ease-in-out infinite alternate;
 }
 
 .blue-glow{
     position:absolute;
+
     right:-15%;
     top:0;
+
     width:65%;
     height:100%;
 
@@ -80,7 +118,8 @@ body{
             transparent 68%
         );
 
-    animation:bluePulse 11s ease-in-out infinite alternate;
+    animation:
+        bluePulse 11s ease-in-out infinite alternate;
 }
 
 @keyframes redPulse{
@@ -109,8 +148,10 @@ body{
 
 .center-shadow{
     position:absolute;
+
     left:50%;
     top:0;
+
     width:180px;
     height:100%;
 
@@ -120,105 +161,118 @@ body{
         linear-gradient(
             90deg,
             transparent,
-            rgba(0,0,0,.25),
+            rgba(0,0,0,.28),
             transparent
         );
 }
+
 
 /* =========================================================
    GENERAL
 ========================================================= */
 
 .hidden{
-    display:none!important;
+    display:none !important;
 }
 
 .page{
     position:relative;
+
     z-index:10;
-}
-
-button{
-    cursor:pointer;
-    font-weight:bold;
-    letter-spacing:1px;
-    border-radius:5px;
-}
-
-button:disabled{
-    cursor:wait;
-    opacity:.5;
 }
 
 input,
 select,
 textarea{
+
     width:100%;
+
     padding:11px;
 
     background:#08080a;
+
     color:#eee;
 
     border:1px solid #33333a;
+
     border-radius:5px;
 
     outline:none;
-
-    font-family:inherit;
 }
 
 input:focus,
 select:focus,
 textarea:focus{
+
     border-color:#7651a9;
+
 }
 
 textarea{
+
     min-height:80px;
+
     resize:vertical;
 }
 
 label{
+
     display:block;
-    margin:15px 0 6px;
+
+    margin:
+        15px 0 6px;
 
     color:#888;
 
     font-size:10px;
+
     text-transform:uppercase;
+
     letter-spacing:1px;
 }
+
 
 /* =========================================================
    LOGIN
 ========================================================= */
 
 .login-page{
+
     min-height:100vh;
 
     display:flex;
+
     align-items:center;
+
     justify-content:center;
 
     padding:20px;
 }
 
 .login-box{
+
     width:100%;
+
     max-width:430px;
 
     padding:35px;
 
-    background:rgba(6,6,8,.97);
+    background:
+        rgba(6,6,8,.97);
 
-    border:1px solid rgba(190,190,190,.17);
+    border:
+        1px solid
+        rgba(190,190,190,.17);
+
     border-radius:8px;
 
     box-shadow:
-        0 20px 60px rgba(0,0,0,.72);
+        0 20px 60px
+        rgba(0,0,0,.72);
 }
 
 .logo{
+
     margin:0;
 
     text-align:center;
@@ -226,10 +280,12 @@ label{
     color:#c9a84c;
 
     font-size:30px;
+
     letter-spacing:6px;
 }
 
 .logo-sub{
+
     margin-top:7px;
 
     text-align:center;
@@ -237,10 +293,12 @@ label{
     color:#777;
 
     font-size:10px;
+
     letter-spacing:5px;
 }
 
 .divider{
+
     height:1px;
 
     margin:24px 0;
@@ -255,6 +313,7 @@ label{
 }
 
 .login-box h2{
+
     margin:0 0 7px;
 
     text-align:center;
@@ -262,11 +321,14 @@ label{
     color:#ddd;
 
     font-size:17px;
+
     letter-spacing:2px;
 }
 
 .login-description{
-    margin:0 0 20px;
+
+    margin:
+        0 0 20px;
 
     color:#777;
 
@@ -276,9 +338,11 @@ label{
 }
 
 .primary{
+
     width:100%;
 
     margin-top:15px;
+
     padding:12px;
 
     background:#8e2b25;
@@ -286,12 +350,16 @@ label{
     color:white;
 
     border:1px solid #b13c32;
+
+    border-radius:5px;
 }
 
 .secondary{
+
     width:100%;
 
     margin-top:10px;
+
     padding:12px;
 
     background:#151519;
@@ -299,9 +367,12 @@ label{
     color:#aaa;
 
     border:1px solid #38383e;
+
+    border-radius:5px;
 }
 
 .status{
+
     min-height:18px;
 
     margin-top:16px;
@@ -314,19 +385,24 @@ label{
 }
 
 .status.success{
+
     color:#59c879;
 }
 
 .status.error{
+
     color:#ff5959;
 }
+
 
 /* =========================================================
    WAR ROOM
 ========================================================= */
 
 .war-room{
+
     position:relative;
+
     z-index:10;
 
     min-height:100vh;
@@ -335,41 +411,57 @@ label{
 }
 
 .topbar{
+
     max-width:1450px;
 
-    margin:0 auto 15px;
+    margin:
+        0 auto 15px;
 
-    padding:13px 18px;
+    padding:
+        13px 18px;
 
     display:flex;
+
     align-items:center;
+
     justify-content:space-between;
 
-    background:rgba(6,6,8,.97);
+    background:
+        rgba(6,6,8,.97);
 
-    border:1px solid rgba(201,168,76,.3);
+    border:
+        1px solid
+        rgba(201,168,76,.3);
+
     border-radius:7px;
 }
 
 .brand{
+
     color:#c9a84c;
 
     font-size:19px;
+
     font-weight:bold;
+
     letter-spacing:4px;
 }
 
 .brand-sub{
+
     margin-top:3px;
 
     color:#666;
 
     font-size:8px;
+
     letter-spacing:3px;
 }
 
 .user-area{
+
     display:flex;
+
     align-items:center;
 
     gap:10px;
@@ -379,42 +471,56 @@ label{
     font-size:11px;
 }
 
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
 .dashboard{
+
     max-width:1450px;
 
     margin:auto;
 
     display:grid;
 
-    grid-template-columns:235px 1fr;
+    grid-template-columns:
+        235px 1fr;
 
     gap:15px;
 }
 
 .sidebar{
+
     min-height:720px;
 
     padding:15px;
 
-    background:rgba(6,6,8,.97);
+    background:
+        rgba(6,6,8,.97);
 
     border:1px solid #29292e;
+
     border-radius:7px;
 }
 
 .sidebar-title{
+
     margin-bottom:14px;
 
     color:#666;
 
     font-size:10px;
+
     letter-spacing:2px;
 }
 
 .nav-btn{
+
     width:100%;
 
     margin-bottom:7px;
+
     padding:11px;
 
     text-align:left;
@@ -425,14 +531,19 @@ label{
 
     border:1px solid #29292e;
 
+    border-radius:5px;
+
     font-size:10px;
 }
 
 .nav-btn:hover{
+
     color:#ddd;
+
 }
 
 .nav-btn.active{
+
     background:#251416;
 
     border-color:#71332c;
@@ -441,6 +552,7 @@ label{
 }
 
 .sidebar-separator{
+
     height:1px;
 
     margin:15px 0;
@@ -449,23 +561,35 @@ label{
 }
 
 .content{
+
     min-width:0;
 }
 
+
+/* =========================================================
+   PANELS
+========================================================= */
+
 .panel{
+
     margin-bottom:15px;
 
     padding:20px;
 
-    background:rgba(6,6,8,.97);
+    background:
+        rgba(6,6,8,.97);
 
     border:1px solid #29292e;
+
     border-radius:7px;
 }
 
 .panel-header{
+
     display:flex;
+
     align-items:center;
+
     justify-content:space-between;
 
     gap:10px;
@@ -474,24 +598,34 @@ label{
 }
 
 .panel-title{
+
     margin:0;
 
     color:#ddd;
 
     font-size:17px;
+
     letter-spacing:2px;
 }
 
 .panel-subtitle{
+
     margin-top:4px;
 
     color:#666;
 
     font-size:9px;
+
     letter-spacing:1px;
 }
 
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
 .small-btn{
+
     padding:8px 12px;
 
     background:#151519;
@@ -500,10 +634,13 @@ label{
 
     border:1px solid #36363c;
 
+    border-radius:5px;
+
     font-size:10px;
 }
 
 .gold-btn{
+
     background:#806b2e;
 
     border-color:#b79a42;
@@ -512,7 +649,12 @@ label{
 }
 
 .delete-btn{
-    display:inline-block!important;
+
+    display:inline-block !important;
+
+    visibility:visible !important;
+
+    opacity:1 !important;
 
     padding:9px 14px;
 
@@ -522,14 +664,20 @@ label{
 
     border:1px solid #96382f;
 
+    border-radius:4px;
+
     font-size:10px;
+
+    font-weight:bold;
 }
 
+
 /* =========================================================
-   STATS
+   STATISTICS
 ========================================================= */
 
 .stat-grid{
+
     display:grid;
 
     grid-template-columns:
@@ -541,6 +689,7 @@ label{
 }
 
 .stat-card{
+
     padding:15px;
 
     background:#0d0d10;
@@ -551,38 +700,42 @@ label{
 }
 
 .stat-label{
+
     color:#666;
 
     font-size:9px;
+
     letter-spacing:1px;
 }
 
 .stat-number{
+
     margin-top:7px;
 
     color:#ddd;
 
     font-size:25px;
+
     font-weight:bold;
 }
 
 .stat-number.gold{
+
     color:#c9a84c;
 }
 
 .stat-number.green{
+
     color:#59c879;
 }
 
-.stat-number.red{
-    color:#d85a50;
-}
 
 /* =========================================================
    GROUPS
 ========================================================= */
 
 .group-grid{
+
     display:grid;
 
     grid-template-columns:
@@ -592,6 +745,7 @@ label{
 }
 
 .group-card{
+
     padding:15px;
 
     background:#0d0d10;
@@ -604,23 +758,28 @@ label{
 }
 
 .group-card:hover{
+
     border-color:#806b2e;
 }
 
 .group-card.selected{
+
     border-color:#c9a84c;
 
     background:#13120e;
 }
 
 .group-name{
+
     color:#ddd;
 
     font-size:14px;
+
     font-weight:bold;
 }
 
 .group-info{
+
     margin-top:7px;
 
     color:#666;
@@ -629,6 +788,7 @@ label{
 }
 
 .selected-group{
+
     padding:15px;
 
     margin-bottom:15px;
@@ -646,15 +806,18 @@ label{
 }
 
 .selected-group-name{
+
     color:#c9a84c;
 
     font-size:18px;
+
     font-weight:bold;
 
     letter-spacing:2px;
 }
 
 .selected-group-code{
+
     margin-top:6px;
 
     color:#777;
@@ -663,9 +826,11 @@ label{
 }
 
 .group-management-bar{
+
     display:flex;
 
     align-items:center;
+
     justify-content:space-between;
 
     gap:15px;
@@ -681,19 +846,8 @@ label{
     border-radius:6px;
 }
 
-.group-management-info{
-    color:#666;
-
-    font-size:10px;
-
-    line-height:1.5;
-}
-
-.group-management-info strong{
-    color:#aaa;
-}
-
 .group-management-actions{
+
     display:flex;
 
     gap:8px;
@@ -701,14 +855,17 @@ label{
     flex-wrap:wrap;
 }
 
+
 /* =========================================================
    PLAYERS
 ========================================================= */
 
 .player-card{
+
     display:flex;
 
     align-items:center;
+
     justify-content:space-between;
 
     gap:15px;
@@ -724,18 +881,17 @@ label{
     border-radius:6px;
 }
 
-.player-left{
-    min-width:0;
-}
-
 .player-name{
+
     color:#ddd;
 
     font-size:14px;
+
     font-weight:bold;
 }
 
 .player-email{
+
     margin-top:4px;
 
     color:#555;
@@ -744,6 +900,7 @@ label{
 }
 
 .player-role{
+
     margin-top:4px;
 
     color:#806b2e;
@@ -756,6 +913,7 @@ label{
 }
 
 .player-stats{
+
     display:flex;
 
     gap:14px;
@@ -764,13 +922,16 @@ label{
 }
 
 .player-stat-number{
+
     color:#ddd;
 
     font-size:14px;
+
     font-weight:bold;
 }
 
 .player-stat-label{
+
     margin-top:3px;
 
     color:#555;
@@ -778,11 +939,13 @@ label{
     font-size:7px;
 }
 
+
 /* =========================================================
    MATCHES
 ========================================================= */
 
 .match-card{
+
     padding:17px;
 
     margin-bottom:10px;
@@ -795,23 +958,29 @@ label{
 }
 
 .match-top{
+
     display:flex;
 
     align-items:center;
+
     justify-content:space-between;
 
     gap:15px;
 }
 
 .match-factions{
+
     color:#ddd;
 
     font-size:14px;
+
     font-weight:bold;
 }
 
 .match-vs{
-    margin:0 7px;
+
+    margin:
+        0 7px;
 
     color:#806b2e;
 
@@ -819,41 +988,57 @@ label{
 }
 
 .match-result{
-    padding:6px 10px;
+
+    padding:
+        6px 10px;
 
     border-radius:4px;
 
     font-size:9px;
+
     font-weight:bold;
 
     letter-spacing:1px;
 }
 
 .match-result.win{
+
     color:#59c879;
 
-    background:rgba(40,130,65,.15);
+    background:
+        rgba(40,130,65,.15);
 
-    border:1px solid rgba(70,170,90,.3);
+    border:
+        1px solid
+        rgba(70,170,90,.3);
 }
 
 .match-result.loss{
+
     color:#e15a50;
 
-    background:rgba(150,35,30,.15);
+    background:
+        rgba(150,35,30,.15);
 
-    border:1px solid rgba(190,50,40,.3);
+    border:
+        1px solid
+        rgba(190,50,40,.3);
 }
 
 .match-result.draw{
+
     color:#c9a84c;
 
-    background:rgba(160,125,40,.12);
+    background:
+        rgba(160,125,40,.12);
 
-    border:1px solid rgba(190,150,55,.3);
+    border:
+        1px solid
+        rgba(190,150,55,.3);
 }
 
 .match-details{
+
     display:flex;
 
     flex-wrap:wrap;
@@ -868,10 +1053,12 @@ label{
 }
 
 .match-detail strong{
+
     color:#bbb;
 }
 
 .match-notes{
+
     margin-top:10px;
 
     color:#555;
@@ -881,14 +1068,20 @@ label{
     line-height:1.5;
 }
 
+
 /* =========================================================
    DELETE MATCH
 ========================================================= */
 
 .match-delete-row{
-    display:flex;
+
+    display:flex !important;
 
     justify-content:flex-end;
+
+    align-items:center;
+
+    width:100%;
 
     margin-top:14px;
 
@@ -898,17 +1091,32 @@ label{
 }
 
 .delete-match-button{
-    padding:8px 13px;
+
+    display:inline-block !important;
+
+    visibility:visible !important;
+
+    opacity:1 !important;
+
+    position:relative !important;
+
+    z-index:20 !important;
+
+    padding:
+        9px 15px;
 
     background:#35100e;
 
     color:#ff6257;
 
-    border:1px solid #96382f;
+    border:
+        1px solid
+        #96382f;
 
     border-radius:4px;
 
-    font-size:9px;
+    font-size:10px;
+
     font-weight:bold;
 
     letter-spacing:1px;
@@ -917,18 +1125,22 @@ label{
 }
 
 .delete-match-button:hover{
-    background:#551612;
+
+    background:#641814;
 
     border-color:#d44b40;
 
     color:#fff;
+
 }
+
 
 /* =========================================================
    QUICK ACTIONS
 ========================================================= */
 
 .quick-actions{
+
     display:grid;
 
     grid-template-columns:
@@ -938,6 +1150,7 @@ label{
 }
 
 .quick-action{
+
     padding:16px;
 
     background:#0d0d10;
@@ -949,24 +1162,26 @@ label{
     color:#aaa;
 
     cursor:pointer;
-
-    text-align:left;
 }
 
 .quick-action:hover{
+
     border-color:#806b2e;
 
     color:#eee;
 }
 
 .quick-action-title{
+
     color:#ddd;
 
     font-size:12px;
+
     font-weight:bold;
 }
 
 .quick-action-text{
+
     margin-top:6px;
 
     color:#666;
@@ -976,11 +1191,13 @@ label{
     line-height:1.5;
 }
 
+
 /* =========================================================
    EMPTY
 ========================================================= */
 
 .empty{
+
     padding:25px;
 
     text-align:center;
@@ -989,16 +1206,20 @@ label{
 
     font-size:11px;
 
-    border:1px dashed #29292e;
+    border:
+        1px dashed
+        #29292e;
 
     border-radius:6px;
 }
+
 
 /* =========================================================
    MODAL
 ========================================================= */
 
 .modal{
+
     position:fixed;
 
     inset:0;
@@ -1008,14 +1229,17 @@ label{
     display:flex;
 
     align-items:center;
+
     justify-content:center;
 
     padding:20px;
 
-    background:rgba(0,0,0,.76);
+    background:
+        rgba(0,0,0,.76);
 }
 
 .modal-box{
+
     width:100%;
 
     max-width:500px;
@@ -1034,6 +1258,7 @@ label{
 }
 
 .modal-title{
+
     margin:0;
 
     color:#ddd;
@@ -1044,6 +1269,7 @@ label{
 }
 
 .modal-buttons{
+
     display:flex;
 
     gap:10px;
@@ -1052,12 +1278,14 @@ label{
 }
 
 .modal-buttons button{
+
     flex:1;
 
     margin:0;
 }
 
 .modal-status{
+
     min-height:17px;
 
     margin-top:12px;
@@ -1069,6 +1297,7 @@ label{
     font-size:10px;
 }
 
+
 /* =========================================================
    MOBILE
 ========================================================= */
@@ -1076,16 +1305,22 @@ label{
 @media(max-width:900px){
 
     .dashboard{
+
         grid-template-columns:1fr;
+
     }
 
     .sidebar{
+
         min-height:auto;
+
     }
 
     .stat-grid{
+
         grid-template-columns:
             repeat(2,1fr);
+
     }
 
 }
@@ -1093,45 +1328,47 @@ label{
 @media(max-width:650px){
 
     .topbar{
+
         flex-direction:column;
 
         align-items:flex-start;
 
-        gap:10px;
     }
 
     .group-grid{
+
         grid-template-columns:1fr;
+
     }
 
     .quick-actions{
+
         grid-template-columns:1fr;
+
     }
 
     .player-card{
+
         flex-direction:column;
 
         align-items:flex-start;
+
     }
 
     .group-management-bar{
+
         flex-direction:column;
 
         align-items:stretch;
-    }
 
-    .group-management-actions{
-        width:100%;
-    }
-
-    .group-management-actions button{
-        flex:1;
     }
 
     .match-top{
+
         flex-direction:column;
 
         align-items:flex-start;
+
     }
 
 }
@@ -1140,15 +1377,19 @@ label{
 
     .red-glow,
     .blue-glow{
+
         animation:none;
+
     }
 
 }
 
 </style>
+
 </head>
 
 <body>
+
 
 <!-- =====================================================
      BACKGROUND
@@ -1174,142 +1415,142 @@ label{
     class="page login-page"
 >
 
-<div class="login-box">
+    <div class="login-box">
 
-    <h1 class="logo">
-        ROUTINE 721
-    </h1>
+        <h1 class="logo">
+            ROUTINE 721
+        </h1>
 
-    <div class="logo-sub">
-        WAR ROOM
+        <div class="logo-sub">
+            WAR ROOM
+        </div>
+
+        <div class="divider"></div>
+
+
+        <!-- SIGN IN -->
+
+        <div id="signInView">
+
+            <h2>
+                ACCESS TERMINAL
+            </h2>
+
+            <p class="login-description">
+                Enter the War Room command network.
+            </p>
+
+            <label>
+                Email
+            </label>
+
+            <input
+                id="loginEmail"
+                type="email"
+                placeholder="your@email.com"
+            >
+
+            <label>
+                Password
+            </label>
+
+            <input
+                id="loginPassword"
+                type="password"
+                placeholder="Password"
+            >
+
+            <button
+                id="signInButton"
+                class="primary"
+                type="button"
+            >
+                SIGN IN
+            </button>
+
+            <button
+                id="showCreateButton"
+                class="secondary"
+                type="button"
+            >
+                CREATE ACCOUNT
+            </button>
+
+        </div>
+
+
+        <!-- CREATE -->
+
+        <div
+            id="createView"
+            class="hidden"
+        >
+
+            <h2>
+                CREATE PLAYER
+            </h2>
+
+            <p class="login-description">
+                Create your Routine 721 player account.
+            </p>
+
+            <label>
+                Display Name
+            </label>
+
+            <input
+                id="createName"
+                type="text"
+                placeholder="Your player name"
+            >
+
+            <label>
+                Email
+            </label>
+
+            <input
+                id="createEmail"
+                type="email"
+                placeholder="your@email.com"
+            >
+
+            <label>
+                Password
+            </label>
+
+            <input
+                id="createPassword"
+                type="password"
+                placeholder="Minimum 6 characters"
+            >
+
+            <button
+                id="createAccountButton"
+                class="primary"
+                type="button"
+            >
+                CREATE PLAYER ACCOUNT
+            </button>
+
+            <button
+                id="backToLoginButton"
+                class="secondary"
+                type="button"
+            >
+                BACK TO SIGN IN
+            </button>
+
+        </div>
+
+
+        <div
+            id="loginStatus"
+            class="status"
+        >
+            Connecting to database...
+        </div>
+
     </div>
-
-    <div class="divider"></div>
-
-
-    <!-- SIGN IN -->
-
-    <div id="signInView">
-
-        <h2>
-            ACCESS TERMINAL
-        </h2>
-
-        <p class="login-description">
-            Enter the War Room command network.
-        </p>
-
-        <label>
-            Email
-        </label>
-
-        <input
-            id="loginEmail"
-            type="email"
-            placeholder="your@email.com"
-        >
-
-        <label>
-            Password
-        </label>
-
-        <input
-            id="loginPassword"
-            type="password"
-            placeholder="Password"
-        >
-
-        <button
-            id="signInButton"
-            class="primary"
-            type="button"
-        >
-            SIGN IN
-        </button>
-
-        <button
-            id="showCreateButton"
-            class="secondary"
-            type="button"
-        >
-            CREATE ACCOUNT
-        </button>
-
-    </div>
-
-
-    <!-- CREATE ACCOUNT -->
-
-    <div
-        id="createView"
-        class="hidden"
-    >
-
-        <h2>
-            CREATE PLAYER
-        </h2>
-
-        <p class="login-description">
-            Create your Routine 721 player account.
-        </p>
-
-        <label>
-            Display Name
-        </label>
-
-        <input
-            id="createName"
-            type="text"
-            placeholder="Your player name"
-        >
-
-        <label>
-            Email
-        </label>
-
-        <input
-            id="createEmail"
-            type="email"
-            placeholder="your@email.com"
-        >
-
-        <label>
-            Password
-        </label>
-
-        <input
-            id="createPassword"
-            type="password"
-            placeholder="Minimum 6 characters"
-        >
-
-        <button
-            id="createAccountButton"
-            class="primary"
-            type="button"
-        >
-            CREATE PLAYER ACCOUNT
-        </button>
-
-        <button
-            id="backToLoginButton"
-            class="secondary"
-            type="button"
-        >
-            BACK TO SIGN IN
-        </button>
-
-    </div>
-
-
-    <div
-        id="loginStatus"
-        class="status"
-    >
-        Connecting to database...
-    </div>
-
-</div>
 
 </div>
 
@@ -1429,27 +1670,170 @@ label{
 <section class="content">
 
 
-<!-- =====================================================
-     OVERVIEW
-===================================================== -->
+<!-- OVERVIEW -->
 
 <div
     id="overviewPage"
     class="page-section"
 >
 
-<div class="panel">
+    <div class="panel">
 
-    <div class="panel-header">
+        <div class="panel-header">
 
-        <div>
+            <div>
 
-            <h1 class="panel-title">
-                WAR ROOM
-            </h1>
+                <h1 class="panel-title">
+                    WAR ROOM
+                </h1>
 
-            <div class="panel-subtitle">
-                COMMAND OVERVIEW
+                <div class="panel-subtitle">
+                    COMMAND OVERVIEW
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-grid">
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    GROUPS
+                </div>
+
+                <div
+                    id="groupsStat"
+                    class="stat-number gold"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    PLAYERS
+                </div>
+
+                <div
+                    id="playersStat"
+                    class="stat-number"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    MATCHES
+                </div>
+
+                <div
+                    id="matchesStat"
+                    class="stat-number"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    WIN RATE
+                </div>
+
+                <div
+                    id="winRateStat"
+                    class="stat-number green"
+                >
+                    0%
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="selected-group">
+
+            <div class="selected-group-name">
+
+                <span id="selectedGroupName">
+                    NO GROUP SELECTED
+                </span>
+
+            </div>
+
+            <div class="selected-group-code">
+
+                Invite code:
+
+                <strong id="selectedGroupCode">
+                    —
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="quick-actions">
+
+            <div
+                id="quickCreate"
+                class="quick-action"
+            >
+
+                <div class="quick-action-title">
+                    CREATE GROUP
+                </div>
+
+                <div class="quick-action-text">
+                    Create your own Routine 721 war group.
+                </div>
+
+            </div>
+
+
+            <div
+                id="quickPlayers"
+                class="quick-action"
+            >
+
+                <div class="quick-action-title">
+                    VIEW PLAYERS
+                </div>
+
+                <div class="quick-action-text">
+                    View Routine 721 players.
+                </div>
+
+            </div>
+
+
+            <div
+                id="quickMatch"
+                class="quick-action"
+            >
+
+                <div class="quick-action-title">
+                    RECORD MATCH
+                </div>
+
+                <div class="quick-action-text">
+                    Record factions, victory points and results.
+                </div>
+
             </div>
 
         </div>
@@ -1457,347 +1841,182 @@ label{
     </div>
 
 
-    <div class="stat-grid">
+    <div class="panel">
 
-        <div class="stat-card">
+        <div class="panel-header">
 
-            <div class="stat-label">
-                GROUPS
-            </div>
+            <div>
 
-            <div
-                id="groupsStat"
-                class="stat-number gold"
-            >
-                0
-            </div>
+                <h2 class="panel-title">
+                    YOUR GROUPS
+                </h2>
 
-        </div>
+                <div class="panel-subtitle">
+                    ACTIVE WAR GROUPS
+                </div>
 
-
-        <div class="stat-card">
-
-            <div class="stat-label">
-                PLAYERS
-            </div>
-
-            <div
-                id="playersStat"
-                class="stat-number"
-            >
-                0
             </div>
 
         </div>
-
-
-        <div class="stat-card">
-
-            <div class="stat-label">
-                MATCHES
-            </div>
-
-            <div
-                id="matchesStat"
-                class="stat-number"
-            >
-                0
-            </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <div class="stat-label">
-                WIN RATE
-            </div>
-
-            <div
-                id="winRateStat"
-                class="stat-number green"
-            >
-                0%
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="selected-group">
-
-        <div class="selected-group-name">
-
-            <span id="selectedGroupName">
-                NO GROUP SELECTED
-            </span>
-
-        </div>
-
-        <div class="selected-group-code">
-
-            Invite code:
-
-            <strong id="selectedGroupCode">
-                —
-            </strong>
-
-        </div>
-
-    </div>
-
-
-    <div class="quick-actions">
 
         <div
-            id="quickCreate"
-            class="quick-action"
-        >
-
-            <div class="quick-action-title">
-                CREATE GROUP
-            </div>
-
-            <div class="quick-action-text">
-                Create your own Routine 721 war group.
-            </div>
-
-        </div>
-
-
-        <div
-            id="quickPlayers"
-            class="quick-action"
-        >
-
-            <div class="quick-action-title">
-                VIEW PLAYERS
-            </div>
-
-            <div class="quick-action-text">
-                View Routine 721 players.
-            </div>
-
-        </div>
-
-
-        <div
-            id="quickMatch"
-            class="quick-action"
-        >
-
-            <div class="quick-action-title">
-                RECORD MATCH
-            </div>
-
-            <div class="quick-action-text">
-                Record factions, victory points and results.
-            </div>
-
-        </div>
+            id="overviewGroups"
+            class="group-grid"
+        ></div>
 
     </div>
 
 </div>
 
 
-<div class="panel">
-
-    <div class="panel-header">
-
-        <div>
-
-            <h2 class="panel-title">
-                YOUR GROUPS
-            </h2>
-
-            <div class="panel-subtitle">
-                ACTIVE WAR GROUPS
-            </div>
-
-        </div>
-
-    </div>
-
-    <div
-        id="overviewGroups"
-        class="group-grid"
-    ></div>
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
-     GROUPS
-===================================================== -->
+<!-- GROUPS -->
 
 <div
     id="groupsPage"
     class="page-section hidden"
 >
 
-<div class="panel">
+    <div class="panel">
 
-    <div class="panel-header">
+        <div class="panel-header">
 
-        <div>
+            <div>
 
-            <h2 class="panel-title">
-                GROUP MANAGEMENT
-            </h2>
+                <h2 class="panel-title">
+                    GROUP MANAGEMENT
+                </h2>
 
-            <div class="panel-subtitle">
-                CREATE, JOIN AND MANAGE YOUR WAR GROUPS
+                <div class="panel-subtitle">
+                    WAR GROUPS
+                </div>
+
             </div>
 
         </div>
 
-    </div>
 
+        <div class="group-management-bar">
 
-    <div class="group-management-bar">
+            <div>
+                Select a group to manage it.
+            </div>
 
-        <div class="group-management-info">
+            <div class="group-management-actions">
 
-            <strong>
-                Group administration
-            </strong>
+                <button
+                    id="groupsCreate"
+                    class="small-btn gold-btn"
+                    type="button"
+                >
+                    CREATE GROUP
+                </button>
 
-            <br>
+                <button
+                    id="groupsJoin"
+                    class="small-btn"
+                    type="button"
+                >
+                    JOIN GROUP
+                </button>
 
-            Select a group before using
-            <strong>
-                DELETE GROUP
-            </strong>.
+                <button
+                    id="deleteSelectedGroup"
+                    class="delete-btn"
+                    type="button"
+                >
+                    DELETE GROUP
+                </button>
 
-        </div>
-
-
-        <div class="group-management-actions">
-
-            <button
-                id="groupsCreate"
-                class="small-btn gold-btn"
-                type="button"
-            >
-                CREATE GROUP
-            </button>
-
-            <button
-                id="groupsJoin"
-                class="small-btn"
-                type="button"
-            >
-                JOIN GROUP
-            </button>
-
-            <button
-                id="deleteSelectedGroup"
-                class="delete-btn"
-                type="button"
-            >
-                DELETE GROUP
-            </button>
+            </div>
 
         </div>
 
+
+        <div
+            id="groupsList"
+            class="group-grid"
+        ></div>
+
     </div>
-
-
-    <div
-        id="groupsList"
-        class="group-grid"
-    ></div>
-
-</div>
 
 </div>
 
 
-<!-- =====================================================
-     PLAYERS
-===================================================== -->
+<!-- PLAYERS -->
 
 <div
     id="playersPage"
     class="page-section hidden"
 >
 
-<div class="panel">
+    <div class="panel">
 
-    <div class="panel-header">
+        <div class="panel-header">
 
-        <div>
+            <div>
 
-            <h2 class="panel-title">
-                PLAYERS
-            </h2>
+                <h2 class="panel-title">
+                    PLAYERS
+                </h2>
 
-            <div class="panel-subtitle">
-                ROUTINE 721 PLAYERS
+                <div class="panel-subtitle">
+                    ROUTINE 721 PLAYERS
+                </div>
+
             </div>
 
         </div>
 
+        <div id="playersList"></div>
+
     </div>
 
-
-    <div id="playersList"></div>
-
-</div>
-
 </div>
 
 
-<!-- =====================================================
-     MATCHES
-===================================================== -->
+<!-- MATCHES -->
 
 <div
     id="matchesPage"
     class="page-section hidden"
 >
 
-<div class="panel">
+    <div class="panel">
 
-    <div class="panel-header">
+        <div class="panel-header">
 
-        <div>
+            <div>
 
-            <h2 class="panel-title">
-                MATCHES
-            </h2>
+                <h2 class="panel-title">
+                    MATCHES
+                </h2>
 
-            <div class="panel-subtitle">
-                SHARED WAR RECORD
+                <div class="panel-subtitle">
+                    SHARED WAR RECORD
+                </div>
+
+            </div>
+
+            <button
+                id="recordMatchButton"
+                class="small-btn gold-btn"
+                type="button"
+            >
+                RECORD MATCH
+            </button>
+
+        </div>
+
+
+        <div id="matchesList">
+
+            <div class="empty">
+                Loading battle records...
             </div>
 
         </div>
 
-
-        <button
-            id="recordMatchButton"
-            class="small-btn gold-btn"
-            type="button"
-        >
-            RECORD MATCH
-        </button>
-
     </div>
-
-
-    <div id="matchesList">
-
-        <div class="empty">
-            Loading battle records...
-        </div>
-
-    </div>
-
-</div>
 
 </div>
 
@@ -1818,210 +2037,201 @@ label{
     class="modal hidden"
 >
 
-<div class="modal-box">
+    <div class="modal-box">
 
-    <h2
-        id="modalTitle"
-        class="modal-title"
-    >
-        CREATE GROUP
-    </h2>
-
-
-    <!-- CREATE GROUP -->
-
-    <div
-        id="createGroupForm"
-        class="hidden"
-    >
-
-        <label>
-            Group Name
-        </label>
-
-        <input
-            id="groupName"
-            type="text"
-            placeholder="Example: Ultramarines 5th Company"
+        <h2
+            id="modalTitle"
+            class="modal-title"
         >
+            CREATE GROUP
+        </h2>
+
+
+        <!-- CREATE GROUP -->
+
+        <div
+            id="createGroupForm"
+            class="hidden"
+        >
+
+            <label>
+                Group Name
+            </label>
+
+            <input
+                id="groupName"
+                type="text"
+                placeholder="Example: Warhammer 40K League"
+            >
+
+        </div>
+
+
+        <!-- JOIN -->
+
+        <div
+            id="joinGroupForm"
+            class="hidden"
+        >
+
+            <label>
+                Invite Code
+            </label>
+
+            <input
+                id="inviteCode"
+                type="text"
+                placeholder="Enter invite code"
+            >
+
+        </div>
+
+
+        <!-- MATCH -->
+
+        <div
+            id="matchForm"
+            class="hidden"
+        >
+
+            <label>
+                Your Faction
+            </label>
+
+            <input
+                id="matchPlayerFaction"
+                type="text"
+                placeholder="Ultramarines"
+            >
+
+
+            <label>
+                Opponent Faction
+            </label>
+
+            <input
+                id="matchOpponentFaction"
+                type="text"
+                placeholder="Chaos Space Marines"
+            >
+
+
+            <label>
+                Opponent
+            </label>
+
+            <input
+                id="matchOpponent"
+                type="text"
+                placeholder="Opponent player"
+            >
+
+
+            <label>
+                Your Victory Points
+            </label>
+
+            <input
+                id="matchPlayerVP"
+                type="number"
+                min="0"
+                placeholder="87"
+            >
+
+
+            <label>
+                Opponent Victory Points
+            </label>
+
+            <input
+                id="matchOpponentVP"
+                type="number"
+                min="0"
+                placeholder="71"
+            >
+
+
+            <label>
+                Result
+            </label>
+
+            <select id="matchResult">
+
+                <option value="win">
+                    VICTORY
+                </option>
+
+                <option value="loss">
+                    DEFEAT
+                </option>
+
+                <option value="draw">
+                    DRAW
+                </option>
+
+            </select>
+
+
+            <label>
+                Notes
+            </label>
+
+            <textarea
+                id="matchNotes"
+                placeholder="Optional battle notes..."
+            ></textarea>
+
+        </div>
+
+
+        <div class="modal-buttons">
+
+            <button
+                id="modalCancel"
+                class="secondary"
+                type="button"
+            >
+                CANCEL
+            </button>
+
+            <button
+                id="modalConfirm"
+                class="primary"
+                type="button"
+            >
+                CONFIRM
+            </button>
+
+        </div>
+
+
+        <div
+            id="modalStatus"
+            class="modal-status"
+        ></div>
 
     </div>
-
-
-    <!-- JOIN GROUP -->
-
-    <div
-        id="joinGroupForm"
-        class="hidden"
-    >
-
-        <label>
-            Invite Code
-        </label>
-
-        <input
-            id="inviteCode"
-            type="text"
-            placeholder="Enter invite code"
-        >
-
-    </div>
-
-
-    <!-- MATCH -->
-
-    <div
-        id="matchForm"
-        class="hidden"
-    >
-
-        <label>
-            Your Faction
-        </label>
-
-        <input
-            id="matchPlayerFaction"
-            type="text"
-            placeholder="Example: Ultramarines"
-        >
-
-
-        <label>
-            Opponent Faction
-        </label>
-
-        <input
-            id="matchOpponentFaction"
-            type="text"
-            placeholder="Example: Chaos Space Marines"
-        >
-
-
-        <label>
-            Opponent
-        </label>
-
-        <input
-            id="matchOpponent"
-            type="text"
-            placeholder="Opponent player name"
-        >
-
-
-        <label>
-            Your Victory Points
-        </label>
-
-        <input
-            id="matchPlayerVP"
-            type="number"
-            min="0"
-            step="1"
-            placeholder="87"
-        >
-
-
-        <label>
-            Opponent Victory Points
-        </label>
-
-        <input
-            id="matchOpponentVP"
-            type="number"
-            min="0"
-            step="1"
-            placeholder="71"
-        >
-
-
-        <label>
-            Result
-        </label>
-
-        <select id="matchResult">
-
-            <option value="win">
-                VICTORY
-            </option>
-
-            <option value="loss">
-                DEFEAT
-            </option>
-
-            <option value="draw">
-                DRAW
-            </option>
-
-        </select>
-
-
-        <label>
-            Notes
-        </label>
-
-        <textarea
-            id="matchNotes"
-            placeholder="Optional battle notes..."
-        ></textarea>
-
-    </div>
-
-
-    <div class="modal-buttons">
-
-        <button
-            id="modalCancel"
-            class="secondary"
-            type="button"
-        >
-            CANCEL
-        </button>
-
-        <button
-            id="modalConfirm"
-            class="primary"
-            type="button"
-        >
-            CONFIRM
-        </button>
-
-    </div>
-
-
-    <div
-        id="modalStatus"
-        class="modal-status"
-    ></div>
 
 </div>
-
-</div>
-
-
-<!-- =====================================================
-     SUPABASE
-===================================================== -->
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <script>
 
 /* =========================================================
-   SUPABASE CONFIG
+   SUPABASE
 ========================================================= */
 
 const SUPABASE_URL =
-"https://jbgwdxavydhtvoqpbfmj.supabase.co";
+    "https://jbgwdxavydhtvoqpbfmj.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_Wt8h6fNelT6zrzf-Dm8FXw_cdSGylaz";
+    "sb_publishable_Wt8h6fNelT6zrzf-Dm8FXw_cdSGylaz";
 
 const routineClient =
-window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
 
 /* =========================================================
@@ -2180,9 +2390,8 @@ async function signIn(){
             .auth
             .signInWithPassword({
 
-                email:email,
-
-                password:password
+                email,
+                password
 
             });
 
@@ -2202,7 +2411,6 @@ async function signIn(){
         await showWarRoom(
             result.data.user
         );
-
 
     }
     catch(error){
@@ -2292,9 +2500,9 @@ async function createAccount(){
             .auth
             .signUp({
 
-                email:email,
+                email,
 
-                password:password,
+                password,
 
                 options:{
                     data:{
@@ -2327,7 +2535,7 @@ async function createAccount(){
         else{
 
             loginMessage(
-                "Player created. Check your email to confirm your account.",
+                "Account created. Check your email to confirm it.",
                 "success"
             );
 
@@ -2361,7 +2569,8 @@ async function createAccount(){
 
 async function showWarRoom(user){
 
-    currentUser = user;
+    currentUser =
+        user;
 
 
     $("loginScreen")
@@ -2428,8 +2637,7 @@ async function loadGroups(){
     groups =
         (result.data || [])
         .filter(
-            row =>
-                row.groups
+            row => row.groups
         )
         .map(
             row => ({
@@ -2522,7 +2730,7 @@ async function loadPlayers(){
 
 
 /* =========================================================
-   LOAD MATCHES
+   MATCHES
 ========================================================= */
 
 async function loadMatches(){
@@ -2572,7 +2780,7 @@ async function loadMatches(){
 
 
 /* =========================================================
-   REFRESH DATA
+   REFRESH
 ========================================================= */
 
 async function refreshData(){
@@ -2634,19 +2842,17 @@ function renderStats(){
 
     const wins =
         matches.filter(
-            match =>
-                match.result === "win"
+            m =>
+                m.result === "win"
         ).length;
 
 
-    const total =
-        matches.length;
-
-
     const winRate =
-        total
+        matches.length
         ? Math.round(
-            wins / total * 100
+            wins /
+            matches.length *
+            100
         )
         : 0;
 
@@ -2689,9 +2895,7 @@ function makeGroupCard(group){
 
         <div class="group-name">
 
-            ${escapeHtml(
-                group.name
-            )}
+            ${escapeHtml(group.name)}
 
         </div>
 
@@ -2699,8 +2903,7 @@ function makeGroupCard(group){
 
             ROLE:
             ${escapeHtml(
-                group.role ||
-                "member"
+                group.role || "member"
             )}
 
         </div>
@@ -2709,8 +2912,7 @@ function makeGroupCard(group){
 
             INVITE:
             ${escapeHtml(
-                group.invite_code ||
-                "—"
+                group.invite_code || "—"
             )}
 
         </div>
@@ -2737,7 +2939,7 @@ function makeGroupCard(group){
 
 
 /* =========================================================
-   RENDER GROUPS
+   GROUP RENDER
 ========================================================= */
 
 function renderGroups(){
@@ -2756,7 +2958,7 @@ function renderGroups(){
 
     if(!groups.length){
 
-        list.innerHTML = `
+        const empty = `
 
             <div class="empty">
 
@@ -2766,16 +2968,11 @@ function renderGroups(){
 
         `;
 
+        list.innerHTML =
+            empty;
 
-        overview.innerHTML = `
-
-            <div class="empty">
-
-                Create or join your first group.
-
-            </div>
-
-        `;
+        overview.innerHTML =
+            empty;
 
         return;
 
@@ -2809,8 +3006,7 @@ function renderSelectedGroup(){
 
         $("selectedGroupName")
             .textContent =
-            selectedGroup.name ||
-            "UNKNOWN GROUP";
+            selectedGroup.name;
 
 
         $("selectedGroupCode")
@@ -2843,45 +3039,35 @@ function playerStats(playerId){
 
     const playerMatches =
         matches.filter(
-            match =>
-                match.user_id ===
+            m =>
+                m.user_id ===
                 playerId
         );
 
 
     const wins =
         playerMatches.filter(
-            match =>
-                match.result === "win"
+            m =>
+                m.result === "win"
         ).length;
 
 
     const losses =
         playerMatches.filter(
-            match =>
-                match.result === "loss"
+            m =>
+                m.result === "loss"
         ).length;
 
 
     const draws =
         playerMatches.filter(
-            match =>
-                match.result === "draw"
+            m =>
+                m.result === "draw"
         ).length;
 
 
     const total =
-        wins +
-        losses +
-        draws;
-
-
-    const rate =
-        total
-        ? Math.round(
-            wins / total * 100
-        )
-        : 0;
+        playerMatches.length;
 
 
     return {
@@ -2892,7 +3078,14 @@ function playerStats(playerId){
 
         draws,
 
-        rate
+        rate:
+            total
+            ? Math.round(
+                wins /
+                total *
+                100
+            )
+            : 0
 
     };
 
@@ -2900,7 +3093,7 @@ function playerStats(playerId){
 
 
 /* =========================================================
-   RENDER PLAYERS
+   PLAYERS RENDER
 ========================================================= */
 
 function renderPlayers(){
@@ -2917,9 +3110,7 @@ function renderPlayers(){
         container.innerHTML = `
 
             <div class="empty">
-
                 No players found.
-
             </div>
 
         `;
@@ -2939,9 +3130,7 @@ function renderPlayers(){
 
 
             const card =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
 
             card.className =
@@ -2956,7 +3145,7 @@ function renderPlayers(){
 
             card.innerHTML = `
 
-                <div class="player-left">
+                <div>
 
                     <div class="player-name">
 
@@ -2973,7 +3162,6 @@ function renderPlayers(){
 
                     </div>
 
-
                     <div class="player-email">
 
                         ${
@@ -2986,14 +3174,9 @@ function renderPlayers(){
 
                     </div>
 
-
                     <div class="player-role">
 
-                        ${
-                            isYou
-                            ? "ACTIVE PLAYER"
-                            : "PLAYER"
-                        }
+                        PLAYER
 
                     </div>
 
@@ -3014,7 +3197,6 @@ function renderPlayers(){
 
                     </div>
 
-
                     <div>
 
                         <div class="player-stat-number">
@@ -3027,7 +3209,6 @@ function renderPlayers(){
 
                     </div>
 
-
                     <div>
 
                         <div class="player-stat-number">
@@ -3039,7 +3220,6 @@ function renderPlayers(){
                         </div>
 
                     </div>
-
 
                     <div>
 
@@ -3072,7 +3252,7 @@ function renderPlayers(){
 
 
 /* =========================================================
-   RENDER MATCHES
+   MATCH RENDER
 ========================================================= */
 
 function renderMatches(){
@@ -3109,9 +3289,7 @@ function renderMatches(){
         match => {
 
             const card =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
 
             card.className =
@@ -3133,6 +3311,10 @@ function renderMatches(){
                 "DRAW";
 
 
+            const resultClass =
+                match.result || "draw";
+
+
             const group =
                 groups.find(
                     g =>
@@ -3142,15 +3324,14 @@ function renderMatches(){
 
 
             /*
-            Only the player who recorded
-            the match gets the delete button.
+             IMPORTANT:
+
+             The delete button is ALWAYS
+             rendered.
+
+             It is not hidden based on
+             user_id.
             */
-
-            const isMine =
-                currentUser &&
-                currentUser.id ===
-                match.user_id;
-
 
             card.innerHTML = `
 
@@ -3175,7 +3356,7 @@ function renderMatches(){
 
                     <div
                         class="match-result ${escapeHtml(
-                            match.result
+                            resultClass
                         )}"
                     >
 
@@ -3193,11 +3374,9 @@ function renderMatches(){
                         Opponent:
 
                         <strong>
-
                             ${escapeHtml(
                                 match.opponent_name
                             )}
-
                         </strong>
 
                     </div>
@@ -3232,7 +3411,6 @@ function renderMatches(){
                               escapeHtml(
                                   group.name
                               )
-
                             : "Group match"
                         }
 
@@ -3243,17 +3421,11 @@ function renderMatches(){
 
                         ${
                             match.created_at
-
-                            ?
-
-                            new Date(
+                            ? new Date(
                                 match.created_at
-                            )
-                            .toLocaleDateString()
-
-                            :
-
-                            ""
+                              )
+                              .toLocaleDateString()
+                            : ""
                         }
 
                     </div>
@@ -3263,11 +3435,9 @@ function renderMatches(){
 
                 ${
                     match.notes
-
                     ?
 
                     `
-
                     <div class="match-notes">
 
                         ${escapeHtml(
@@ -3275,7 +3445,6 @@ function renderMatches(){
                         )}
 
                     </div>
-
                     `
 
                     :
@@ -3284,39 +3453,23 @@ function renderMatches(){
                 }
 
 
-                ${
-                    isMine
+                <!-- ALWAYS VISIBLE DELETE BUTTON -->
 
-                    ?
+                <div class="match-delete-row">
 
-                    `
+                    <button
+                        class="delete-match-button"
+                        data-match-id="${escapeHtml(
+                            match.id
+                        )}"
+                        type="button"
+                    >
 
-                    <div class="match-delete-row">
+                        🗑 DELETE MATCH
 
-                        <button
+                    </button>
 
-                            class="delete-match-button"
-
-                            data-match-id="${escapeHtml(
-                                match.id
-                            )}"
-
-                            type="button"
-
-                        >
-
-                            DELETE MATCH
-
-                        </button>
-
-                    </div>
-
-                    `
-
-                    :
-
-                    ""
-                }
+                </div>
 
             `;
 
@@ -3330,29 +3483,29 @@ function renderMatches(){
 
 
     /*
-    Connect the delete buttons.
+     Wire every delete button.
     */
 
     document
-    .querySelectorAll(
-        ".delete-match-button"
-    )
-    .forEach(
-        button => {
+        .querySelectorAll(
+            ".delete-match-button"
+        )
+        .forEach(
+            button => {
 
-            button.addEventListener(
-                "click",
-                function(){
+                button.addEventListener(
+                    "click",
+                    function(){
 
-                    deleteMatch(
-                        this.dataset.matchId
-                    );
+                        deleteMatch(
+                            this.dataset.matchId
+                        );
 
-                }
-            );
+                    }
+                );
 
-        }
-    );
+            }
+        );
 
 }
 
@@ -3368,30 +3521,15 @@ async function deleteMatch(
     const match =
         matches.find(
             m =>
-                m.id ===
-                matchId
+                String(m.id) ===
+                String(matchId)
         );
 
 
     if(!match){
 
-        return;
-
-    }
-
-
-    /*
-    Extra client-side security check.
-    */
-
-    if(
-        !currentUser ||
-        match.user_id !==
-        currentUser.id
-    ){
-
         alert(
-            "You can only delete matches that you recorded."
+            "Match could not be found."
         );
 
         return;
@@ -3437,10 +3575,10 @@ async function deleteMatch(
     try{
 
         /*
-        Delete directly from Supabase.
+         Supabase performs the actual deletion.
 
-        The RLS policy also requires that
-        auth.uid() matches user_id.
+         RLS determines whether the current
+         user is allowed to delete this row.
         */
 
         const result =
@@ -3450,17 +3588,13 @@ async function deleteMatch(
             .eq(
                 "id",
                 matchId
-            )
-            .eq(
-                "user_id",
-                currentUser.id
             );
 
 
         if(result.error){
 
             console.error(
-                "Delete match error:",
+                "DELETE MATCH ERROR:",
                 result.error
             );
 
@@ -3473,15 +3607,13 @@ async function deleteMatch(
 
             );
 
-
             return;
 
         }
 
 
         /*
-        Reload the database so statistics
-        and match count update immediately.
+         Reload from Supabase.
         */
 
         await loadMatches();
@@ -3489,10 +3621,16 @@ async function deleteMatch(
         render();
 
 
+        alert(
+            "MATCH DELETED."
+        );
+
     }
     catch(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
 
 
         alert(
@@ -3513,36 +3651,34 @@ async function deleteMatch(
 ========================================================= */
 
 document
-.querySelectorAll(
-    ".nav-btn[data-page]"
-)
-.forEach(
-    button => {
+    .querySelectorAll(
+        ".nav-btn[data-page]"
+    )
+    .forEach(
+        button => {
 
-        button.addEventListener(
-            "click",
-            function(){
+            button.addEventListener(
+                "click",
+                function(){
 
-                showPage(
-                    this.dataset.page
-                );
+                    showPage(
+                        this.dataset.page
+                    );
 
-            }
-        );
+                }
+            );
 
-    }
-);
+        }
+    );
 
 
 function showPage(page){
 
     [
-
         "overview",
         "groups",
         "players",
         "matches"
-
     ]
     .forEach(
         name => {
@@ -3559,23 +3695,20 @@ function showPage(page){
 
 
     document
-    .querySelectorAll(
-        ".nav-btn[data-page]"
-    )
-    .forEach(
-        button => {
+        .querySelectorAll(
+            ".nav-btn[data-page]"
+        )
+        .forEach(
+            button => {
 
-            button.classList.toggle(
+                button.classList.toggle(
+                    "active",
+                    button.dataset.page ===
+                    page
+                );
 
-                "active",
-
-                button.dataset.page ===
-                page
-
-            );
-
-        }
-    );
+            }
+        );
 
 }
 
@@ -3620,7 +3753,6 @@ function openModal(mode){
             .textContent =
             "CREATE GROUP";
 
-
         $("createGroupForm")
             .classList
             .remove("hidden");
@@ -3634,7 +3766,6 @@ function openModal(mode){
             .textContent =
             "JOIN GROUP";
 
-
         $("joinGroupForm")
             .classList
             .remove("hidden");
@@ -3647,7 +3778,6 @@ function openModal(mode){
         $("modalTitle")
             .textContent =
             "RECORD WAR MATCH";
-
 
         $("matchForm")
             .classList
@@ -3664,7 +3794,6 @@ function closeModal(){
         .classList
         .add("hidden");
 
-
     modalMode =
         null;
 
@@ -3672,10 +3801,10 @@ function closeModal(){
 
 
 $("modalCancel")
-.addEventListener(
-    "click",
-    closeModal
-);
+    .addEventListener(
+        "click",
+        closeModal
+    );
 
 
 /* =========================================================
@@ -3697,9 +3826,7 @@ async function(){
 
     try{
 
-        /* =================================================
-           CREATE GROUP
-        ================================================= */
+        /* CREATE GROUP */
 
         if(modalMode === "create"){
 
@@ -3745,23 +3872,18 @@ async function(){
 
             closeModal();
 
-
             await refreshData();
-
 
             showPage(
                 "groups"
             );
-
 
             return;
 
         }
 
 
-        /* =================================================
-           JOIN GROUP
-        ================================================= */
+        /* JOIN GROUP */
 
         if(modalMode === "join"){
 
@@ -3845,30 +3967,25 @@ async function(){
 
             closeModal();
 
-
             await refreshData();
-
 
             showPage(
                 "groups"
             );
-
 
             return;
 
         }
 
 
-        /* =================================================
-           RECORD MATCH
-        ================================================= */
+        /* RECORD MATCH */
 
         if(modalMode === "match"){
 
             if(!selectedGroup){
 
                 status.textContent =
-                    "Select a group before recording a match.";
+                    "Select a group first.";
 
                 return;
 
@@ -3933,14 +4050,12 @@ async function(){
 
 
             if(
-                !Number.isFinite(
-                    playerVP
-                ) ||
+                !Number.isFinite(playerVP) ||
                 playerVP < 0
             ){
 
                 status.textContent =
-                    "Enter valid Victory Points for your army.";
+                    "Enter valid Victory Points.";
 
                 return;
 
@@ -3948,23 +4063,17 @@ async function(){
 
 
             if(
-                !Number.isFinite(
-                    opponentVP
-                ) ||
+                !Number.isFinite(opponentVP) ||
                 opponentVP < 0
             ){
 
                 status.textContent =
-                    "Enter valid Victory Points for your opponent.";
+                    "Enter valid opponent Victory Points.";
 
                 return;
 
             }
 
-
-            /*
-            SAVE MATCH TO SUPABASE
-            */
 
             const insertResult =
                 await routineClient
@@ -3996,8 +4105,7 @@ async function(){
                         result,
 
                     notes:
-                        notes ||
-                        null
+                        notes || null
 
                 });
 
@@ -4005,7 +4113,7 @@ async function(){
             if(insertResult.error){
 
                 console.error(
-                    "Match insert error:",
+                    "MATCH INSERT ERROR:",
                     insertResult.error
                 );
 
@@ -4018,55 +4126,38 @@ async function(){
             }
 
 
-            /*
-            Clear form.
-            */
+            $("matchPlayerFaction").value =
+                "";
 
-            $("matchPlayerFaction")
-                .value = "";
+            $("matchOpponentFaction").value =
+                "";
 
+            $("matchOpponent").value =
+                "";
 
-            $("matchOpponentFaction")
-                .value = "";
+            $("matchPlayerVP").value =
+                "";
 
+            $("matchOpponentVP").value =
+                "";
 
-            $("matchOpponent")
-                .value = "";
+            $("matchResult").value =
+                "win";
 
-
-            $("matchPlayerVP")
-                .value = "";
-
-
-            $("matchOpponentVP")
-                .value = "";
-
-
-            $("matchResult")
-                .value = "win";
-
-
-            $("matchNotes")
-                .value = "";
+            $("matchNotes").value =
+                "";
 
 
             closeModal();
 
 
-            /*
-            Reload from Supabase.
-            */
-
             await loadMatches();
 
-
             render();
-
 
             showPage(
                 "matches"
             );
-
 
             return;
 
@@ -4075,8 +4166,9 @@ async function(){
     }
     catch(error){
 
-        console.error(error);
-
+        console.error(
+            error
+        );
 
         status.textContent =
             error.message;
@@ -4087,75 +4179,63 @@ async function(){
 
 
 /* =========================================================
-   CREATE / JOIN GROUP BUTTONS
+   BUTTONS
 ========================================================= */
 
 $("createGroupButton")
-.addEventListener(
-    "click",
-    () =>
-        openModal("create")
-);
+    .addEventListener(
+        "click",
+        () => openModal("create")
+    );
 
 
 $("groupsCreate")
-.addEventListener(
-    "click",
-    () =>
-        openModal("create")
-);
+    .addEventListener(
+        "click",
+        () => openModal("create")
+    );
 
 
 $("joinGroupButton")
-.addEventListener(
-    "click",
-    () =>
-        openModal("join")
-);
+    .addEventListener(
+        "click",
+        () => openModal("join")
+    );
 
 
 $("groupsJoin")
-.addEventListener(
-    "click",
-    () =>
-        openModal("join")
-);
+    .addEventListener(
+        "click",
+        () => openModal("join")
+    );
 
-
-/* =========================================================
-   QUICK ACTIONS
-========================================================= */
 
 $("quickCreate")
-.addEventListener(
-    "click",
-    () =>
-        openModal("create")
-);
+    .addEventListener(
+        "click",
+        () => openModal("create")
+    );
 
 
 $("quickPlayers")
-.addEventListener(
-    "click",
-    () =>
-        showPage("players")
-);
+    .addEventListener(
+        "click",
+        () => showPage("players")
+    );
 
 
 $("quickMatch")
-.addEventListener(
-    "click",
-    () =>
-        openModal("match")
-);
+    .addEventListener(
+        "click",
+        () => openModal("match")
+    );
 
 
 $("recordMatchButton")
-.addEventListener(
-    "click",
-    () =>
-        openModal("match")
-);
+    .addEventListener(
+        "click",
+        () => openModal("match")
+    );
 
 
 /* =========================================================
@@ -4170,11 +4250,7 @@ async function(){
     if(!selectedGroup){
 
         alert(
-
-            "SELECT A GROUP FIRST.\n\n" +
-
-            "Click the group you want to delete."
-
+            "SELECT A GROUP FIRST."
         );
 
         return;
@@ -4187,13 +4263,11 @@ async function(){
 
             "DELETE GROUP?\n\n" +
 
-            "GROUP: " +
-
             selectedGroup.name +
 
             "\n\n" +
 
-            "This action is permanent."
+            "This cannot be undone."
 
         );
 
@@ -4229,7 +4303,7 @@ async function(){
 
             alert(
 
-                "DELETE FAILED\n\n" +
+                "DELETE GROUP FAILED\n\n" +
 
                 result.error.message
 
@@ -4253,21 +4327,15 @@ async function(){
 
 
         alert(
-            "GROUP DELETED SUCCESSFULLY."
+            "GROUP DELETED."
         );
-
 
     }
     catch(error){
 
-        console.error(
-            error
-        );
-
-
         alert(
 
-            "DELETE FAILED\n\n" +
+            "DELETE GROUP FAILED\n\n" +
 
             error.message
 
@@ -4293,14 +4361,15 @@ async function(){
 
 $("signOutButton")
 .addEventListener(
-"click",
-async function(){
+    "click",
+    async function(){
 
-    await routineClient
-        .auth
-        .signOut();
+        await routineClient
+            .auth
+            .signOut();
 
-});
+    }
+);
 
 
 /* =========================================================
@@ -4310,51 +4379,49 @@ async function(){
 routineClient
 .auth
 .onAuthStateChange(
-function(
-    event,
-    session
-){
-
-    if(
-        session &&
-        session.user
+    function(
+        event,
+        session
     ){
 
-        showWarRoom(
+        if(
+            session &&
             session.user
-        );
+        ){
+
+            showWarRoom(
+                session.user
+            );
+
+        }
+        else{
+
+            currentUser =
+                null;
+
+            groups = [];
+
+            allPlayers = [];
+
+            matches = [];
+
+            selectedGroup =
+                null;
+
+
+            $("warRoom")
+                .classList
+                .add("hidden");
+
+
+            $("loginScreen")
+                .classList
+                .remove("hidden");
+
+        }
 
     }
-    else{
-
-        currentUser =
-            null;
-
-        groups =
-            [];
-
-        allPlayers =
-            [];
-
-        matches =
-            [];
-
-        selectedGroup =
-            null;
-
-
-        $("warRoom")
-            .classList
-            .add("hidden");
-
-
-        $("loginScreen")
-            .classList
-            .remove("hidden");
-
-    }
-
-});
+);
 
 
 /* =========================================================
@@ -4408,7 +4475,6 @@ async function initialise(){
             error
         );
 
-
         loginMessage(
             error.message,
             "error"
@@ -4425,4 +4491,3 @@ initialise();
 
 </body>
 </html>
-```
