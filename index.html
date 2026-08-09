@@ -1,778 +1,1401 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>Routine 721 — War Room</title>
 
-    <meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<style>
+* {
+    box-sizing: border-box;
+}
 
-    <meta
-        name="theme-color"
-        content="#07070b"
-    >
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+    background: #050507;
+    color: #eeeef2;
+    font-family: Arial, Helvetica, sans-serif;
+}
 
-    <title>Routine 721 — War Room</title>
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+}
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+button {
+    cursor: pointer;
+}
+
+.hidden {
+    display: none !important;
+}
+
+button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+/* =========================
+   BACKGROUND
+========================= */
+
+.background {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background: #050507;
+}
+
+.red-glow,
+.purple-glow {
+    position: absolute;
+    top: -20%;
+    width: 65%;
+    height: 140%;
+    filter: blur(20px);
+    opacity: .7;
+}
+
+.red-glow {
+    left: -30%;
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(130, 15, 45, .38) 0%,
+            rgba(90, 8, 35, .18) 35%,
+            transparent 70%
+        );
+    animation: redPulse 7s ease-in-out infinite;
+}
+
+.purple-glow {
+    right: -30%;
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(70, 30, 150, .38) 0%,
+            rgba(55, 20, 120, .17) 35%,
+            transparent 70%
+        );
+    animation: purplePulse 7s ease-in-out infinite;
+}
+
+@keyframes redPulse {
+    0%,100% { opacity: .55; transform: scale(1); }
+    50% { opacity: .85; transform: scale(1.08); }
+}
+
+@keyframes purplePulse {
+    0%,100% { opacity: .55; transform: scale(1); }
+    50% { opacity: .85; transform: scale(1.08); }
+}
+
+/* =========================
+   LOGIN
+========================= */
+
+#loginScreen {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 440px;
+    padding: 38px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(13, 9, 17, .97),
+            rgba(8, 8, 13, .98)
+        );
+    border: 1px solid rgba(150, 35, 65, .42);
+    border-radius: 12px;
+    box-shadow:
+        0 30px 90px rgba(0,0,0,.75),
+        0 0 60px rgba(90,15,55,.08);
+}
+
+.login-logo {
+    margin: 0;
+    color: #fff;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 900;
+    letter-spacing: 5px;
+}
+
+.login-subtitle {
+    margin-top: 9px;
+    color: #777783;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 4px;
+}
+
+.login-divider {
+    height: 1px;
+    margin: 28px 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #39232d,
+        transparent
+    );
+}
+
+.login-heading {
+    margin: 0;
+    color: #fff;
+    text-align: center;
+    font-size: 17px;
+    letter-spacing: 2px;
+}
+
+.login-description {
+    margin: 9px 0 24px;
+    color: #7c7c88;
+    text-align: center;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.form-group {
+    margin-bottom: 17px;
+}
+
+label {
+    display: block;
+    margin-bottom: 7px;
+    color: #aaaab4;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 12px 13px;
+    border: 1px solid #2c2c36;
+    border-radius: 6px;
+    background: #0c0c12;
+    color: #fff;
+    outline: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #9a2b45;
+    box-shadow: 0 0 0 2px rgba(154,43,69,.08);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #555560;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.primary-button,
+.secondary-button,
+.small-button,
+.delete-button {
+    border-radius: 6px;
+    font-weight: 700;
+    letter-spacing: .8px;
+}
+
+.primary-button {
+    width: 100%;
+    margin-top: 4px;
+    padding: 13px;
+    border: 1px solid #a32b46;
+    background: #862039;
+    color: #fff;
+}
+
+.primary-button:hover {
+    background: #a32946;
+}
+
+.secondary-button {
+    width: 100%;
+    margin-top: 9px;
+    padding: 11px;
+    border: 1px solid #33333e;
+    background: #111118;
+    color: #dddde4;
+}
+
+.secondary-button:hover {
+    background: #181820;
+}
+
+.login-status {
+    min-height: 20px;
+    margin-top: 18px;
+    color: #73737e;
+    text-align: center;
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+.login-status.error,
+.error {
+    color: #ed7187 !important;
+}
+
+.success {
+    color: #78c995 !important;
+}
+
+/* =========================
+   APP
+========================= */
+
+#appScreen {
+    position: relative;
+    z-index: 5;
+    min-height: 100vh;
+}
+
+/* =========================
+   TOPBAR
+========================= */
+
+.topbar {
+    position: relative;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 16px 24px;
+    background: rgba(7,7,11,.96);
+    border-bottom: 1px solid rgba(255,255,255,.07);
+}
+
+.brand {
+    color: #fff;
+    font-size: 17px;
+    font-weight: 900;
+    letter-spacing: 3px;
+}
+
+.brand-sub {
+    margin-top: 4px;
+    color: #656570;
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+
+.user-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #858591;
+    font-size: 11px;
+}
+
+.small-button {
+    padding: 8px 12px;
+    border: 1px solid #34343e;
+    background: #101017;
+    color: #d9d9df;
+    font-size: 10px;
+}
+
+.small-button:hover {
+    background: #181820;
+}
+
+.small-button.gold {
+    border-color: #806324;
+    color: #e0c36b;
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.dashboard {
+    display: flex;
+    min-height: calc(100vh - 68px);
+}
+
+.sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    padding: 22px 14px;
+    background: rgba(7,7,11,.97);
+    border-right: 1px solid rgba(255,255,255,.06);
+}
+
+.sidebar-title {
+    margin: 0 10px 12px;
+    color: #62626d;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.nav-button {
+    display: block;
+    width: 100%;
+    margin-bottom: 5px;
+    padding: 11px 12px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    background: transparent;
+    color: #8d8d99;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.nav-button:hover {
+    background: #101016;
+    color: #fff;
+}
+
+.nav-button.active {
+    border-color: rgba(160,35,55,.35);
+    background: rgba(130,20,40,.13);
+    color: #fff;
+}
+
+.sidebar-divider {
+    height: 1px;
+    margin: 17px 8px;
+    background: rgba(255,255,255,.07);
+}
+
+.content {
+    flex: 1;
+    min-width: 0;
+    padding: 26px;
+}
+
+.page {
+    width: 100%;
+}
+
+.panel {
+    margin-bottom: 20px;
+    padding: 22px;
+    background: rgba(9,9,14,.94);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 9px;
+    box-shadow: 0 10px 35px rgba(0,0,0,.12);
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 19px;
+}
+
+.panel-title {
+    margin: 0;
+    color: #fff;
+    font-size: 17px;
+    letter-spacing: 2px;
+}
+
+.panel-subtitle {
+    margin-top: 5px;
+    color: #666671;
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.stat-card {
+    padding: 16px;
+    background: #0c0c12;
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 6px;
+}
+
+.stat-label {
+    color: #686873;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.stat-number {
+    margin-top: 7px;
+    color: #eeeef2;
+    font-size: 27px;
+    font-weight: 800;
+}
+
+.stat-number.gold {
+    color: #d7b458;
+}
+
+/* =========================
+   GROUPS
+========================= */
+
+.selected-group {
+    padding: 14px;
+    background: #0b0b11;
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 6px;
+}
+
+.selected-group-name {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.selected-group-code {
+    margin-top: 5px;
+    color: #62626d;
+    font-size: 10px;
+}
+
+.selected-group-code strong {
+    color: #76a9ec;
+}
+
+.group-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(210px,1fr));
+    gap: 10px;
+}
+
+.group-card {
+    padding: 16px;
+    background: #0b0b10;
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 7px;
+}
+
+.group-card:hover {
+    border-color: rgba(170,35,55,.35);
+}
+
+.group-card.selected {
+    border-color: rgba(170,35,55,.55);
+    background: rgba(120,20,40,.08);
+}
+
+.group-card-title {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.group-card-meta {
+    margin-top: 6px;
+    color: #696974;
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+.group-card-actions {
+    display: flex;
+    gap: 7px;
+    margin-top: 13px;
+}
+
+.delete-button {
+    padding: 8px 12px;
+    border: 1px solid #762739;
+    background: #200c12;
+    color: #ed7188;
+    font-size: 10px;
+}
+
+.delete-button:hover {
+    background: #32101a;
+}
+
+/* =========================
+   QUICK ACTIONS
+========================= */
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.quick-action {
+    padding: 16px;
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 6px;
+    background: #0b0b10;
+    cursor: pointer;
+}
+
+.quick-action:hover {
+    border-color: rgba(170,35,55,.4);
+    background: #101016;
+}
+
+.quick-title {
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.quick-text {
+    margin-top: 7px;
+    color: #686873;
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+/* =========================
+   PLAYERS
+========================= */
+
+.player-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 14px;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+}
+
+.player-name {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.player-email {
+    margin-top: 4px;
+    color: #656570;
+    font-size: 9px;
+}
+
+/* =========================
+   MATCHES
+========================= */
+
+.match-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 14px;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+    cursor: pointer;
+}
+
+.match-row:hover {
+    background: #0d0d13;
+}
+
+.match-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.match-factions {
+    color: #eeeef2;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.match-factions span {
+    margin: 0 6px;
+    color: #5c5c67;
+    font-size: 8px;
+}
+
+.match-opponent {
+    margin-top: 5px;
+    color: #666671;
+    font-size: 9px;
+}
+
+.match-vp {
+    min-width: 65px;
+    color: #fff;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.match-result {
+    min-width: 65px;
+    text-align: center;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.match-result.win {
+    color: #7aca95;
+}
+
+.match-result.loss {
+    color: #ed7188;
+}
+
+.match-result.draw {
+    color: #d7b458;
+}
+
+/* =========================
+   AVAILABLE GROUPS
+========================= */
+
+.available-group {
+    padding: 15px;
+    background: #0b0b10;
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 7px;
+}
+
+.available-group strong {
+    display: block;
+    color: #fff;
+    font-size: 12px;
+}
+
+.available-group span {
+    display: block;
+    margin-top: 5px;
+    color: #656570;
+    font-size: 9px;
+}
+
+.available-group button {
+    margin-top: 12px;
+}
+
+/* =========================
+   MODALS
+========================= */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0,0,0,.78);
+}
+
+.modal-box {
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 27px;
+    background: #09090e;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 9px;
+}
+
+.modal-title {
+    margin: 0 0 20px;
+    color: #fff;
+    font-size: 17px;
+    letter-spacing: 2px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.modal-buttons .primary-button,
+.modal-buttons .secondary-button {
+    width: auto;
+    margin-top: 0;
+}
+
+.modal-status {
+    min-height: 20px;
+    margin-top: 13px;
+    color: #777783;
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 11px 0;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+    font-size: 11px;
+}
+
+.detail-row strong {
+    color: #686873;
+}
+
+.detail-row span {
+    color: #eeeef2;
+    text-align: right;
+}
+
+.empty {
+    padding: 28px;
+    color: #62626d;
+    text-align: center;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 850px) {
+    .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .dashboard {
+        display: block;
+    }
+
+    .sidebar {
+        display: flex;
+        width: 100%;
+        padding: 10px;
+        overflow-x: auto;
+        border-right: 0;
+        border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+
+    .sidebar-title,
+    .sidebar-divider {
+        display: none;
+    }
+
+    .nav-button {
+        flex: 0 0 auto;
+        width: auto;
+        margin: 0;
+        white-space: nowrap;
+    }
+
+    .content {
+        padding: 15px;
+    }
+
+    .stat-grid,
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 550px) {
+    #loginScreen {
+        padding: 12px;
+    }
+
+    .login-card {
+        padding: 28px 20px;
+    }
+
+    .login-logo {
+        font-size: 25px;
+        letter-spacing: 3px;
+    }
+
+    .content {
+        padding: 10px;
+    }
+
+    .panel {
+        padding: 15px;
+    }
+
+    .panel-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .match-row {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .modal {
+        padding: 10px;
+    }
+
+    .modal-box {
+        padding: 20px;
+    }
+}
+</style>
 
 </head>
 
 <body>
 
-<!-- =========================================================
-     BACKGROUND
-========================================================= -->
-
-<div class="background-effects">
+<div class="background">
     <div class="red-glow"></div>
-    <div class="blue-glow"></div>
+    <div class="purple-glow"></div>
 </div>
 
-
-<!-- =========================================================
+<!-- =========================
      LOGIN
-========================================================= -->
+========================= -->
 
-<div
-    id="loginScreen"
-    class="screen"
->
+<div id="loginScreen">
 
-    <div class="login-card">
+```
+<div class="login-card">
 
-        <h1 class="login-logo">
-            ROUTINE 721
-        </h1>
+    <h1 class="login-logo">ROUTINE 721</h1>
 
-        <div class="login-subtitle">
-            WAR ROOM
-        </div>
+    <div class="login-subtitle">WAR ROOM</div>
 
-        <div class="login-divider"></div>
+    <div class="login-divider"></div>
 
+    <div id="loginView">
 
-        <!-- LOGIN -->
-
-        <div id="loginView">
-
-            <h2 class="login-heading">
-                ACCESS TERMINAL
-            </h2>
-
-            <p class="login-description">
-                Enter the War Room command network.
-            </p>
-
-
-            <div class="form-group">
-
-                <label for="loginEmail">
-                    Email
-                </label>
-
-                <input
-                    id="loginEmail"
-                    type="email"
-                    placeholder="your@email.com"
-                    autocomplete="email"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="loginPassword">
-                    Password
-                </label>
-
-                <input
-                    id="loginPassword"
-                    type="password"
-                    placeholder="Password"
-                    autocomplete="current-password"
-                >
-
-            </div>
-
-
-            <button
-                id="signInButton"
-                class="primary-button"
-                type="button"
-            >
-                SIGN IN
-            </button>
-
-
-            <button
-                id="showCreateButton"
-                class="secondary-button"
-                type="button"
-            >
-                CREATE ACCOUNT
-            </button>
-
-        </div>
-
-
-        <!-- CREATE ACCOUNT -->
-
-        <div
-            id="createView"
-            class="hidden"
-        >
-
-            <h2 class="login-heading">
-                CREATE PLAYER
-            </h2>
-
-            <p class="login-description">
-                Create your Routine 721 player account.
-            </p>
-
-
-            <div class="form-group">
-
-                <label for="createName">
-                    Display Name
-                </label>
-
-                <input
-                    id="createName"
-                    type="text"
-                    placeholder="Your player name"
-                    autocomplete="name"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="createEmail">
-                    Email
-                </label>
-
-                <input
-                    id="createEmail"
-                    type="email"
-                    placeholder="your@email.com"
-                    autocomplete="email"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="createPassword">
-                    Password
-                </label>
-
-                <input
-                    id="createPassword"
-                    type="password"
-                    placeholder="Minimum 6 characters"
-                    autocomplete="new-password"
-                >
-
-            </div>
-
-
-            <button
-                id="createAccountButton"
-                class="primary-button"
-                type="button"
-            >
-                CREATE PLAYER ACCOUNT
-            </button>
-
-
-            <button
-                id="backToLoginButton"
-                class="secondary-button"
-                type="button"
-            >
-                BACK TO SIGN IN
-            </button>
-
-        </div>
-
-
-        <div
-            id="loginStatus"
-            class="login-status"
-        >
-            Connecting to War Room...
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- =========================================================
-     APPLICATION
-========================================================= -->
-
-<div
-    id="appScreen"
-    class="hidden"
->
-
-
-    <!-- TOP BAR -->
-
-    <header class="topbar">
-
-        <div>
-
-            <div class="brand">
-                ROUTINE 721
-            </div>
-
-            <div class="brand-sub">
-                WAR ROOM COMMAND NETWORK
-            </div>
-
-        </div>
-
-
-        <div class="user-area">
-
-            <span id="currentUserEmail">
-                -
-            </span>
-
-            <button
-                id="signOutButton"
-                class="small-button"
-                type="button"
-            >
-                SIGN OUT
-            </button>
-
-        </div>
-
-    </header>
-
-
-    <!-- DASHBOARD -->
-
-    <div class="dashboard">
-
-
-        <!-- SIDEBAR -->
-
-        <aside class="sidebar">
-
-            <div class="sidebar-title">
-                COMMAND
-            </div>
-
-
-            <button
-                class="nav-button active"
-                data-page="overview"
-                type="button"
-            >
-                WAR ROOM
-            </button>
-
-
-            <button
-                class="nav-button"
-                data-page="groups"
-                type="button"
-            >
-                GROUPS
-            </button>
-
-
-            <button
-                class="nav-button"
-                data-page="players"
-                type="button"
-            >
-                PLAYERS
-            </button>
-
-
-            <div class="sidebar-divider"></div>
-
-
-            <button
-                id="createGroupButton"
-                class="nav-button"
-                type="button"
-            >
-                + CREATE GROUP
-            </button>
-
-
-            <button
-                id="joinGroupButton"
-                class="nav-button"
-                type="button"
-            >
-                + JOIN GROUP
-            </button>
-
-        </aside>
-
-
-        <!-- CONTENT -->
-
-        <main class="content">
-
-
-            <!-- =================================================
-                 WAR ROOM
-            ================================================== -->
-
-            <section
-                id="overviewPage"
-                class="page"
-            >
-
-                <div class="panel">
-
-                    <div class="panel-header">
-
-                        <div>
-
-                            <h1 class="panel-title">
-                                WAR ROOM
-                            </h1>
-
-                            <div class="panel-subtitle">
-                                COMMAND OVERVIEW
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="stat-grid">
-
-
-                        <div class="stat-card">
-
-                            <div class="stat-label">
-                                GROUPS
-                            </div>
-
-                            <div
-                                id="groupsStat"
-                                class="stat-number gold"
-                            >
-                                0
-                            </div>
-
-                        </div>
-
-
-                        <div class="stat-card">
-
-                            <div class="stat-label">
-                                PLAYERS
-                            </div>
-
-                            <div
-                                id="playersStat"
-                                class="stat-number"
-                            >
-                                0
-                            </div>
-
-                        </div>
-
-
-                        <div class="stat-card">
-
-                            <div class="stat-label">
-                                GROUP STATUS
-                            </div>
-
-                            <div
-                                id="statusStat"
-                                class="stat-number"
-                            >
-                                READY
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="selected-group">
-
-                        <div class="selected-group-name">
-
-                            <span id="selectedGroupName">
-                                NO GROUP SELECTED
-                            </span>
-
-                        </div>
-
-                        <div class="selected-group-code">
-
-                            Group ID:
-
-                            <strong id="selectedGroupCode">
-                                —
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="quick-actions">
-
-
-                        <div
-                            id="quickCreate"
-                            class="quick-action"
-                            role="button"
-                            tabindex="0"
-                        >
-
-                            <div class="quick-title">
-                                CREATE GROUP
-                            </div>
-
-                            <div class="quick-text">
-                                Create your own Routine 721 war group.
-                            </div>
-
-                        </div>
-
-
-                        <div
-                            id="quickPlayers"
-                            class="quick-action"
-                            role="button"
-                            tabindex="0"
-                        >
-
-                            <div class="quick-title">
-                                VIEW PLAYERS
-                            </div>
-
-                            <div class="quick-text">
-                                View players in the command network.
-                            </div>
-
-                        </div>
-
-
-                        <div
-                            id="quickJoin"
-                            class="quick-action"
-                            role="button"
-                            tabindex="0"
-                        >
-
-                            <div class="quick-title">
-                                JOIN GROUP
-                            </div>
-
-                            <div class="quick-text">
-                                Join an available group without an invite code.
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- YOUR GROUPS -->
-
-                <div class="panel">
-
-                    <div class="panel-header">
-
-                        <div>
-
-                            <h2 class="panel-title">
-                                YOUR GROUPS
-                            </h2>
-
-                            <div class="panel-subtitle">
-                                ACTIVE WAR GROUPS
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div
-                        id="overviewGroups"
-                        class="group-grid"
-                    >
-
-                        <div class="empty">
-                            Loading groups...
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- =================================================
-                 GROUP MANAGEMENT
-            ================================================== -->
-
-            <section
-                id="groupsPage"
-                class="page hidden"
-            >
-
-                <div class="panel">
-
-                    <div class="panel-header">
-
-                        <div>
-
-                            <h2 class="panel-title">
-                                GROUP MANAGEMENT
-                            </h2>
-
-                            <div class="panel-subtitle">
-                                WAR GROUPS
-                            </div>
-
-                        </div>
-
-
-                        <button
-                            id="groupsCreate"
-                            class="small-button"
-                            type="button"
-                        >
-                            CREATE GROUP
-                        </button>
-
-                    </div>
-
-
-                    <div class="group-management-bar">
-
-                        <div>
-                            Select a group to manage it.
-                        </div>
-
-                    </div>
-
-
-                    <div
-                        id="groupsList"
-                        class="group-grid"
-                    >
-
-                        <div class="empty">
-                            Loading groups...
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- =================================================
-                 PLAYERS
-            ================================================== -->
-
-            <section
-                id="playersPage"
-                class="page hidden"
-            >
-
-                <div class="panel">
-
-                    <div class="panel-header">
-
-                        <div>
-
-                            <h2 class="panel-title">
-                                PLAYERS
-                            </h2>
-
-                            <div class="panel-subtitle">
-                                ROUTINE 721 PLAYERS
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div id="playersList">
-
-                        <div class="empty">
-                            Loading players...
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-        </main>
-
-    </div>
-
-</div>
-
-
-<!-- =========================================================
-     CREATE GROUP MODAL
-========================================================= -->
-
-<div
-    id="groupModal"
-    class="modal hidden"
->
-
-    <div class="modal-box">
-
-        <h2
-            id="modalTitle"
-            class="modal-title"
-        >
-            CREATE GROUP
-        </h2>
-
-
-        <div id="createGroupForm">
-
-            <div class="form-group">
-
-                <label for="groupName">
-                    Group Name
-                </label>
-
-                <input
-                    id="groupName"
-                    type="text"
-                    placeholder="Routine 721 League"
-                >
-
-            </div>
-
-        </div>
-
-
-        <div class="modal-buttons">
-
-            <button
-                id="modalCancel"
-                class="secondary-button"
-                type="button"
-            >
-                CANCEL
-            </button>
-
-
-            <button
-                id="modalConfirm"
-                class="primary-button"
-                type="button"
-            >
-                CREATE GROUP
-            </button>
-
-        </div>
-
-
-        <div
-            id="modalStatus"
-            class="modal-status"
-        ></div>
-
-    </div>
-
-</div>
-
-
-<!-- =========================================================
-     JOIN GROUP MODAL
-========================================================= -->
-
-<div
-    id="joinModal"
-    class="modal hidden"
->
-
-    <div class="modal-box">
-
-        <h2 class="modal-title">
-            JOIN GROUP
-        </h2>
-
+        <h2 class="login-heading">ACCESS TERMINAL</h2>
 
         <p class="login-description">
-            Select a group below to join it. No invite code is required.
+            Enter the War Room command network.
         </p>
 
-
-        <div
-            id="availableGroups"
-            class="available-groups"
-        >
-
-            <div class="empty">
-                Loading available groups...
-            </div>
-
-        </div>
-
-
-        <div class="modal-buttons">
-
-            <button
-                id="joinModalClose"
-                class="secondary-button"
-                type="button"
+        <div class="form-group">
+            <label for="loginEmail">Email</label>
+            <input
+                id="loginEmail"
+                type="email"
+                placeholder="your@email.com"
+                autocomplete="email"
             >
-                CLOSE
-            </button>
-
         </div>
 
+        <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input
+                id="loginPassword"
+                type="password"
+                placeholder="Password"
+                autocomplete="current-password"
+            >
+        </div>
 
-        <div
-            id="joinStatus"
-            class="modal-status"
-        ></div>
+        <button id="signInButton" class="primary-button">
+            SIGN IN
+        </button>
+
+        <button id="showCreateButton" class="secondary-button">
+            CREATE ACCOUNT
+        </button>
+
+    </div>
+
+    <div id="createView" class="hidden">
+
+        <h2 class="login-heading">CREATE PLAYER</h2>
+
+        <p class="login-description">
+            Create your Routine 721 player account.
+        </p>
+
+        <div class="form-group">
+            <label for="createName">Display Name</label>
+            <input
+                id="createName"
+                type="text"
+                placeholder="Your player name"
+                autocomplete="name"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="createEmail">Email</label>
+            <input
+                id="createEmail"
+                type="email"
+                placeholder="your@email.com"
+                autocomplete="email"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="createPassword">Password</label>
+            <input
+                id="createPassword"
+                type="password"
+                placeholder="Minimum 6 characters"
+                autocomplete="new-password"
+            >
+        </div>
+
+        <button id="createAccountButton" class="primary-button">
+            CREATE PLAYER ACCOUNT
+        </button>
+
+        <button id="backToLoginButton" class="secondary-button">
+            BACK TO SIGN IN
+        </button>
+
+    </div>
+
+    <div id="loginStatus" class="login-status">
+        Connecting to War Room...
+    </div>
+
+</div>
+```
+
+</div>
+
+<!-- =========================
+     APPLICATION
+========================= -->
+
+<div id="appScreen" class="hidden">
+
+<header class="topbar">
+
+```
+<div>
+    <div class="brand">ROUTINE 721</div>
+    <div class="brand-sub">WAR ROOM COMMAND NETWORK</div>
+</div>
+
+<div class="user-area">
+    <span id="currentUserEmail">-</span>
+
+    <button id="signOutButton" class="small-button">
+        SIGN OUT
+    </button>
+</div>
+```
+
+</header>
+
+<div class="dashboard">
+
+<aside class="sidebar">
+
+```
+<div class="sidebar-title">COMMAND</div>
+
+<button class="nav-button active" data-page="overview">
+    WAR ROOM
+</button>
+
+<button class="nav-button" data-page="groups">
+    GROUPS
+</button>
+
+<button class="nav-button" data-page="players">
+    PLAYERS
+</button>
+
+<button class="nav-button" data-page="matches">
+    MATCHES
+</button>
+
+<div class="sidebar-divider"></div>
+
+<button id="createGroupButton" class="nav-button">
+    + CREATE GROUP
+</button>
+
+<button id="joinGroupButton" class="nav-button">
+    + JOIN GROUP
+</button>
+```
+
+</aside>
+
+<main class="content">
+
+<!-- WAR ROOM -->
+
+<section id="overviewPage" class="page">
+
+<div class="panel">
+
+```
+<div class="panel-header">
+    <div>
+        <h1 class="panel-title">WAR ROOM</h1>
+        <div class="panel-subtitle">COMMAND OVERVIEW</div>
+    </div>
+</div>
+
+<div class="stat-grid">
+
+    <div class="stat-card">
+        <div class="stat-label">GROUPS</div>
+        <div id="groupsStat" class="stat-number gold">0</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-label">PLAYERS</div>
+        <div id="playersStat" class="stat-number">0</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-label">MATCHES PLAYED</div>
+        <div id="matchesStat" class="stat-number">0</div>
+    </div>
+
+</div>
+
+<div class="selected-group">
+
+    <div class="selected-group-name">
+        <span id="selectedGroupName">
+            NO GROUP SELECTED
+        </span>
+    </div>
+
+    <div class="selected-group-code">
+        Group:
+        <strong id="selectedGroupCode">—</strong>
+    </div>
+
+</div>
+
+<div class="quick-actions">
+
+    <div id="quickCreate" class="quick-action">
+        <div class="quick-title">CREATE GROUP</div>
+        <div class="quick-text">
+            Create your own Routine 721 war group.
+        </div>
+    </div>
+
+    <div id="quickPlayers" class="quick-action">
+        <div class="quick-title">VIEW PLAYERS</div>
+        <div class="quick-text">
+            View players in the command network.
+        </div>
+    </div>
+
+    <div id="quickMatch" class="quick-action">
+        <div class="quick-title">RECORD MATCH</div>
+        <div class="quick-text">
+            Record factions, victory points and results.
+        </div>
+    </div>
+
+</div>
+```
+
+</div>
+
+<div class="panel">
+
+```
+<div class="panel-header">
+    <div>
+        <h2 class="panel-title">YOUR GROUPS</h2>
+        <div class="panel-subtitle">ACTIVE WAR GROUPS</div>
+    </div>
+</div>
+
+<div id="overviewGroups" class="group-grid"></div>
+```
+
+</div>
+
+<div class="panel">
+
+```
+<div class="panel-header">
+
+    <div>
+        <h2 class="panel-title">RECENT BATTLES</h2>
+        <div class="panel-subtitle">LATEST WAR RECORDS</div>
+    </div>
+
+    <button id="viewAllMatchesButton" class="small-button">
+        VIEW ALL MATCHES
+    </button>
+
+</div>
+
+<div id="recentMatchesList"></div>
+```
+
+</div>
+
+</section>
+
+<!-- GROUPS -->
+
+<section id="groupsPage" class="page hidden">
+
+<div class="panel">
+
+```
+<div class="panel-header">
+
+    <div>
+        <h2 class="panel-title">GROUP MANAGEMENT</h2>
+        <div class="panel-subtitle">WAR GROUPS</div>
+    </div>
+
+    <button id="groupsCreateButton" class="small-button gold">
+        CREATE GROUP
+    </button>
+
+</div>
+
+<div id="groupsList" class="group-grid"></div>
+```
+
+</div>
+
+</section>
+
+<!-- PLAYERS -->
+
+<section id="playersPage" class="page hidden">
+
+<div class="panel">
+
+```
+<div class="panel-header">
+    <div>
+        <h2 class="panel-title">PLAYERS</h2>
+        <div class="panel-subtitle">ROUTINE 721 PLAYERS</div>
+    </div>
+</div>
+
+<div id="playersList">
+    <div class="empty">Loading players...</div>
+</div>
+```
+
+</div>
+
+</section>
+
+<!-- MATCHES -->
+
+<section id="matchesPage" class="page hidden">
+
+<div class="panel">
+
+```
+<div class="panel-header">
+
+    <div>
+        <h2 class="panel-title">MATCHES</h2>
+        <div class="panel-subtitle">SHARED WAR RECORD</div>
+    </div>
+
+    <button id="recordMatchButton" class="small-button gold">
+        RECORD MATCH
+    </button>
+
+</div>
+
+<div id="matchesList"></div>
+```
+
+</div>
+
+</section>
+
+</main>
+</div>
+</div>
+
+<!-- =========================
+     ACTION MODAL
+========================= -->
+
+<div id="actionModal" class="modal hidden">
+
+<div class="modal-box">
+
+```
+<h2 id="modalTitle" class="modal-title">
+    CREATE GROUP
+</h2>
+
+<div id="createGroupForm" class="hidden">
+
+    <div class="form-group">
+
+        <label for="groupName">
+            Group Name
+        </label>
+
+        <input
+            id="groupName"
+            type="text"
+            placeholder="Routine 721 League"
+        >
 
     </div>
 
 </div>
 
+<div id="joinGroupForm" class="hidden">
+
+    <p class="login-description">
+        Select a group below to join it.
+        No invite code is required.
+    </p>
+
+    <div id="availableGroups" class="group-grid"></div>
+
+</div>
+
+<div id="matchForm" class="hidden">
+
+    <div class="form-group">
+        <label for="matchPlayerFaction">Your Faction</label>
+        <input id="matchPlayerFaction" type="text">
+    </div>
+
+    <div class="form-group">
+        <label for="matchOpponentFaction">Opponent Faction</label>
+        <input id="matchOpponentFaction" type="text">
+    </div>
+
+    <div class="form-group">
+        <label for="matchOpponent">Opponent</label>
+        <input id="matchOpponent" type="text">
+    </div>
+
+    <div class="form-group">
+        <label for="matchPlayerVP">Your Victory Points</label>
+        <input id="matchPlayerVP" type="number" min="0">
+    </div>
+
+    <div class="form-group">
+        <label for="matchOpponentVP">Opponent Victory Points</label>
+        <input id="matchOpponentVP" type="number" min="0">
+    </div>
+
+    <div class="form-group">
+        <label for="matchResult">Result</label>
+
+        <select id="matchResult">
+            <option value="win">VICTORY</option>
+            <option value="loss">DEFEAT</option>
+            <option value="draw">DRAW</option>
+        </select>
+
+    </div>
+
+    <div class="form-group">
+        <label for="matchNotes">Notes</label>
+        <textarea id="matchNotes"></textarea>
+    </div>
+
+</div>
+
+<div class="modal-buttons">
+
+    <button id="modalCancel" class="secondary-button">
+        CLOSE
+    </button>
+
+    <button id="modalConfirm" class="primary-button">
+        CONFIRM
+    </button>
+
+</div>
+
+<div id="modalStatus" class="modal-status"></div>
+```
+
+</div>
+
+</div>
+
+<!-- =========================
+     MATCH DETAILS
+========================= -->
+
+<div id="detailsModal" class="modal hidden">
+
+<div class="modal-box">
+
+```
+<h2 class="modal-title">
+    BATTLE DETAILS
+</h2>
+
+<div id="matchDetailsContent"></div>
+
+<div class="modal-buttons">
+
+    <button id="matchDetailsClose" class="secondary-button">
+        CLOSE
+    </button>
+
+</div>
+```
+
+</div>
+
+</div>
 
 <script>
+(function () {
+
+"use strict";
 
 /* =========================================================
    SUPABASE
@@ -784,86 +1407,1328 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_Wt8h6fNelT6zrzf-Dm8FXw_cdSGylaz";
 
-
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
         SUPABASE_KEY
     );
 
-
 /* =========================================================
    STATE
 ========================================================= */
 
 let currentUser = null;
-let selectedGroup = null;
-let userGroups = [];
-
+let currentPlayer = null;
+let groups = [];
+let matches = [];
+let players = [];
+let selectedGroupId = null;
+let currentModal = null;
 
 /* =========================================================
-   DOM HELPERS
+   HELPERS
 ========================================================= */
 
-function $(id) {
-    return document.getElementById(id);
+const $ = id => document.getElementById(id);
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
+function setLoginStatus(message, error = false) {
 
-function show(element) {
+    const el = $("loginStatus");
 
-    if (!element) {
-        return;
-    }
+    el.textContent = message;
 
-    element.classList.remove("hidden");
+    el.className =
+        "login-status" +
+        (error ? " error" : "");
 }
 
+function setModalStatus(message, error = false) {
 
-function hide(element) {
+    const el = $("modalStatus");
 
-    if (!element) {
-        return;
-    }
+    el.textContent = message;
 
-    element.classList.add("hidden");
+    el.className =
+        "modal-status" +
+        (error ? " error" : "");
 }
 
+function playerName(player) {
 
-function setStatus(element, message, error = false) {
-
-    if (!element) {
-        return;
+    if (!player) {
+        return "Unknown Player";
     }
 
-    element.textContent = message;
+    /*
+       IMPORTANT:
+       We intentionally do NOT use player.display_name
+       directly because your database does not have that
+       column.
+    */
 
-    element.classList.toggle(
-        "error",
-        error
+    return (
+        player.name ||
+        player.username ||
+        player.player_name ||
+        player.full_name ||
+        player.email ||
+        "Player"
     );
 }
 
+function getPlayerId(player) {
 
-/* =========================================================
-   LOGIN / APP VISIBILITY
-========================================================= */
+    if (!player) return null;
 
-function showLogin() {
-
-    show($("loginScreen"));
-    hide($("appScreen"));
-
+    return (
+        player.id ||
+        player.user_id ||
+        player.uid ||
+        null
+    );
 }
 
+function generateInviteCode() {
+
+    const chars =
+        "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+    let result = "";
+
+    for (let i = 0; i < 8; i++) {
+
+        result +=
+            chars[
+                Math.floor(
+                    Math.random() * chars.length
+                )
+            ];
+    }
+
+    return result;
+}
 
 function showApp() {
 
-    hide($("loginScreen"));
-    show($("appScreen"));
-
+    $("loginScreen").classList.add("hidden");
+    $("appScreen").classList.remove("hidden");
 }
 
+function showLogin() {
+
+    $("appScreen").classList.add("hidden");
+    $("loginScreen").classList.remove("hidden");
+}
+
+function openModal(type) {
+
+    currentModal = type;
+
+    $("actionModal").classList.remove("hidden");
+
+    $("createGroupForm").classList.add("hidden");
+    $("joinGroupForm").classList.add("hidden");
+    $("matchForm").classList.add("hidden");
+
+    $("modalStatus").textContent = "";
+
+    if (type === "create") {
+
+        $("modalTitle").textContent = "CREATE GROUP";
+
+        $("createGroupForm")
+            .classList
+            .remove("hidden");
+
+        $("modalConfirm")
+            .classList
+            .remove("hidden");
+
+    }
+
+    if (type === "join") {
+
+        $("modalTitle").textContent = "JOIN GROUP";
+
+        $("joinGroupForm")
+            .classList
+            .remove("hidden");
+
+        $("modalConfirm")
+            .classList
+            .add("hidden");
+
+        loadAvailableGroups();
+
+    }
+
+    if (type === "match") {
+
+        $("modalTitle").textContent = "RECORD MATCH";
+
+        $("matchForm")
+            .classList
+            .remove("hidden");
+
+        $("modalConfirm")
+            .classList
+            .remove("hidden");
+
+    }
+}
+
+function closeModal() {
+
+    $("actionModal").classList.add("hidden");
+
+    currentModal = null;
+}
+
+function showDetails(match) {
+
+    const result =
+        String(
+            match.result ||
+            match.match_result ||
+            ""
+        ).toLowerCase();
+
+    const resultLabel =
+        result === "win"
+            ? "VICTORY"
+            : result === "loss"
+                ? "DEFEAT"
+                : "DRAW";
+
+    $("matchDetailsContent").innerHTML = `
+
+        <div class="detail-row">
+            <strong>Your faction</strong>
+            <span>${escapeHTML(
+                match.player_faction ||
+                match.your_faction ||
+                "-"
+            )}</span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Opponent faction</strong>
+            <span>${escapeHTML(
+                match.opponent_faction ||
+                "-"
+            )}</span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Opponent</strong>
+            <span>${escapeHTML(
+                match.opponent ||
+                match.opponent_name ||
+                "-"
+            )}</span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Victory points</strong>
+            <span>
+                ${escapeHTML(
+                    match.player_vp ??
+                    match.your_vp ??
+                    "-"
+                )}
+                -
+                ${escapeHTML(
+                    match.opponent_vp ??
+                    "-"
+                )}
+            </span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Result</strong>
+            <span>${resultLabel}</span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Notes</strong>
+            <span>${escapeHTML(
+                match.notes ||
+                "-"
+            )}</span>
+        </div>
+    `;
+
+    $("detailsModal")
+        .classList
+        .remove("hidden");
+}
+
+function closeDetails() {
+
+    $("detailsModal")
+        .classList
+        .add("hidden");
+}
+
+/* =========================================================
+   PLAYER PROFILE
+========================================================= */
+
+async function ensurePlayerProfile() {
+
+    if (!currentUser) {
+        return null;
+    }
+
+    /*
+       We first retrieve the existing row without asking for
+       a specific column such as display_name.
+    */
+
+    try {
+
+        const existing =
+            await supabaseClient
+                .from("players")
+                .select("*")
+                .eq("id", currentUser.id)
+                .maybeSingle();
+
+        if (!existing.error && existing.data) {
+
+            currentPlayer = existing.data;
+
+            return currentPlayer;
+        }
+
+        /*
+           Some schemas use user_id instead of id.
+        */
+
+        const byUser =
+            await supabaseClient
+                .from("players")
+                .select("*")
+                .eq("user_id", currentUser.id)
+                .maybeSingle();
+
+        if (!byUser.error && byUser.data) {
+
+            currentPlayer = byUser.data;
+
+            return currentPlayer;
+        }
+
+        /*
+           If no profile exists, attempt creation using the
+           most common columns. We intentionally do not fail
+           the entire application if the table schema differs.
+        */
+
+        const insertData = {
+            id: currentUser.id,
+            email: currentUser.email || null
+        };
+
+        const created =
+            await supabaseClient
+                .from("players")
+                .insert(insertData)
+                .select("*")
+                .single();
+
+        if (!created.error && created.data) {
+
+            currentPlayer = created.data;
+
+            return currentPlayer;
+        }
+
+        /*
+           Last fallback: try user_id.
+        */
+
+        const fallbackData = {
+            user_id: currentUser.id,
+            email: currentUser.email || null
+        };
+
+        const fallback =
+            await supabaseClient
+                .from("players")
+                .insert(fallbackData)
+                .select("*")
+                .single();
+
+        if (!fallback.error && fallback.data) {
+
+            currentPlayer = fallback.data;
+
+            return currentPlayer;
+        }
+
+        console.warn(
+            "Could not automatically create player profile:",
+            created.error || fallback.error
+        );
+
+        /*
+           Do not crash the application if profile creation is
+           blocked by RLS. The rest of the dashboard can still
+           load.
+        */
+
+        return null;
+
+    } catch (error) {
+
+        console.warn(
+            "Player profile check failed:",
+            error
+        );
+
+        return null;
+    }
+}
+
+/* =========================================================
+   LOAD GROUPS
+========================================================= */
+
+async function loadGroups() {
+
+    const result =
+        await supabaseClient
+            .from("groups")
+            .select("*")
+            .order("created_at", {
+                ascending: false
+            });
+
+    if (result.error) {
+
+        console.error(
+            "Could not load groups:",
+            result.error
+        );
+
+        groups = [];
+
+        return;
+    }
+
+    groups = result.data || [];
+
+    /*
+       Determine membership using group_members when possible.
+    */
+
+    if (currentUser) {
+
+        const members =
+            await supabaseClient
+                .from("group_members")
+                .select("*")
+                .eq("user_id", currentUser.id);
+
+        if (!members.error) {
+
+            const memberRows =
+                members.data || [];
+
+            const memberGroupIds =
+                new Set(
+                    memberRows.map(
+                        row =>
+                            row.group_id ||
+                            row.group ||
+                            row.id
+                    )
+                );
+
+            groups =
+                groups.filter(
+                    group =>
+                        group.created_by === currentUser.id ||
+                        group.owner_id === currentUser.id ||
+                        memberGroupIds.has(group.id)
+                );
+        }
+    }
+
+    if (
+        !selectedGroupId &&
+        groups.length
+    ) {
+
+        selectedGroupId =
+            groups[0].id;
+    }
+
+    if (
+        selectedGroupId &&
+        !groups.some(
+            group =>
+                group.id === selectedGroupId
+        )
+    ) {
+
+        selectedGroupId =
+            groups.length
+                ? groups[0].id
+                : null;
+    }
+
+    renderGroups();
+}
+
+/* =========================================================
+   RENDER GROUPS
+========================================================= */
+
+function renderGroups() {
+
+    $("groupsStat").textContent =
+        groups.length;
+
+    const selected =
+        groups.find(
+            group =>
+                group.id === selectedGroupId
+        );
+
+    $("selectedGroupName").textContent =
+        selected
+            ? (
+                selected.name ||
+                selected.group_name ||
+                "Unnamed Group"
+            )
+            : "NO GROUP SELECTED";
+
+    $("selectedGroupCode").textContent =
+        selected
+            ? (
+                selected.invite_code ||
+                selected.id ||
+                "—"
+            )
+            : "—";
+
+    const html =
+        groups.length
+            ? groups.map(group => {
+
+                const name =
+                    group.name ||
+                    group.group_name ||
+                    "Unnamed Group";
+
+                const selectedClass =
+                    group.id === selectedGroupId
+                        ? " selected"
+                        : "";
+
+                return `
+
+                    <div
+                        class="group-card${selectedClass}"
+                    >
+
+                        <div class="group-card-title">
+                            ${escapeHTML(name)}
+                        </div>
+
+                        <div class="group-card-meta">
+                            GROUP
+                        </div>
+
+                        <div class="group-card-actions">
+
+                            <button
+                                class="small-button"
+                                data-select-group="${escapeHTML(group.id)}"
+                            >
+                                SELECT
+                            </button>
+
+                            <button
+                                class="delete-button"
+                                data-delete-group="${escapeHTML(group.id)}"
+                            >
+                                REMOVE
+                            </button>
+
+                        </div>
+
+                    </div>
+                `;
+
+            }).join("")
+            : `
+                <div class="empty">
+                    You are not in any groups yet.
+                </div>
+            `;
+
+    $("overviewGroups").innerHTML = html;
+    $("groupsList").innerHTML = html;
+}
+
+/* =========================================================
+   DELETE GROUP
+========================================================= */
+
+async function deleteGroup(groupId) {
+
+    const group =
+        groups.find(
+            g => g.id === groupId
+        );
+
+    if (!group) {
+        return;
+    }
+
+    const name =
+        group.name ||
+        group.group_name ||
+        "this group";
+
+    if (
+        !window.confirm(
+            `Remove "${name}"?`
+        )
+    ) {
+        return;
+    }
+
+    /*
+       Remove memberships first.
+       RLS may permit the owner to delete these.
+    */
+
+    const memberDelete =
+        await supabaseClient
+            .from("group_members")
+            .delete()
+            .eq("group_id", groupId);
+
+    if (memberDelete.error) {
+
+        console.warn(
+            "Could not remove group members:",
+            memberDelete.error
+        );
+    }
+
+    const result =
+        await supabaseClient
+            .from("groups")
+            .delete()
+            .eq("id", groupId);
+
+    if (result.error) {
+
+        alert(
+            "Could not remove group: " +
+            result.error.message
+        );
+
+        return;
+    }
+
+    if (selectedGroupId === groupId) {
+        selectedGroupId = null;
+    }
+
+    await loadGroups();
+}
+
+/* =========================================================
+   AVAILABLE GROUPS
+========================================================= */
+
+async function loadAvailableGroups() {
+
+    $("availableGroups").innerHTML =
+        `<div class="empty">Loading available groups...</div>`;
+
+    const result =
+        await supabaseClient
+            .from("groups")
+            .select("*")
+            .order("created_at", {
+                ascending: false
+            });
+
+    if (result.error) {
+
+        $("availableGroups").innerHTML =
+            `<div class="empty error">
+                Could not load available groups.
+            </div>`;
+
+        return;
+    }
+
+    const available =
+        result.data || [];
+
+    if (!available.length) {
+
+        $("availableGroups").innerHTML =
+            `<div class="empty">
+                No groups are available yet.
+            </div>`;
+
+        return;
+    }
+
+    $("availableGroups").innerHTML =
+        available.map(group => {
+
+            const name =
+                group.name ||
+                group.group_name ||
+                "Unnamed Group";
+
+            return `
+
+                <div class="available-group">
+
+                    <strong>
+                        ${escapeHTML(name)}
+                    </strong>
+
+                    <span>
+                        Open to all players
+                    </span>
+
+                    <button
+                        class="small-button gold"
+                        data-join-group="${escapeHTML(group.id)}"
+                    >
+                        JOIN GROUP
+                    </button>
+
+                </div>
+            `;
+
+        }).join("");
+}
+
+/* =========================================================
+   JOIN GROUP
+========================================================= */
+
+async function joinGroup(groupId) {
+
+    if (!currentUser) {
+        return;
+    }
+
+    setModalStatus("Joining group...");
+
+    /*
+       We intentionally do not use an invite code.
+    */
+
+    const row = {
+        group_id: groupId,
+        user_id: currentUser.id
+    };
+
+    const result =
+        await supabaseClient
+            .from("group_members")
+            .insert(row);
+
+    if (result.error) {
+
+        /*
+           If already a member, treat it as success.
+        */
+
+        if (
+            result.error.code === "23505"
+        ) {
+
+            setModalStatus(
+                "You are already a member of this group."
+            );
+
+            setTimeout(
+                closeModal,
+                900
+            );
+
+            return;
+        }
+
+        setModalStatus(
+            "Could not join group: " +
+            result.error.message,
+            true
+        );
+
+        return;
+    }
+
+    setModalStatus(
+        "Group joined successfully."
+    );
+
+    await loadGroups();
+
+    setTimeout(
+        closeModal,
+        700
+    );
+}
+
+/* =========================================================
+   CREATE GROUP
+========================================================= */
+
+async function createGroup() {
+
+    const name =
+        $("groupName")
+            .value
+            .trim();
+
+    if (!name) {
+
+        setModalStatus(
+            "Enter a group name.",
+            true
+        );
+
+        return;
+    }
+
+    if (!currentUser) {
+
+        setModalStatus(
+            "You are not signed in.",
+            true
+        );
+
+        return;
+    }
+
+    setModalStatus(
+        "Creating group..."
+    );
+
+    /*
+       The database currently requires invite_code and
+       created_by, so we still provide them.
+
+       The application DOES NOT use the invite code for joining.
+    */
+
+    const row = {
+        name: name,
+        invite_code: generateInviteCode(),
+        created_by: currentUser.id
+    };
+
+    const result =
+        await supabaseClient
+            .from("groups")
+            .insert(row)
+            .select("*")
+            .single();
+
+    if (result.error) {
+
+        setModalStatus(
+            "Could not create group: " +
+            result.error.message,
+            true
+        );
+
+        return;
+    }
+
+    /*
+       Automatically add creator to the group.
+    */
+
+    const group =
+        result.data;
+
+    const member =
+        await supabaseClient
+            .from("group_members")
+            .insert({
+                group_id: group.id,
+                user_id: currentUser.id
+            });
+
+    if (
+        member.error &&
+        member.error.code !== "23505"
+    ) {
+
+        console.warn(
+            "Group created but creator membership failed:",
+            member.error
+        );
+    }
+
+    selectedGroupId =
+        group.id;
+
+    await loadGroups();
+
+    setModalStatus(
+        "Group created successfully."
+    );
+
+    setTimeout(
+        closeModal,
+        700
+    );
+}
+
+/* =========================================================
+   LOAD PLAYERS
+========================================================= */
+
+async function loadPlayers() {
+
+    $("playersList").innerHTML =
+        `<div class="empty">
+            Loading players...
+        </div>`;
+
+    const result =
+        await supabaseClient
+            .from("players")
+            .select("*");
+
+    if (result.error) {
+
+        console.error(
+            "Could not load players:",
+            result.error
+        );
+
+        $("playersList").innerHTML =
+            `<div class="empty error">
+                Could not load players.
+            </div>`;
+
+        $("playersStat").textContent = "0";
+
+        return;
+    }
+
+    players =
+        result.data || [];
+
+    $("playersStat").textContent =
+        players.length;
+
+    if (!players.length) {
+
+        $("playersList").innerHTML =
+            `<div class="empty">
+                No player profiles found.
+            </div>`;
+
+        return;
+    }
+
+    $("playersList").innerHTML =
+        players.map(player => {
+
+            return `
+
+                <div class="player-row">
+
+                    <div>
+
+                        <div class="player-name">
+                            ${escapeHTML(
+                                playerName(player)
+                            )}
+                        </div>
+
+                        <div class="player-email">
+                            ${escapeHTML(
+                                player.email || ""
+                            )}
+                        </div>
+
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+}
+
+/* =========================================================
+   LOAD MATCHES
+========================================================= */
+
+async function loadMatches() {
+
+    const result =
+        await supabaseClient
+            .from("matches")
+            .select("*")
+            .order("created_at", {
+                ascending: false
+            });
+
+    if (result.error) {
+
+        console.error(
+            "Could not load matches:",
+            result.error
+        );
+
+        matches = [];
+
+        renderMatches();
+
+        return;
+    }
+
+    matches =
+        result.data || [];
+
+    renderMatches();
+}
+
+/* =========================================================
+   RENDER MATCHES
+========================================================= */
+
+function renderMatches() {
+
+    $("matchesStat").textContent =
+        matches.length;
+
+    const html =
+        matches.length
+            ? matches.map(
+                (match, index) => {
+
+                    const result =
+                        String(
+                            match.result ||
+                            match.match_result ||
+                            ""
+                        ).toLowerCase();
+
+                    const resultLabel =
+                        result === "win"
+                            ? "VICTORY"
+                            : result === "loss"
+                                ? "DEFEAT"
+                                : "DRAW";
+
+                    const playerFaction =
+                        match.player_faction ||
+                        match.your_faction ||
+                        "Unknown";
+
+                    const opponentFaction =
+                        match.opponent_faction ||
+                        "Unknown";
+
+                    const opponent =
+                        match.opponent ||
+                        match.opponent_name ||
+                        "Unknown";
+
+                    const playerVP =
+                        match.player_vp ??
+                        match.your_vp ??
+                        "-";
+
+                    const opponentVP =
+                        match.opponent_vp ??
+                        "-";
+
+                    return `
+
+                        <div
+                            class="match-row"
+                            tabindex="0"
+                            data-match-index="${index}"
+                        >
+
+                            <div class="match-main">
+
+                                <div class="match-factions">
+                                    ${escapeHTML(
+                                        playerFaction
+                                    )}
+
+                                    <span>VS</span>
+
+                                    ${escapeHTML(
+                                        opponentFaction
+                                    )}
+                                </div>
+
+                                <div class="match-opponent">
+                                    ${escapeHTML(
+                                        opponent
+                                    )}
+                                </div>
+
+                            </div>
+
+                            <div class="match-vp">
+                                ${escapeHTML(
+                                    playerVP
+                                )}
+                                -
+                                ${escapeHTML(
+                                    opponentVP
+                                )}
+                            </div>
+
+                            <div
+                                class="match-result ${result}"
+                            >
+                                ${resultLabel}
+                            </div>
+
+                        </div>
+                    `;
+                }
+            ).join("")
+            : `
+                <div class="empty">
+                    No battles recorded yet.
+                </div>
+            `;
+
+    $("matchesList").innerHTML =
+        html;
+
+    const recent =
+        matches.slice(0, 5);
+
+    $("recentMatchesList").innerHTML =
+        recent.length
+            ? recent.map(
+                (match, index) => {
+
+                    const result =
+                        String(
+                            match.result ||
+                            match.match_result ||
+                            ""
+                        ).toLowerCase();
+
+                    const label =
+                        result === "win"
+                            ? "VICTORY"
+                            : result === "loss"
+                                ? "DEFEAT"
+                                : "DRAW";
+
+                    return `
+
+                        <div
+                            class="match-row"
+                            tabindex="0"
+                            data-recent-index="${index}"
+                        >
+
+                            <div class="match-main">
+
+                                <div class="match-factions">
+                                    ${escapeHTML(
+                                        match.player_faction ||
+                                        match.your_faction ||
+                                        "Unknown"
+                                    )}
+
+                                    <span>VS</span>
+
+                                    ${escapeHTML(
+                                        match.opponent_faction ||
+                                        "Unknown"
+                                    )}
+                                </div>
+
+                                <div class="match-opponent">
+                                    ${escapeHTML(
+                                        match.opponent ||
+                                        match.opponent_name ||
+                                        "Unknown"
+                                    )}
+                                </div>
+
+                            </div>
+
+                            <div class="match-result ${result}">
+                                ${label}
+                            </div>
+
+                        </div>
+                    `;
+                }
+            ).join("")
+            : `
+                <div class="empty">
+                    No battles recorded yet.
+                </div>
+            `;
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function showPage(pageName) {
+
+    document
+        .querySelectorAll(".page")
+        .forEach(page => {
+
+            page.classList.add("hidden");
+        });
+
+    const target =
+        $(
+            pageName + "Page"
+        );
+
+    if (target) {
+        target.classList.remove("hidden");
+    }
+
+    document
+        .querySelectorAll(".nav-button[data-page]")
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.page === pageName
+            );
+        });
+
+    if (pageName === "players") {
+        loadPlayers();
+    }
+
+    if (pageName === "matches") {
+        loadMatches();
+    }
+
+    if (pageName === "groups") {
+        loadGroups();
+    }
+}
+
+/* =========================================================
+   MATCH RECORD
+========================================================= */
+
+async function recordMatch() {
+
+    if (!currentUser) {
+        return;
+    }
+
+    const row = {
+
+        player_faction:
+            $("matchPlayerFaction")
+                .value
+                .trim(),
+
+        opponent_faction:
+            $("matchOpponentFaction")
+                .value
+                .trim(),
+
+        opponent:
+            $("matchOpponent")
+                .value
+                .trim(),
+
+        player_vp:
+            Number(
+                $("matchPlayerVP")
+                    .value || 0
+            ),
+
+        opponent_vp:
+            Number(
+                $("matchOpponentVP")
+                    .value || 0
+            ),
+
+        result:
+            $("matchResult")
+                .value,
+
+        notes:
+            $("matchNotes")
+                .value
+                .trim(),
+
+        created_by:
+            currentUser.id,
+
+        group_id:
+            selectedGroupId || null
+    };
+
+    setModalStatus(
+        "Recording match..."
+    );
+
+    const result =
+        await supabaseClient
+            .from("matches")
+            .insert(row);
+
+    if (result.error) {
+
+        setModalStatus(
+            "Could not record match: " +
+            result.error.message,
+            true
+        );
+
+        return;
+    }
+
+    await loadMatches();
+
+    setModalStatus(
+        "Match recorded."
+    );
+
+    setTimeout(
+        closeModal,
+        700
+    );
+}
 
 /* =========================================================
    AUTH
@@ -872,16 +2737,17 @@ function showApp() {
 async function signIn() {
 
     const email =
-        $("loginEmail").value.trim();
+        $("loginEmail")
+            .value
+            .trim();
 
     const password =
-        $("loginPassword").value;
-
+        $("loginPassword")
+            .value;
 
     if (!email || !password) {
 
-        setStatus(
-            $("loginStatus"),
+        setLoginStatus(
             "Enter your email and password.",
             true
         );
@@ -889,1693 +2755,517 @@ async function signIn() {
         return;
     }
 
-
-    setStatus(
-        $("loginStatus"),
-        "Authenticating..."
+    setLoginStatus(
+        "Signing in..."
     );
 
+    const result =
+        await supabaseClient.auth.signInWithPassword({
+            email,
+            password
+        });
 
-    const {
-        data,
-        error
-    } = await supabaseClient.auth.signInWithPassword({
+    if (result.error) {
 
-        email,
-        password
-
-    });
-
-
-    if (error) {
-
-        setStatus(
-            $("loginStatus"),
-            error.message,
+        setLoginStatus(
+            result.error.message,
             true
         );
 
         return;
     }
 
-
     currentUser =
-        data.user;
+        result.data.user;
 
-
-    await afterLogin();
-
+    await initializeApplication();
 }
-
 
 async function createAccount() {
 
     const name =
-        $("createName").value.trim();
+        $("createName")
+            .value
+            .trim();
 
     const email =
-        $("createEmail").value.trim();
+        $("createEmail")
+            .value
+            .trim();
 
     const password =
-        $("createPassword").value;
+        $("createPassword")
+            .value;
 
+    if (!name || !email || !password) {
 
-    if (!name) {
-
-        setStatus(
-            $("loginStatus"),
-            "Enter a player name.",
+        setLoginStatus(
+            "Complete all fields.",
             true
         );
 
         return;
     }
-
-
-    if (!email || !password) {
-
-        setStatus(
-            $("loginStatus"),
-            "Enter an email and password.",
-            true
-        );
-
-        return;
-    }
-
 
     if (password.length < 6) {
 
-        setStatus(
-            $("loginStatus"),
-            "Password must be at least 6 characters.",
+        setLoginStatus(
+            "Password must contain at least 6 characters.",
             true
         );
 
         return;
     }
 
-
-    setStatus(
-        $("loginStatus"),
+    setLoginStatus(
         "Creating player account..."
     );
 
-
-    /*
-       IMPORTANT:
-
-       We deliberately do NOT insert display_name
-       into public.players because your current
-       players table does not contain that column.
-
-       The player's name is kept in auth metadata.
-    */
-
-    const {
-        data,
-        error
-    } =
+    const result =
         await supabaseClient.auth.signUp({
-
             email,
             password,
-
             options: {
-
                 data: {
-                    player_name: name
+                    name: name,
+                    username: name
                 }
-
             }
-
         });
 
+    if (result.error) {
 
-    if (error) {
-
-        setStatus(
-            $("loginStatus"),
-            error.message,
+        setLoginStatus(
+            result.error.message,
             true
         );
 
         return;
     }
 
+    if (result.data.user) {
 
-    if (!data.session) {
+        currentUser =
+            result.data.user;
 
-        setStatus(
-            $("loginStatus"),
-            "Account created. Check your email to confirm your account."
-        );
+        /*
+           Profile creation is attempted automatically,
+           but the application will not crash if RLS blocks it.
+        */
 
-        return;
+        await ensurePlayerProfile();
+
+        if (result.data.session) {
+
+            await initializeApplication();
+
+        } else {
+
+            setLoginStatus(
+                "Account created. Check your email to confirm your account."
+            );
+        }
+
     }
-
-
-    currentUser =
-        data.user;
-
-
-    await afterLogin();
-
 }
-
 
 async function signOut() {
 
     await supabaseClient.auth.signOut();
 
     currentUser = null;
-    selectedGroup = null;
-    userGroups = [];
+    currentPlayer = null;
 
     showLogin();
 
+    setLoginStatus(
+        "Signed out."
+    );
 }
 
-
 /* =========================================================
-   AFTER LOGIN
+   INITIALIZE
 ========================================================= */
 
-async function afterLogin() {
-
-    showApp();
-
+async function initializeApplication() {
 
     if (!currentUser) {
-
-        const {
-            data
-        } =
-            await supabaseClient.auth.getUser();
-
-        currentUser =
-            data.user;
-    }
-
-
-    if (!currentUser) {
-
-        showLogin();
-
         return;
     }
 
+    showApp();
 
     $("currentUserEmail").textContent =
         currentUser.email || "-";
 
-
     /*
-       We intentionally do NOT require a players.display_name
-       column here.
-
-       The application can operate from the authenticated
-       Supabase user ID.
+       Profile errors no longer stop the dashboard.
     */
+
+    await ensurePlayerProfile();
 
     await loadGroups();
 
     await loadPlayers();
 
-    updateOverview();
+    await loadMatches();
 
+    showPage("overview");
 }
 
-
 /* =========================================================
-   GROUPS
+   EVENTS
 ========================================================= */
 
-async function loadGroups() {
+$("signInButton")
+    .addEventListener(
+        "click",
+        signIn
+    );
 
-    if (!currentUser) {
-        return;
-    }
+$("createAccountButton")
+    .addEventListener(
+        "click",
+        createAccount
+    );
 
+$("signOutButton")
+    .addEventListener(
+        "click",
+        signOut
+    );
 
-    /*
-       First obtain memberships.
+$("showCreateButton")
+    .addEventListener(
+        "click",
+        function () {
 
-       This supports the common schema:
+            $("loginView")
+                .classList
+                .add("hidden");
 
-       group_members
-       - group_id
-       - user_id
+            $("createView")
+                .classList
+                .remove("hidden");
 
-       If your table uses player_id instead,
-       the error is displayed cleanly rather than
-       breaking the entire application.
-    */
+            setLoginStatus("");
+        }
+    );
 
-    const {
-        data: memberships,
-        error: membershipError
-    } =
-        await supabaseClient
-            .from("group_members")
-            .select("group_id")
-            .eq("user_id", currentUser.id);
+$("backToLoginButton")
+    .addEventListener(
+        "click",
+        function () {
 
+            $("createView")
+                .classList
+                .add("hidden");
 
-    if (membershipError) {
+            $("loginView")
+                .classList
+                .remove("hidden");
 
-        /*
-           Some installations use player_id instead of user_id.
-           Try that automatically.
-        */
+            setLoginStatus("");
+        }
+    );
 
-        const {
-            data: playerMemberships,
-            error: playerMembershipError
-        } =
-            await supabaseClient
-                .from("group_members")
-                .select("group_id")
-                .eq("player_id", currentUser.id);
+document
+    .querySelectorAll(
+        ".nav-button[data-page]"
+    )
+    .forEach(button => {
 
+        button.addEventListener(
+            "click",
+            function () {
 
-        if (playerMembershipError) {
+                showPage(
+                    this.dataset.page
+                );
+            }
+        );
+    });
 
-            console.error(
-                "Could not load group memberships:",
-                membershipError,
-                playerMembershipError
+$("createGroupButton")
+    .addEventListener(
+        "click",
+        () => openModal("create")
+    );
+
+$("groupsCreateButton")
+    .addEventListener(
+        "click",
+        () => openModal("create")
+    );
+
+$("joinGroupButton")
+    .addEventListener(
+        "click",
+        () => openModal("join")
+    );
+
+$("quickCreate")
+    .addEventListener(
+        "click",
+        () => openModal("create")
+    );
+
+$("quickPlayers")
+    .addEventListener(
+        "click",
+        () => showPage("players")
+    );
+
+$("quickMatch")
+    .addEventListener(
+        "click",
+        () => openModal("match")
+    );
+
+$("recordMatchButton")
+    .addEventListener(
+        "click",
+        () => openModal("match")
+    );
+
+$("viewAllMatchesButton")
+    .addEventListener(
+        "click",
+        () => showPage("matches")
+    );
+
+$("modalCancel")
+    .addEventListener(
+        "click",
+        closeModal
+    );
+
+$("modalConfirm")
+    .addEventListener(
+        "click",
+        async function () {
+
+            if (currentModal === "create") {
+                await createGroup();
+            }
+
+            if (currentModal === "match") {
+                await recordMatch();
+            }
+        }
+    );
+
+$("matchDetailsClose")
+    .addEventListener(
+        "click",
+        closeDetails
+    );
+
+/* =========================
+   GROUP BUTTON EVENTS
+========================= */
+
+document.addEventListener(
+    "click",
+    async function (event) {
+
+        const select =
+            event.target.closest(
+                "[data-select-group]"
             );
 
+        if (select) {
 
-            userGroups = [];
+            selectedGroupId =
+                select.dataset.selectGroup;
 
             renderGroups();
 
             return;
         }
 
-
-        await loadGroupsByMemberships(
-            playerMemberships || []
-        );
-
-        return;
-    }
-
-
-    await loadGroupsByMemberships(
-        memberships || []
-    );
-
-}
-
-
-async function loadGroupsByMemberships(
-    memberships
-) {
-
-    const ids =
-        memberships
-            .map(row => row.group_id)
-            .filter(Boolean);
-
-
-    if (!ids.length) {
-
-        userGroups = [];
-
-        renderGroups();
-
-        return;
-    }
-
-
-    const {
-        data: groups,
-        error
-    } =
-        await supabaseClient
-            .from("groups")
-            .select("*")
-            .in("id", ids)
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
+        const remove =
+            event.target.closest(
+                "[data-delete-group]"
             );
 
+        if (remove) {
 
-    if (error) {
-
-        console.error(
-            "Could not load groups:",
-            error
-        );
-
-        userGroups = [];
-
-        renderGroups();
-
-        return;
-    }
-
-
-    userGroups =
-        groups || [];
-
-
-    renderGroups();
-
-}
-
-
-/* =========================================================
-   AVAILABLE GROUPS
-========================================================= */
-
-async function loadAvailableGroups() {
-
-    setStatus(
-        $("joinStatus"),
-        "Loading available groups..."
-    );
-
-
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
-            .from("groups")
-            .select("*")
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
+            await deleteGroup(
+                remove.dataset.deleteGroup
             );
 
-
-    if (error) {
-
-        setStatus(
-            $("joinStatus"),
-            "Could not load available groups: " +
-            error.message,
-            true
-        );
-
-        return;
-    }
-
-
-    const container =
-        $("availableGroups");
-
-
-    container.innerHTML = "";
-
-
-    if (!data || !data.length) {
-
-        container.innerHTML =
-            '<div class="empty">No groups are currently available.</div>';
-
-        return;
-    }
-
-
-    const memberIds =
-        new Set(
-            userGroups.map(
-                group => group.id
-            )
-        );
-
-
-    data.forEach(group => {
-
-        const row =
-            document.createElement("div");
-
-        row.className =
-            "available-group";
-
-
-        const info =
-            document.createElement("div");
-
-
-        const name =
-            document.createElement("strong");
-
-        name.textContent =
-            group.name || "Unnamed Group";
-
-
-        const meta =
-            document.createElement("span");
-
-        meta.textContent =
-            memberIds.has(group.id)
-                ? "ALREADY A MEMBER"
-                : "OPEN GROUP";
-
-
-        if (memberIds.has(group.id)) {
-            meta.classList.add("member-label");
+            return;
         }
 
-
-        info.appendChild(name);
-        info.appendChild(meta);
-
-
-        const button =
-            document.createElement("button");
-
-        button.type =
-            "button";
-
-        button.className =
-            "small-button";
-
-
-        if (memberIds.has(group.id)) {
-
-            button.textContent =
-                "JOINED";
-
-            button.disabled =
-                true;
-
-        } else {
-
-            button.textContent =
-                "JOIN";
-
-            button.addEventListener(
-                "click",
-                () => joinGroup(group)
+        const join =
+            event.target.closest(
+                "[data-join-group]"
             );
 
+        if (join) {
+
+            await joinGroup(
+                join.dataset.joinGroup
+            );
+
+            return;
         }
 
-
-        row.appendChild(info);
-        row.appendChild(button);
-
-
-        container.appendChild(row);
-
-    });
-
-}
-
-
-/* =========================================================
-   CREATE GROUP
-========================================================= */
-
-async function createGroup() {
-
-    if (!currentUser) {
-
-        setStatus(
-            $("modalStatus"),
-            "You must be signed in.",
-            true
-        );
-
-        return;
-    }
-
-
-    const name =
-        $("groupName").value.trim();
-
-
-    if (!name) {
-
-        setStatus(
-            $("modalStatus"),
-            "Enter a group name.",
-            true
-        );
-
-        return;
-    }
-
-
-    setStatus(
-        $("modalStatus"),
-        "Creating group..."
-    );
-
-
-    /*
-       Your groups table requires:
-
-       created_by
-       invite_code
-
-       We therefore provide both values.
-
-       Invite codes are generated for database compatibility,
-       but users do NOT need them to join.
-    */
-
-    const inviteCode =
-        generateInviteCode();
-
-
-    const {
-        data: group,
-        error
-    } =
-        await supabaseClient
-            .from("groups")
-            .insert({
-
-                name: name,
-
-                created_by:
-                    currentUser.id,
-
-                invite_code:
-                    inviteCode
-
-            })
-            .select()
-            .single();
-
-
-    if (error) {
-
-        console.error(
-            "Could not create group:",
-            error
-        );
-
-
-        setStatus(
-            $("modalStatus"),
-            "Could not create group: " +
-            error.message,
-            true
-        );
-
-        return;
-    }
-
-
-    /*
-       Add creator as member.
-
-       First try user_id.
-    */
-
-    let {
-        error: memberError
-    } =
-        await supabaseClient
-            .from("group_members")
-            .insert({
-
-                group_id:
-                    group.id,
-
-                user_id:
-                    currentUser.id
-
-            });
-
-
-    /*
-       If the installation uses player_id,
-       try that instead.
-    */
-
-    if (memberError) {
-
-        const fallback =
-            await supabaseClient
-                .from("group_members")
-                .insert({
-
-                    group_id:
-                        group.id,
-
-                    player_id:
-                        currentUser.id
-
-                });
-
-
-        memberError =
-            fallback.error;
-    }
-
-
-    if (memberError) {
-
-        console.error(
-            "Group created but membership failed:",
-            memberError
-        );
-
-
-        setStatus(
-            $("modalStatus"),
-            "Group was created, but membership could not be added: " +
-            memberError.message,
-            true
-        );
-
-        await loadGroups();
-
-        return;
-    }
-
-
-    selectedGroup =
-        group;
-
-
-    closeGroupModal();
-
-
-    await loadGroups();
-
-    updateOverview();
-
-}
-
-
-/* =========================================================
-   JOIN GROUP
-========================================================= */
-
-async function joinGroup(group) {
-
-    if (!currentUser) {
-
-        setStatus(
-            $("joinStatus"),
-            "You must be signed in.",
-            true
-        );
-
-        return;
-    }
-
-
-    setStatus(
-        $("joinStatus"),
-        "Joining " +
-        (group.name || "group") +
-        "..."
-    );
-
-
-    let {
-        error
-    } =
-        await supabaseClient
-            .from("group_members")
-            .insert({
-
-                group_id:
-                    group.id,
-
-                user_id:
-                    currentUser.id
-
-            });
-
-
-    if (error) {
-
-        /*
-           Try player_id schema.
-        */
-
-        const fallback =
-            await supabaseClient
-                .from("group_members")
-                .insert({
-
-                    group_id:
-                        group.id,
-
-                    player_id:
-                        currentUser.id
-
-                });
-
-
-        error =
-            fallback.error;
-    }
-
-
-    if (error) {
-
-        setStatus(
-            $("joinStatus"),
-            "Could not join group: " +
-            error.message,
-            true
-        );
-
-        return;
-    }
-
-
-    selectedGroup =
-        group;
-
-
-    await loadGroups();
-
-    updateOverview();
-
-    setStatus(
-        $("joinStatus"),
-        "Joined " +
-        (group.name || "group") +
-        " successfully."
-    );
-
-
-    setTimeout(
-        closeJoinModal,
-        700
-    );
-
-}
-
-
-/* =========================================================
-   REMOVE GROUP
-========================================================= */
-
-async function removeGroup(group) {
-
-    if (!group) {
-        return;
-    }
-
-
-    const confirmed =
-        window.confirm(
-            'Remove "' +
-            (group.name || "this group") +
-            '"?\n\nThis will remove the group from the database.'
-        );
-
-
-    if (!confirmed) {
-        return;
-    }
-
-
-    /*
-       Remove memberships first.
-
-       We try user_id and then player_id.
-    */
-
-    let membershipDelete =
-        await supabaseClient
-            .from("group_members")
-            .delete()
-            .eq("group_id", group.id);
-
-
-    if (membershipDelete.error) {
-
-        console.warn(
-            "Could not remove group members:",
-            membershipDelete.error
-        );
-
-    }
-
-
-    /*
-       Delete the actual group.
-
-       RLS must allow the authenticated creator
-       to delete their own group.
-    */
-
-    const {
-        error
-    } =
-        await supabaseClient
-            .from("groups")
-            .delete()
-            .eq("id", group.id)
-            .eq(
-                "created_by",
-                currentUser.id
+        const match =
+            event.target.closest(
+                "[data-match-index]"
             );
 
+        if (match) {
 
-    if (error) {
+            const index =
+                Number(
+                    match.dataset.matchIndex
+                );
 
-        window.alert(
-            "Could not remove group:\n\n" +
-            error.message
-        );
+            if (matches[index]) {
+                showDetails(
+                    matches[index]
+                );
+            }
 
-        return;
-    }
-
-
-    if (
-        selectedGroup &&
-        selectedGroup.id === group.id
-    ) {
-
-        selectedGroup =
-            null;
-
-    }
-
-
-    await loadGroups();
-
-    updateOverview();
-
-}
-
-
-/* =========================================================
-   GROUP RENDERING
-========================================================= */
-
-function renderGroups() {
-
-    renderGroupContainer(
-        $("groupsList"),
-        true
-    );
-
-    renderGroupContainer(
-        $("overviewGroups"),
-        false
-    );
-
-}
-
-
-function renderGroupContainer(
-    container,
-    management
-) {
-
-    if (!container) {
-        return;
-    }
-
-
-    container.innerHTML = "";
-
-
-    if (!userGroups.length) {
-
-        container.innerHTML =
-            '<div class="empty">You are not currently in any groups.</div>';
-
-        return;
-    }
-
-
-    userGroups.forEach(group => {
-
-        const card =
-            document.createElement("div");
-
-        card.className =
-            "group-card";
-
-
-        if (
-            selectedGroup &&
-            selectedGroup.id === group.id
-        ) {
-
-            card.classList.add(
-                "selected"
-            );
-
+            return;
         }
 
+        const recent =
+            event.target.closest(
+                "[data-recent-index]"
+            );
 
-        const title =
-            document.createElement("div");
+        if (recent) {
 
-        title.className =
-            "group-card-title";
+            const index =
+                Number(
+                    recent.dataset.recentIndex
+                );
 
-        title.textContent =
-            group.name || "Unnamed Group";
-
-
-        const meta =
-            document.createElement("div");
-
-        meta.className =
-            "group-card-meta";
-
-        meta.textContent =
-            "GROUP ID: " +
-            group.id;
-
-
-        card.appendChild(title);
-        card.appendChild(meta);
-
-
-        const actions =
-            document.createElement("div");
-
-        actions.className =
-            "group-card-actions";
-
-
-        const selectButton =
-            document.createElement("button");
-
-        selectButton.type =
-            "button";
-
-        selectButton.className =
-            "small-button";
-
-        selectButton.textContent =
-            "SELECT";
-
-
-        selectButton.addEventListener(
-            "click",
-            () => {
-
-                selectedGroup =
-                    group;
-
-                renderGroups();
-
-                updateOverview();
-
+            if (matches[index]) {
+                showDetails(
+                    matches[index]
+                );
             }
-        );
-
-
-        actions.appendChild(
-            selectButton
-        );
-
-
-        /*
-           Remove group is available in
-           Group Management only.
-        */
-
-        if (management) {
-
-            const removeButton =
-                document.createElement("button");
-
-            removeButton.type =
-                "button";
-
-            removeButton.className =
-                "delete-button";
-
-            removeButton.textContent =
-                "REMOVE GROUP";
-
-
-            removeButton.addEventListener(
-                "click",
-                () => removeGroup(group)
-            );
-
-
-            actions.appendChild(
-                removeButton
-            );
-
         }
-
-
-        card.appendChild(actions);
-
-        container.appendChild(card);
-
-    });
-
-}
-
-
-/* =========================================================
-   PLAYERS
-========================================================= */
-
-async function loadPlayers() {
-
-    const container =
-        $("playersList");
-
-
-    if (!container) {
-        return;
-    }
-
-
-    /*
-       IMPORTANT:
-
-       Do not request display_name.
-
-       Your players table does not contain that column.
-
-       We request only "*" and then safely look for whichever
-       identity field your current schema actually has.
-    */
-
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
-            .from("players")
-            .select("*")
-            .limit(200);
-
-
-    if (error) {
-
-        console.error(
-            "Could not load players:",
-            error
-        );
-
-
-        container.innerHTML =
-            '<div class="empty">Could not load players.</div>';
-
-        return;
-    }
-
-
-    container.innerHTML = "";
-
-
-    if (!data || !data.length) {
-
-        container.innerHTML =
-            '<div class="empty">No player profiles found.</div>';
-
-        $("playersStat").textContent =
-            "0";
-
-        return;
-    }
-
-
-    $("playersStat").textContent =
-        String(data.length);
-
-
-    data.forEach(player => {
-
-        const row =
-            document.createElement("div");
-
-        row.className =
-            "player-row";
-
-
-        const info =
-            document.createElement("div");
-
-
-        const name =
-            document.createElement("div");
-
-        name.className =
-            "player-name";
-
-
-        /*
-           Safely support different possible schemas.
-
-           We NEVER request a specific missing column.
-        */
-
-        const playerName =
-            player.displayName ||
-            player.display_name ||
-            player.name ||
-            player.username ||
-            player.email ||
-            player.id ||
-            "PLAYER";
-
-
-        name.textContent =
-            playerName;
-
-
-        const email =
-            document.createElement("div");
-
-        email.className =
-            "player-email";
-
-
-        email.textContent =
-            player.email ||
-            "";
-
-
-        info.appendChild(name);
-        info.appendChild(email);
-
-
-        row.appendChild(info);
-
-        container.appendChild(row);
-
-    });
-
-}
-
-
-/* =========================================================
-   OVERVIEW
-========================================================= */
-
-function updateOverview() {
-
-    $("groupsStat").textContent =
-        String(userGroups.length);
-
-
-    $("statusStat").textContent =
-        userGroups.length
-            ? "ACTIVE"
-            : "READY";
-
-
-    if (selectedGroup) {
-
-        $("selectedGroupName").textContent =
-            selectedGroup.name ||
-            "SELECTED GROUP";
-
-
-        /*
-           The invite code is deliberately not
-           required for joining.
-
-           We can still display it for database
-           compatibility if it exists.
-        */
-
-        $("selectedGroupCode").textContent =
-            selectedGroup.invite_code ||
-            selectedGroup.id ||
-            "—";
-
-    } else {
-
-        $("selectedGroupName").textContent =
-            "NO GROUP SELECTED";
-
-        $("selectedGroupCode").textContent =
-            "—";
-
-    }
-
-}
-
-
-/* =========================================================
-   MODALS
-========================================================= */
-
-function openCreateGroupModal() {
-
-    $("groupName").value =
-        "";
-
-    setStatus(
-        $("modalStatus"),
-        ""
-    );
-
-
-    show(
-        $("groupModal")
-    );
-
-}
-
-
-function closeGroupModal() {
-
-    hide(
-        $("groupModal")
-    );
-
-}
-
-
-function openJoinModal() {
-
-    setStatus(
-        $("joinStatus"),
-        ""
-    );
-
-
-    show(
-        $("joinModal")
-    );
-
-
-    loadAvailableGroups();
-
-}
-
-
-function closeJoinModal() {
-
-    hide(
-        $("joinModal")
-    );
-
-}
-
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
-function switchPage(page) {
-
-    document
-        .querySelectorAll(".page")
-        .forEach(section => {
-
-            hide(section);
-
-        });
-
-
-    const target =
-        $(page + "Page");
-
-
-    if (target) {
-
-        show(target);
-
-    }
-
-
-    document
-        .querySelectorAll(".nav-button[data-page]")
-        .forEach(button => {
-
-            button.classList.toggle(
-                "active",
-                button.dataset.page === page
-            );
-
-        });
-
-
-    if (page === "players") {
-
-        loadPlayers();
-
-    }
-
-
-    if (page === "groups") {
-
-        loadGroups();
-
-    }
-
-}
-
-
-/* =========================================================
-   INVITE CODE
-========================================================= */
-
-function generateInviteCode() {
-
-    /*
-       Kept only because your current groups table
-       requires invite_code to be non-null.
-
-       Users never have to enter this code.
-    */
-
-    const chars =
-        "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-
-
-    let code =
-        "";
-
-
-    for (
-        let i = 0;
-        i < 8;
-        i++
-    ) {
-
-        code +=
-            chars[
-                Math.floor(
-                    Math.random() *
-                    chars.length
-                )
-            ];
-
-    }
-
-
-    return code;
-
-}
-
-
-/* =========================================================
-   EVENT LISTENERS
-========================================================= */
-
-function setupEvents() {
-
-
-    /* LOGIN */
-
-    $("signInButton")
-        .addEventListener(
-            "click",
-            signIn
-        );
-
-
-    $("createAccountButton")
-        .addEventListener(
-            "click",
-            createAccount
-        );
-
-
-    $("signOutButton")
-        .addEventListener(
-            "click",
-            signOut
-        );
-
-
-    $("showCreateButton")
-        .addEventListener(
-            "click",
-            () => {
-
-                hide(
-                    $("loginView")
-                );
-
-                show(
-                    $("createView")
-                );
-
-                setStatus(
-                    $("loginStatus"),
-                    ""
-                );
-
-            }
-        );
-
-
-    $("backToLoginButton")
-        .addEventListener(
-            "click",
-            () => {
-
-                hide(
-                    $("createView")
-                );
-
-                show(
-                    $("loginView")
-                );
-
-                setStatus(
-                    $("loginStatus"),
-                    ""
-                );
-
-            }
-        );
-
-
-    /* NAVIGATION */
-
-    document
-        .querySelectorAll(
-            ".nav-button[data-page]"
-        )
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    switchPage(
-                        button.dataset.page
-                    );
-
-                }
-            );
-
-        });
-
-
-    /* CREATE GROUP */
-
-    $("createGroupButton")
-        .addEventListener(
-            "click",
-            openCreateGroupModal
-        );
-
-
-    $("groupsCreate")
-        .addEventListener(
-            "click",
-            openCreateGroupModal
-        );
-
-
-    $("quickCreate")
-        .addEventListener(
-            "click",
-            openCreateGroupModal
-        );
-
-
-    /* JOIN GROUP */
-
-    $("joinGroupButton")
-        .addEventListener(
-            "click",
-            openJoinModal
-        );
-
-
-    $("quickJoin")
-        .addEventListener(
-            "click",
-            openJoinModal
-        );
-
-
-    /* MODAL */
-
-    $("modalCancel")
-        .addEventListener(
-            "click",
-            closeGroupModal
-        );
-
-
-    $("modalConfirm")
-        .addEventListener(
-            "click",
-            createGroup
-        );
-
-
-    $("joinModalClose")
-        .addEventListener(
-            "click",
-            closeJoinModal
-        );
-
-
-    /* PLAYERS */
-
-    $("quickPlayers")
-        .addEventListener(
-            "click",
-            () => {
-
-                switchPage(
-                    "players"
-                );
-
-            }
-        );
-
-
-    /* ESCAPE */
-
-    document.addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key === "Escape"
-            ) {
-
-                closeGroupModal();
-                closeJoinModal();
-
-            }
-
-        }
-    );
-
-
-    /* ENTER TO LOGIN */
-
-    $("loginPassword")
-        .addEventListener(
-            "keydown",
-            event => {
-
-                if (
-                    event.key === "Enter"
-                ) {
-
-                    signIn();
-
-                }
-
-            }
-        );
-
-
-    $("loginEmail")
-        .addEventListener(
-            "keydown",
-            event => {
-
-                if (
-                    event.key === "Enter"
-                ) {
-
-                    signIn();
-
-                }
-
-            }
-        );
-
-}
-
-
-/* =========================================================
-   AUTH STATE
-========================================================= */
-
-supabaseClient.auth.onAuthStateChange(
-    async (event, session) => {
-
-        if (session && session.user) {
-
-            currentUser =
-                session.user;
-
-            await afterLogin();
-
-        } else {
-
-            currentUser =
-                null;
-
-            showLogin();
-
-        }
-
     }
 );
 
-
 /* =========================================================
-   INITIALIZATION
+   KEYBOARD
 ========================================================= */
 
 document.addEventListener(
-    "DOMContentLoaded",
-    async () => {
-
-        setupEvents();
-
-
-        const {
-            data
-        } =
-            await supabaseClient.auth.getSession();
-
+    "keydown",
+    function (event) {
 
         if (
-            data &&
-            data.session &&
-            data.session.user
+            event.key === "Enter" &&
+            document.activeElement ===
+            $("loginPassword")
+        ) {
+
+            signIn();
+        }
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeModal();
+            closeDetails();
+        }
+    }
+);
+
+/* =========================================================
+   AUTH SESSION
+========================================================= */
+
+async function boot() {
+
+    try {
+
+        const sessionResult =
+            await supabaseClient
+                .auth
+                .getSession();
+
+        if (
+            sessionResult.data &&
+            sessionResult.data.session
         ) {
 
             currentUser =
-                data.session.user;
+                sessionResult
+                    .data
+                    .session
+                    .user;
 
-            await afterLogin();
+            await initializeApplication();
 
         } else {
 
             showLogin();
 
+            setLoginStatus(
+                "Ready."
+            );
         }
 
-    }
-);
+        supabaseClient
+            .auth
+            .onAuthStateChange(
+                async function (
+                    event,
+                    session
+                ) {
 
+                    if (
+                        event === "SIGNED_IN" &&
+                        session
+                    ) {
+
+                        currentUser =
+                            session.user;
+
+                        await initializeApplication();
+                    }
+
+                    if (
+                        event === "SIGNED_OUT"
+                    ) {
+
+                        currentUser = null;
+                        currentPlayer = null;
+
+                        showLogin();
+                    }
+                }
+            );
+
+    } catch (error) {
+
+        console.error(
+            "Application startup error:",
+            error
+        );
+
+        showLogin();
+
+        setLoginStatus(
+            "War Room could not initialize. Check the browser console for details.",
+            true
+        );
+    }
+}
+
+boot();
+
+})();
 </script>
 
 </body>
