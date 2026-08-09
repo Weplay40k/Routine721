@@ -1,21 +1,813 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Routine 721</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="style.css">
+<title>Routine 721</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 20% 10%, #3b1612 0%, transparent 35%),
+        radial-gradient(circle at 80% 90%, #24100d 0%, transparent 35%),
+        #070707;
+    color: #eee;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+    padding: 25px 6%;
+    border-bottom: 1px solid #333;
+    background: rgba(5,5,5,.95);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    color: #c9a84c;
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 5px;
+}
+
+.edition {
+    color: #777;
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+main {
+    width: 92%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 35px 0 60px;
+}
+
+.hero {
+    padding: 55px 35px;
+    border: 1px solid #3d2926;
+    border-radius: 12px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(105,30,22,.8),
+            rgba(15,15,15,.95)
+        );
+    margin-bottom: 20px;
+}
+
+.hero small {
+    color: #c9a84c;
+    letter-spacing: 3px;
+}
+
+.hero h1 {
+    font-size: 52px;
+    margin: 10px 0;
+    letter-spacing: 3px;
+}
+
+.hero p {
+    color: #aaa;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 14px;
+    margin-bottom: 15px;
+}
+
+.card {
+    background: #151515;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 22px;
+}
+
+.stat-label {
+    color: #777;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+.stat-number {
+    margin-top: 8px;
+    font-size: 32px;
+}
+
+.green {
+    color: #68c17a;
+}
+
+.red {
+    color: #d75b4a;
+}
+
+.gold {
+    color: #c9a84c;
+}
+
+.columns {
+    display: grid;
+    grid-template-columns: 1.2fr .8fr;
+    gap: 15px;
+}
+
+h2 {
+    margin-top: 0;
+    letter-spacing: 1px;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+label {
+    color: #999;
+    font-size: 12px;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    margin-top: 7px;
+    padding: 12px;
+    background: #090909;
+    color: white;
+    border: 1px solid #3a3a3a;
+    border-radius: 6px;
+}
+
+textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.full {
+    grid-column: 1 / -1;
+}
+
+button {
+    border: 0;
+    border-radius: 6px;
+    padding: 13px 18px;
+    background: #9b3024;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #c33b2c;
+}
+
+.submit {
+    grid-column: 1 / -1;
+}
+
+.player {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #292929;
+}
+
+.player:last-child {
+    border-bottom: 0;
+}
+
+.player-name {
+    font-weight: bold;
+}
+
+.player-record {
+    color: #777;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.player-rate {
+    color: #68c17a;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.history {
+    margin-top: 15px;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 750px;
+}
+
+th {
+    text-align: left;
+    color: #777;
+    font-size: 11px;
+    padding: 12px;
+    border-bottom: 1px solid #333;
+}
+
+td {
+    padding: 13px 12px;
+    border-bottom: 1px solid #252525;
+}
+
+.result {
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.result.win {
+    color: #68c17a;
+    background: #17301d;
+}
+
+.result.loss {
+    color: #d75b4a;
+    background: #351613;
+}
+
+.result.draw {
+    color: #c9a84c;
+    background: #332b13;
+}
+
+.delete {
+    padding: 6px 9px;
+    background: transparent;
+    border: 1px solid #58241e;
+    color: #d75b4a;
+}
+
+.empty {
+    color: #666;
+    text-align: center;
+    padding: 30px;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #555;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+@media(max-width:800px) {
+
+    .stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .columns {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media(max-width:550px) {
+
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    form {
+        grid-template-columns: 1fr;
+    }
+
+    .full,
+    .submit {
+        grid-column: auto;
+    }
+
+}
+
+</style>
 </head>
 
 <body>
 
-  <div id="app">
-    <h1>Routine 721</h1>
-    <p>Loading War Room...</p>
-  </div>
+<header>
 
-  <script src="app.js"></script>
+    <div>
+        <div class="logo">ROUTINE 721</div>
+        <div class="edition">
+            WARHAMMER 40,000 · 11TH EDITION
+        </div>
+    </div>
+
+</header>
+
+
+<main>
+
+<section class="hero">
+
+    <small>CAMPAIGN COMMAND</small>
+
+    <h1>WAR ROOM</h1>
+
+    <p>
+        Track your group's battles, armies and win rates.
+    </p>
+
+</section>
+
+
+<section class="stats">
+
+    <div class="card">
+        <div class="stat-label">BATTLES</div>
+        <div id="total" class="stat-number">0</div>
+    </div>
+
+    <div class="card">
+        <div class="stat-label">WINS</div>
+        <div id="wins" class="stat-number green">0</div>
+    </div>
+
+    <div class="card">
+        <div class="stat-label">LOSSES</div>
+        <div id="losses" class="stat-number red">0</div>
+    </div>
+
+    <div class="card">
+        <div class="stat-label">GROUP WIN RATE</div>
+        <div id="rate" class="stat-number gold">0%</div>
+    </div>
+
+</section>
+
+
+<section class="columns">
+
+
+<div class="card">
+
+<h2>RECORD BATTLE</h2>
+
+<form id="battleForm">
+
+<label>
+Player
+
+<input id="player" required placeholder="Your name">
+
+</label>
+
+
+<label>
+Your Army
+
+<input id="army" required placeholder="Space Marines">
+
+</label>
+
+
+<label>
+Opponent
+
+<input id="opponent" placeholder="Opponent name">
+
+</label>
+
+
+<label>
+Opponent Army
+
+<input id="enemyArmy" required placeholder="Orks">
+
+</label>
+
+
+<label>
+Result
+
+<select id="result">
+
+<option>Win</option>
+<option>Loss</option>
+<option>Draw</option>
+
+</select>
+
+</label>
+
+
+<label>
+Date
+
+<input id="date" type="date" required>
+
+</label>
+
+
+<label class="full">
+Mission
+
+<input id="mission" placeholder="Take and Hold">
+
+</label>
+
+
+<label class="full">
+Notes
+
+<textarea id="notes"></textarea>
+
+</label>
+
+
+<button class="submit">
+RECORD BATTLE
+</button>
+
+</form>
+
+</div>
+
+
+<div class="card">
+
+<h2>PLAYERS</h2>
+
+<div id="players">
+
+<div class="empty">
+No battles recorded yet.
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section class="card history">
+
+<h2>BATTLE HISTORY</h2>
+
+<div id="history">
+
+<div class="empty">
+No battles recorded yet.
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+ROUTINE 721 · WAR ROOM
+
+</footer>
+
+
+<script>
+
+let games =
+JSON.parse(
+localStorage.getItem("routine721_games") || "[]"
+);
+
+
+function save() {
+
+    localStorage.setItem(
+        "routine721_games",
+        JSON.stringify(games)
+    );
+
+}
+
+
+function stats(list) {
+
+    let wins =
+        list.filter(g => g.result === "Win").length;
+
+    let losses =
+        list.filter(g => g.result === "Loss").length;
+
+    let draws =
+        list.filter(g => g.result === "Draw").length;
+
+    let total = list.length;
+
+    let rate =
+        total
+        ? ((wins + draws * .5) / total) * 100
+        : 0;
+
+    return {
+        wins,
+        losses,
+        draws,
+        total,
+        rate
+    };
+
+}
+
+
+function render() {
+
+    const s = stats(games);
+
+
+    document.getElementById("total").textContent =
+        s.total;
+
+    document.getElementById("wins").textContent =
+        s.wins;
+
+    document.getElementById("losses").textContent =
+        s.losses;
+
+    document.getElementById("rate").textContent =
+        s.rate.toFixed(1) + "%";
+
+
+    renderPlayers();
+
+    renderHistory();
+
+}
+
+
+function renderPlayers() {
+
+    const container =
+        document.getElementById("players");
+
+
+    const names =
+        [...new Set(
+            games.map(g => g.player)
+        )];
+
+
+    if (!names.length) {
+
+        container.innerHTML =
+            `<div class="empty">
+                No battles recorded yet.
+            </div>`;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        names.map(name => {
+
+            const playerGames =
+                games.filter(
+                    g => g.player === name
+                );
+
+            const s =
+                stats(playerGames);
+
+
+            return `
+
+                <div class="player">
+
+                    <div>
+
+                        <div class="player-name">
+                            ${name}
+                        </div>
+
+                        <div class="player-record">
+                            ${s.wins}W ·
+                            ${s.losses}L ·
+                            ${s.draws}D
+                        </div>
+
+                    </div>
+
+                    <div class="player-rate">
+                        ${s.rate.toFixed(1)}%
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+function renderHistory() {
+
+    const container =
+        document.getElementById("history");
+
+
+    if (!games.length) {
+
+        container.innerHTML =
+            `<div class="empty">
+                No battles recorded yet.
+            </div>`;
+
+        return;
+
+    }
+
+
+    container.innerHTML = `
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>DATE</th>
+                        <th>PLAYER</th>
+                        <th>ARMY</th>
+                        <th>OPPONENT</th>
+                        <th>ENEMY ARMY</th>
+                        <th>RESULT</th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    ${games.map((game,index) => `
+
+                        <tr>
+
+                            <td>
+                                ${game.date}
+                            </td>
+
+                            <td>
+                                ${game.player}
+                            </td>
+
+                            <td>
+                                ${game.army}
+                            </td>
+
+                            <td>
+                                ${game.opponent || "-"}
+                            </td>
+
+                            <td>
+                                ${game.enemyArmy}
+                            </td>
+
+                            <td>
+
+                                <span class="result ${game.result.toLowerCase()}">
+                                    ${game.result}
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <button
+                                    class="delete"
+                                    onclick="deleteGame(${index})"
+                                >
+                                    DELETE
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                    `).join("")}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    `;
+
+}
+
+
+function deleteGame(index) {
+
+    games.splice(index,1);
+
+    save();
+
+    render();
+
+}
+
+
+document
+.getElementById("battleForm")
+.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+
+    games.push({
+
+        player:
+            document.getElementById("player").value,
+
+        army:
+            document.getElementById("army").value,
+
+        opponent:
+            document.getElementById("opponent").value,
+
+        enemyArmy:
+            document.getElementById("enemyArmy").value,
+
+        result:
+            document.getElementById("result").value,
+
+        date:
+            document.getElementById("date").value,
+
+        mission:
+            document.getElementById("mission").value,
+
+        notes:
+            document.getElementById("notes").value
+
+    });
+
+
+    save();
+
+    this.reset();
+
+    document.getElementById("date").value =
+        new Date()
+        .toISOString()
+        .slice(0,10);
+
+    render();
+
+});
+
+
+document.getElementById("date").value =
+    new Date()
+    .toISOString()
+    .slice(0,10);
+
+
+render();
+
+</script>
 
 </body>
 </html>
