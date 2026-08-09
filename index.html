@@ -2,624 +2,1616 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta charset="UTF-8">
 
-    <title>Routine 721</title>
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <link rel="stylesheet" href="style.css">
+<title>Routine 721</title>
+
+
+<style>
+
+/* =========================================================
+   BASIC PAGE
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+body {
+
+    overflow: hidden;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    color: white;
+
+    background:
+        radial-gradient(
+            circle at 20% 50%,
+            rgba(20, 70, 180, 0.25),
+            transparent 40%
+        ),
+
+        radial-gradient(
+            circle at 80% 50%,
+            rgba(180, 20, 30, 0.25),
+            transparent 40%
+        ),
+
+        #050507;
+}
+
+
+/* =========================================================
+   LOGIN CONTAINER
+   ========================================================= */
+
+.login-container {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 100;
+}
+
+
+/* =========================================================
+   LOGIN BOX
+   ========================================================= */
+
+.box {
+
+    position: relative;
+
+    width: 90%;
+
+    max-width: 500px;
+
+    padding: 40px;
+
+    text-align: center;
+
+    background:
+        rgba(12, 12, 15, 0.96);
+
+    border:
+        1px solid
+        rgba(201, 168, 76, 0.5);
+
+    border-radius: 8px;
+
+    box-shadow:
+
+        0 30px 100px
+        rgba(0, 0, 0, 0.9),
+
+        0 0 50px
+        rgba(120, 20, 180, 0.12);
+
+    z-index: 100;
+}
+
+
+h1 {
+
+    margin: 0;
+
+    color: #c9a84c;
+
+    letter-spacing: 5px;
+
+    font-size: 32px;
+
+    text-shadow:
+        0 0 15px
+        rgba(201, 168, 76, 0.35);
+}
+
+
+.subtitle {
+
+    margin-top: 8px;
+
+    margin-bottom: 30px;
+
+    color: #777;
+
+    font-size: 12px;
+
+    letter-spacing: 5px;
+}
+
+
+h2 {
+
+    color: #ddd;
+
+    font-size: 18px;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+.intro {
+
+    color: #888;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+label {
+
+    display: block;
+
+    margin-top: 18px;
+
+    margin-bottom: 6px;
+
+    text-align: left;
+
+    color: #999;
+
+    font-size: 12px;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+
+input {
+
+    width: 100%;
+
+    padding: 13px;
+
+    color: white;
+
+    background: #08090b;
+
+    border:
+        1px solid
+        #3b3b40;
+
+    border-radius: 5px;
+
+    outline: none;
+}
+
+
+input:focus {
+
+    border-color: #c9a84c;
+
+    box-shadow:
+        0 0 15px
+        rgba(201, 168, 76, 0.15);
+}
+
+
+button {
+
+    width: 100%;
+
+    padding: 13px;
+
+    margin-top: 15px;
+
+    border: 0;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+    letter-spacing: 1.5px;
+}
+
+
+.primary-button {
+
+    color: white;
+
+    background:
+        linear-gradient(
+            #a33b2e,
+            #6f211b
+        );
+
+    border:
+        1px solid
+        #b84a3a;
+}
+
+
+.secondary-button {
+
+    color: #ccc;
+
+    background: #1a1b1f;
+
+    border:
+        1px solid
+        #3b3c40;
+}
+
+
+button:disabled {
+
+    opacity: 0.5;
+
+    cursor: wait;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.status {
+
+    min-height: 20px;
+
+    margin-top: 18px;
+
+    font-size: 12px;
+
+    color: #777;
+}
+
+
+.status.success {
+
+    color: #58d17c;
+}
+
+
+.status.error {
+
+    color: #e45b50;
+}
+
+
+.hidden {
+
+    display: none !important;
+}
+
+
+/* =========================================================
+   WARP EFFECT
+   ========================================================= */
+
+#warp-effects {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100vw;
+
+    height: 100vh;
+
+    overflow: hidden;
+
+    pointer-events: none;
+
+    z-index: 5;
+}
+
+
+/* =========================================================
+   CENTRAL WARP VORTEX
+   ========================================================= */
+
+.warp-core {
+
+    position: absolute;
+
+    left: 50%;
+
+    top: 50%;
+
+    width: 420px;
+
+    height: 420px;
+
+    transform:
+        translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(120, 20, 180, 0.08) 0%,
+            rgba(40, 80, 200, 0.04) 35%,
+            transparent 70%
+        );
+
+    box-shadow:
+
+        0 0 50px
+        rgba(150, 30, 220, 0.12),
+
+        inset 0 0 70px
+        rgba(30, 100, 220, 0.08);
+
+    animation:
+        corePulse 5s ease-in-out infinite;
+}
+
+
+@keyframes corePulse {
+
+    0%,
+    100% {
+
+        transform:
+            translate(-50%, -50%)
+            scale(0.92);
+
+        opacity: 0.6;
+    }
+
+    50% {
+
+        transform:
+            translate(-50%, -50%)
+            scale(1.08);
+
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   ROTATING WARP RINGS
+   ========================================================= */
+
+.warp-ring {
+
+    position: absolute;
+
+    left: 50%;
+
+    top: 50%;
+
+    border-radius: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    pointer-events: none;
+}
+
+
+.ring-purple {
+
+    width: 480px;
+
+    height: 280px;
+
+    border:
+        2px solid
+        rgba(170, 60, 255, 0.35);
+
+    box-shadow:
+        0 0 20px
+        rgba(170, 60, 255, 0.2);
+
+    animation:
+        ringSpin 14s linear infinite;
+}
+
+
+.ring-blue {
+
+    width: 400px;
+
+    height: 240px;
+
+    border:
+        2px solid
+        rgba(40, 120, 255, 0.3);
+
+    box-shadow:
+        0 0 20px
+        rgba(40, 120, 255, 0.2);
+
+    animation:
+        ringSpinReverse 18s linear infinite;
+}
+
+
+.ring-red {
+
+    width: 540px;
+
+    height: 310px;
+
+    border:
+        2px solid
+        rgba(255, 45, 45, 0.25);
+
+    box-shadow:
+        0 0 20px
+        rgba(255, 45, 45, 0.15);
+
+    animation:
+        ringSpin 22s linear infinite;
+}
+
+
+@keyframes ringSpin {
+
+    from {
+
+        transform:
+            translate(-50%, -50%)
+            rotate(0deg);
+    }
+
+    to {
+
+        transform:
+            translate(-50%, -50%)
+            rotate(360deg);
+    }
+}
+
+
+@keyframes ringSpinReverse {
+
+    from {
+
+        transform:
+            translate(-50%, -50%)
+            rotate(360deg);
+    }
+
+    to {
+
+        transform:
+            translate(-50%, -50%)
+            rotate(0deg);
+    }
+}
+
+
+/* =========================================================
+   PARTICLES
+   ========================================================= */
+
+.warp-particle {
+
+    position: absolute;
+
+    left: 50%;
+
+    top: 50%;
+
+    width: 5px;
+
+    height: 5px;
+
+    border-radius: 50%;
+
+    opacity: 0;
+
+    box-shadow:
+        0 0 6px currentColor,
+        0 0 15px currentColor,
+        0 0 30px currentColor;
+
+    animation:
+        flyWarp var(--speed)
+        linear infinite;
+
+    animation-delay:
+        var(--delay);
+}
+
+
+.warp-particle::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 20px;
+
+    height: 20px;
+
+    left: 50%;
+
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background: currentColor;
+
+    opacity: 0.2;
+
+    filter: blur(6px);
+}
+
+
+/* =========================================================
+   PARTICLE ANIMATION
+   ========================================================= */
+
+@keyframes flyWarp {
+
+    0% {
+
+        transform:
+            translate(
+                var(--sx),
+                var(--sy)
+            )
+            rotate(0deg)
+            scale(0.2);
+
+        opacity: 0;
+    }
+
+
+    10% {
+
+        opacity: 1;
+    }
+
+
+    30% {
+
+        transform:
+            translate(
+                var(--mx),
+                var(--my)
+            )
+            rotate(120deg)
+            scale(1);
+    }
+
+
+    55% {
+
+        transform:
+            translate(
+                var(--cx),
+                var(--cy)
+            )
+            rotate(220deg)
+            scale(1.3);
+
+        opacity: 0.9;
+    }
+
+
+    75% {
+
+        transform:
+            translate(
+                var(--ox),
+                var(--oy)
+            )
+            rotate(330deg)
+            scale(0.9);
+
+        opacity: 0.6;
+    }
+
+
+    100% {
+
+        transform:
+            translate(
+                var(--ex),
+                var(--ey)
+            )
+            rotate(500deg)
+            scale(0.1);
+
+        opacity: 0;
+    }
+}
+
+
+/* =========================================================
+   PURPLE PARTICLES
+   ========================================================= */
+
+.p1 {
+
+    color: #b44cff;
+
+    --speed: 13s;
+    --delay: -2s;
+
+    --sx: -10px;
+    --sy: 30px;
+
+    --mx: -140px;
+    --my: -80px;
+
+    --cx: -280px;
+    --cy: -220px;
+
+    --ox: -420px;
+    --oy: -400px;
+
+    --ex: -650px;
+    --ey: -700px;
+}
+
+
+.p2 {
+
+    color: #8b5cf6;
+
+    --speed: 17s;
+    --delay: -7s;
+
+    --sx: 20px;
+    --sy: 20px;
+
+    --mx: 100px;
+    --my: -130px;
+
+    --cx: 250px;
+    --cy: -300px;
+
+    --ox: 420px;
+    --oy: -500px;
+
+    --ex: 700px;
+    --ey: -750px;
+}
+
+
+.p3 {
+
+    color: #d946ef;
+
+    --speed: 15s;
+    --delay: -11s;
+
+    --sx: -30px;
+    --sy: 50px;
+
+    --mx: -180px;
+    --my: -150px;
+
+    --cx: -350px;
+    --cy: -350px;
+
+    --ox: -550px;
+    --oy: -550px;
+
+    --ex: -800px;
+    --ey: -850px;
+}
+
+
+/* =========================================================
+   RED PARTICLES
+   ========================================================= */
+
+.p4 {
+
+    color: #ff3030;
+
+    --speed: 14s;
+    --delay: -3s;
+
+    --sx: 15px;
+    --sy: 30px;
+
+    --mx: 150px;
+    --my: -80px;
+
+    --cx: 300px;
+    --cy: -250px;
+
+    --ox: 450px;
+    --oy: -450px;
+
+    --ex: 700px;
+    --ey: -700px;
+}
+
+
+.p5 {
+
+    color: #ff4b3e;
+
+    --speed: 19s;
+    --delay: -9s;
+
+    --sx: -20px;
+    --sy: 60px;
+
+    --mx: -120px;
+    --my: -160px;
+
+    --cx: -300px;
+    --cy: -330px;
+
+    --ox: -500px;
+    --oy: -520px;
+
+    --ex: -750px;
+    --ey: -850px;
+}
+
+
+.p6 {
+
+    color: #dc2626;
+
+    --speed: 16s;
+    --delay: -14s;
+
+    --sx: 30px;
+    --sy: 40px;
+
+    --mx: 180px;
+    --my: -150px;
+
+    --cx: 360px;
+    --cy: -320px;
+
+    --ox: 550px;
+    --oy: -500px;
+
+    --ex: 850px;
+    --ey: -850px;
+}
+
+
+/* =========================================================
+   BLUE PARTICLES
+   ========================================================= */
+
+.p7 {
+
+    color: #2583ff;
+
+    --speed: 18s;
+    --delay: -5s;
+
+    --sx: -40px;
+    --sy: 40px;
+
+    --mx: -170px;
+    --my: -100px;
+
+    --cx: -330px;
+    --cy: -280px;
+
+    --ox: -520px;
+    --oy: -480px;
+
+    --ex: -800px;
+    --ey: -750px;
+}
+
+
+.p8 {
+
+    color: #38bdf8;
+
+    --speed: 20s;
+    --delay: -12s;
+
+    --sx: 40px;
+    --sy: 50px;
+
+    --mx: 180px;
+    --my: -120px;
+
+    --cx: 350px;
+    --cy: -300px;
+
+    --ox: 550px;
+    --oy: -500px;
+
+    --ex: 850px;
+    --ey: -800px;
+}
+
+
+/* =========================================================
+   GREEN PARTICLES
+   ========================================================= */
+
+.p9 {
+
+    color: #22ff88;
+
+    --speed: 21s;
+    --delay: -4s;
+
+    --sx: -50px;
+    --sy: 60px;
+
+    --mx: -200px;
+    --my: -180px;
+
+    --cx: -400px;
+    --cy: -350px;
+
+    --ox: -600px;
+    --oy: -550px;
+
+    --ex: -900px;
+    --ey: -850px;
+}
+
+
+.p10 {
+
+    color: #4ade80;
+
+    --speed: 18s;
+    --delay: -15s;
+
+    --sx: 50px;
+    --sy: 60px;
+
+    --mx: 200px;
+    --my: -180px;
+
+    --cx: 400px;
+    --cy: -350px;
+
+    --ox: 600px;
+    --oy: -550px;
+
+    --ex: 900px;
+    --ey: -850px;
+}
+
+
+/* =========================================================
+   EXTRA PARTICLES
+   ========================================================= */
+
+.p11 {
+    color: #c084fc;
+
+    --speed: 12s;
+    --delay: -6s;
+
+    --sx: -60px;
+    --sy: 80px;
+
+    --mx: -230px;
+    --my: -200px;
+
+    --cx: -430px;
+    --cy: -400px;
+
+    --ox: -650px;
+    --oy: -600px;
+
+    --ex: -950px;
+    --ey: -900px;
+}
+
+
+.p12 {
+    color: #60a5fa;
+
+    --speed: 16s;
+    --delay: -13s;
+
+    --sx: 60px;
+    --sy: 80px;
+
+    --mx: 230px;
+    --my: -200px;
+
+    --cx: 430px;
+    --cy: -400px;
+
+    --ox: 650px;
+    --oy: -600px;
+
+    --ex: 950px;
+    --ey: -900px;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .box {
+
+        width: 94%;
+
+        padding:
+            30px
+            20px;
+    }
+
+
+    h1 {
+
+        font-size: 27px;
+
+        letter-spacing: 4px;
+    }
+
+
+    .warp-core {
+
+        width: 300px;
+
+        height: 300px;
+    }
+
+
+    .ring-purple {
+
+        width: 340px;
+
+        height: 220px;
+    }
+
+
+    .ring-blue {
+
+        width: 300px;
+
+        height: 190px;
+    }
+
+
+    .ring-red {
+
+        width: 380px;
+
+        height: 240px;
+    }
+}
+
+</style>
+
 </head>
+
 
 <body>
 
-    <!-- =====================================================
-         WARP VORTEX PARTICLES
-         ===================================================== -->
 
-    <div id="warp-effects" aria-hidden="true">
+<!-- =====================================================
+     WARP EFFECT
+     ===================================================== -->
 
-        <div class="warp-particle p1"></div>
-        <div class="warp-particle p2"></div>
-        <div class="warp-particle p3"></div>
-        <div class="warp-particle p4"></div>
-        <div class="warp-particle p5"></div>
-        <div class="warp-particle p6"></div>
-        <div class="warp-particle p7"></div>
-        <div class="warp-particle p8"></div>
-        <div class="warp-particle p9"></div>
-        <div class="warp-particle p10"></div>
-        <div class="warp-particle p11"></div>
-        <div class="warp-particle p12"></div>
-        <div class="warp-particle p13"></div>
-        <div class="warp-particle p14"></div>
-        <div class="warp-particle p15"></div>
-        <div class="warp-particle p16"></div>
-        <div class="warp-particle p17"></div>
-        <div class="warp-particle p18"></div>
-        <div class="warp-particle p19"></div>
-        <div class="warp-particle p20"></div>
+<div id="warp-effects">
 
+    <div class="warp-core"></div>
+
+    <div class="warp-ring ring-purple"></div>
+
+    <div class="warp-ring ring-blue"></div>
+
+    <div class="warp-ring ring-red"></div>
+
+    <div class="warp-particle p1"></div>
+    <div class="warp-particle p2"></div>
+    <div class="warp-particle p3"></div>
+    <div class="warp-particle p4"></div>
+    <div class="warp-particle p5"></div>
+    <div class="warp-particle p6"></div>
+    <div class="warp-particle p7"></div>
+    <div class="warp-particle p8"></div>
+    <div class="warp-particle p9"></div>
+    <div class="warp-particle p10"></div>
+    <div class="warp-particle p11"></div>
+    <div class="warp-particle p12"></div>
+
+</div>
+
+
+<!-- =====================================================
+     LOGIN
+     ===================================================== -->
+
+<main class="login-container">
+
+<div class="box">
+
+    <h1>ROUTINE 721</h1>
+
+    <div class="subtitle">
+        WAR ROOM
     </div>
 
 
-    <!-- =====================================================
-         LOGIN
-         ===================================================== -->
+    <!-- LOGIN -->
 
-    <main class="login-container">
+    <section id="loginView">
 
-        <div class="box">
+        <h2>Welcome Back</h2>
 
-            <h1>ROUTINE 721</h1>
-
-            <div class="subtitle">
-                WAR ROOM
-            </div>
+        <p class="intro">
+            Enter your credentials to access the War Room.
+        </p>
 
 
-            <!-- LOGIN VIEW -->
+        <label for="loginEmail">
+            Email
+        </label>
 
-            <section id="loginView">
-
-                <h2>Welcome Back</h2>
-
-                <p class="intro">
-                    Enter your credentials to access the War Room.
-                </p>
-
-
-                <label for="loginEmail">
-                    Email
-                </label>
-
-                <input
-                    id="loginEmail"
-                    type="email"
-                    autocomplete="email"
-                    placeholder="your@email.com"
-                >
+        <input
+            id="loginEmail"
+            type="email"
+            autocomplete="email"
+            placeholder="your@email.com"
+        >
 
 
-                <label for="loginPassword">
-                    Password
-                </label>
+        <label for="loginPassword">
+            Password
+        </label>
 
-                <input
-                    id="loginPassword"
-                    type="password"
-                    autocomplete="current-password"
-                    placeholder="Password"
-                >
-
-
-                <button
-                    id="signInButton"
-                    class="primary-button"
-                    type="button"
-                >
-                    SIGN IN
-                </button>
+        <input
+            id="loginPassword"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Password"
+        >
 
 
-                <button
-                    id="showCreateButton"
-                    class="secondary-button"
-                    type="button"
-                >
-                    CREATE ACCOUNT
-                </button>
-
-            </section>
+        <button
+            id="signInButton"
+            class="primary-button"
+            type="button"
+        >
+            SIGN IN
+        </button>
 
 
-            <!-- CREATE ACCOUNT VIEW -->
+        <button
+            id="showCreateButton"
+            class="secondary-button"
+            type="button"
+        >
+            CREATE ACCOUNT
+        </button>
 
-            <section
-                id="createView"
-                class="hidden"
-            >
-
-                <h2>Create Account</h2>
-
-                <p class="intro">
-                    Create your Routine 721 War Room account.
-                </p>
+    </section>
 
 
-                <label for="createEmail">
-                    Email
-                </label>
+    <!-- CREATE ACCOUNT -->
 
-                <input
-                    id="createEmail"
-                    type="email"
-                    autocomplete="email"
-                    placeholder="your@email.com"
-                >
+    <section
+        id="createView"
+        class="hidden"
+    >
 
+        <h2>Create Account</h2>
 
-                <label for="createPassword">
-                    Password
-                </label>
-
-                <input
-                    id="createPassword"
-                    type="password"
-                    autocomplete="new-password"
-                    placeholder="Choose a password"
-                >
+        <p class="intro">
+            Create your Routine 721 War Room account.
+        </p>
 
 
-                <button
-                    id="createAccountButton"
-                    class="primary-button"
-                    type="button"
-                >
-                    CREATE ACCOUNT
-                </button>
+        <label for="createEmail">
+            Email
+        </label>
+
+        <input
+            id="createEmail"
+            type="email"
+            autocomplete="email"
+            placeholder="your@email.com"
+        >
 
 
-                <button
-                    id="backToLoginButton"
-                    class="secondary-button"
-                    type="button"
-                >
-                    BACK TO SIGN IN
-                </button>
+        <label for="createPassword">
+            Password
+        </label>
 
-            </section>
-
-
-            <!-- STATUS -->
-
-            <div
-                id="status"
-                class="status"
-                aria-live="polite"
-            >
-                Connecting to database...
-            </div>
-
-        </div>
-
-    </main>
+        <input
+            id="createPassword"
+            type="password"
+            autocomplete="new-password"
+            placeholder="Choose a password"
+        >
 
 
-    <!-- =====================================================
-         SUPABASE
-         ===================================================== -->
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
-    <script>
-
-        /*
-         * IMPORTANT:
-         *
-         * These are your existing Supabase project details.
-         */
-
-        const SUPABASE_URL =
-            "https://jbgwdxavydhtvoqpbfmj.supabase.co";
-
-        const SUPABASE_KEY =
-            "sb_publishable_Wt8h6fNelT6zrzf-Dm8FXw_cdSGylaz";
+        <button
+            id="createAccountButton"
+            class="primary-button"
+            type="button"
+        >
+            CREATE ACCOUNT
+        </button>
 
 
-        /*
-         * IMPORTANT:
-         *
-         * We use "supabaseClient" instead of "supabase"
-         * so we don't collide with the Supabase library's
-         * global variable.
-         */
+        <button
+            id="backToLoginButton"
+            class="secondary-button"
+            type="button"
+        >
+            BACK TO SIGN IN
+        </button>
 
-        const supabaseClient =
-            window.supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_KEY
+    </section>
+
+
+    <div
+        id="status"
+        class="status"
+        aria-live="polite"
+    >
+        Connecting to database...
+    </div>
+
+</div>
+
+</main>
+
+
+<!-- =====================================================
+     SUPABASE
+     ===================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+/*
+ * SUPABASE
+ */
+
+const SUPABASE_URL =
+    "https://jbgwdxavydhtvoqpbfmj.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_Wt8h6fNelT6zrzf-Dm8FXw_cdSGylaz";
+
+
+/*
+ * IMPORTANT:
+ *
+ * We call this "supabaseClient".
+ * Do NOT call it "supabase".
+ */
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/*
+ * ELEMENTS
+ */
+
+const loginView =
+    document.getElementById("loginView");
+
+const createView =
+    document.getElementById("createView");
+
+const loginEmail =
+    document.getElementById("loginEmail");
+
+const loginPassword =
+    document.getElementById("loginPassword");
+
+const createEmail =
+    document.getElementById("createEmail");
+
+const createPassword =
+    document.getElementById("createPassword");
+
+const signInButton =
+    document.getElementById("signInButton");
+
+const createAccountButton =
+    document.getElementById("createAccountButton");
+
+const showCreateButton =
+    document.getElementById("showCreateButton");
+
+const backToLoginButton =
+    document.getElementById("backToLoginButton");
+
+const status =
+    document.getElementById("status");
+
+
+/*
+ * STATUS
+ */
+
+function showStatus(
+    message,
+    type = ""
+) {
+
+    status.textContent = message;
+
+    status.className =
+        "status " + type;
+}
+
+
+/*
+ * CREATE ACCOUNT SCREEN
+ */
+
+showCreateButton.addEventListener(
+    "click",
+    function () {
+
+        loginView.classList.add("hidden");
+
+        createView.classList.remove("hidden");
+
+        showStatus("");
+
+        createEmail.focus();
+    }
+);
+
+
+/*
+ * BACK TO LOGIN
+ */
+
+backToLoginButton.addEventListener(
+    "click",
+    function () {
+
+        createView.classList.add("hidden");
+
+        loginView.classList.remove("hidden");
+
+        showStatus("");
+
+        loginEmail.focus();
+    }
+);
+
+
+/*
+ * SIGN IN
+ */
+
+signInButton.addEventListener(
+    "click",
+    async function () {
+
+        const email =
+            loginEmail.value.trim();
+
+        const password =
+            loginPassword.value;
+
+
+        if (!email || !password) {
+
+            showStatus(
+                "Please enter your email and password.",
+                "error"
             );
 
-
-        /* =====================================================
-           ELEMENTS
-           ===================================================== */
-
-        const loginView =
-            document.getElementById("loginView");
-
-        const createView =
-            document.getElementById("createView");
-
-        const loginEmail =
-            document.getElementById("loginEmail");
-
-        const loginPassword =
-            document.getElementById("loginPassword");
-
-        const createEmail =
-            document.getElementById("createEmail");
-
-        const createPassword =
-            document.getElementById("createPassword");
-
-        const signInButton =
-            document.getElementById("signInButton");
-
-        const createAccountButton =
-            document.getElementById("createAccountButton");
-
-        const showCreateButton =
-            document.getElementById("showCreateButton");
-
-        const backToLoginButton =
-            document.getElementById("backToLoginButton");
-
-        const status =
-            document.getElementById("status");
-
-
-        /* =====================================================
-           STATUS
-           ===================================================== */
-
-        function showStatus(
-            message,
-            type = ""
-        ) {
-
-            status.textContent = message;
-
-            status.className =
-                "status " + type;
+            return;
         }
 
 
-        /* =====================================================
-           SHOW CREATE ACCOUNT
-           ===================================================== */
+        signInButton.disabled = true;
 
-        showCreateButton.addEventListener(
-            "click",
-            function () {
+        signInButton.textContent =
+            "SIGNING IN...";
 
-                loginView.classList.add("hidden");
 
-                createView.classList.remove("hidden");
+        try {
 
-                showStatus("");
+            const result =
+                await supabaseClient.auth.signInWithPassword({
 
-                createEmail.focus();
-            }
-        );
+                    email: email,
 
+                    password: password
 
-        /* =====================================================
-           BACK TO LOGIN
-           ===================================================== */
+                });
 
-        backToLoginButton.addEventListener(
-            "click",
-            function () {
 
-                createView.classList.add("hidden");
-
-                loginView.classList.remove("hidden");
-
-                showStatus("");
-
-                loginEmail.focus();
-            }
-        );
-
-
-        /* =====================================================
-           SIGN IN
-           ===================================================== */
-
-        signInButton.addEventListener(
-            "click",
-            async function () {
-
-                const email =
-                    loginEmail.value.trim();
-
-                const password =
-                    loginPassword.value;
-
-
-                if (!email || !password) {
-
-                    showStatus(
-                        "Please enter your email and password.",
-                        "error"
-                    );
-
-                    return;
-                }
-
-
-                signInButton.disabled = true;
-
-                signInButton.textContent =
-                    "SIGNING IN...";
-
-
-                try {
-
-                    const result =
-                        await supabaseClient.auth.signInWithPassword({
-
-                            email: email,
-
-                            password: password
-
-                        });
-
-
-                    if (result.error) {
-
-                        showStatus(
-                            result.error.message,
-                            "error"
-                        );
-
-                        return;
-                    }
-
-
-                    showStatus(
-                        "Authentication successful.",
-                        "success"
-                    );
-
-
-                    /*
-                     * Give Supabase a moment to save the session.
-                     */
-
-                    setTimeout(
-                        function () {
-
-                            window.location.reload();
-
-                        },
-                        700
-                    );
-
-                }
-
-                catch (error) {
-
-                    showStatus(
-                        "Login error: " +
-                        error.message,
-                        "error"
-                    );
-
-                }
-
-                finally {
-
-                    signInButton.disabled = false;
-
-                    signInButton.textContent =
-                        "SIGN IN";
-                }
-
-            }
-        );
-
-
-        /* =====================================================
-           CREATE ACCOUNT
-           ===================================================== */
-
-        createAccountButton.addEventListener(
-            "click",
-            async function () {
-
-                const email =
-                    createEmail.value.trim();
-
-                const password =
-                    createPassword.value;
-
-
-                if (!email || !password) {
-
-                    showStatus(
-                        "Please enter an email and password.",
-                        "error"
-                    );
-
-                    return;
-                }
-
-
-                if (password.length < 6) {
-
-                    showStatus(
-                        "Password must be at least 6 characters.",
-                        "error"
-                    );
-
-                    return;
-                }
-
-
-                createAccountButton.disabled = true;
-
-                createAccountButton.textContent =
-                    "CREATING...";
-
-
-                try {
-
-                    const result =
-                        await supabaseClient.auth.signUp({
-
-                            email: email,
-
-                            password: password
-
-                        });
-
-
-                    if (result.error) {
-
-                        showStatus(
-                            result.error.message,
-                            "error"
-                        );
-
-                        return;
-                    }
-
-
-                    if (
-                        result.data.user &&
-                        !result.data.session
-                    ) {
-
-                        showStatus(
-                            "Account created. Check your email to confirm your account.",
-                            "success"
-                        );
-
-                    }
-
-                    else {
-
-                        showStatus(
-                            "Account created successfully.",
-                            "success"
-                        );
-
-                    }
-
-                }
-
-                catch (error) {
-
-                    showStatus(
-                        "Account error: " +
-                        error.message,
-                        "error"
-                    );
-
-                }
-
-                finally {
-
-                    createAccountButton.disabled =
-                        false;
-
-                    createAccountButton.textContent =
-                        "CREATE ACCOUNT";
-                }
-
-            }
-        );
-
-
-        /* =====================================================
-           ENTER KEY
-           ===================================================== */
-
-        loginPassword.addEventListener(
-            "keydown",
-            function (event) {
-
-                if (event.key === "Enter") {
-
-                    signInButton.click();
-
-                }
-
-            }
-        );
-
-
-        createPassword.addEventListener(
-            "keydown",
-            function (event) {
-
-                if (event.key === "Enter") {
-
-                    createAccountButton.click();
-
-                }
-
-            }
-        );
-
-
-        /* =====================================================
-           INITIAL CONNECTION
-           ===================================================== */
-
-        async function initialize() {
-
-            try {
-
-                const result =
-                    await supabaseClient.auth.getSession();
-
-
-                if (result.error) {
-
-                    showStatus(
-                        "Supabase error: " +
-                        result.error.message,
-                        "error"
-                    );
-
-                    return;
-                }
-
-
-                if (result.data.session) {
-
-                    showStatus(
-                        "Supabase authentication is working.",
-                        "success"
-                    );
-
-                }
-
-                else {
-
-                    showStatus(
-                        "SUPABASE CONNECTED",
-                        "success"
-                    );
-
-                }
-
-            }
-
-            catch (error) {
+            if (result.error) {
 
                 showStatus(
-                    "Connection error: " +
-                    error.message,
+                    result.error.message,
                     "error"
+                );
+
+                return;
+            }
+
+
+            showStatus(
+                "Authentication successful.",
+                "success"
+            );
+
+        }
+
+        catch (error) {
+
+            showStatus(
+                "Login error: " +
+                error.message,
+                "error"
+            );
+
+        }
+
+        finally {
+
+            signInButton.disabled = false;
+
+            signInButton.textContent =
+                "SIGN IN";
+        }
+
+    }
+);
+
+
+/*
+ * CREATE ACCOUNT
+ */
+
+createAccountButton.addEventListener(
+    "click",
+    async function () {
+
+        const email =
+            createEmail.value.trim();
+
+        const password =
+            createPassword.value;
+
+
+        if (!email || !password) {
+
+            showStatus(
+                "Please enter an email and password.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        if (password.length < 6) {
+
+            showStatus(
+                "Password must be at least 6 characters.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        createAccountButton.disabled =
+            true;
+
+        createAccountButton.textContent =
+            "CREATING...";
+
+
+        try {
+
+            const result =
+                await supabaseClient.auth.signUp({
+
+                    email: email,
+
+                    password: password
+
+                });
+
+
+            if (result.error) {
+
+                showStatus(
+                    result.error.message,
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (
+                result.data.user &&
+                !result.data.session
+            ) {
+
+                showStatus(
+                    "Account created. Check your email to confirm your account.",
+                    "success"
+                );
+
+            }
+
+            else {
+
+                showStatus(
+                    "Account created successfully.",
+                    "success"
                 );
 
             }
 
         }
 
+        catch (error) {
 
-        initialize();
+            showStatus(
+                "Account error: " +
+                error.message,
+                "error"
+            );
 
-    </script>
+        }
+
+        finally {
+
+            createAccountButton.disabled =
+                false;
+
+            createAccountButton.textContent =
+                "CREATE ACCOUNT";
+        }
+
+    }
+);
+
+
+/*
+ * ENTER KEY
+ */
+
+loginPassword.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (event.key === "Enter") {
+
+            signInButton.click();
+
+        }
+
+    }
+);
+
+
+createPassword.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (event.key === "Enter") {
+
+            createAccountButton.click();
+
+        }
+
+    }
+);
+
+
+/*
+ * CHECK SUPABASE
+ */
+
+async function initialize() {
+
+    try {
+
+        const result =
+            await supabaseClient.auth.getSession();
+
+
+        if (result.error) {
+
+            showStatus(
+                "Supabase error: " +
+                result.error.message,
+                "error"
+            );
+
+            return;
+        }
+
+
+        if (result.data.session) {
+
+            showStatus(
+                "Supabase authentication is working.",
+                "success"
+            );
+
+        }
+
+        else {
+
+            showStatus(
+                "SUPABASE CONNECTED",
+                "success"
+            );
+
+        }
+
+    }
+
+    catch (error) {
+
+        showStatus(
+            "Connection error: " +
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+initialize();
+
+</script>
 
 </body>
 </html>
