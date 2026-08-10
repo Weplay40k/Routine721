@@ -1,6 +1,6 @@
 /* Routine 721 — War Room features layer
    Adds profile faction categories, automatic faction statistics,
-   and safe delete controls without modifying the core app logic. */
+   opponent allegiance selection, and safe delete controls without modifying the core app logic. */
 (function () {
     "use strict";
     const CATEGORY_VALUES = ["Imperium", "Chaos", "Xenos"];
@@ -48,6 +48,25 @@
         select.value = data?.main_faction || getCategoryFromFaction(data?.main_army) || "";
     }
 
+    function prepareMatchOpponentFaction() {
+        const input = document.getElementById("matchOpponentFaction");
+        if (!input || input.dataset.r721Prepared === "true") return;
+
+        const select = document.createElement("select");
+        select.id = "matchOpponentFaction";
+        select.dataset.r721Prepared = "true";
+        select.innerHTML = `
+            <option value="">SELECT OPPONENT ALLEGIANCE</option>
+            <option value="Imperium">IMPERIUM</option>
+            <option value="Chaos">CHAOS</option>
+            <option value="Xenos">XENOS</option>
+        `;
+        input.replaceWith(select);
+
+        const label = document.querySelector('label[for="matchOpponentFaction"]');
+        if (label) label.textContent = "Opponent Allegiance";
+    }
+
     async function saveFactionCategory() {
         const select = document.getElementById("profileMainFaction");
         if (!select || !currentUser) return false;
@@ -79,7 +98,7 @@
         detailsContainer.innerHTML = "";
 
         const { data: games, error } = await supabaseClient.from("games")
-            .select("id, player_id, player_faction, result, player_vp, played_at");
+            .select("id, player_id, player_faction, opponent_faction, result, player_vp, played_at");
         if (error) {
             statsContainer.innerHTML = `<div class="empty">Could not load faction statistics: ${escapeHtml(error.message)}</div>`;
             return;
@@ -95,26 +114,41 @@
         const factionRows = {};
 
         (games || []).forEach(game => {
-            const category = categoriesByPlayer[game.player_id];
-            if (!CATEGORY_VALUES.includes(category)) return;
-            const item = categories[category];
-            item.played++;
+            const playerCategory = categoriesByPlayer[game.player_id];
+            const opponentCategory = CATEGORY_VALUES.includes(game.opponent_faction)
+                ? game.opponent_faction
+                : getCategoryFromFaction(game.opponent_faction);
             const result = String(game.result || "").toLowerCase();
-            if (result === "win") item.wins++;
-            else if (result === "loss") item.losses++;
-            else item.draws++;
-            if (game.player_vp !== null && game.player_vp !== undefined && game.player_vp !== "") {
-                item.totalVP += Number(game.player_vp) || 0;
-                item.vpGames++;
+
+            if (CATEGORY_VALUES.includes(playerCategory)) {
+                const item = categories[playerCategory];
+                item.played++;
+                if (result === "win") item.wins++;
+                else if (result === "loss") item.losses++;
+                else item.draws++;
+
+                if (game.player_vp !== null && game.player_vp !== undefined && game.player_vp !== "") {
+                    item.totalVP += Number(game.player_vp) || 0;
+                    item.vpGames++;
+                }
+
+                const faction = String(game.player_faction || "").trim();
+                if (faction) {
+                    if (!factionRows[faction]) factionRows[faction] = { played: 0, wins: 0, losses: 0, draws: 0, category: playerCategory };
+                    const row = factionRows[faction];
+                    row.played++;
+                    if (result === "win") row.wins++;
+                    else if (result === "loss") row.losses++;
+                    else row.draws++;
+                }
             }
-            const faction = String(game.player_faction || "").trim();
-            if (faction) {
-                if (!factionRows[faction]) factionRows[faction] = { played: 0, wins: 0, losses: 0, draws: 0, category };
-                const row = factionRows[faction];
-                row.played++;
-                if (result === "win") row.wins++;
-                else if (result === "loss") row.losses++;
-                else row.draws++;
+
+            if (CATEGORY_VALUES.includes(opponentCategory)) {
+                const opponent = categories[opponentCategory];
+                opponent.played++;
+                if (result === "win") opponent.losses++;
+                else if (result === "loss") opponent.wins++;
+                else opponent.draws++;
             }
         });
 
@@ -154,7 +188,7 @@
     async function deleteGroup(groupId) {
         const group = currentGroups.find(item => item.id === groupId);
         if (!group || !canDeleteGroup(group)) return;
-        if (!window.confirm(`DELETE "${group.name}"? All matches and memberships in this group will also be deleted.`)) return;
+        if (!window.confirm(`DELETE \"${group.name}\"? All matches and memberships in this group will also be deleted.`)) return;
         const { error } = await supabaseClient.from("groups").delete().eq("id", groupId);
         if (error) { alert("Could not delete the group: " + error.message); return; }
         if (selectedGroupId === groupId) { selectedGroupId = null; selectedGroup = null; }
@@ -200,6 +234,10 @@
         const profileNav = document.querySelector('.nav-button[data-page="profile"]');
         if (profileNav) profileNav.addEventListener("click", () => prepareProfileFaction());
 
+        const recordButton = document.getElementById("recordMatchButton");
+        if (recordButton) recordButton.addEventListener("click", () => setTimeout(prepareMatchOpponentFaction, 0));
+        prepareMatchOpponentFaction();
+
         const factionNav = document.querySelector('.nav-button[data-page="factions"]');
         if (factionNav) factionNav.addEventListener("click", event => {
             event.preventDefault(); event.stopImmediatePropagation();
@@ -232,6 +270,11 @@
                 setModalStatus("Set your Faction Allegiance in MY PROFILE before recording a match.", "error");
                 return;
             }
+            const opponentFaction = document.getElementById("matchOpponentFaction");
+            if (!opponentFaction || !CATEGORY_VALUES.includes(opponentFaction.value)) {
+                setModalStatus("Select the opponent's allegiance: Imperium, Chaos or Xenos.", "error");
+                return;
+            }
             recordMatch().then(() => loadFactionStatsByProfile());
         }, true);
 
@@ -257,12 +300,12 @@
             .r721-category-chip { display:inline-block; margin-left:6px; padding:2px 5px; border:1px solid #4d4128; color:#b9964d; font-size:7px; letter-spacing:.6px; }
             .r721-delete-group { margin-top:12px; border-color:#6f3028 !important; color:#d18b7b !important; }
             .r721-danger-button { border-color:#7d3028 !important; color:#d18b7b !important; }
-            #r721FactionCategoryGroup select { width:100%; }
+            #r721FactionCategoryGroup select, #matchOpponentFaction { width:100%; }
         `;
         document.head.appendChild(style);
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-        addFactionStyles(); wireDynamicUi(); addMatchDeleteButton(); prepareProfileFaction(); addGroupDeleteControls(); waitForGroupCards(); setTimeout(addGroupDeleteControls, 1000);
+        addFactionStyles(); wireDynamicUi(); addMatchDeleteButton(); prepareProfileFaction(); prepareMatchOpponentFaction(); addGroupDeleteControls(); waitForGroupCards(); setTimeout(addGroupDeleteControls, 1000);
     });
 })();
