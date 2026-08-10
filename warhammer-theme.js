@@ -9,7 +9,7 @@
     function escapeHtml(value) {
         return String(value ?? "")
             .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+            .replace(/\"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
     function getCategoryFromFaction(faction) {
@@ -89,6 +89,43 @@
         return map;
     }
 
+    async function addPlayerFactionAllegiances() {
+        const playersList = document.getElementById("playersList");
+        if (!playersList) return;
+
+        const cards = Array.from(playersList.querySelectorAll("[data-player-profile]"));
+        if (!cards.length) return;
+
+        const playerIds = cards.map(card => card.dataset.playerProfile).filter(Boolean);
+        const categories = await loadProfileCategoryMap(playerIds);
+
+        cards.forEach(card => {
+            if (card.querySelector(".r721-player-allegiance")) return;
+
+            const category = categories[card.dataset.playerProfile];
+            if (!category) return;
+
+            const allegiance = document.createElement("div");
+            allegiance.className = "r721-player-allegiance";
+            allegiance.innerHTML = `<span>FACTION ALLEGIANCE</span><strong>${escapeHtml(category)}</strong>`;
+
+            const top = card.querySelector(".player-card-top");
+            if (top) top.appendChild(allegiance);
+        });
+    }
+
+    function watchPlayersForFactionAllegiance() {
+        const playersList = document.getElementById("playersList");
+        if (!playersList || playersList.dataset.r721FactionWatcher === "true") return;
+
+        playersList.dataset.r721FactionWatcher = "true";
+        const observer = new MutationObserver(() => {
+            addPlayerFactionAllegiances();
+        });
+        observer.observe(playersList, { childList: true, subtree: true });
+        addPlayerFactionAllegiances();
+    }
+
     async function loadFactionStatsByProfile() {
         const statsContainer = document.getElementById("factionStatsList");
         const detailsContainer = document.getElementById("factionDetailsList");
@@ -132,7 +169,7 @@
     function canDeleteGroup(group) { return !!currentUser && group?.created_by === currentUser.id; }
     async function deleteGroup(groupId) {
         const group = currentGroups.find(item => item.id === groupId); if (!group || !canDeleteGroup(group)) return;
-        if (!window.confirm(`DELETE "${group.name}"? All matches and memberships in this group will also be deleted.`)) return;
+        if (!window.confirm(`DELETE \"${group.name}\"? All matches and memberships in this group will also be deleted.`)) return;
         const { error } = await supabaseClient.from("groups").delete().eq("id", groupId);
         if (error) { alert("Could not delete the group: " + error.message); return; }
         if (selectedGroupId === groupId) { selectedGroupId = null; selectedGroup = null; }
@@ -171,7 +208,7 @@
         const saveButton = document.getElementById("saveProfileButton"); if (saveButton) { saveButton.addEventListener("click", event => { const select = document.getElementById("profileMainFaction"); if (!select || !CATEGORY_VALUES.includes(select.value)) { event.preventDefault(); event.stopImmediatePropagation(); setProfileStatus("Select Imperium, Chaos or Xenos before saving your profile.", "error"); } }, true); saveButton.addEventListener("click", async () => { await saveFactionCategory(); }); }
     }
 
-    function addFactionStyles() { if (document.getElementById("r721-feature-styles")) return; const style = document.createElement("style"); style.id = "r721-feature-styles"; style.textContent = `.r721-faction-help{margin-top:6px;color:#77705f;font-size:8px;line-height:1.5}.r721-category-chip{display:inline-block;margin-left:6px;padding:2px 5px;border:1px solid #4d4128;color:#b9964d;font-size:7px;letter-spacing:.6px}.r721-delete-group{margin-top:12px;border-color:#6f3028!important;color:#d18b7b!important}.r721-danger-button{border-color:#7d3028!important;color:#d18b7b!important}#r721FactionCategoryGroup select,#matchOpponentFaction{width:100%}.r721-leaderboard-rule{margin-bottom:12px;padding:10px 12px;border:1px solid #3d3321;background:#11100d;color:#b9964d;font-size:8px;font-weight:700;letter-spacing:1.2px}.r721-ranking-status{margin-top:10px;color:#8f8a7a;font-size:8px;letter-spacing:.7px}.r721-unranked-heading{margin:24px 0 10px;padding-top:14px;border-top:1px solid #292933;color:#666672;font-size:8px;font-weight:700;letter-spacing:1.5px}.r721-unranked-card{opacity:.72}`; document.head.appendChild(style); }
+    function addFactionStyles() { if (document.getElementById("r721-feature-styles")) return; const style = document.createElement("style"); style.id = "r721-feature-styles"; style.textContent = `.r721-faction-help{margin-top:6px;color:#77705f;font-size:8px;line-height:1.5}.r721-category-chip{display:inline-block;margin-left:6px;padding:2px 5px;border:1px solid #4d4128;color:#b9964d;font-size:7px;letter-spacing:.6px}.r721-delete-group{margin-top:12px;border-color:#6f3028!important;color:#d18b7b!important}.r721-danger-button{border-color:#7d3028!important;color:#d18b7b!important}#r721FactionCategoryGroup select,#matchOpponentFaction{width:100%}.r721-player-allegiance{margin-top:8px;display:flex;align-items:center;gap:7px;color:#b9964d;font-size:7px;letter-spacing:1px}.r721-player-allegiance span{color:#77705f}.r721-player-allegiance strong{font-size:8px;letter-spacing:1px;color:#d8c07b}.r721-leaderboard-rule{margin-bottom:12px;padding:10px 12px;border:1px solid #3d3321;background:#11100d;color:#b9964d;font-size:8px;font-weight:700;letter-spacing:1.2px}.r721-ranking-status{margin-top:10px;color:#8f8a7a;font-size:8px;letter-spacing:.7px}.r721-unranked-heading{margin:24px 0 10px;padding-top:14px;border-top:1px solid #292933;color:#666672;font-size:8px;font-weight:700;letter-spacing:1.5px}.r721-unranked-card{opacity:.72}`; document.head.appendChild(style); }
 
-    document.addEventListener("DOMContentLoaded", () => { addFactionStyles(); installLeaderboardRanking(); wireDynamicUi(); addMatchDeleteButton(); prepareProfileFaction(); prepareMatchOpponentFaction(); addGroupDeleteControls(); waitForGroupCards(); setTimeout(addGroupDeleteControls, 1000); });
+    document.addEventListener("DOMContentLoaded", () => { addFactionStyles(); installLeaderboardRanking(); wireDynamicUi(); addMatchDeleteButton(); prepareProfileFaction(); prepareMatchOpponentFaction(); addGroupDeleteControls(); watchPlayersForFactionAllegiance(); waitForGroupCards(); setTimeout(addGroupDeleteControls, 1000); });
 })();
