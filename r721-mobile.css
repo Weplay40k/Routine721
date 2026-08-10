@@ -2,7 +2,6 @@
    Desktop styles are intentionally untouched. */
 
 @media (max-width: 550px) {
-  /* Give the phone viewport a little more breathing room. */
   .content {
     padding: 10px;
   }
@@ -23,8 +22,8 @@
     letter-spacing: 1.5px;
   }
 
-  /* Compact player cards: two columns on normal phones. */
-  .player-grid {
+  /* The actual player container is .player-list. */
+  .player-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
   }
@@ -76,7 +75,6 @@
     font-size: 6px;
   }
 
-  /* Keep the mobile command bar compact and easy to tap. */
   .sidebar {
     padding: 8px;
     gap: 4px;
@@ -103,9 +101,8 @@
   }
 }
 
-/* Very narrow phones: keep cards usable rather than forcing cramped columns. */
 @media (max-width: 360px) {
-  .player-grid {
+  .player-list {
     grid-template-columns: 1fr;
   }
 }
