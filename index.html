@@ -1476,6 +1476,95 @@ text-align: right;
 MOBILE
 ========================================================= */
 
+/* =========================================================
+FACTION STATISTICS
+========================================================= */
+
+.faction-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.faction-stat-card {
+    padding: 18px;
+    background: #111117;
+    border: 1px solid #292933;
+    border-radius: 6px;
+}
+
+.faction-stat-card:hover {
+    border-color: #733047;
+}
+
+.faction-stat-name {
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.faction-stat-rate {
+    margin-top: 9px;
+    color: #c6a85c;
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.faction-stat-meta {
+    margin-top: 7px;
+    color: #777783;
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+.faction-stat-bar {
+    height: 5px;
+    margin-top: 12px;
+    overflow: hidden;
+    background: #22222b;
+    border-radius: 999px;
+}
+
+.faction-stat-bar span {
+    display: block;
+    height: 100%;
+    background: #851f37;
+    border-radius: 999px;
+}
+
+.faction-details-list {
+    margin-top: 18px;
+}
+
+.faction-detail-row {
+    display: grid;
+    grid-template-columns: 1.2fr .7fr .7fr .8fr .8fr;
+    gap: 10px;
+    align-items: center;
+    padding: 12px 10px;
+    border-top: 1px solid #20202a;
+    color: #c5c5cd;
+    font-size: 9px;
+}
+
+.faction-detail-header {
+    color: #646470;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 700px) {
+    .faction-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .faction-detail-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
 @media (max-width: 800px) {
 
 .command-layout {
@@ -1832,6 +1921,14 @@ APPLICATION
                 type="button"
             >
                 LEADERBOARD
+            </button>
+
+            <button
+                class="nav-button"
+                data-page="factions"
+                type="button"
+            >
+                FACTIONS
             </button>
 
             <button
@@ -2214,6 +2311,52 @@ APPLICATION
                     </div>
 
                     <div id="leaderboardList"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+            FACTIONS
+            ================================================= -->
+
+            <section
+                id="factionsPage"
+                class="page hidden"
+            >
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <h2 class="panel-title">
+                                FACTIONS
+                            </h2>
+
+                            <div class="panel-subtitle">
+                                FACTION WIN RATE
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div
+                        id="factionStatsList"
+                        class="faction-stats-grid"
+                    >
+                        <div class="empty">
+                            Loading faction statistics...
+                        </div>
+                    </div>
+
+                    <div
+                        id="factionDetailsList"
+                        class="faction-details-list"
+                    ></div>
 
                 </div>
 
@@ -2954,6 +3097,16 @@ function showPage(
     ) {
 
         loadLeaderboard();
+
+    }
+
+
+    if (
+        pageName ===
+        "factions"
+    ) {
+
+        loadFactionStatistics();
 
     }
 
@@ -4490,6 +4643,267 @@ async function getPlayerStatistics(
 
 
     return statistics;
+
+}
+
+
+/* =========================================================
+FACTION STATISTICS
+========================================================= */
+
+function getFactionCategory(faction) {
+
+    const value = String(faction || "").trim().toLowerCase();
+
+    if (!value) {
+        return null;
+    }
+
+    const chaosKeywords = [
+        "chaos",
+        "death guard",
+        "thousand sons",
+        "world eaters",
+        "emperor's children",
+        "emperors children",
+        "chaos daemons",
+        "chaos daemon",
+        "chaos knights",
+        "daemon prince"
+    ];
+
+    const imperiumKeywords = [
+        "imperium",
+        "space marine",
+        "ultramarine",
+        "blood angel",
+        "dark angel",
+        "space wolf",
+        "black templar",
+        "deathwatch",
+        "imperial fist",
+        "salamander",
+        "raven guard",
+        "white scar",
+        "iron hand",
+        "grey knight",
+        "adepta sororitas",
+        "sisters of battle",
+        "adeptus custodes",
+        "custodes",
+        "astra militarum",
+        "imperial guard",
+        "imperial knight",
+        "knight",
+        "adeptus mechanicus",
+        "mechanicus",
+        "sisters of silence"
+    ];
+
+    const xenosKeywords = [
+        "xenos",
+        "ork",
+        "orks",
+        "eldar",
+        "aeldari",
+        "drukhari",
+        "dark eldar",
+        "tyranid",
+        "tyranids",
+        "genestealer",
+        "tau",
+        "t'au",
+        "necron",
+        "necrons",
+        "leagues of votann",
+        "votann"
+    ];
+
+    if (chaosKeywords.some(keyword => value.includes(keyword))) {
+        return "Chaos";
+    }
+
+    if (imperiumKeywords.some(keyword => value.includes(keyword))) {
+        return "Imperium";
+    }
+
+    if (xenosKeywords.some(keyword => value.includes(keyword))) {
+        return "Xenos";
+    }
+
+    return "Other";
+}
+
+
+async function loadFactionStatistics() {
+
+    const statsContainer =
+        document.getElementById("factionStatsList");
+
+    const detailsContainer =
+        document.getElementById("factionDetailsList");
+
+    if (!statsContainer || !detailsContainer) {
+        return;
+    }
+
+    statsContainer.innerHTML = `
+        <div class="empty">
+            Loading faction statistics...
+        </div>
+    `;
+
+    detailsContainer.innerHTML = "";
+
+    const {
+        data: games,
+        error
+    } = await supabaseClient
+        .from("games")
+        .select(
+            "id, player_faction, result, player_vp, played_at"
+        )
+        .order(
+            "played_at",
+            { ascending: false }
+        );
+
+    if (error) {
+        statsContainer.innerHTML = `
+            <div class="empty">
+                Could not load faction statistics: ${escapeHtml(error.message)}
+            </div>
+        `;
+        return;
+    }
+
+    const categories = {
+        Chaos: { played: 0, wins: 0, losses: 0, draws: 0, totalVP: 0, vpGames: 0 },
+        Xenos: { played: 0, wins: 0, losses: 0, draws: 0, totalVP: 0, vpGames: 0 },
+        Imperium: { played: 0, wins: 0, losses: 0, draws: 0, totalVP: 0, vpGames: 0 },
+        Other: { played: 0, wins: 0, losses: 0, draws: 0, totalVP: 0, vpGames: 0 }
+    };
+
+    (games || []).forEach(game => {
+
+        const category = getFactionCategory(game.player_faction);
+
+        if (!category) {
+            return;
+        }
+
+        const item = categories[category];
+        item.played++;
+
+        const result = String(game.result || "").toLowerCase();
+
+        if (result === "win") {
+            item.wins++;
+        } else if (result === "loss") {
+            item.losses++;
+        } else {
+            item.draws++;
+        }
+
+        if (game.player_vp !== null && game.player_vp !== undefined && game.player_vp !== "") {
+            item.totalVP += Number(game.player_vp) || 0;
+            item.vpGames++;
+        }
+    });
+
+    const visibleCategories = ["Chaos", "Xenos", "Imperium"];
+
+    statsContainer.innerHTML = visibleCategories.map(category => {
+
+        const item = categories[category];
+        const winRate = item.played > 0
+            ? Math.round((item.wins / item.played) * 100)
+            : 0;
+        const averageVP = item.vpGames > 0
+            ? Math.round((item.totalVP / item.vpGames) * 10) / 10
+            : 0;
+
+        return `
+            <div class="faction-stat-card">
+                <div class="faction-stat-name">
+                    ${category.toUpperCase()}
+                </div>
+                <div class="faction-stat-rate">
+                    ${winRate}%
+                </div>
+                <div class="faction-stat-meta">
+                    ${item.played} games · ${item.wins}W · ${item.losses}L · ${item.draws}D<br>
+                    Average VP: ${averageVP}
+                </div>
+                <div class="faction-stat-bar">
+                    <span style="width:${winRate}%"></span>
+                </div>
+            </div>
+        `;
+    }).join("");
+
+    const factionRows = {};
+
+    (games || []).forEach(game => {
+        const faction = String(game.player_faction || "").trim();
+        if (!faction) {
+            return;
+        }
+
+        if (!factionRows[faction]) {
+            factionRows[faction] = { played: 0, wins: 0, losses: 0, draws: 0 };
+        }
+
+        const row = factionRows[faction];
+        row.played++;
+
+        const result = String(game.result || "").toLowerCase();
+        if (result === "win") row.wins++;
+        else if (result === "loss") row.losses++;
+        else row.draws++;
+    });
+
+    const sortedFactions = Object.entries(factionRows)
+        .sort((a, b) => {
+            const aRate = a[1].played ? a[1].wins / a[1].played : 0;
+            const bRate = b[1].played ? b[1].wins / b[1].played : 0;
+            return (bRate - aRate) || (b[1].played - a[1].played) || a[0].localeCompare(b[0]);
+        });
+
+    if (sortedFactions.length > 0) {
+
+        detailsContainer.innerHTML = `
+            <div class="faction-detail-row faction-detail-header">
+                <div>FACTION</div>
+                <div>GAMES</div>
+                <div>WINS</div>
+                <div>LOSSES</div>
+                <div>WIN RATE</div>
+            </div>
+            ${sortedFactions.map(([faction, item]) => {
+                const winRate = item.played > 0
+                    ? Math.round((item.wins / item.played) * 100)
+                    : 0;
+                return `
+                    <div class="faction-detail-row">
+                        <div>${escapeHtml(faction)}</div>
+                        <div>${item.played}</div>
+                        <div>${item.wins}</div>
+                        <div>${item.losses}</div>
+                        <div>${winRate}%</div>
+                    </div>
+                `;
+            }).join("")}
+        `;
+
+    } else {
+
+        detailsContainer.innerHTML = `
+            <div class="empty">
+                No faction games recorded yet.
+            </div>
+        `;
+    }
 
 }
 
