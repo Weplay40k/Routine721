@@ -1,0 +1,59 @@
+/* ROUTINE 721 — PHONE COMMAND RAIL ONLY
+   Desktop is intentionally unaffected. */
+@media screen and (max-width:800px){
+  html body #app .command-layout{display:block!important;min-height:calc(100vh - 58px)!important}
+  html body #app .command-layout .sidebar{
+    position:sticky!important;
+    top:58px!important;
+    z-index:999!important;
+    display:flex!important;
+    flex-direction:row!important;
+    flex-wrap:nowrap!important;
+    justify-content:flex-start!important;
+    align-items:center!important;
+    width:100%!important;
+    min-width:100%!important;
+    height:64px!important;
+    min-height:64px!important;
+    max-height:64px!important;
+    margin:0!important;
+    padding:8px 10px!important;
+    gap:8px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    white-space:nowrap!important;
+    direction:ltr!important;
+    unicode-bidi:plaintext!important;
+    -webkit-overflow-scrolling:touch!important;
+    scroll-snap-type:x proximity!important;
+    touch-action:pan-x!important;
+  }
+  html body #app .command-layout .sidebar::-webkit-scrollbar{display:none!important}
+  html body #app .command-layout .sidebar .sidebar-title,
+  html body #app .command-layout .sidebar .sidebar-divider{display:none!important}
+  html body #app .command-layout .sidebar > .nav-button{
+    display:flex!important;
+    position:relative!important;
+    flex:0 0 auto!important;
+    width:auto!important;
+    min-width:112px!important;
+    max-width:none!important;
+    height:48px!important;
+    min-height:48px!important;
+    margin:0!important;
+    padding:8px 13px!important;
+    align-items:center!important;
+    justify-content:center!important;
+    text-align:center!important;
+    white-space:nowrap!important;
+    overflow:visible!important;
+    font-size:.9rem!important;
+    line-height:1!important;
+    letter-spacing:.045em!important;
+    scroll-snap-align:start!important;
+  }
+  html body #app .command-layout .sidebar > .nav-button[data-page="leaderboard"]{font-size:.86rem!important;letter-spacing:.04em!important}
+  html body #app .command-layout .sidebar > .nav-button::before,
+  html body #app .command-layout .sidebar > .nav-button::after{display:none!important}
+  html body #app .command-layout .content{width:100%!important;max-width:none!important;min-width:0!important;padding:14px!important}
+}
