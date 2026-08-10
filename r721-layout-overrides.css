@@ -1,6 +1,8 @@
 /* Routine 721 safe navigation/group visual overrides. Visual only: no JS or event handlers changed. */
 
-/* Hide the Groups navigation entry and all group-management/example UI. */
+/* Hide the Groups command tab itself, plus all group-management/example UI. */
+#app .sidebar .nav-button[data-page="groups"],
+.sidebar .nav-button[data-page="groups"],
 .nav-button[data-page="groups"],
 #createGroupButton,
 #joinGroupButton,
@@ -11,6 +13,8 @@
 #overviewGroups,
 .selected-group {
   display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 /* Hide the entire War Room panel that contains "YOUR GROUPS / ACTIVE WAR GROUPS". */
