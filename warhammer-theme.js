@@ -1,19 +1,14 @@
 /* Routine 721 — War Room features layer
    Adds profile faction categories, automatic faction statistics,
    and safe delete controls without modifying the core app logic. */
-
 (function () {
     "use strict";
-
     const CATEGORY_VALUES = ["Imperium", "Chaos", "Xenos"];
 
     function escapeHtml(value) {
         return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+            .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
     function getCategoryFromFaction(faction) {
@@ -31,7 +26,6 @@
     async function prepareProfileFaction() {
         const armies = document.getElementById("profileArmies");
         if (!armies || !currentUser) return;
-
         if (!document.getElementById("r721FactionCategoryGroup")) {
             armies.insertAdjacentHTML("afterend", `
                 <div class="form-group" id="r721FactionCategoryGroup">
@@ -46,21 +40,11 @@
                 </div>
             `);
         }
-
         const select = document.getElementById("profileMainFaction");
         if (!select) return;
-
-        const { data, error } = await supabaseClient
-            .from("profiles")
-            .select("main_faction, main_army")
-            .eq("id", currentUser.id)
-            .maybeSingle();
-
-        if (error) {
-            console.warn("Faction profile:", error.message);
-            return;
-        }
-
+        const { data, error } = await supabaseClient.from("profiles")
+            .select("main_faction, main_army").eq("id", currentUser.id).maybeSingle();
+        if (error) { console.warn("Faction profile:", error.message); return; }
         select.value = data?.main_faction || getCategoryFromFaction(data?.main_army) || "";
     }
 
@@ -69,33 +53,18 @@
         if (!select || !currentUser) return false;
         const category = select.value;
         if (!CATEGORY_VALUES.includes(category)) return false;
-
-        const { error } = await supabaseClient
-            .from("profiles")
-            .update({ main_faction: category })
-            .eq("id", currentUser.id);
-
-        if (error) {
-            setProfileStatus(error.message, "error");
-            return false;
-        }
+        const { error } = await supabaseClient.from("profiles")
+            .update({ main_faction: category }).eq("id", currentUser.id);
+        if (error) { setProfileStatus(error.message, "error"); return false; }
         return true;
     }
 
     async function loadProfileCategoryMap(playerIds) {
         const map = {};
         if (!playerIds.length) return map;
-
-        const { data, error } = await supabaseClient
-            .from("profiles")
-            .select("id, main_faction, main_army")
-            .in("id", playerIds);
-
-        if (error) {
-            console.error("Faction profiles:", error);
-            return map;
-        }
-
+        const { data, error } = await supabaseClient.from("profiles")
+            .select("id, main_faction, main_army").in("id", playerIds);
+        if (error) { console.error("Faction profiles:", error); return map; }
         (data || []).forEach(profile => {
             map[profile.id] = profile.main_faction || getCategoryFromFaction(profile.main_army);
         });
@@ -106,14 +75,11 @@
         const statsContainer = document.getElementById("factionStatsList");
         const detailsContainer = document.getElementById("factionDetailsList");
         if (!statsContainer || !detailsContainer || !currentUser) return;
-
         statsContainer.innerHTML = '<div class="empty">CALCULATING FACTION WAR RECORDS...</div>';
         detailsContainer.innerHTML = "";
 
-        const { data: games, error } = await supabaseClient
-            .from("games")
+        const { data: games, error } = await supabaseClient.from("games")
             .select("id, player_id, player_faction, result, player_vp, played_at");
-
         if (error) {
             statsContainer.innerHTML = `<div class="empty">Could not load faction statistics: ${escapeHtml(error.message)}</div>`;
             return;
@@ -121,31 +87,26 @@
 
         const playerIds = [...new Set((games || []).map(game => game.player_id).filter(Boolean))];
         const categoriesByPlayer = await loadProfileCategoryMap(playerIds);
-
         const categories = {
             Chaos: { played: 0, wins: 0, losses: 0, draws: 0, totalVP: 0, vpGames: 0 },
             Xenos: { played: 0, wins: 0, losses: 0, draws: 0, totalVP: 0, vpGames: 0 },
             Imperium: { played: 0, wins: 0, losses: 0, draws: 0, totalVP: 0, vpGames: 0 }
         };
-
         const factionRows = {};
 
         (games || []).forEach(game => {
             const category = categoriesByPlayer[game.player_id];
             if (!CATEGORY_VALUES.includes(category)) return;
-
             const item = categories[category];
             item.played++;
             const result = String(game.result || "").toLowerCase();
             if (result === "win") item.wins++;
             else if (result === "loss") item.losses++;
             else item.draws++;
-
             if (game.player_vp !== null && game.player_vp !== undefined && game.player_vp !== "") {
                 item.totalVP += Number(game.player_vp) || 0;
                 item.vpGames++;
             }
-
             const faction = String(game.player_faction || "").trim();
             if (faction) {
                 if (!factionRows[faction]) factionRows[faction] = { played: 0, wins: 0, losses: 0, draws: 0, category };
@@ -161,14 +122,7 @@
             const item = categories[category];
             const winRate = item.played ? Math.round((item.wins / item.played) * 100) : 0;
             const averageVP = item.vpGames ? Math.round((item.totalVP / item.vpGames) * 10) / 10 : 0;
-            return `
-                <div class="faction-stat-card">
-                    <div class="faction-stat-name">${category.toUpperCase()}</div>
-                    <div class="faction-stat-rate">${winRate}%</div>
-                    <div class="faction-stat-meta">${item.played} games · ${item.wins}W · ${item.losses}L · ${item.draws}D<br>Average VP: ${averageVP}</div>
-                    <div class="faction-stat-bar"><span style="width:${winRate}%"></span></div>
-                </div>
-            `;
+            return `<div class="faction-stat-card"><div class="faction-stat-name">${category.toUpperCase()}</div><div class="faction-stat-rate">${winRate}%</div><div class="faction-stat-meta">${item.played} games · ${item.wins}W · ${item.losses}L · ${item.draws}D<br>Average VP: ${averageVP}</div><div class="faction-stat-bar"><span style="width:${winRate}%"></span></div></div>`;
         }).join("");
 
         const sorted = Object.entries(factionRows).sort((a, b) => {
@@ -189,45 +143,22 @@
     async function deleteMatch(gameId) {
         if (!gameId || !currentUser) return;
         if (!window.confirm("DELETE THIS BATTLE RECORD? This cannot be undone.")) return;
-
         const { error } = await supabaseClient.from("games").delete().eq("id", gameId);
-        if (error) {
-            alert("Could not delete the match: " + error.message);
-            return;
-        }
-
+        if (error) { alert("Could not delete the match: " + error.message); return; }
         document.getElementById("detailsModal")?.classList.add("hidden");
-        await loadMatches();
-        await loadRecentMatches();
-        await updateStats();
-        await loadFactionStatsByProfile();
+        await loadMatches(); await loadRecentMatches(); await updateStats(); await loadFactionStatsByProfile();
     }
 
-    function canDeleteGroup(group) {
-        return !!currentUser && group?.created_by === currentUser.id;
-    }
+    function canDeleteGroup(group) { return !!currentUser && group?.created_by === currentUser.id; }
 
     async function deleteGroup(groupId) {
         const group = currentGroups.find(item => item.id === groupId);
         if (!group || !canDeleteGroup(group)) return;
         if (!window.confirm(`DELETE "${group.name}"? All matches and memberships in this group will also be deleted.`)) return;
-
         const { error } = await supabaseClient.from("groups").delete().eq("id", groupId);
-        if (error) {
-            alert("Could not delete the group: " + error.message);
-            return;
-        }
-
-        if (selectedGroupId === groupId) {
-            selectedGroupId = null;
-            selectedGroup = null;
-        }
-
-        await loadGroups();
-        await loadMatches();
-        await loadRecentMatches();
-        await updateStats();
-        await loadFactionStatsByProfile();
+        if (error) { alert("Could not delete the group: " + error.message); return; }
+        if (selectedGroupId === groupId) { selectedGroupId = null; selectedGroup = null; }
+        await loadGroups(); await loadMatches(); await loadRecentMatches(); await updateStats(); await loadFactionStatsByProfile();
     }
 
     function addGroupDeleteControls() {
@@ -235,16 +166,12 @@
             if (card.querySelector(".r721-delete-group")) return;
             const group = currentGroups.find(item => item.id === card.dataset.groupId);
             if (!canDeleteGroup(group)) return;
-
             const button = document.createElement("button");
             button.type = "button";
             button.className = "r721-delete-group small-button";
             button.textContent = "DELETE GROUP";
             button.dataset.groupId = card.dataset.groupId;
-            button.addEventListener("click", event => {
-                event.stopPropagation();
-                deleteGroup(button.dataset.groupId);
-            });
+            button.addEventListener("click", event => { event.stopPropagation(); deleteGroup(button.dataset.groupId); });
             card.appendChild(button);
         });
     }
@@ -252,7 +179,6 @@
     function addMatchDeleteButton() {
         const buttons = document.querySelector("#detailsModal .modal-buttons");
         if (!buttons || document.getElementById("r721DeleteMatchButton")) return;
-
         const button = document.createElement("button");
         button.id = "r721DeleteMatchButton";
         button.type = "button";
@@ -262,46 +188,51 @@
         buttons.insertBefore(button, buttons.firstChild);
     }
 
+    async function waitForGroupCards() {
+        for (let i = 0; i < 30; i++) {
+            addGroupDeleteControls();
+            if (document.querySelector("[data-group-id]")) return;
+            await new Promise(resolve => requestAnimationFrame(resolve));
+        }
+    }
+
     function wireDynamicUi() {
         const profileNav = document.querySelector('.nav-button[data-page="profile"]');
         if (profileNav) profileNav.addEventListener("click", () => prepareProfileFaction());
 
         const factionNav = document.querySelector('.nav-button[data-page="factions"]');
         if (factionNav) factionNav.addEventListener("click", event => {
-            event.preventDefault();
-            event.stopImmediatePropagation();
-            showPage("factions");
-            loadFactionStatsByProfile();
+            event.preventDefault(); event.stopImmediatePropagation();
+            showPage("factions"); loadFactionStatsByProfile();
         }, true);
 
         const groupsNav = document.querySelector('.nav-button[data-page="groups"]');
         if (groupsNav) groupsNav.addEventListener("click", () => waitForGroupCards());
 
         const matchesList = document.getElementById("matchesList");
-        if (matchesList) {
-            matchesList.addEventListener("click", event => {
-                const row = event.target.closest(".match-row");
-                if (!row) return;
-                const game = currentGames.find(item => item.id === row.dataset.gameId);
-                if (!game) return;
-                queueMicrotask(() => {
-                    addMatchDeleteButton();
-                    const button = document.getElementById("r721DeleteMatchButton");
-                    if (button) button.dataset.gameId = game.id;
-                });
+        if (matchesList) matchesList.addEventListener("click", event => {
+            const row = event.target.closest(".match-row");
+            if (!row) return;
+            const game = currentGames.find(item => item.id === row.dataset.gameId);
+            if (!game) return;
+            queueMicrotask(() => {
+                addMatchDeleteButton();
+                const button = document.getElementById("r721DeleteMatchButton");
+                if (button) button.dataset.gameId = game.id;
             });
-        }
+        });
 
         const modalConfirm = document.getElementById("modalConfirm");
         if (modalConfirm) modalConfirm.addEventListener("click", event => {
             const matchForm = document.getElementById("matchForm");
             if (!matchForm || matchForm.classList.contains("hidden")) return;
+            event.preventDefault(); event.stopImmediatePropagation();
             const select = document.getElementById("profileMainFaction");
             if (!select || !CATEGORY_VALUES.includes(select.value)) {
-                event.preventDefault();
-                event.stopImmediatePropagation();
                 setModalStatus("Set your Faction Allegiance in MY PROFILE before recording a match.", "error");
+                return;
             }
+            recordMatch().then(() => loadFactionStatsByProfile());
         }, true);
 
         const saveButton = document.getElementById("saveProfileButton");
@@ -309,22 +240,11 @@
             saveButton.addEventListener("click", event => {
                 const select = document.getElementById("profileMainFaction");
                 if (!select || !CATEGORY_VALUES.includes(select.value)) {
-                    event.preventDefault();
-                    event.stopImmediatePropagation();
+                    event.preventDefault(); event.stopImmediatePropagation();
                     setProfileStatus("Select Imperium, Chaos or Xenos before saving your profile.", "error");
                 }
             }, true);
-            saveButton.addEventListener("click", async () => {
-                await saveFactionCategory();
-            });
-        }
-    }
-
-    async function waitForGroupCards() {
-        for (let i = 0; i < 30; i++) {
-            addGroupDeleteControls();
-            if (document.querySelector("[data-group-id]")) return;
-            await new Promise(resolve => requestAnimationFrame(resolve));
+            saveButton.addEventListener("click", async () => { await saveFactionCategory(); });
         }
     }
 
@@ -343,12 +263,6 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-        addFactionStyles();
-        wireDynamicUi();
-        addMatchDeleteButton();
-        prepareProfileFaction();
-        addGroupDeleteControls();
-        waitForGroupCards();
-        setTimeout(addGroupDeleteControls, 1000);
+        addFactionStyles(); wireDynamicUi(); addMatchDeleteButton(); prepareProfileFaction(); addGroupDeleteControls(); waitForGroupCards(); setTimeout(addGroupDeleteControls, 1000);
     });
 })();
