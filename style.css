@@ -1105,3 +1105,719 @@ header,
     }
 
 }
+/* =========================================================
+   ROUTINE 721 — WAR ROOM VISUAL ENHANCEMENT
+   DROP-IN LAYER
+   DOES NOT REPLACE EXISTING CSS
+========================================================= */
+
+
+/* =========================================================
+   GLOBAL COMMAND TERMINAL EFFECT
+========================================================= */
+
+body {
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(120, 15, 40, 0.10),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 85% 25%,
+            rgba(75, 35, 150, 0.10),
+            transparent 35%
+        ),
+        #050507;
+}
+
+
+/* =========================================================
+   SUBTLE TERMINAL GRID
+========================================================= */
+
+body::before {
+    content: "";
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: 1;
+
+    opacity: 0.035;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,0.15) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.15) 1px,
+            transparent 1px
+        );
+
+    background-size: 40px 40px;
+}
+
+
+/* =========================================================
+   LOGIN CARD — MORE DEPTH
+========================================================= */
+
+.login-box {
+    box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.85),
+        0 0 45px rgba(130, 15, 45, 0.16),
+        inset 0 1px 0 rgba(255,255,255,0.035);
+
+    backdrop-filter: blur(8px);
+}
+
+
+/* =========================================================
+   LOGIN LOGO
+========================================================= */
+
+.logo {
+    text-shadow:
+        0 0 18px rgba(255,255,255,0.08);
+}
+
+
+/* =========================================================
+   BUTTON ENHANCEMENT
+========================================================= */
+
+#signInButton,
+#showCreateButton,
+#createAccountButton,
+.primary-button,
+.secondary-button,
+.small-button {
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.15s ease;
+}
+
+
+#signInButton:hover,
+.primary-button:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 20px rgba(130, 20, 50, 0.22);
+}
+
+
+#signInButton:active,
+.primary-button:active,
+.secondary-button:active,
+.small-button:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+#signInView input,
+#createView input,
+input,
+select,
+textarea {
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: rgba(155, 42, 65, 0.85);
+
+    box-shadow:
+        0 0 0 2px rgba(155, 42, 65, 0.08),
+        0 0 18px rgba(130, 20, 50, 0.08);
+}
+
+
+/* =========================================================
+   PANELS
+========================================================= */
+
+.panel {
+    position: relative;
+
+    overflow: hidden;
+
+    border-color:
+        rgba(150, 35, 55, 0.22);
+
+    box-shadow:
+        0 18px 50px rgba(0, 0, 0, 0.28),
+        inset 0 1px 0 rgba(255,255,255,0.025);
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.panel::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(150, 35, 55, 0.55),
+            transparent
+        );
+
+    opacity: 0.7;
+}
+
+
+.panel:hover {
+    border-color:
+        rgba(150, 35, 55, 0.32);
+
+    box-shadow:
+        0 20px 55px rgba(0, 0, 0, 0.34),
+        0 0 30px rgba(100, 15, 40, 0.05);
+}
+
+
+/* =========================================================
+   PANEL TITLES
+========================================================= */
+
+.panel-title {
+    text-shadow:
+        0 0 16px rgba(255,255,255,0.06);
+}
+
+
+.panel-subtitle {
+    opacity: 0.85;
+}
+
+
+/* =========================================================
+   STAT CARDS
+========================================================= */
+
+.stat-card {
+    position: relative;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.stat-card::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(150, 35, 55, 0.45),
+            transparent
+        );
+
+    opacity: 0;
+
+    transition: opacity 0.2s ease;
+}
+
+
+.stat-card:hover {
+    transform: translateY(-2px);
+
+    border-color:
+        rgba(150, 35, 55, 0.38);
+
+    box-shadow:
+        0 10px 28px rgba(0,0,0,0.25);
+}
+
+
+.stat-card:hover::after {
+    opacity: 1;
+}
+
+
+.stat-number {
+    text-shadow:
+        0 0 20px rgba(255,255,255,0.08);
+}
+
+
+.stat-number.gold {
+    text-shadow:
+        0 0 20px rgba(190, 150, 50, 0.15);
+}
+
+
+/* =========================================================
+   GROUP CARDS
+========================================================= */
+
+.group-card {
+    position: relative;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.group-card::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 2px;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            180deg,
+            transparent,
+            #8d233d,
+            transparent
+        );
+
+    opacity: 0;
+
+    transition: opacity 0.2s ease;
+}
+
+
+.group-card:hover {
+    transform: translateY(-2px);
+
+    border-color:
+        rgba(150, 35, 55, 0.42);
+
+    background:
+        rgba(25, 12, 18, 0.72);
+
+    box-shadow:
+        0 12px 30px rgba(0,0,0,0.25);
+}
+
+
+.group-card:hover::before {
+    opacity: 1;
+}
+
+
+/* =========================================================
+   SELECTED GROUP
+========================================================= */
+
+.selected-group {
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+.selected-group::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(130, 20, 45, 0.05),
+            transparent 45%,
+            rgba(75, 35, 150, 0.04)
+        );
+}
+
+
+/* =========================================================
+   QUICK ACTIONS
+========================================================= */
+
+.quick-action {
+    position: relative;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.quick-action::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -120%;
+
+    width: 80%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.035),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+
+    transition: left 0.5s ease;
+}
+
+
+.quick-action:hover {
+    transform: translateY(-2px);
+
+    border-color:
+        rgba(150, 35, 55, 0.38);
+
+    box-shadow:
+        0 12px 28px rgba(0,0,0,0.25);
+}
+
+
+.quick-action:hover::before {
+    left: 140%;
+}
+
+
+/* =========================================================
+   PLAYER ROWS
+========================================================= */
+
+.player-row {
+    position: relative;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.player-row:hover {
+    background:
+        rgba(130, 20, 45, 0.045);
+
+    border-color:
+        rgba(150, 35, 55, 0.28);
+
+    transform: translateX(2px);
+}
+
+
+.player-name {
+    transition:
+        color 0.2s ease;
+}
+
+
+.player-row:hover .player-name {
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   MATCH ROWS
+========================================================= */
+
+.match-row {
+    position: relative;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.match-row:hover {
+    background:
+        rgba(130, 20, 45, 0.055);
+
+    border-color:
+        rgba(150, 35, 55, 0.30);
+
+    transform: translateX(2px);
+}
+
+
+/* =========================================================
+   RECENT MATCHES
+========================================================= */
+
+.recent-match {
+    position: relative;
+
+    overflow: hidden;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.recent-match:hover {
+    background:
+        rgba(130, 20, 45, 0.055);
+
+    transform: translateX(2px);
+}
+
+
+.recent-match-result {
+    text-shadow:
+        0 0 12px rgba(150, 35, 55, 0.15);
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+    box-shadow:
+        15px 0 45px rgba(0,0,0,0.18);
+}
+
+
+.nav-button {
+    position: relative;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        padding-left 0.2s ease;
+}
+
+
+.nav-button:hover {
+    padding-left: 18px;
+}
+
+
+.nav-button.active {
+    box-shadow:
+        inset 3px 0 0 #8d233d,
+        0 0 18px rgba(130, 20, 45, 0.06);
+}
+
+
+/* =========================================================
+   TOP HEADER / USER AREA
+========================================================= */
+
+.user-area {
+    position: relative;
+}
+
+
+#currentUserEmail {
+    transition: color 0.2s ease;
+}
+
+
+#currentUserEmail:hover {
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   MODALS
+========================================================= */
+
+.modal-box {
+    box-shadow:
+        0 30px 90px rgba(0,0,0,0.80),
+        0 0 40px rgba(100,15,40,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.025);
+
+    backdrop-filter: blur(10px);
+}
+
+
+/* =========================================================
+   BATTLE DETAILS
+========================================================= */
+
+.battle-detail {
+    transition:
+        background 0.2s ease;
+}
+
+
+.battle-detail:hover {
+    background:
+        rgba(255,255,255,0.015);
+}
+
+
+/* =========================================================
+   GOLD ACCENTS
+========================================================= */
+
+.gold {
+    text-shadow:
+        0 0 14px rgba(200, 160, 50, 0.12);
+}
+
+
+/* =========================================================
+   EMPTY STATES
+========================================================= */
+
+.empty {
+    opacity: 0.75;
+
+    letter-spacing: 0.2px;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+
+::-webkit-scrollbar-track {
+    background: #07070a;
+}
+
+
+::-webkit-scrollbar-thumb {
+    background:
+        #2c1820;
+
+    border-radius: 10px;
+
+    border: 2px solid #07070a;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+    background:
+        #6f2439;
+}
+
+
+/* =========================================================
+   SELECTION
+========================================================= */
+
+::selection {
+    background: rgba(145, 35, 60, 0.45);
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   SUBTLE PAGE FADE
+========================================================= */
+
+.page {
+    animation:
+        routinePageIn 0.25s ease;
+}
+
+
+@keyframes routinePageIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .panel,
+    .stat-card,
+    .group-card,
+    .quick-action,
+    .player-row,
+    .match-row,
+    .recent-match,
+    .nav-button,
+    #signInButton,
+    .primary-button,
+    .secondary-button,
+    .small-button,
+    .page {
+        transition: none !important;
+        animation: none !important;
+        transform: none !important;
+    }
+
+}
