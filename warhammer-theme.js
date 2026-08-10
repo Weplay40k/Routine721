@@ -1,9 +1,10 @@
 /* Routine 721 — War Room features layer
    Adds profile faction categories, automatic faction statistics,
-   opponent allegiance selection, and safe delete controls without modifying the core app logic. */
+   opponent allegiance selection, safe delete controls, and leaderboard ranking. */
 (function () {
     "use strict";
     const CATEGORY_VALUES = ["Imperium", "Chaos", "Xenos"];
+    const MIN_LEADERBOARD_GAMES = 5;
 
     function escapeHtml(value) {
         return String(value ?? "")
@@ -51,7 +52,6 @@
     function prepareMatchOpponentFaction() {
         const input = document.getElementById("matchOpponentFaction");
         if (!input || input.dataset.r721Prepared === "true") return;
-
         const select = document.createElement("select");
         select.id = "matchOpponentFaction";
         select.dataset.r721Prepared = "true";
@@ -62,7 +62,6 @@
             <option value="Xenos">XENOS</option>
         `;
         input.replaceWith(select);
-
         const label = document.querySelector('label[for="matchOpponentFaction"]');
         if (label) label.textContent = "Opponent Allegiance";
     }
@@ -126,12 +125,10 @@
                 if (result === "win") item.wins++;
                 else if (result === "loss") item.losses++;
                 else item.draws++;
-
                 if (game.player_vp !== null && game.player_vp !== undefined && game.player_vp !== "") {
                     item.totalVP += Number(game.player_vp) || 0;
                     item.vpGames++;
                 }
-
                 const faction = String(game.player_faction || "").trim();
                 if (faction) {
                     if (!factionRows[faction]) factionRows[faction] = { played: 0, wins: 0, losses: 0, draws: 0, category: playerCategory };
@@ -188,7 +185,7 @@
     async function deleteGroup(groupId) {
         const group = currentGroups.find(item => item.id === groupId);
         if (!group || !canDeleteGroup(group)) return;
-        if (!window.confirm(`DELETE \"${group.name}\"? All matches and memberships in this group will also be deleted.`)) return;
+        if (!window.confirm(`DELETE "${group.name}"? All matches and memberships in this group will also be deleted.`)) return;
         const { error } = await supabaseClient.from("groups").delete().eq("id", groupId);
         if (error) { alert("Could not delete the group: " + error.message); return; }
         if (selectedGroupId === groupId) { selectedGroupId = null; selectedGroup = null; }
@@ -228,6 +225,90 @@
             if (document.querySelector("[data-group-id]")) return;
             await new Promise(resolve => requestAnimationFrame(resolve));
         }
+    }
+
+    function installLeaderboardRanking() {
+        if (typeof supabaseClient === "undefined" || typeof getPlayerStatistics !== "function") return;
+
+        window.loadLeaderboard = async function () {
+            const container = document.getElementById("leaderboardList");
+            if (!container) return;
+            container.innerHTML = '<div class="empty">CALCULATING COMMANDER RANKINGS...</div>';
+
+            const { data: profiles, error } = await supabaseClient
+                .from("profiles")
+                .select("id, display_name, avatar_url, main_army")
+                .order("display_name", { ascending: true });
+
+            if (error) {
+                container.innerHTML = `<div class="empty">${escapeHtml(error.message)}</div>`;
+                return;
+            }
+
+            const stats = await getPlayerStatistics(profiles || []);
+            const players = (profiles || []).map(player => ({
+                player,
+                stats: stats[player.id] || { played: 0, wins: 0, losses: 0, draws: 0, winRate: 0 }
+            }));
+
+            const ranked = players
+                .filter(item => item.stats.played >= MIN_LEADERBOARD_GAMES)
+                .sort((a, b) =>
+                    (b.stats.winRate - a.stats.winRate) ||
+                    (b.stats.wins - a.stats.wins) ||
+                    (b.stats.played - a.stats.played) ||
+                    String(a.player.display_name || "").localeCompare(String(b.player.display_name || ""))
+                );
+
+            const unranked = players
+                .filter(item => item.stats.played < MIN_LEADERBOARD_GAMES)
+                .sort((a, b) =>
+                    (b.stats.played - a.stats.played) ||
+                    (b.stats.winRate - a.stats.winRate) ||
+                    String(a.player.display_name || "").localeCompare(String(b.player.display_name || ""))
+                );
+
+            const card = (item, index, qualified) => {
+                const player = item.player;
+                const s = item.stats;
+                const title = qualified ? `#${index + 1}` : "UNRANKED";
+                const requirement = qualified
+                    ? `${s.played} GAMES — QUALIFIED`
+                    : `${s.played}/${MIN_LEADERBOARD_GAMES} GAMES — NEED ${Math.max(0, MIN_LEADERBOARD_GAMES - s.played)} MORE`;
+                return `
+                    <div class="player-card ${qualified ? "r721-ranked-card" : "r721-unranked-card"}" data-leader-player="${escapeHtml(player.id)}">
+                        <div class="player-card-top">
+                            ${avatarHtml(player)}
+                            <div>
+                                <div class="player-card-name">${title}&nbsp; ${escapeHtml(player.display_name || "Battle-brother")}</div>
+                                <div class="player-card-army">${escapeHtml(player.main_army || "NO MAIN ARMY")}</div>
+                            </div>
+                        </div>
+                        <div class="player-stats-mini">
+                            <div class="mini-stat"><div class="mini-stat-number">${s.played}</div><div class="mini-stat-label">GAMES</div></div>
+                            <div class="mini-stat"><div class="mini-stat-number">${s.wins}</div><div class="mini-stat-label">WINS</div></div>
+                            <div class="mini-stat"><div class="mini-stat-number">${s.winRate}%</div><div class="mini-stat-label">WIN RATE</div></div>
+                        </div>
+                        <div class="r721-ranking-status">${requirement}</div>
+                    </div>
+                `;
+            };
+
+            if (!players.length) {
+                container.innerHTML = '<div class="empty">No players yet.</div>';
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="r721-leaderboard-rule">RANKED BY WIN RATE · MINIMUM ${MIN_LEADERBOARD_GAMES} GAMES</div>
+                ${ranked.map((item, index) => card(item, index, true)).join("")}
+                ${unranked.length ? `<div class="r721-unranked-heading">COMMANDERS BELOW MINIMUM GAMES</div>${unranked.map(item => card(item, 0, false)).join("")}` : ""}
+            `;
+
+            container.querySelectorAll("[data-leader-player]").forEach(cardEl => {
+                cardEl.addEventListener("click", () => loadPlayerProfile(cardEl.dataset.leaderPlayer));
+            });
+        };
     }
 
     function wireDynamicUi() {
@@ -301,11 +382,23 @@
             .r721-delete-group { margin-top:12px; border-color:#6f3028 !important; color:#d18b7b !important; }
             .r721-danger-button { border-color:#7d3028 !important; color:#d18b7b !important; }
             #r721FactionCategoryGroup select, #matchOpponentFaction { width:100%; }
+            .r721-leaderboard-rule { margin-bottom:12px; padding:10px 12px; border:1px solid #3d3321; background:#11100d; color:#b9964d; font-size:8px; font-weight:700; letter-spacing:1.2px; }
+            .r721-ranking-status { margin-top:10px; color:#8f8a7a; font-size:8px; letter-spacing:.7px; }
+            .r721-unranked-heading { margin:24px 0 10px; padding-top:14px; border-top:1px solid #292933; color:#666672; font-size:8px; font-weight:700; letter-spacing:1.5px; }
+            .r721-unranked-card { opacity:.72; }
         `;
         document.head.appendChild(style);
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-        addFactionStyles(); wireDynamicUi(); addMatchDeleteButton(); prepareProfileFaction(); prepareMatchOpponentFaction(); addGroupDeleteControls(); waitForGroupCards(); setTimeout(addGroupDeleteControls, 1000);
+        addFactionStyles();
+        installLeaderboardRanking();
+        wireDynamicUi();
+        addMatchDeleteButton();
+        prepareProfileFaction();
+        prepareMatchOpponentFaction();
+        addGroupDeleteControls();
+        waitForGroupCards();
+        setTimeout(addGroupDeleteControls, 1000);
     });
 })();
