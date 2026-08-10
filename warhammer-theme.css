@@ -175,48 +175,76 @@ input:focus, select:focus, textarea:focus {
 }
 .logo, h1 { color: var(--r721-gold-bright) !important; }
 .subtitle, .logo-sub { color: #77705f !important; }
-
 .empty { color: #77705f !important; }
 
+/* =========================================================
+   FACTION SIGILS — PURE CSS
+   No JavaScript, observers, timers, DOM scans or injected markup.
+   The three command-category cards already have a stable order:
+   CHAOS, XENOS, IMPERIUM.
+========================================================= */
+
 .faction-stats-grid { gap: 14px !important; }
+
 .faction-stat-card {
+  position: relative;
   overflow: hidden;
   border-radius: 2px !important;
   background: linear-gradient(145deg, #1b1914, #0b0b09) !important;
   border-color: #5a4b30 !important;
+  padding-top: 52px !important;
 }
+
+.faction-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 18px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid currentColor;
+  clip-path: polygon(50% 0, 92% 16%, 100% 54%, 74% 100%, 26% 100%, 0 54%, 8% 16%);
+  background: rgba(0,0,0,.42);
+  box-shadow: inset 0 0 9px rgba(255,255,255,.04), 0 0 9px currentColor;
+  font: 800 17px/30px Arial, sans-serif;
+  text-align: center;
+  z-index: 2;
+}
+
+.faction-stat-card:nth-child(1)::before {
+  content: '☠';
+  color: #b83b32;
+}
+
+.faction-stat-card:nth-child(2)::before {
+  content: '◈';
+  color: #70a34b;
+}
+
+.faction-stat-card:nth-child(3)::before {
+  content: '✠';
+  color: #c7a45a;
+}
+
 .faction-stat-card:hover { border-color: var(--r721-gold) !important; transform: translateY(-1px); }
+.faction-stat-name { color: var(--r721-bone) !important; }
 .faction-stat-rate { color: var(--r721-gold-bright) !important; text-shadow: 0 0 12px rgba(185,150,77,.16); }
 .faction-stat-bar { background: #29251d !important; border-radius: 0 !important; }
 .faction-stat-bar span { background: linear-gradient(90deg, #6e1d1b, #b44b38) !important; border-radius: 0 !important; }
 .faction-detail-row { border-color: #312c23 !important; color: #c8c0ad !important; }
 
-/* Faction sigil injected by warhammer-theme.js */
-.r721-faction-sigil {
-  display: inline-flex;
-  width: 28px;
-  height: 28px;
-  margin-right: 9px;
-  vertical-align: middle;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid currentColor;
-  background: rgba(0,0,0,.35);
-  box-shadow: inset 0 0 10px rgba(255,255,255,.03), 0 0 8px currentColor;
-  clip-path: polygon(50% 0, 92% 16%, 100% 54%, 74% 100%, 26% 100%, 0 54%, 8% 16%);
-  font: 700 13px/1 'Arial', sans-serif;
+/* Subtle universal heraldic marker for individual faction rows. */
+.faction-detail-row:not(.faction-detail-header) > div:first-child::before {
+  content: '◆';
+  display: inline-block;
+  margin-right: 8px;
+  color: var(--r721-gold);
+  font-size: 8px;
+  text-shadow: 0 0 7px rgba(185,150,77,.5);
 }
-.r721-faction-sigil.imperium { color: #c7a45a; }
-.r721-faction-sigil.chaos { color: #b83b32; }
-.r721-faction-sigil.xenos { color: #6e9b58; }
-.r721-faction-sigil.necron { color: #62c9a4; }
-.r721-faction-sigil.ork { color: #70a34b; }
-.r721-faction-sigil.aeldari { color: #b07ad0; }
-.r721-faction-sigil.tyranid { color: #a56bb4; }
-.r721-faction-sigil.tau { color: #5e9fd1; }
-.r721-faction-sigil.other { color: #aaa18e; }
-
-.r721-faction-wrap { display: inline-flex; align-items: center; gap: 2px; }
 
 @media (max-width: 800px) {
   .sidebar { width: 190px !important; }
@@ -226,7 +254,7 @@ input:focus, select:focus, textarea:focus {
 @media (max-width: 600px) {
   .content { padding: 14px !important; }
   .panel { padding: 16px !important; }
-  .r721-faction-sigil { width: 24px; height: 24px; font-size: 11px; }
+  .faction-stat-card { padding-top: 50px !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {
