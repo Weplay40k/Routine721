@@ -1,0 +1,82 @@
+name: Apply faction icon patch
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch faction icons
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path("index.html")
+          text = path.read_text()
+          css_old = '''.faction-stat-card {
+    padding: 18px;
+    background: #111117;
+    border: 1px solid #292933;
+    border-radius: 6px;
+}
+'''
+          css_new = '''.faction-stat-card {
+    padding: 18px;
+    background: #111117;
+    border: 1px solid #292933;
+    border-radius: 6px;
+}
+
+.faction-stat-icon {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.faction-stat-icon.xenos {
+    background: #4f7d45;
+    transform: rotate(45deg);
+}
+
+.faction-stat-icon.xenos::before {
+    content: "";
+    width: 12px;
+    height: 12px;
+    background: #8f3fd1;
+}
+'''
+          html_old = '''            <div class="faction-stat-card">
+                <div class="faction-stat-name">
+                    ${category.toUpperCase()}
+                </div>'''
+          html_new = '''            <div class="faction-stat-card">
+                <div class="faction-stat-icon ${category.toLowerCase() === "xenos" ? "xenos" : ""}">${category === "Chaos" ? "☠" : category === "Imperium" ? "🦅" : ""}</div>
+                <div class="faction-stat-name">
+                    ${category.toUpperCase()}
+                </div>'''
+          if text.count(css_old) != 1:
+              raise SystemExit("Expected faction card CSS block exactly once")
+          if text.count(html_old) != 1:
+              raise SystemExit("Expected faction card template exactly once")
+          text = text.replace(css_old, css_new, 1)
+          text = text.replace(html_old, html_new, 1)
+          path.write_text(text)
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Change faction tab icons"
+          git push
