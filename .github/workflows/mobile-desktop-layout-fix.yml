@@ -1,0 +1,50 @@
+name: Apply mobile desktop layout override
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add mobile override directly to index.html
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          marker = '/* ROUTINE 721 MOBILE DESKTOP OVERRIDE */'
+          if marker in s:
+              raise SystemExit('override already present')
+
+          css = r'''\n<style>\n/* ROUTINE 721 MOBILE DESKTOP OVERRIDE */\n/* Desktop source CSS is untouched. These rules only restore its desktop values on phones. */\n@media (max-width: 800px) {\n  .command-layout { display: flex !important; min-height: calc(100vh - 72px) !important; }\n  .sidebar { width: 220px !important; flex-shrink: 0 !important; padding: 22px 14px !important; border-right: 1px solid #22222b !important; border-bottom: none !important; display: block !important; }\n  .sidebar-title { width: auto !important; padding: 0 10px 15px !important; font-size: 9px !important; }\n  .nav-button { width: 100% !important; flex: none !important; margin-bottom: 5px !important; padding: 12px 11px !important; font-size: 9px !important; }\n  .sidebar-divider { display: block !important; height: 1px !important; margin: 15px 5px !important; }\n  .content { flex: 1 !important; padding: 24px !important; min-width: 0 !important; }\n  .stat-grid, .quick-actions { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }\n  .profile-editor { grid-template-columns: 120px 1fr !important; }\n  .topbar { min-height: 72px !important; padding: 15px 24px !important; }\n  .brand { font-size: 20px !important; letter-spacing: 4px !important; }\n  .user-area span { display: inline !important; }\n  .player-list { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important; gap: 12px !important; }\n  .player-card { padding: 18px !important; border-radius: 7px !important; }\n  .player-card-top { gap: 12px !important; }\n  .avatar, .avatar-placeholder { width: 52px !important; height: 52px !important; }\n  .avatar-placeholder { font-size: 16px !important; }\n  .player-card-name { font-size: 12px !important; line-height: normal !important; }\n  .player-card-army { margin-top: 5px !important; font-size: 9px !important; line-height: normal !important; }\n  .player-stats-mini { gap: 6px !important; margin-top: 15px !important; }\n  .mini-stat { padding: 8px !important; }\n  .mini-stat-number { font-size: 13px !important; }\n  .mini-stat-label { font-size: 7px !important; }\n  .faction-stats-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }\n  .faction-detail-row { grid-template-columns: 1.2fr .7fr .7fr .8fr .8fr !important; }\n}\n@media (max-width: 550px) {\n  .screen { padding: 24px !important; }\n  .login-box { max-width: 400px !important; padding: 36px 38px 32px !important; }\n  .logo { font-size: 28px !important; letter-spacing: 5px !important; }\n  .logo-sub { font-size: 9px !important; letter-spacing: 3px !important; }\n  .divider { margin: 30px 0 28px !important; }\n}\n</style>\n'''
+
+          s = s.replace('</head>', css + '</head>', 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit the mobile-only fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Fix mobile to use desktop layout'
+          git push
+
+      - name: Remove temporary workflow
+        if: always()
+        run: |
+          rm -f .github/workflows/mobile-desktop-layout-fix.yml
+          git add -u .github/workflows/mobile-desktop-layout-fix.yml || true
+          git diff --cached --quiet && exit 0
+          git commit -m 'Remove temporary mobile layout workflow'
+          git push
