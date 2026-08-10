@@ -17,6 +17,11 @@
   pointer-events: none !important;
 }
 
+/* Hide the GROUPS stat card in the War Room summary row. */
+#overviewPage .stat-card:has(#groupsStat) {
+  display: none !important;
+}
+
 /* Hide the entire War Room panel that contains "YOUR GROUPS / ACTIVE WAR GROUPS". */
 #overviewPage .panel:has(#overviewGroups) {
   display: none !important;
