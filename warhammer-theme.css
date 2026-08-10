@@ -14,7 +14,41 @@ h1,h2,h3,.brand,.panel-title,.sidebar-title,.logo,.subtitle,.quick-title,.group-
 input,select,textarea{border-radius:1px!important;background:#0b0b09!important;color:var(--r721-bone)!important;border-color:#4d4638!important;font-size:15px!important;min-height:40px!important;padding:8px 10px!important}input:focus,select:focus,textarea:focus{border-color:var(--r721-gold)!important;box-shadow:0 0 0 2px rgba(185,150,77,.10),inset 0 0 15px rgba(185,150,77,.04)!important}.login-container,.screen{background:transparent!important}.login-box,.box{border-radius:2px!important;background:linear-gradient(145deg,rgba(25,24,20,.98),rgba(8,8,7,.98))!important;border:1px solid #806634!important;box-shadow:0 30px 90px rgba(0,0,0,.9),inset 0 1px rgba(255,255,255,.05)!important}.logo,h1{color:var(--r721-gold-bright)!important}.subtitle,.logo-sub{color:#77705f!important}.empty{color:#77705f!important;font-size:14px!important}
 .faction-stats-grid{gap:16px!important}.faction-stat-card{position:relative;overflow:hidden;border-radius:2px!important;background:linear-gradient(145deg,#1b1914,#0b0b09)!important;border-color:#5a4b30!important;padding-top:20px!important}.faction-stat-card::before,.faction-stat-card::after{display:none!important}.faction-stat-card:hover{border-color:var(--r721-gold)!important;transform:translateY(-1px)}.faction-stat-name{color:var(--r721-bone)!important;font-size:18px!important}.faction-stat-rate{color:var(--r721-gold-bright)!important;text-shadow:0 0 12px rgba(185,150,77,.16);font-size:34px!important}.faction-stat-meta{font-size:14px!important;line-height:1.5!important}.faction-stat-bar{background:#29251d!important;border-radius:0!important;height:8px!important}.faction-stat-bar span{background:linear-gradient(90deg,#6e1d1b,#b44b38)!important;border-radius:0!important}.faction-detail-row{border-color:#312c23!important;color:#c8c0ad!important;font-size:14px!important;padding:11px 8px!important}.faction-detail-row:not(.faction-detail-header)>div:first-child::before{content:'◆';display:inline-block;margin-right:8px;color:var(--r721-gold);font-size:9px;text-shadow:0 0 7px rgba(185,150,77,.5)}
 .group-card-name{font-size:18px!important}.group-card-code{font-size:16px!important}.quick-title{font-size:17px!important}
-@media(max-width:800px){.sidebar{width:190px!important}.topbar::after{display:none}}@media(max-width:600px){.content{padding:14px!important}.panel{padding:16px!important}.faction-stat-card{padding-top:18px!important}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+@media(max-width:800px){.sidebar{width:190px!important}.topbar::after{display:none}}
+@media(max-width:600px){
+  html,body{font-size:17px!important;overflow-x:hidden!important}
+  .topbar{min-height:68px!important;padding:10px 12px!important}
+  .brand{font-size:20px!important;line-height:1.05!important}
+  .brand-sub{font-size:10px!important}
+  .sidebar{width:100%!important;max-width:100%!important;box-sizing:border-box!important;border-right:0!important;border-bottom:1px solid #4d4128!important;box-shadow:0 8px 24px rgba(0,0,0,.4)!important}
+  .sidebar-title{font-size:12px!important;padding:10px 14px 6px!important}
+  .nav-button{font-size:15px!important;min-height:46px!important;padding:11px 14px!important}
+  .content{padding:10px!important;min-width:0!important}
+  .panel,.stat-card,.group-card,.selected-group,.quick-action{max-width:100%!important;box-sizing:border-box!important}
+  .panel{padding:14px!important}
+  .panel-title{font-size:18px!important;line-height:1.25!important}
+  .panel-subtitle,.stat-label{font-size:14px!important}
+  .primary-button,.primary,.secondary-button,.secondary,.small-button{min-height:46px!important;font-size:15px!important;padding:10px 14px!important}
+  input,select,textarea{font-size:16px!important;min-height:46px!important;box-sizing:border-box!important}
+  .faction-stats-grid{grid-template-columns:1fr!important;gap:12px!important}
+  .faction-stat-card{padding:16px!important}
+  .faction-stat-name{font-size:17px!important}
+  .faction-stat-rate{font-size:30px!important}
+  .faction-detail-row{font-size:14px!important;padding:12px 6px!important}
+  .group-card-name{font-size:17px!important}
+  .group-card-code{font-size:15px!important}
+  .quick-title{font-size:16px!important}
+  table{display:block!important;width:100%!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}
+  th,td{white-space:nowrap!important;padding:9px 8px!important}
+  button,.nav-button,a{touch-action:manipulation!important}
+}
+@media(max-width:380px){
+  .content{padding:8px!important}
+  .panel{padding:12px!important}
+  .brand{font-size:18px!important}
+  .nav-button{font-size:14px!important}
+}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 
 /* War Room: remove Create Group and Your Groups without touching JavaScript hooks. */
 #quickCreate{display:none!important}
