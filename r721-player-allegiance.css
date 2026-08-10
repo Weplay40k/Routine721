@@ -1,0 +1,55 @@
+/* ROUTINE 721 — PLAYER FACTION ALLEGIANCE SIZE
+   Visual-only override. Targets the dynamically added allegiance element in Players.
+   No data, markup, navigation, or interaction behavior is changed. */
+
+#playersPage .r721-player-allegiance {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  gap: 4px !important;
+  margin-left: auto !important;
+  min-width: 145px !important;
+  padding: 8px 12px !important;
+  border: 1px solid rgba(224,184,91,.42) !important;
+  border-radius: 4px !important;
+  background: linear-gradient(180deg, rgba(91,11,18,.72), rgba(25,5,8,.72)) !important;
+  box-shadow: inset 0 1px rgba(255,235,180,.04), 0 0 10px rgba(197,43,50,.08) !important;
+  text-align: center !important;
+}
+
+#playersPage .r721-player-allegiance span {
+  display: block !important;
+  font-size: 12px !important;
+  line-height: 1.1 !important;
+  font-weight: 900 !important;
+  letter-spacing: .09em !important;
+  color: #f0dfbd !important;
+  text-transform: uppercase !important;
+}
+
+#playersPage .r721-player-allegiance strong {
+  display: block !important;
+  margin-top: 1px !important;
+  font-size: 20px !important;
+  line-height: 1.15 !important;
+  font-weight: 900 !important;
+  letter-spacing: .08em !important;
+  color: #e0b85b !important;
+  text-transform: uppercase !important;
+  text-shadow: 0 2px #000, 0 0 10px rgba(224,184,91,.16) !important;
+}
+
+@media (max-width: 800px) {
+  #playersPage .r721-player-allegiance {
+    min-width: 135px !important;
+    padding: 7px 10px !important;
+  }
+
+  #playersPage .r721-player-allegiance span {
+    font-size: 11px !important;
+  }
+
+  #playersPage .r721-player-allegiance strong {
+    font-size: 19px !important;
+  }
+}
