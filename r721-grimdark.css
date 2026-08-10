@@ -1,0 +1,166 @@
+/*
+ * ROUTINE 721 — GRIMDARK VISUAL LAYER
+ * Visual-only. Do not add behavior, overlays, pointer interception, or JS dependencies.
+ */
+
+:root {
+  --r721-bg: #070706;
+  --r721-panel: #0d0d0b;
+  --r721-panel-2: #12110f;
+  --r721-metal: #25231e;
+  --r721-brass: #8b7650;
+  --r721-brass-soft: #5e5138;
+  --r721-red: #7f171b;
+  --r721-red-bright: #b3262b;
+  --r721-text: #d6d0c2;
+  --r721-muted: #777165;
+}
+
+html, body {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(93, 20, 22, .12), transparent 42%),
+    linear-gradient(rgba(255,255,255,.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.008) 1px, transparent 1px),
+    var(--r721-bg) !important;
+  background-size: auto, 4px 4px, 4px 4px, auto !important;
+  color: var(--r721-text) !important;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,.58) 100%);
+}
+
+#app, main, .app, .container {
+  position: relative;
+  z-index: 1;
+}
+
+header,
+.topbar,
+.header,
+.sidebar,
+.panel,
+.card,
+.stat-card,
+.command-panel {
+  background-color: rgba(12, 12, 10, .96) !important;
+  border-color: var(--r721-metal) !important;
+}
+
+.sidebar,
+.panel,
+.card,
+.stat-card {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    inset 0 -1px 0 rgba(0,0,0,.7),
+    0 8px 24px rgba(0,0,0,.32) !important;
+}
+
+.panel,
+.card,
+.stat-card {
+  position: relative;
+}
+
+.panel::after,
+.card::after,
+.stat-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10px;
+  right: 10px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139,118,80,.45), transparent);
+  pointer-events: none;
+}
+
+.sidebar-title,
+.panel-title,
+.section-title,
+.card-title {
+  color: #e1d8c5 !important;
+  text-shadow: 0 1px 0 #000, 0 0 12px rgba(139,118,80,.12);
+  letter-spacing: .12em !important;
+}
+
+.sidebar-title {
+  border-bottom-color: var(--r721-brass-soft) !important;
+}
+
+.nav-button {
+  background: linear-gradient(90deg, rgba(255,255,255,.025), rgba(0,0,0,.08)) !important;
+  color: #9f998c !important;
+  border-color: #292720 !important;
+  text-shadow: 0 1px #000;
+}
+
+.nav-button:hover {
+  background: linear-gradient(90deg, rgba(127,23,27,.22), rgba(0,0,0,.1)) !important;
+  color: #e0d7c6 !important;
+  border-color: var(--r721-brass-soft) !important;
+}
+
+.nav-button.active,
+.nav-button[data-page="profile"] {
+  background: linear-gradient(90deg, rgba(127,23,27,.32), rgba(20,16,14,.72)) !important;
+  border-color: #63352f !important;
+  box-shadow: inset 0 0 18px rgba(127,23,27,.09), 0 0 10px rgba(0,0,0,.35) !important;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+button {
+  text-shadow: 0 1px #000;
+}
+
+input,
+select,
+textarea {
+  background: #080807 !important;
+  color: var(--r721-text) !important;
+  border-color: #38352d !important;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,.55) !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--r721-brass-soft) !important;
+  outline: none;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,.55), 0 0 0 1px rgba(139,118,80,.16) !important;
+}
+
+.stat-label,
+.panel-subtitle,
+.muted,
+.meta,
+small {
+  color: var(--r721-muted) !important;
+}
+
+.stat-number {
+  text-shadow: 0 0 14px rgba(139,118,80,.12), 0 2px #000 !important;
+}
+
+hr,
+.sidebar-divider {
+  border-color: #302d25 !important;
+  opacity: .8;
+}
+
+@media (max-width: 800px) {
+  body::before { opacity: .7; }
+  .panel, .card, .stat-card { box-shadow: inset 0 1px 0 rgba(255,255,255,.025), 0 5px 15px rgba(0,0,0,.28) !important; }
+}
