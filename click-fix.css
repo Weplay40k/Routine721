@@ -1,0 +1,5 @@
+/* Routine 721 emergency interaction fix. */
+body::after,
+body::before {
+  pointer-events: none !important;
+}
