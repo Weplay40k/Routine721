@@ -1660,6 +1660,18 @@ FACTION STATISTICS
 
 }
 
+
+
+/* DELETE CONTROLS */
+.small-button.danger {
+    border-color: rgba(190, 45, 70, 0.65);
+    background: rgba(110, 18, 38, 0.75);
+    color: #ffffff;
+    cursor: pointer;
+}
+.small-button.danger:hover { background: #9b2440; }
+.group-card .group-delete-button { margin-top: 12px; }
+.match-row .match-delete-button { white-space: nowrap; }
 </style>
 
 </head>
@@ -3817,7 +3829,9 @@ function renderGroups() {
 
             card.addEventListener(
                 "click",
-                () => {
+                event => {
+
+                    if (event.target.closest(".group-delete-button")) return;
 
                     selectedGroupId =
                         card.dataset
@@ -3837,6 +3851,15 @@ function renderGroups() {
                 }
             );
 
+        });
+
+    document
+        .querySelectorAll(".group-delete-button")
+        .forEach(button => {
+            button.addEventListener("click", async event => {
+                event.stopPropagation();
+                await deleteGroup(button.dataset.deleteGroupId);
+            });
         });
 
 }
@@ -3868,9 +3891,67 @@ function groupCard(group) {
                 Click to select this war group.
             </div>
 
+            ${
+                currentUser && group.created_by === currentUser.id
+                    ? `
+                        <button type="button" class="small-button danger group-delete-button" data-delete-group-id="${escapeHtml(group.id)}">
+                            DELETE GROUP
+                        </button>
+                    `
+                    : ""
+            }
+
         </div>
     `;
 
+}
+
+
+/* =========================================================
+DELETE GROUP
+========================================================= */
+
+async function deleteGroup(groupId) {
+    if (!currentUser || !groupId) return;
+
+    const group = currentGroups.find(item => item.id === groupId);
+    if (!group) return;
+
+    if (group.created_by !== currentUser.id) {
+        alert("Only the group creator can delete this group.");
+        return;
+    }
+
+    if (!confirm(`Delete the group "${group.name}" and its recorded matches?`)) return;
+
+    try {
+        const gamesDelete = await supabaseClient.from("games").delete().eq("group_id", groupId);
+        if (gamesDelete.error) throw gamesDelete.error;
+
+        const membersDelete = await supabaseClient.from("group_members").delete().eq("group_id", groupId);
+        if (membersDelete.error) throw membersDelete.error;
+
+        const groupDelete = await supabaseClient
+            .from("groups")
+            .delete()
+            .eq("id", groupId)
+            .eq("created_by", currentUser.id);
+        if (groupDelete.error) throw groupDelete.error;
+
+        if (selectedGroupId === groupId) {
+            selectedGroupId = null;
+            selectedGroup = null;
+        }
+
+        await loadGroups();
+        await loadMatches();
+        await loadRecentMatches();
+        await updateStats();
+        await loadFactionStatistics();
+    } catch (error) {
+        console.error("Delete group:", error);
+        alert("Could not delete group: " + (error?.message || String(error)));
+    }
 }
 
 
@@ -6459,6 +6540,16 @@ async function loadMatches() {
                                 ${resultLabel}
                             </div>
 
+                            ${
+                                currentUser && game.player_id === currentUser.id
+                                    ? `
+                                        <button type="button" class="small-button danger match-delete-button" data-delete-match-id="${escapeHtml(game.id)}">
+                                            DELETE
+                                        </button>
+                                    `
+                                    : ""
+                            }
+
                         </div>
                     `;
 
@@ -6506,6 +6597,50 @@ async function loadMatches() {
             }
         );
 
+    matchesList
+        .querySelectorAll(".match-delete-button")
+        .forEach(button => {
+            button.addEventListener("click", async event => {
+                event.stopPropagation();
+                await deleteMatch(button.dataset.deleteMatchId);
+            });
+        });
+
+}
+
+
+/* =========================================================
+DELETE MATCH
+========================================================= */
+
+async function deleteMatch(gameId) {
+    if (!currentUser || !gameId) return;
+
+    const game = currentGames.find(item => item.id === gameId);
+    if (game && game.player_id !== currentUser.id) {
+        alert("You can only delete matches you recorded.");
+        return;
+    }
+
+    if (!confirm("Delete this battle record?")) return;
+
+    const { error } = await supabaseClient
+        .from("games")
+        .delete()
+        .eq("id", gameId)
+        .eq("player_id", currentUser.id);
+
+    if (error) {
+        console.error("Delete match:", error);
+        alert("Could not delete match: " + error.message);
+        return;
+    }
+
+    currentGames = currentGames.filter(item => item.id !== gameId);
+    await loadMatches();
+    await loadRecentMatches();
+    await updateStats();
+    await loadFactionStatistics();
 }
 
 
