@@ -13,6 +13,16 @@
   display: none !important;
 }
 
+/* Hide the entire War Room panel that contains "YOUR GROUPS / ACTIVE WAR GROUPS". */
+#overviewPage .panel:has(#overviewGroups) {
+  display: none !important;
+}
+
+/* Defensive fallback for browsers that do not support :has(). */
+#overviewGroups {
+  display: none !important;
+}
+
 /* Restore the requested old command order. */
 .sidebar {
   display: flex !important;
