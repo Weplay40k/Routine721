@@ -18,12 +18,10 @@
 
   function decorateElement(el) {
     if (!el || el.nodeType !== 1 || el.dataset.r721FactionDone === '1') return;
+    if (el.classList.contains('r721-faction-wrap') || el.closest('.r721-faction-wrap')) return;
     if (el.closest('input, textarea, select, button')) return;
 
-    const cls = String(el.className || '').toLowerCase();
-    const isFactionContext = cls.includes('faction') ||
-      el.matches('.faction-stat-name, .faction-detail-row > div:first-child');
-    if (!isFactionContext) return;
+    if (!el.matches('.faction-stat-name, .faction-detail-row > div:first-child')) return;
 
     const text = el.textContent.trim();
     const rule = ruleFor(text);
@@ -47,7 +45,7 @@
 
   function scan(root = document) {
     if (root.nodeType === 1) decorateElement(root);
-    root.querySelectorAll?.('.faction-stat-name, .faction-detail-row > div:first-child, [class*="faction"]').forEach(decorateElement);
+    root.querySelectorAll?.('.faction-stat-name, .faction-detail-row > div:first-child').forEach(decorateElement);
   }
 
   function start() {
