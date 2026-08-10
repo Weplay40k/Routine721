@@ -1,4 +1,7 @@
 (() => {
+  // Visual-only faction sigils. Intentionally avoids a global MutationObserver:
+  // the Factions screen renders data dynamically and observing the whole app
+  // can create a mutation/render feedback loop.
   const factionRules = [
     { key: 'necron', icon: '☠', test: /necron/i },
     { key: 'ork', icon: '☘', test: /\borks?\b/i },
@@ -12,16 +15,13 @@
 
   function ruleFor(value) {
     const text = String(value || '').trim();
-    if (!text) return null;
-    return factionRules.find(rule => rule.test.test(text)) || null;
+    return text ? factionRules.find(rule => rule.test.test(text)) || null : null;
   }
 
   function decorateElement(el) {
     if (!el || el.nodeType !== 1 || el.dataset.r721FactionDone === '1') return;
-    if (el.classList.contains('r721-faction-wrap') || el.closest('.r721-faction-wrap')) return;
-    if (el.closest('input, textarea, select, button')) return;
-
     if (!el.matches('.faction-stat-name, .faction-detail-row > div:first-child')) return;
+    if (el.closest('input, textarea, select, button, .r721-faction-wrap')) return;
 
     const text = el.textContent.trim();
     const rule = ruleFor(text);
@@ -38,26 +38,22 @@
 
     const label = document.createElement('span');
     label.textContent = text;
-
     wrap.append(sigil, label);
     el.replaceChildren(wrap);
   }
 
-  function scan(root = document) {
-    if (root.nodeType === 1) decorateElement(root);
-    root.querySelectorAll?.('.faction-stat-name, .faction-detail-row > div:first-child').forEach(decorateElement);
+  function scan() {
+    document
+      .querySelectorAll('.faction-stat-name, .faction-detail-row > div:first-child')
+      .forEach(decorateElement);
   }
 
   function start() {
+    // Faction statistics are loaded asynchronously. Two lightweight scans are
+    // enough to decorate the rendered results without watching the whole DOM.
     scan();
-    const observer = new MutationObserver(mutations => {
-      for (const mutation of mutations) {
-        mutation.addedNodes.forEach(node => {
-          if (node.nodeType === 1) scan(node);
-        });
-      }
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
+    window.setTimeout(scan, 1200);
+    window.setTimeout(scan, 3000);
   }
 
   if (document.readyState === 'loading') {
