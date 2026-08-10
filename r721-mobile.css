@@ -1,0 +1,111 @@
+/* Routine 721 — MOBILE-ONLY layout polish.
+   Desktop styles are intentionally untouched. */
+
+@media (max-width: 550px) {
+  /* Give the phone viewport a little more breathing room. */
+  .content {
+    padding: 10px;
+  }
+
+  .panel {
+    margin-bottom: 12px;
+    padding: 14px;
+    border-radius: 6px;
+  }
+
+  .panel-header {
+    margin-bottom: 14px;
+    gap: 10px;
+  }
+
+  .panel-title {
+    font-size: 14px;
+    letter-spacing: 1.5px;
+  }
+
+  /* Compact player cards: two columns on normal phones. */
+  .player-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .player-card {
+    padding: 11px;
+    border-radius: 6px;
+  }
+
+  .player-card-top {
+    gap: 8px;
+  }
+
+  .avatar,
+  .avatar-placeholder {
+    width: 40px;
+    height: 40px;
+  }
+
+  .avatar-placeholder {
+    font-size: 13px;
+  }
+
+  .player-card-name {
+    font-size: 10px;
+    line-height: 1.25;
+  }
+
+  .player-card-army {
+    margin-top: 3px;
+    font-size: 8px;
+    line-height: 1.25;
+  }
+
+  .player-stats-mini {
+    gap: 4px;
+    margin-top: 9px;
+  }
+
+  .mini-stat {
+    padding: 6px 3px;
+  }
+
+  .mini-stat-number {
+    font-size: 11px;
+  }
+
+  .mini-stat-label {
+    font-size: 6px;
+  }
+
+  /* Keep the mobile command bar compact and easy to tap. */
+  .sidebar {
+    padding: 8px;
+    gap: 4px;
+  }
+
+  .sidebar-title {
+    padding: 0 7px 5px;
+    font-size: 8px;
+  }
+
+  .nav-button {
+    padding: 9px 7px;
+    font-size: 8px;
+  }
+
+  .topbar {
+    min-height: 58px;
+    padding: 10px;
+  }
+
+  .brand {
+    font-size: 16px;
+    letter-spacing: 3px;
+  }
+}
+
+/* Very narrow phones: keep cards usable rather than forcing cramped columns. */
+@media (max-width: 360px) {
+  .player-grid {
+    grid-template-columns: 1fr;
+  }
+}
