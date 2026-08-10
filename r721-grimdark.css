@@ -19,24 +19,21 @@ input,select,textarea{min-height:50px!important;padding:12px 15px!important;font
 .stat-label,.panel-subtitle,.muted,.meta,small{color:var(--c-muted)!important;letter-spacing:.09em;text-transform:uppercase}.stat-number{font-size:2.45rem!important;line-height:1!important;font-weight:900!important;color:#ffe8ad!important;text-shadow:0 2px #000,0 0 18px rgba(224,184,91,.2)!important}.badge,.tag,.status,.chip{border:1px solid var(--c-gold3)!important;background:linear-gradient(180deg,rgba(139,91,22,.35),rgba(52,11,15,.6))!important;color:#f0d89e!important;border-radius:2px!important;box-shadow:inset 0 1px rgba(255,235,180,.04)!important}.success,.online,.active-status{color:#dfc36e!important;text-shadow:0 0 8px rgba(224,184,91,.18)}.danger,.error,.offline{color:#ef4b50!important;text-shadow:0 0 10px rgba(239,75,80,.16)}hr,.sidebar-divider{border-color:#735526!important;opacity:.9}
 .sidebar,.panel,.card,.stat-card,.command-panel{background-image:linear-gradient(135deg,rgba(255,220,140,.018) 25%,transparent 25%,transparent 50%,rgba(255,220,140,.012) 50%,rgba(255,220,140,.012) 75%,transparent 75%)!important;background-size:8px 8px!important}
 
-/* PHONE ONLY — turn the existing sidebar into a horizontal swipeable command rail.
-   Desktop layout is intentionally untouched above 800px. */
+/* PHONE ONLY — top horizontal command rail. Desktop is untouched. */
 @media(max-width:800px){
-  html,body{font-size:16px!important}
-  body::before{opacity:.72}
-  .command-layout{display:block!important;min-height:calc(100vh - 72px)!important}
-  .sidebar{position:sticky!important;top:0!important;z-index:100!important;width:100%!important;min-width:0!important;height:auto!important;padding:8px 10px!important;display:flex!important;align-items:center!important;gap:7px!important;overflow-x:auto!important;overflow-y:hidden!important;white-space:nowrap!important;-webkit-overflow-scrolling:touch!important;scroll-snap-type:x proximity!important;scrollbar-width:none!important;background:linear-gradient(180deg,rgba(55,17,21,.99),rgba(20,6,8,.99))!important;border-right:0!important;border-bottom:1px solid var(--c-gold3)!important;box-shadow:0 8px 20px rgba(0,0,0,.48)!important}
-  .sidebar::-webkit-scrollbar{display:none}
-  .sidebar::before{inset:4px!important}
-  .sidebar::after{display:none!important}
-  .sidebar-title{display:none!important}
-  .sidebar-divider{display:none!important}
-  .nav-button{flex:0 0 auto!important;width:auto!important;min-width:max-content!important;min-height:48px!important;margin:0!important;padding:11px 16px!important;text-align:center!important;font-size:.94rem!important;letter-spacing:.055em!important;border-left:1px solid #795722!important;border-radius:2px!important;scroll-snap-align:start!important}
-  .nav-button::before{left:4px;top:6px;bottom:6px;width:1px}
-  .nav-button::after{display:none!important}
-  .nav-button[data-page="leaderboard"]{font-size:.9rem!important;letter-spacing:.05em!important}
-  .nav-button.active,.nav-button[data-page="profile"]{border-left-color:var(--c-red4)!important}
-  .content{width:100%!important;padding:16px!important;min-width:0!important}
-  .panel,.card,.stat-card,.command-panel,.login-box{box-shadow:inset 0 1px rgba(255,235,180,.035),0 8px 22px rgba(0,0,0,.48)!important}
-  input,select,textarea{min-height:48px!important}
+html,body{font-size:16px!important}
+body::before{opacity:.72}
+.topbar{position:sticky!important;top:0!important;z-index:300!important;min-height:58px!important;padding:10px 12px!important}
+.topbar .brand{font-size:16px!important;letter-spacing:3px!important}
+.topbar .brand-sub{display:none!important}
+.command-layout{display:block!important;min-height:calc(100vh - 58px)!important}
+.sidebar{position:sticky!important;top:58px!important;z-index:290!important;width:100%!important;min-width:100%!important;height:auto!important;max-height:none!important;padding:8px 10px!important;display:flex!important;flex-direction:row!important;align-items:stretch!important;gap:7px!important;overflow-x:auto!important;overflow-y:hidden!important;white-space:nowrap!important;-webkit-overflow-scrolling:touch!important;scroll-snap-type:x proximity!important;background:linear-gradient(180deg,rgba(64,18,23,.99),rgba(25,6,9,.99))!important;border-right:0!important;border-bottom:2px solid var(--c-gold3)!important;box-shadow:0 8px 20px rgba(0,0,0,.58)!important}
+.sidebar::-webkit-scrollbar{display:none!important}
+.sidebar::before,.sidebar::after{display:none!important}
+.sidebar-title,.sidebar-divider{display:none!important}
+.nav-button{display:block!important;flex:0 0 auto!important;width:auto!important;min-width:118px!important;height:48px!important;min-height:48px!important;margin:0!important;padding:10px 14px!important;text-align:center!important;font-size:.9rem!important;line-height:26px!important;letter-spacing:.045em!important;border:1px solid #795722!important;border-left:2px solid var(--c-gold3)!important;border-radius:3px!important;scroll-snap-align:start!important}
+.nav-button[data-page="leaderboard"]{font-size:.86rem!important;letter-spacing:.04em!important}
+.nav-button::before,.nav-button::after{display:none!important}
+.nav-button.active,.nav-button[data-page="profile"]{border-left-color:var(--c-red4)!important;box-shadow:inset 0 0 28px rgba(197,43,50,.28),0 0 12px rgba(224,184,91,.12)!important}
+.content{width:100%!important;max-width:none!important;padding:14px!important;min-width:0!important}
 }
