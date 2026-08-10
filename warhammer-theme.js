@@ -92,23 +92,17 @@
     async function addPlayerFactionAllegiances() {
         const playersList = document.getElementById("playersList");
         if (!playersList) return;
-
         const cards = Array.from(playersList.querySelectorAll("[data-player-profile]"));
         if (!cards.length) return;
-
         const playerIds = cards.map(card => card.dataset.playerProfile).filter(Boolean);
         const categories = await loadProfileCategoryMap(playerIds);
-
         cards.forEach(card => {
             if (card.querySelector(".r721-player-allegiance")) return;
-
             const category = categories[card.dataset.playerProfile];
             if (!category) return;
-
             const allegiance = document.createElement("div");
             allegiance.className = "r721-player-allegiance";
             allegiance.innerHTML = `<span>FACTION ALLEGIANCE</span><strong>${escapeHtml(category)}</strong>`;
-
             const top = card.querySelector(".player-card-top");
             if (top) top.appendChild(allegiance);
         });
@@ -117,11 +111,8 @@
     function watchPlayersForFactionAllegiance() {
         const playersList = document.getElementById("playersList");
         if (!playersList || playersList.dataset.r721FactionWatcher === "true") return;
-
         playersList.dataset.r721FactionWatcher = "true";
-        const observer = new MutationObserver(() => {
-            addPlayerFactionAllegiances();
-        });
+        const observer = new MutationObserver(() => { addPlayerFactionAllegiances(); });
         observer.observe(playersList, { childList: true, subtree: true });
         addPlayerFactionAllegiances();
     }
@@ -132,8 +123,7 @@
         if (!statsContainer || !detailsContainer || !currentUser) return;
         statsContainer.innerHTML = '<div class="empty">CALCULATING FACTION WAR RECORDS...</div>';
         detailsContainer.innerHTML = "";
-        const { data: games, error } = await supabaseClient.from("games")
-            .select("id, player_id, player_faction, opponent_faction, result, player_vp, played_at");
+        const { data: games, error } = await supabaseClient.from("games").select("id, player_id, player_faction, opponent_faction, result, player_vp, played_at");
         if (error) { statsContainer.innerHTML = `<div class="empty">Could not load faction statistics: ${escapeHtml(error.message)}</div>`; return; }
         const playerIds = [...new Set((games || []).map(game => game.player_id).filter(Boolean))];
         const categoriesByPlayer = await loadProfileCategoryMap(playerIds);
@@ -215,7 +205,7 @@
         const saveButton = document.getElementById("saveProfileButton"); if (saveButton) { saveButton.addEventListener("click", event => { const select = document.getElementById("profileMainFaction"); if (!select || !CATEGORY_VALUES.includes(select.value)) { event.preventDefault(); event.stopImmediatePropagation(); setProfileStatus("Select Imperium, Chaos or Xenos before saving your profile.", "error"); } }, true); saveButton.addEventListener("click", async () => { await saveFactionCategory(); }); }
     }
 
-    function addFactionStyles() { if (document.getElementById("r721-feature-styles")) return; const style = document.createElement("style"); style.id = "r721-feature-styles"; style.textContent = `.r721-faction-help{margin-top:6px;color:#77705f;font-size:8px;line-height:1.5}.r721-category-chip{display:inline-block;margin-left:6px;padding:2px 5px;border:1px solid #4d4128;color:#b9964d;font-size:7px;letter-spacing:.6px}.r721-delete-group{margin-top:12px;border-color:#6f3028!important;color:#d18b7b!important}.r721-danger-button{border-color:#7d3028!important;color:#d18b7b!important}#r721FactionCategoryGroup select,#matchOpponentFaction{width:100%}.r721-player-allegiance{margin-top:8px;display:flex;align-items:center;gap:7px;color:#b9964d;font-size:7px;letter-spacing:1px}.r721-player-allegiance span{color:#77705f}.r721-player-allegiance strong{font-size:8px;letter-spacing:1px;color:#d8c07b}.r721-leaderboard-rule{margin-bottom:12px;padding:10px 12px;border:1px solid #3d3321;background:#11100d;color:#b9964d;font-size:8px;font-weight:700;letter-spacing:1.2px}.r721-ranking-status{margin-top:10px;color:#8f8a7a;font-size:8px;letter-spacing:.7px}.r721-unranked-heading{margin:24px 0 10px;padding-top:14px;border-top:1px solid #292933;color:#666672;font-size:8px;font-weight:700;letter-spacing:1.5px}.r721-unranked-card{opacity:.72}`; document.head.appendChild(style); }
+    function addFactionStyles() { if (document.getElementById("r721-feature-styles")) return; const style = document.createElement("style"); style.id = "r721-feature-styles"; style.textContent = `.r721-faction-help{margin-top:6px;color:#77705f;font-size:8px;line-height:1.5}.r721-category-chip{display:inline-block;margin-left:6px;padding:2px 5px;border:1px solid #4d4128;color:#b9964d;font-size:7px;letter-spacing:.6px}.r721-delete-group{margin-top:12px;border-color:#6f3028!important;color:#d18b7b!important}.r721-danger-button{border-color:#7d3028!important;color:#d18b7b!important}#r721FactionCategoryGroup select,#matchOpponentFaction{width:100%}.r721-player-allegiance{margin-top:8px;display:flex;align-items:center;gap:7px;color:#b9964d;font-size:9px;letter-spacing:1px}.r721-player-allegiance span{color:#77705f}.r721-player-allegiance strong{font-size:10px;letter-spacing:1px;color:#d8c07b}.r721-leaderboard-rule{margin-bottom:12px;padding:10px 12px;border:1px solid #3d3321;background:#11100d;color:#b9964d;font-size:8px;font-weight:700;letter-spacing:1.2px}.r721-ranking-status{margin-top:10px;color:#8f8a7a;font-size:8px;letter-spacing:.7px}.r721-unranked-heading{margin:24px 0 10px;padding-top:14px;border-top:1px solid #292933;color:#666672;font-size:8px;font-weight:700;letter-spacing:1.5px}.r721-unranked-card{opacity:.72}`; document.head.appendChild(style); }
 
     document.addEventListener("DOMContentLoaded", () => { addFactionStyles(); installLeaderboardRanking(); wireDynamicUi(); addMatchDeleteButton(); prepareProfileFaction(); prepareMatchOpponentFaction(); addGroupDeleteControls(); watchPlayersForFactionAllegiance(); waitForGroupCards(); setTimeout(addGroupDeleteControls, 1000); });
 })();
