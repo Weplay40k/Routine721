@@ -2,41 +2,18 @@
 'use strict';
 let installedInput=null;
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const getDb=()=>{try{if(typeof db!=='undefined'&&db?.from)return db}catch(e){}return globalThis.db||null};
 const findOpponent=()=>[...document.querySelectorAll('input,textarea')].find(x=>/opponent/i.test(`${x.name||''} ${x.id||''} ${x.placeholder||''}`));
 const install=()=>{
- const input=findOpponent();
- if(!input || input===installedInput || input.closest('.opponent-dd-wrap')) return !!input;
+ const input=findOpponent(); if(!input||input===installedInput||input.closest('.opponent-dd-wrap'))return !!input;
  installedInput=input;
- const wrap=document.createElement('span');wrap.className='opponent-dd-wrap';
- input.parentNode.insertBefore(wrap,input);wrap.appendChild(input);
+ const wrap=document.createElement('span');wrap.className='opponent-dd-wrap';input.parentNode.insertBefore(wrap,input);wrap.appendChild(input);
  const btn=document.createElement('button');btn.type='button';btn.className='opponent-dd-btn';btn.textContent='▾';btn.setAttribute('aria-label','Choose registered player');wrap.appendChild(btn);
  const menu=document.createElement('div');menu.className='opponent-dd-menu';menu.hidden=true;wrap.appendChild(menu);
  const hidden=document.createElement('input');hidden.type='hidden';hidden.name='opponent_user_id';wrap.appendChild(hidden);
- const load=async()=>{
-  menu.hidden=false;menu.innerHTML='<div class="opponent-dd-empty">Loading players…</div>';
-  try{
-   if(!window.db?.from)throw new Error('database unavailable');
-   const [pr,prof]=await Promise.all([
-    window.db.from('players').select('user_id,display_name').order('display_name'),
-    window.db.from('profiles').select('id,avatar_url,display_name')
-   ]);
-   if(pr.error)throw pr.error;
-   const avatars=new Map((prof.data||[]).map(x=>[x.id,x.avatar_url]));
-   const players=pr.data||[];
-   menu.innerHTML=players.map(p=>{
-    const av=avatars.get(p.user_id);
-    return `<button type="button" class="opponent-dd-item" data-id="${esc(p.user_id)}" data-name="${esc(p.display_name)}">${av?`<img class="opponent-dd-avatar" src="${esc(av)}" alt="">`:'<span class="opponent-dd-avatar opponent-dd-placeholder">◉</span>'}<span>${esc(p.display_name)}</span></button>`;
-   }).join('')||'<div class="opponent-dd-empty">No registered players</div>';
-   menu.querySelectorAll('.opponent-dd-item').forEach(item=>item.addEventListener('click',()=>{input.value=item.dataset.name;hidden.value=item.dataset.id;menu.hidden=true;input.dispatchEvent(new Event('input',{bubbles:true}));}));
-  }catch(e){console.warn('Opponent dropdown:',e);menu.innerHTML='<div class="opponent-dd-empty">Could not load players</div>'}
- };
- btn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(menu.hidden)load();else menu.hidden=true;});
- input.addEventListener('input',()=>{hidden.value='';});
- document.addEventListener('click',e=>{if(!wrap.contains(e.target))menu.hidden=true;},{passive:true});
- return true;
-};
-const watchForForm=()=>{let tries=0;const timer=setInterval(()=>{if(install()||++tries>=30)clearInterval(timer)},250)};
-document.addEventListener('click',e=>{const t=e.target.closest?.('button,a,[role="button"]');if(t&&/record battle/i.test(t.textContent||''))watchForForm()},{passive:true});
-window.addEventListener('load',watchForForm,{once:true});
+ const load=async()=>{menu.hidden=false;menu.innerHTML='<div class="opponent-dd-empty">Loading players…</div>';try{const client=getDb();if(!client)throw new Error('Supabase client unavailable');const pr=await client.from('players').select('user_id,display_name').order('display_name');if(pr.error)throw pr.error;let avatars=new Map();try{const prof=await client.from('profiles').select('id,avatar_url');if(!prof.error)avatars=new Map((prof.data||[]).map(x=>[x.id,x.avatar_url]))}catch(e){}const players=pr.data||[];menu.innerHTML=players.map(p=>{const av=avatars.get(p.user_id);return `<button type="button" class="opponent-dd-item" data-id="${esc(p.user_id)}" data-name="${esc(p.display_name)}">${av?`<img class="opponent-dd-avatar" src="${esc(av)}" alt="">`:'<span class="opponent-dd-avatar opponent-dd-placeholder">◉</span>'}<span>${esc(p.display_name)}</span></button>`}).join('')||'<div class="opponent-dd-empty">No registered players</div>';menu.querySelectorAll('.opponent-dd-item').forEach(item=>item.addEventListener('click',()=>{input.value=item.dataset.name;hidden.value=item.dataset.id;menu.hidden=true;input.dispatchEvent(new Event('input',{bubbles:true}))}))}catch(e){console.warn('Opponent dropdown:',e);menu.innerHTML='<div class="opponent-dd-empty">Could not load players</div>'}};
+ btn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(menu.hidden)load();else menu.hidden=true});input.addEventListener('input',()=>{hidden.value=''});document.addEventListener('click',e=>{if(!wrap.contains(e.target))menu.hidden=true},{passive:true});return true};
+const watch=()=>{let tries=0;const timer=setInterval(()=>{if(install()||++tries>=40)clearInterval(timer)},250)};
+document.addEventListener('click',e=>{const t=e.target.closest?.('button,a,[role="button"]');if(t&&/record battle/i.test(t.textContent||''))watch()},{passive:true});window.addEventListener('load',watch,{once:true});
 const css=document.createElement('style');css.textContent='.opponent-dd-wrap{position:relative;display:block;width:100%}.opponent-dd-wrap>input{padding-right:40px!important}.opponent-dd-btn{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:30px;height:30px;border:0;background:transparent;color:#d9a84f;font-size:16px;cursor:pointer;z-index:2}.opponent-dd-menu{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:10000;max-height:260px;overflow:auto;background:#100912;border:1px solid #8d5a2b;border-radius:8px;box-shadow:0 10px 25px rgba(0,0,0,.55)}.opponent-dd-item{width:100%;display:flex;align-items:center;gap:10px;padding:9px 12px;border:0;background:transparent;color:#f4e8d2;text-align:left;cursor:pointer}.opponent-dd-item:hover{background:#32121f}.opponent-dd-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;display:inline-flex;align-items:center;justify-content:center;border:1px solid #9a6734;flex:0 0 32px}.opponent-dd-placeholder{color:#d9a84f}.opponent-dd-empty{padding:12px;color:#b9a9b5;font-size:12px}';document.head.appendChild(css);
 })();
