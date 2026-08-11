@@ -1,0 +1,1 @@
+(()=>{const clean=()=>{document.querySelectorAll('[data-view="groups"]').forEach(el=>el.remove());const title=document.querySelector('#pageTitle');if(title&&title.textContent==='BATTLE GROUPS'){document.querySelector('[data-view="dashboard"]')?.click()}};new MutationObserver(clean).observe(document.documentElement,{childList:true,subtree:true});clean()})();
