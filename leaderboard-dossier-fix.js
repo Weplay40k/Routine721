@@ -1,44 +1,28 @@
 (()=>{
-const renderLeaderboard=async(c)=>{
-  const {data:players,error}=await db.from('players').select('*').order('wins',{ascending:false}).order('games_played',{ascending:false}).order('display_name');
-  if(error) throw error;
-  const {data:profiles}=await db.from('profiles').select('id,avatar_url,bio');
-  const profileMap=new Map((profiles||[]).map(p=>[p.id,p]));
-  c.innerHTML=`<section class="panel"><div class="panel-head"><h3>CHAMPIONS OF THE WAR</h3><span class="field-help">SELECT A PLAYER TO VIEW DOSSIER</span></div><div class="table leaderboard-table">${(players||[]).map((p,i)=>{const pr=profileMap.get(p.user_id);return `<button type="button" class="rank-row leaderboard-player-select" data-user-id="${esc(p.user_id)}"><b>#${i+1}</b><span class="leaderboard-player-identity">${avatar({display_name:p.display_name,avatar_url:pr?.avatar_url})}<span class="leaderboard-player-copy"><strong>${esc(p.display_name)}</strong>${pr?.bio?`<small>${esc(pr.bio)}</small>`:''}</span></span><span>${esc(p.primary_faction||'Unassigned')}</span><strong>${p.wins||0}W / ${p.losses||0}L / ${p.draws||0}D</strong><em>${rate(p)}%</em></button>`}).join('')||'<div class="empty">No ranked players yet.</div>'}</div></section>`;
-  c.querySelectorAll('.leaderboard-player-select').forEach(b=>b.onclick=()=>openLeaderboardDossier(b.dataset.userId));
-};
-const openLeaderboardDossier=async(userId)=>{
-  const {data:p,error}=await db.from('players').select('*').eq('user_id',userId).single();
-  if(error)return notice(error.message,'error');
-  const {data:pr}=await db.from('profiles').select('*').eq('id',userId).maybeSingle();
-  const {data:pf}=await db.from('player_factions').select('faction').eq('player_id',p.id);
-  const {data:games,error:gamesError}=await db.from('games').select('*').or(`owner_user_id.eq.${userId},opponent_user_id.eq.${userId}`).order('played_at',{ascending:false}).limit(25);
-  if(gamesError)return notice(gamesError.message,'error');
-  const ids=[...new Set((games||[]).flatMap(g=>[g.owner_user_id,g.opponent_user_id]).filter(Boolean))];
-  const {data:allPlayers}=ids.length?await db.from('players').select('user_id,display_name').in('user_id',ids):{data:[]};
-  const names=new Map((allPlayers||[]).map(x=>[x.user_id,x.display_name]));
-  const winnerName=(g)=>{
-    if((g.result||'').toLowerCase()==='draw')return 'DRAW';
-    const owner=names.get(g.owner_user_id)||g.owner_user_id===userId?p.display_name:(g.opponent_name||'Unknown');
-    const opponent=names.get(g.opponent_user_id)||g.opponent_name||'Unknown';
-    const ownerWon=(g.result||'').toLowerCase()==='win';
-    return ownerWon?owner:opponent;
-  };
-  const battleRows=(games||[]).map(g=>{
-    const owner=names.get(g.owner_user_id)||((g.owner_user_id===userId)?p.display_name:'Unknown');
-    const opponent=names.get(g.opponent_user_id)||g.opponent_name||'Unknown';
-    const viewerIsOwner=g.owner_user_id===userId;
-    const viewerResult=(g.result||'').toLowerCase();
-    const resultForPlayer=viewerIsOwner?viewerResult:(viewerResult==='win'?'loss':viewerResult==='loss'?'win':'draw');
-    const playerVp=viewerIsOwner?g.player_score:g.opponent_score;
-    const opponentVp=viewerIsOwner?g.opponent_score:g.player_score;
-    return `<div class="game-row"><div><strong>${esc(owner)} VS ${esc(opponent)}</strong><span>${esc(g.player_faction||'Unknown')} vs ${esc(g.opponent_faction||'Unknown')} · ${date(g.played_at)}</span></div><div><b class="result ${esc(resultForPlayer)}">${esc(resultForPlayer.toUpperCase())}</b><span>WINNER: ${esc(winnerName(g))} · ${playerVp??'—'}–${opponentVp??'—'} VP</span></div></div>`;
-  }).join('');
-  openModal(`<div class="panel-head"><h3>PLAYER DOSSIER</h3><button class="secondary" id="closeLeaderboardDossier">CLOSE</button></div><div class="public-profile"><div class="public-profile-head">${avatar({display_name:p.display_name,avatar_url:pr?.avatar_url},'profile-avatar')}<div><div class="eyebrow">IMPERIAL PERSONNEL</div><h2>${esc(p.display_name)}</h2><p>${esc(p.primary_faction||'Faction unassigned')}</p>${pr?.bio?`<div class="dossier-bio">${esc(pr.bio)}</div>`:''}</div></div><div class="stats"><article><small>WINS</small><b>${p.wins||0}</b></article><article><small>LOSSES</small><b>${p.losses||0}</b></article><article><small>DRAWS</small><b>${p.draws||0}</b></article><article class="rate"><small>WIN RATE</small><b>${rate(p)}%</b></article></div><div class="public-factions"><small>FACTION ROSTER</small><div>${(pf||[]).map(x=>`<span class="faction-chip">${esc(x.faction)}</span>`).join('')||'<span>None recorded</span>'}</div></div><div class="public-battles"><small>RECENT ENGAGEMENTS</small>${battleRows||'<div class="empty">No battle reports.</div>'}</div></div>`);
-  const close=$('#closeLeaderboardDossier');if(close)close.onclick=closeModal;
-};
-window.openLeaderboardDossier=openLeaderboardDossier;
-window.leaderboard=async(c)=>{try{await renderLeaderboard(c)}catch(e){console.error(e);throw e}};
-const css=document.createElement('style');css.textContent=`.leaderboard-player-identity{display:flex;align-items:center;gap:10px;min-width:0}.leaderboard-player-copy{display:flex;flex-direction:column;min-width:0;text-align:left}.leaderboard-player-copy strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.leaderboard-player-copy small{margin-top:2px;color:#bcaeb8;font-size:11px;line-height:1.25;white-space:normal;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.dossier-bio{margin-top:6px;color:#bcaeb8;line-height:1.35;overflow-wrap:anywhere;max-width:560px}.leaderboard-table .rank-row{min-width:0}.leaderboard-table .rank-row>*{min-width:0}@media(max-width:700px){.leaderboard-table .rank-row{min-width:700px}.leaderboard-player-copy small{font-size:10px}}`;
-document.head.appendChild(css);
+const esc2=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const initials2=n=>(String(n||'?').trim().split(/\s+/).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'?');
+const av2=(p,cls='ld-avatar')=>p?.avatar_url?`<img class="${cls}" src="${esc2(p.avatar_url)}" alt="">`:`<span class="${cls}">${initials2(p?.display_name)}</span>`;
+const date2=d=>d?new Date(d).toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'}):'—';
+async function dossier(id){
+ const {data:p,error}=await db.from('players').select('*').eq('user_id',id).single(); if(error)return notice(error.message,'error');
+ const {data:pr}=await db.from('profiles').select('id,display_name,avatar_url,bio').eq('id',id).maybeSingle();
+ const {data:pf}=await db.from('player_factions').select('faction').eq('player_id',p.id);
+ const [owned,against]=await Promise.all([db.from('games').select('*').eq('owner_user_id',id).order('played_at',{ascending:false}).limit(50),db.from('games').select('*').eq('opponent_user_id',id).order('played_at',{ascending:false}).limit(50)]);
+ const games=[...(owned.data||[]),...(against.data||[])].sort((a,b)=>new Date(b.played_at||0)-new Date(a.played_at||0)).filter((g,i,a)=>a.findIndex(x=>x.id===g.id)===i).slice(0,30);
+ const ownerIds=[...new Set(games.map(g=>g.owner_user_id).filter(Boolean))]; const {data:owners}=ownerIds.length?await db.from('profiles').select('id,display_name').in('id',ownerIds):{data:[]}; const ownerName=id2=>(owners||[]).find(x=>x.id===id2)?.display_name||'Unknown';
+ const rows=games.map(g=>{const isOwner=g.owner_user_id===id;const me=isOwner?(pr?.display_name||p.display_name):p.display_name;const opp=isOwner?(g.opponent_name||'Unknown'):ownerName(g.owner_user_id);const myResult=isOwner?(g.result||'draw'):(g.result==='win'?'loss':g.result==='loss'?'win':'draw');const myVp=isOwner?g.player_score:g.opponent_score;const theirVp=isOwner?g.opponent_score:g.player_score;const winner=myResult==='win'?me:myResult==='loss'?opp:'DRAW';return `<div class="game-row"><div><strong>${esc2(me)} VS ${esc2(opp)}</strong><span>${esc2(isOwner?(g.player_faction||'Unknown'):(g.opponent_faction||'Unknown'))} vs ${esc2(isOwner?(g.opponent_faction||'Unknown'):(g.player_faction||'Unknown'))} · ${date2(g.played_at)}</span></div><div><b class="result ${esc2(myResult)}">${esc2(myResult.toUpperCase())}</b><span>WINNER: ${esc2(winner)} · ${myVp??'—'}–${theirVp??'—'} VP</span></div></div>`}).join('');
+ openModal(`<div class="panel-head"><h3>PLAYER DOSSIER</h3><button class="secondary" id="ldClose">CLOSE</button></div><div class="public-profile"><div class="public-profile-head">${av2({display_name:p.display_name,avatar_url:pr?.avatar_url},'profile-avatar')}<div><div class="eyebrow">IMPERIAL PERSONNEL</div><h2>${esc2(p.display_name)}</h2>${pr?.bio?`<div class="public-profile-bio">${esc2(pr.bio)}</div>`:''}<p>${esc2(p.primary_faction||'Faction unassigned')}</p></div></div><div class="stats"><article><small>WINS</small><b>${p.wins||0}</b></article><article><small>LOSSES</small><b>${p.losses||0}</b></article><article><small>DRAWS</small><b>${p.draws||0}</b></article><article class="rate"><small>WIN RATE</small><b>${((p.games_played||0)?Math.round((p.wins||0)/(p.games_played||1)*100):0)}%</b></article></div><div class="public-factions"><small>FACTION ROSTER</small><div>${(pf||[]).map(x=>`<span class="faction-chip">${esc2(x.faction)}</span>`).join('')||'<span>None recorded</span>'}</div></div><div class="public-battles"><small>RECENT ENGAGEMENTS</small>${rows||'<div class="empty">No battle reports.</div>'}</div></div>`); document.querySelector('#ldClose')?.addEventListener('click',closeModal);
+}
+async function patchLeaderboard(){
+ const page=document.querySelector('#page'); if(!page)return;
+ const rows=[...page.querySelectorAll('.rank-row')]; if(!rows.length)return;
+ if(!document.querySelector('[data-leaderboard-patched]')){
+  const title=[...page.querySelectorAll('h3')].find(x=>x.textContent.trim()==='CHAMPIONS OF THE WAR'); if(!title)return;
+ }
+ const {data:players,error}=await db.from('players').select('user_id,display_name,primary_faction,wins,losses,draws,games_played').order('wins',{ascending:false}).order('games_played',{ascending:false}).order('display_name'); if(error)return;
+ const ids=players.map(x=>x.user_id).filter(Boolean); const {data:profiles}=ids.length?await db.from('profiles').select('id,avatar_url,bio').in('id',ids):{data:[]}; const pm=new Map((profiles||[]).map(x=>[x.id,x]));
+ rows.forEach((row,i)=>{const id=row.dataset.userId||row.querySelector('[data-user-id]')?.dataset.userId;if(!id)return;const p=players.find(x=>x.user_id===id);if(!p)return;const pr=pm.get(id);row.dataset.userId=id;row.innerHTML=`<span class="ld-rank">#${i+1}</span><span class="ld-identity">${av2({display_name:p.display_name,avatar_url:pr?.avatar_url})}<span class="ld-namebio"><strong>${esc2(p.display_name)}</strong>${pr?.bio?`<small>${esc2(pr.bio)}</small>`:''}</span></span><span>${esc2(p.primary_faction||'Unassigned')}</span><strong>${p.wins||0}W / ${p.losses||0}L / ${p.draws||0}D</strong><em>${(p.games_played||0)?Math.round((p.wins||0)/(p.games_played||1)*100):0}%</em>`;row.onclick=e=>{e.preventDefault();e.stopPropagation();dossier(id)};row.dataset.leaderboardPatched='1';});
+}
+const style=document.createElement('style');style.textContent=`.leaderboard-clickable .rank-row,.table .rank-row{cursor:pointer!important;pointer-events:auto!important}.ld-identity{display:flex;align-items:center;gap:10px;min-width:0}.ld-namebio{display:flex;flex-direction:column;min-width:0;text-align:left}.ld-namebio strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ld-namebio small{margin-top:2px;color:#bcaeb8;font-size:11px;line-height:1.25;white-space:normal;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.ld-avatar{width:36px;height:36px;min-width:36px;border-radius:50%;object-fit:cover;display:inline-flex;align-items:center;justify-content:center;background:#2a101c;color:#e0b25d;border:1px solid #a56b32;font-size:11px;font-weight:800}.ld-rank{min-width:32px}.public-profile-bio{margin-top:6px;color:#bcaeb8;line-height:1.35;overflow-wrap:anywhere;max-width:600px}@media(max-width:700px){.table .rank-row{min-width:700px}.ld-namebio small{font-size:10px}}`;document.head.appendChild(style);
+let timer=0;const observe=()=>{const root=document.querySelector('#page');if(!root)return;new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(patchLeaderboard,80)}).observe(root,{childList:true,subtree:true});patchLeaderboard()};setTimeout(observe,1700);
 })();
