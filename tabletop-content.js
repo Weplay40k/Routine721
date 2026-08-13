@@ -1,0 +1,8 @@
+/* Tabletop content boundary — foundation milestone 1. */
+(()=>{
+  const legacyFactionNames=['Space Marines','Astra Militarum','Adeptus Mechanicus','Adeptus Custodes','Grey Knights','Sisters of Battle','Necrons','Aeldari','Drukhari','Orks','Tyranids','Genestealer Cults','Chaos Space Marines','Death Guard','Thousand Sons','World Eaters','Chaos Daemons','Leagues of Votann','T’au Empire'];
+  const legacyMarks={'Space Marines':'⚔️','Ultramarines':'🔷','Black Templars':'✠','Blood Angels':'🩸','Dark Angels':'🪽','Space Wolves':'🐺','Deathwatch':'☠️','Astra Militarum':'🦅','Adeptus Mechanicus':'⚙️','Adeptus Custodes':'🛡️','Adepta Sororitas':'✝️','Grey Knights':'🌏','Imperial Knights':'♞','Imperial Agents':'⚜️','Necrons':'◈','Aeldari':'🔮','Drukhari':'🗡️','Orks':'👊','Tyranids':'🦠','Genestealer Cults':'🌲','T’au Empire':'✦','Leagues of Votann':'⛏️','Chaos Space Marines':'☣️','Death Guard':'☢️','Thousand Sons':'𐌗','World Eaters':'🪓','Emperor’s Children':'♜','Chaos Daemons':'👁️','Chaos Knights':'♛'};
+  const catalog={id:'legacy-tabletop-compatibility',displayName:'Legacy tabletop compatibility catalog',terminology:{system:'game system',collection:'collection',rosterEntry:'roster entry'},entries:Object.keys(legacyMarks).map(legacyLabel=>({id:`legacy-${legacyLabel.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}`,legacyLabel,mark:legacyMarks[legacyLabel]}))};
+  const entryFor=label=>catalog.entries.find(entry=>entry.legacyLabel===label);
+  window.TabletopContent=Object.freeze({catalog,legacyFactionNames:()=>[...legacyFactionNames],legacyLabels:()=>catalog.entries.map(entry=>entry.legacyLabel),markFor:label=>entryFor(label)?.mark||'◌',labelFor:label=>entryFor(label)?.legacyLabel||String(label||'Unassigned')});
+})();
