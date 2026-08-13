@@ -1,7 +1,7 @@
 const SUPABASE_URL='https://jbgwdxavydhtvoqpbfmj.supabase.co';
 const SUPABASE_KEY='sb_publishable_Wt8h6fNelT6zrzf-Dm8FXw_cdSGylaz';
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-const FACTIONS=['Space Marines','Astra Militarum','Adeptus Mechanicus','Adeptus Custodes','Grey Knights','Sisters of Battle','Necrons','Aeldari','Drukhari','Orks','Tyranids','Genestealer Cults','Chaos Space Marines','Death Guard','Thousand Sons','World Eaters','Chaos Daemons','Leagues of Votann','T’au Empire'];
+const FACTIONS=window.TabletopContent.legacyFactionNames();
 const S={user:null,profile:null,player:null,factions:[],view:'dashboard'};
 const $=s=>document.querySelector(s); const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const initials=n=>(String(n||'?').trim().split(/\s+/).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'?');
