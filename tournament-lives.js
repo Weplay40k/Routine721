@@ -160,7 +160,8 @@
     };
   }
   async function pairNext(t,participants,matches) {
-    const active=participants.filter(x=>x.lives>0);
+    const pendingUsers=new Set(matches.filter(m=>m.status==='pending').flatMap(m=>[m.player1_user_id,m.player2_user_id]));
+    const active=participants.filter(x=>x.lives>0 && !pendingUsers.has(x.user_id));
     if(active.length<2) return;
     const used=new Set(matches.map(m=>[m.player1_user_id,m.player2_user_id].sort().join(':')));
     let candidates=[];
