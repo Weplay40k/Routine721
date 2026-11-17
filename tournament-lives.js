@@ -1,4 +1,5 @@
-(() => {\n  const style = document.createElement('link'); style.rel = 'stylesheet'; style.href = 'tournament-lives.css?v=1'; document.head.appendChild(style);
+(() => {
+  const style = document.createElement('link'); style.rel = 'stylesheet'; style.href = 'tournament-lives.css?v=1'; document.head.appendChild(style);
   const URL = 'https://jbgwdxavydhtvoqpbfmj.supabase.co';
   const KEY = 'sb_publishable_Wt8h6fNelT6zrzf-Dm8FXw_cdSGylaz';
   const db = window.supabase.createClient(URL, KEY);
