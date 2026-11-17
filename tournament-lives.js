@@ -116,9 +116,13 @@
       players.forEach(x => { names[x.user_id]=x.display_name; });
       const registered = new Set(participants.map(x=>x.user_id));
       const active = participants.filter(x=>x.lives>0);
+      const pendingUsers = new Set(matches.filter(m=>m.status==='pending').flatMap(m=>[m.player1_user_id,m.player2_user_id]));
+      const pairableActive = active.filter(x=>!pendingUsers.has(x.user_id));
       const eliminated = participants.filter(x=>x.lives===0);
       const owner = isOwner(t);
       const champion = active.length===1 && participants.length>1 ? active[0] : null;
+      const desiredStatus = champion ? 'completed' : 'active';
+      if (owner && t.status !== desiredStatus) { const upd = await db.from('tournaments').update({status:desiredStatus,updated_at:new Date().toISOString()}).eq('id',id); if (upd.error) throw upd.error; }
       p.innerHTML = '<div class="tournament-toolbar"><button class="secondary" id="backTournaments">← ALL TOURNAMENTS</button><span class="tournament-state">' + (owner?'ORGANIZER':'VIEW ONLY') + '</span></div>' +
         '<section class="hero tournament-hero"><div><div class="eyebrow">THREE-LIFE ELIMINATION</div><h2>' + esc(t.name) + '</h2><p>' + esc(t.description || 'Every player starts with three lives. One defeat removes one life.') + '</p></div>' + (owner?'<button class="primary" id="pairNext" '+(pairableActive.length<2?'disabled':'')+'>⚔ PAIR NEXT MATCH</button>':'') + '</section>' +
         (champion?'<section class="champion-banner"><span>🏆</span><div><small>TOURNAMENT CHAMPION</small><strong>' + esc(names[champion.user_id] || 'Unknown player') + '</strong><small>THE LAST PLAYER WITH LIVES REMAINING</small></div></section>':'') +
