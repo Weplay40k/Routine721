@@ -124,17 +124,19 @@
       const desiredStatus = champion ? 'completed' : 'active';
       if (owner && t.status !== desiredStatus) { const upd = await db.from('tournaments').update({status:desiredStatus,updated_at:new Date().toISOString()}).eq('id',id); if (upd.error) throw upd.error; }
       p.innerHTML = '<div class="tournament-toolbar"><button class="secondary" id="backTournaments">← ALL TOURNAMENTS</button><span class="tournament-state">' + (owner?'ORGANIZER':'VIEW ONLY') + '</span></div>' +
-        '<section class="hero tournament-hero"><div><div class="eyebrow">THREE-LIFE ELIMINATION</div><h2>' + esc(t.name) + '</h2><p>' + esc(t.description || 'Every player starts with three lives. One defeat removes one life.') + '</p></div>' + (owner?'<button class="primary" id="pairNext" '+(pairableActive.length<2?'disabled':'')+'>⚔ PAIR NEXT MATCH</button>':'') + '</section>' +
+        '<section class="hero tournament-hero"><div><div class="eyebrow">THREE-LIFE ELIMINATION</div><h2>' + esc(t.name) + '</h2><p>' + esc(t.description || 'Every player starts with three lives. One defeat removes one life.') + '</p></div>' + (owner?'<div class="tournament-match-actions"><button class="secondary" id="manualMatch">+ CREATE MATCH</button><button class="primary" id="pairNext" '+(pairableActive.length<2?'disabled':'')+'>⚔ PAIR NEXT MATCH</button></div>':'') + '</section>' +
         (champion?'<section class="champion-banner"><span>🏆</span><div><small>TOURNAMENT CHAMPION</small><strong>' + esc(names[champion.user_id] || 'Unknown player') + '</strong><small>THE LAST PLAYER WITH LIVES REMAINING</small></div></section>':'') +
         '<section class="stats tournament-stats"><article><small>REGISTERED</small><b>' + participants.length + '</b></article><article><small>ACTIVE</small><b>' + active.length + '</b></article><article><small>ELIMINATED</small><b>' + eliminated.length + '</b></article><article><small>MATCHES</small><b>' + matches.length + '</b></article></section>' +
         '<section class="panel"><div class="panel-head"><h3>PLAYER LIVES</h3>' + (owner?'<button class="secondary" id="addPlayer">+ ADD PLAYERS</button>':'') + '</div>' +
         (participants.length?'<div class="lives-list">' + participants.map(x=>'<div class="lives-row"><div><strong>' + esc(names[x.user_id] || 'Unknown player') + '</strong><small>' + (x.lives===0?'ELIMINATED':x.lives+' '+(x.lives===1?'LIFE':'LIVES')+' LEFT') + '</small></div><div class="life-icons">' + [0,1,2].map(i=>'<span class="'+(i<x.lives?'life-on':'life-off')+'">♥</span>').join('') + '</div></div>').join('') + '</div>' : '<div class="empty">Nog geen spelers toegevoegd.</div>') + '</section>' +
         '<section class="panel"><div class="panel-head"><h3>MATCH REGISTER</h3><span class="muted">' + matches.length + ' MATCH(ES)</span></div>' +
-        (matches.length?'<div class="tournament-matches">' + matches.map(m=>matchCard(m,names,owner)).join('') + '</div>':'<div class="empty">Nog geen wedstrijden. Gebruik PAIR NEXT MATCH om een wedstrijd aan te maken.</div>') + '</section>';
+        (matches.length?'<div class="tournament-matches">' + matches.map(m=>matchCard(m,names,owner)).join('') + '</div>':'<div class="empty">Nog geen wedstrijden. Gebruik CREATE MATCH of PAIR NEXT MATCH om een wedstrijd aan te maken.</div>') + '</section>';
       $('#backTournaments').onclick=openList;
       if(owner && $('#addPlayer')) $('#addPlayer').onclick=()=>addPlayers(participants,players);
       if(owner && $('#pairNext')) $('#pairNext').onclick=()=>pairNext(t,participants,matches);
+      if(owner && $('#manualMatch')) $('#manualMatch').onclick=()=>createManualMatch(participants,names);
       p.querySelectorAll('[data-match-form]').forEach(form=>form.onsubmit=e=>saveMatch(e,form));
+      p.querySelectorAll('[data-delete-match]').forEach(button=>button.onclick=()=>deleteMatch(button.dataset.deleteMatch));
     } catch (e) { pageError(p,e); }
   }
   function matchCard(m,names,owner) {
@@ -143,7 +145,7 @@
     const loser=m.winner_user_id?(m.winner_user_id===m.player1_user_id?b:a):'';
     return '<article class="tournament-match"><div class="match-meta"><span>'+(m.status==='completed'?'COMPLETED':'AWAITING RESULT')+'</span><small>'+date(m.played_at||m.created_at)+'</small></div><div class="match-versus"><strong>'+esc(a)+'</strong><span>VS</span><strong>'+esc(b)+'</strong></div>' +
       (m.status==='completed'?'<div class="match-result"><span>WINNER: <b>'+esc(winner)+'</b></span><span>−1 LIFE: <b>'+esc(loser)+'</b></span></div>':'') +
-      (owner?'<form class="match-result-form" data-match-form="'+esc(m.id)+'"><label>WINNER<select name="winner" required><option value="">Select winner</option><option value="'+esc(m.player1_user_id)+'" '+(m.winner_user_id===m.player1_user_id?'selected':'')+'>'+esc(a)+'</option><option value="'+esc(m.player2_user_id)+'" '+(m.winner_user_id===m.player2_user_id?'selected':'')+'>'+esc(b)+'</option></select></label><button class="secondary">'+(m.status==='completed'?'CORRECT RESULT':'SAVE RESULT')+'</button></form>':'');
+      (owner?'<form class="match-result-form" data-match-form="'+esc(m.id)+'"><label>WINNER<select name="winner" required><option value="">Select winner</option><option value="'+esc(m.player1_user_id)+'" '+(m.winner_user_id===m.player1_user_id?'selected':'')+'>'+esc(a)+'</option><option value="'+esc(m.player2_user_id)+'" '+(m.winner_user_id===m.player2_user_id?'selected':'')+'>'+esc(b)+'</select></label><button class="secondary">'+(m.status==='completed'?'CORRECT RESULT':'SAVE RESULT')+'</button><button type="button" class="danger tournament-delete-match" data-delete-match="'+esc(m.id)+'">DELETE MATCH</button></form>':'');
   }
   async function addPlayers(participants,players) {
     const p=$('#page');
@@ -158,6 +160,36 @@
       if(error) return notify(errText(error));
       closeModal(); await openDetail(activeTournament);
     };
+  }
+  function createManualMatch(participants,names) {
+    const active=participants.filter(x=>x.lives>0);
+    if(active.length<2) { notify('At least two active tournament players are required.'); return; }
+    const options=active.map(x=>'<option value="'+esc(x.user_id)+'">'+esc(names[x.user_id]||'Unknown player')+' ('+x.lives+' lives)</option>').join('');
+    const m=$('#modal'); m.hidden=false;
+    m.innerHTML='<div class="modal-card"><div class="panel-head"><h3>CREATE MATCH</h3><button type="button" class="secondary" id="cancelManualMatch">CLOSE</button></div><form id="manualMatchForm" class="form-grid"><label>PLAYER 1<select id="manualPlayer1" required>'+options+'</select></label><label>PLAYER 2<select id="manualPlayer2" required>'+options+'</select></label><p class="field-help wide">Choose two different active players. The match will be added as awaiting result.</p><div class="wide"><button class="primary">CREATE MATCH</button></div></form></div>';
+    $('#cancelManualMatch').onclick=closeModal;
+    $('#manualMatchForm').onsubmit=async e=>{
+      e.preventDefault();
+      const player1=$('#manualPlayer1').value, player2=$('#manualPlayer2').value;
+      if(player1===player2) { notify('Choose two different players.'); return; }
+      if(busy) return;
+      busy=true;
+      try {
+        const {error}=await db.from('tournament_matches').insert({tournament_id:activeTournament,player1_user_id:player1,player2_user_id:player2,status:'pending'});
+        if(error) throw error;
+        closeModal(); await openDetail(activeTournament);
+      } catch(error) { notify(errText(error)); } finally { busy=false; }
+    };
+  }
+  async function deleteMatch(id) {
+    if(!confirm('Delete this match? If it has a completed result, the lost life will be restored.')) return;
+    if(busy) return;
+    busy=true;
+    try {
+      const {error}=await db.from('tournament_matches').delete().eq('id',id).eq('tournament_id',activeTournament);
+      if(error) throw error;
+      await openDetail(activeTournament);
+    } catch(error) { notify(errText(error)); } finally { busy=false; }
   }
   async function pairNext(t,participants,matches) {
     const pendingUsers=new Set(matches.filter(m=>m.status==='pending').flatMap(m=>[m.player1_user_id,m.player2_user_id]));
